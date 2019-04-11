@@ -11,7 +11,7 @@ const pathsReducer = (store = initialPaths, action) => {
     case 'SET_SHORTEST_PATH':
       return {
         ...store,
-        shortestPath: turf.asFeatureCollection(action.shortestPath)
+        shortestPath: turf.asFeatureCollection([action.shortestPath])
       }
 
     case 'RESET_PATHS':

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Map from './components/map/Map'
+import Paths from './components/map/Paths'
 import { getShortestPath } from './reducers/pathsReducer'
 
 class App extends Component {
@@ -9,6 +10,7 @@ class App extends Component {
       <div>
         <button onClick={() => this.props.getShortestPath()}>Get path</button>
         <Map>
+          <Paths />
         </Map>
       </div>
     )
