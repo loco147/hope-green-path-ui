@@ -17,8 +17,6 @@ class Menu extends Component {
     const { originTargetFC } = this.props
     const originCoords = utils.getOriginCoordsFromFC(originTargetFC)
     const targetCoords = utils.getTargetCoordsFromFC(originTargetFC)
-    console.log('originCoords', originCoords)
-    console.log('targetCoords', targetCoords)
 
     return (
       <OuterFlex>

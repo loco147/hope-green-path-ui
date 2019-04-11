@@ -20,7 +20,6 @@ class OriginTarget extends React.Component {
 
     componentDidMount() {
         const { map, originTargetFC, setSelectLocationsPopup } = this.props
-        console.log('geojson??', originTargetFC)
 
         map.once('load', () => {
             // Add layer
