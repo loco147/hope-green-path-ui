@@ -22,9 +22,9 @@ const pathsReducer = (store = initialPaths, action) => {
   }
 }
 
-export const getShortestPath = () => {
+export const getShortestPath = (originCoords, targetCoords) => {
   return async (dispatch) => {
-    const shortestPath = await paths.getShortestPath()
+    const shortestPath = await paths.getShortestPath(originCoords, targetCoords)
     console.log('shortestPath', shortestPath)
     dispatch({ type: 'SET_SHORTEST_PATH', shortestPath })
   }

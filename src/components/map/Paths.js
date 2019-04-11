@@ -11,8 +11,6 @@ class Paths extends React.Component {
 
     componentDidMount() {
         const { map, shortestPathFC } = this.props
-        console.log('geojson??', shortestPathFC)
-
         map.once('load', () => {
             // Add layer
             map.addSource(this.layerId, { type: 'geojson', data: shortestPathFC })
