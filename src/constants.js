@@ -14,3 +14,32 @@ export const BASEMAPS = {
 }
 
 export const initialMapCenter = { lng: 24.9664, lat: 60.2110 }
+
+export const initialOriginTargetFeatures = [
+  {
+    type: 'Feature',
+    properties: {
+      type: 'origin'
+    },
+    geometry: {
+      type: 'Point',
+      coordinates: [
+        24.969963133335114,
+        60.21743118046364
+      ]
+    }
+  },
+  {
+    type: 'Feature',
+    properties: {
+      type: 'target'
+    },
+    geometry: {
+      type: 'Point',
+      coordinates: [
+        24.96282577514648,
+        60.20522256018594
+      ]
+    }
+  }
+]
