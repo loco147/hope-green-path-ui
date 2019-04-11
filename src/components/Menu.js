@@ -6,10 +6,10 @@ import { getShortestPath } from './../reducers/pathsReducer'
 import { utils } from './../utils'
 
 const OuterFlex = styled.div`
-    display: flex;
-    flex-direction: column;
-    margin: 0 10px 0 10px;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin: 0 10px 0 10px;
+  align-items: center;
 `
 
 class Menu extends Component {
