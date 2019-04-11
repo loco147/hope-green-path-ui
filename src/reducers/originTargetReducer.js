@@ -22,14 +22,14 @@ const pathsReducer = (store = initialOriginTarget, action) => {
   }
 }
 
-export const setOrigin = (originLatLon) => {
-  console.log('SET_ORIGIN', originLatLon)
-  return ({ type: 'SET_ORIGIN', originLatLon })
+export const setOrigin = (originlngLat) => {
+  console.log('SET_ORIGIN', originlngLat)
+  return ({ type: 'SET_ORIGIN', originlngLat })
 }
 
-export const setTarget = (targetLatLon) => {
-  console.log('SET_TARGET', targetLatLon)
-  return ({ type: 'SET_TARGET', targetLatLon })
+export const setTarget = (targetlngLat) => {
+  console.log('SET_TARGET', targetlngLat)
+  return ({ type: 'SET_TARGET', targetlngLat })
 }
 
 export default pathsReducer

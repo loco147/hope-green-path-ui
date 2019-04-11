@@ -1,24 +1,35 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import styled from 'styled-components'
 import Map from './components/map/Map'
+import Menu from './components/Menu'
 import Paths from './components/map/Paths'
 import OriginTargetPoints from './components/map/OriginTargetPoints'
-import { getShortestPath } from './reducers/pathsReducer'
+
+const AbsoluteContainer = styled.div`
+  position: absolute;
+  pointer-events: none;
+  z-index: 2;
+`
+const BottomPanel = styled(AbsoluteContainer)`
+  bottom: 18px;
+  left: 0px;
+  right: 0px;
+`
 
 class App extends Component {
   render() {
     return (
       <div>
-        <button onClick={() => this.props.getShortestPath()}>Get path</button>
         <Map>
           <Paths />
           <OriginTargetPoints />
         </Map>
+        <BottomPanel>
+          <Menu />
+        </BottomPanel>
       </div>
     )
   }
 }
 
-const ConnectedApp = connect(null, { getShortestPath })(App)
-
-export default ConnectedApp
+export default App

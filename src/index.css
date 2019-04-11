@@ -12,3 +12,20 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.mapboxgl-popup {
+  max-width: 400px;
+  color: white;
+  font: 14px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+}
+.mapboxgl-popup-content {
+  border-radius: 12px;
+  background-color: #0000008a;
+}
+.mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip {
+  border-top-color: #0000008a;
+}
+.mapboxgl-popup-close-button {
+  color: white;
+  font-size: 20px;
+}

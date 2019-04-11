@@ -6,6 +6,7 @@ import userLocationReducer from './reducers/userLocationReducer'
 import notificationReducer from './reducers/notificationReducer'
 import pathsReducer from './reducers/pathsReducer'
 import originTargetReducer from './reducers/originTargetReducer'
+import mapPopupReducer from './reducers/mapPopupReducer'
 
 const reducer = combineReducers({
   map: mapReducer,
@@ -13,6 +14,7 @@ const reducer = combineReducers({
   notification: notificationReducer,
   paths: pathsReducer,
   originTarget: originTargetReducer,
+  mapPopup: mapPopupReducer,
 })
 
 const store = createStore(

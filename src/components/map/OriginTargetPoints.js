@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { setMapReferenceForPopups, setSelectLocationsPopup } from './../../reducers/mapPopupReducer'
 
 class OriginTarget extends React.Component {
     layerId = 'OriginTarget'
@@ -18,7 +19,7 @@ class OriginTarget extends React.Component {
     }
 
     componentDidMount() {
-        const { map, originTargetFC } = this.props
+        const { map, originTargetFC, setSelectLocationsPopup } = this.props
         console.log('geojson??', originTargetFC)
 
         map.once('load', () => {
@@ -36,6 +37,15 @@ class OriginTarget extends React.Component {
             map.on('click', this.layerId, (e) => {
                 const clickFeat = e.features[0]
                 console.log('clickFeat:', clickFeat)
+            })
+            setMapReferenceForPopups(map)
+            map.on('click', (e) => {
+                setSelectLocationsPopup(e.lngLat)
+                // console.log('clickFeat:', e.lngLat)
+                // new MapboxGL.Popup()
+                //     .setLngLat(e.lngLat)
+                //     .setHTML('asdf')
+                //     .addTo(map)
             })
         })
     }
@@ -61,6 +71,6 @@ const mapStateToProps = (state) => ({
     originTargetFC: state.originTarget.originTargetFC,
 })
 
-const ConnectedOriginTarget = connect(mapStateToProps, null)(OriginTarget)
+const ConnectedOriginTarget = connect(mapStateToProps, { setSelectLocationsPopup })(OriginTarget)
 
 export default ConnectedOriginTarget
