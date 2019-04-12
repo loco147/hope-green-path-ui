@@ -9,3 +9,11 @@ export const getShortestPath = async (originCoords, targetCoords) => {
     const response = await axios.get(baseurl.concat('shortestpath/', coordString))
     return response.data
 }
+
+export const getQuietPaths = async (originCoords, targetCoords) => {
+    const fromC = originCoords.map(coord => String(coord))
+    const toC = targetCoords.map(coord => String(coord))
+    const coordString = fromC[1].concat(',',fromC[0],'/',toC[1],',',toC[0])
+    const response = await axios.get(baseurl.concat('quietpaths/', coordString))
+    return response.data
+}

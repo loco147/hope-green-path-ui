@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { Button } from './Button'
-import { getShortestPath } from './../reducers/pathsReducer'
+import { getShortestPath, getQuietPaths } from './../reducers/pathsReducer'
 import { utils } from './../utils'
 
 const OuterFlex = styled.div`
@@ -20,7 +20,7 @@ class Menu extends Component {
 
     return (
       <OuterFlex>
-        <Button onClick={() => this.props.getShortestPath(originCoords, targetCoords)}> Get route</Button>
+        <Button onClick={() => this.props.getQuietPaths(originCoords, targetCoords)}> Get route</Button>
       </OuterFlex>
     )
   }
@@ -31,6 +31,6 @@ const mapStateToProps = (state) => ({
   originTargetFC: state.originTarget.originTargetFC,
 })
 
-const ConnectedMenu = connect(mapStateToProps, { getShortestPath })(Menu)
+const ConnectedMenu = connect(mapStateToProps, { getShortestPath, getQuietPaths })(Menu)
 
 export default ConnectedMenu

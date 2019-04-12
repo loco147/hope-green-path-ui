@@ -17,9 +17,8 @@ const StyledPathStats = styled.div`
   font-size: 24px;
 `
 
-const PathStats = ({ path }) => {
-  console.log('shortestPath',path )
-  const shortestPath = path.features[0]
+const PathStats = ({ pathFC }) => {
+  const shortestPath = pathFC.features[0]
   return (
     <StyledPathStats>
       Shortest path: {Math.round(shortestPath.properties.length)} m
@@ -29,13 +28,12 @@ const PathStats = ({ path }) => {
 
 class PathInfo extends Component {
   render() {
-    const { shortestPath } = this.props.paths
-    console.log(shortestPath)
-    if (shortestPath.features.length === 0) return null
+    const { pathFC } = this.props.paths
+    if (pathFC.features.length === 0) return null
 
     return (
       <OuterFlex>
-        <PathStats path={shortestPath} />
+        <PathStats pathFC={pathFC} />
       </OuterFlex>
     )
   }

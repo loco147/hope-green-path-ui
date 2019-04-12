@@ -20,7 +20,7 @@ const BottomPanel = styled(AbsoluteContainer)`
 
 class App extends Component {
   render() {
-    const { shortestPath } = this.props.paths
+    const { pathFC } = this.props.paths
     return (
       <div>
         <Map>
@@ -28,7 +28,7 @@ class App extends Component {
           <OriginTargetPoints />
         </Map>
         <BottomPanel>
-          {shortestPath.features.length === 0
+          {pathFC.features.length === 0
             ? <Menu />
             : <PathInfo />
           }

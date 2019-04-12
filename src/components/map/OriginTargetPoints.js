@@ -9,8 +9,8 @@ class OriginTarget extends React.Component {
         'circle-color': [
             'match',
             ['get', 'type'],
-            'origin', '#60ce00',
-            'target', '#0082ce',
+            'origin', '#00ff4c',
+            'target', '#00fffa',
             /* other */ '#51ff7c'
         ],
         'circle-stroke-color': 'black',
