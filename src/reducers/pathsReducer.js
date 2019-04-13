@@ -1,8 +1,9 @@
 import { turf } from '../utils/index'
 import * as paths from './../services/paths'
+import { egPaths } from '../temp/eg_path_features.js'
 
 const initialPaths = {
-  pathFC: turf.asFeatureCollection([]),
+  pathFC: turf.asFeatureCollection(egPaths),
 }
 
 const pathsReducer = (store = initialPaths, action) => {
