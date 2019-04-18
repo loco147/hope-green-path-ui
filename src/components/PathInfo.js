@@ -7,11 +7,15 @@ import { setSelectedPath } from './../reducers/pathsReducer'
 const OuterFlex = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 0 10px 10px 10px;
+  margin: 0 auto;
   align-items: center;
-  max-height: 259px;
+  max-height: 255px;
   overflow: auto;
   pointer-events: auto;
+  width: max-content;
+  background: rgba(0,0,0,0.1);
+  padding: 5px;
+  border-radius: 8px;
 `
 const StyledPathStats = styled.div`
   display: flex;
@@ -27,7 +31,7 @@ const StyledPathStats = styled.div`
     background-color: #0e2702c2;
     `}
   ${props => props.selected === true && css`
-    border: 2px solid red;
+    border: 2px solid yellow;
   `}
 `
 const PathName = styled.div`

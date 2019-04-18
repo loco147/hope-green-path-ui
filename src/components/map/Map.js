@@ -2,6 +2,7 @@ import React from 'react'
 import MapboxGL from 'mapbox-gl/dist/mapbox-gl.js'
 import { connect } from 'react-redux'
 import { initializeMap, updateCamera } from './../../reducers/mapReducer'
+import { unsetSelectedPath } from './../../reducers/pathsReducer'
 import { initialMapCenter, BASEMAPS } from './../../constants'
 
 MapboxGL.accessToken = process.env.REACT_APP_MB_ACCESS || 'Mapbox token is needed in order to use the map'
@@ -50,6 +51,10 @@ class Map extends React.Component {
     this.map.on('moveend', () => {
       this.props.updateCamera(this.map.getCenter(), this.map.getZoom())
     })
+
+    this.map.on('click', (e) => {
+      this.props.unsetSelectedPath()
+  })
 
   }
 
@@ -113,6 +118,7 @@ class Map extends React.Component {
 const mapDispatchToProps = {
   initializeMap,
   updateCamera,
+  unsetSelectedPath,
 }
 
 const ConnectedMap = connect(null, mapDispatchToProps)(Map)

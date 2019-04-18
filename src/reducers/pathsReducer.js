@@ -23,10 +23,23 @@ const pathsReducer = (store = initialPaths, action) => {
         qPathFC: turf.asFeatureCollection(action.qPaths)
       }
 
-    case 'SET_SELECTED_PATH':
-      return {
+    case 'SET_SELECTED_PATH': {
+      // unselect path by clicking it again
+      if (clickedPathAgain(store.selPathFC, action.selPathFeat)) {
+        return {
+          ...store,
+          selPathFC: turf.asFeatureCollection([])
+        }
+      } else return {
         ...store,
         selPathFC: turf.asFeatureCollection([action.selPathFeat])
+      }
+    }
+
+    case 'UNSET_SELECTED_PATH':
+      return {
+        ...store,
+        selPathFC: turf.asFeatureCollection([])
       }
 
     case 'SET_ORIGIN':
@@ -70,4 +83,11 @@ export const setSelectedPath = (selPathFeat) => {
   return { type: 'SET_SELECTED_PATH', selPathFeat }
 }
 
+export const unsetSelectedPath = () => {
+  return { type: 'UNSET_SELECTED_PATH' }
+}
+
+const clickedPathAgain = (storeSelPathFC, clickedPath) => {
+  return storeSelPathFC.features[0] && clickedPath.properties.id === storeSelPathFC.features[0].properties.id
+}
 export default pathsReducer

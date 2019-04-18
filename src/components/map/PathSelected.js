@@ -10,7 +10,7 @@ class PathSelected extends React.Component {
         'line-color': 'yellow',
     }
     layout = {
-        'line-join': 'round',
+        'line-join': 'miter',
         'line-cap': 'round',
     }
 
