@@ -9,7 +9,7 @@ const OuterFlex = styled.div`
   flex-direction: column;
   margin: 0 10px 10px 10px;
   align-items: center;
-  max-height: 243px;
+  max-height: 259px;
   overflow: auto;
   pointer-events: auto;
 `
@@ -17,13 +17,17 @@ const StyledPathStats = styled.div`
   display: flex;
   border-radius: 6px;
   margin: 0px 0px;
-  background-color: #000000ad;
+  background-color: rgba(0,0,0,0.67);
+  border: 2px solid transparent;
   padding: 6px 5px 6px 10px;
   color: white;
   width: fit-content;
   ${props => props.green && css`
     margin: 3px 0px;
     background-color: #0e2702c2;
+    `}
+  ${props => props.selected === true && css`
+    border: 2px solid red;
   `}
 `
 const PathName = styled.div`
@@ -86,10 +90,10 @@ const DbLenPair = ({ dB, value, box }) => {
   )
 }
 
-const ShortPathStats = ({ s_paths, setSelectedPath }) => {
+const ShortPathStats = ({ s_paths, setSelectedPath, selPathId }) => {
   const sPath = s_paths[0]
   return (
-    <StyledPathStats onClick={() => setSelectedPath(sPath)}>
+    <StyledPathStats selected={sPath.properties.id === selPathId} onClick={() => setSelectedPath(sPath)}>
       <PathInfoFlex>
         <PathName>{utils.getKmFromM(sPath.properties.length)} km </PathName>
         <LenDiff>Shortest</LenDiff>
@@ -110,11 +114,11 @@ const ShortPathStats = ({ s_paths, setSelectedPath }) => {
   )
 }
 
-const QuietPathStats = ({ q_paths, setSelectedPath }) => {
+const QuietPathStats = ({ q_paths, setSelectedPath, selPathId }) => {
   return (
     <div>
       {q_paths.map(path => (
-        <StyledPathStats green key={path.properties.length} onClick={() => setSelectedPath(path)}>
+        <StyledPathStats green selected={path.properties.id === selPathId} key={path.properties.length} onClick={() => setSelectedPath(path)}>
           <PathInfoFlex>
             <PathName>{utils.getKmFromM(path.properties.length)} km </PathName>
             <LenDiff>{utils.formatDiffM(path.properties.diff_len, true)} m{' '}</LenDiff>
@@ -140,13 +144,19 @@ const QuietPathStats = ({ q_paths, setSelectedPath }) => {
 
 class PathInfo extends Component {
   render() {
-    const { sPathFC, qPathFC, setSelectedPath } = this.props
-    if (sPathFC.features.length === 0) return null
+    const { sPathFC, qPathFC, selPathFC, setSelectedPath } = this.props
+    if (sPathFC.features.length === 0) { return null }
 
+    let selPathId = 'none'
+    if (selPathFC.features.length > 0) {
+      selPathId = selPathFC.features[0].properties.id
+    }
+
+    console.log('selPathId', selPathId)
     return (
       <OuterFlex>
-        <ShortPathStats s_paths={sPathFC.features} setSelectedPath={setSelectedPath} />
-        <QuietPathStats q_paths={qPathFC.features} setSelectedPath={setSelectedPath} />
+        <ShortPathStats selPathId={selPathId} s_paths={sPathFC.features} setSelectedPath={setSelectedPath} />
+        <QuietPathStats selPathId={selPathId} q_paths={qPathFC.features} setSelectedPath={setSelectedPath} />
       </OuterFlex>
     )
   }
