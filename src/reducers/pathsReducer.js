@@ -1,9 +1,10 @@
 import { turf } from '../utils/index'
 import * as paths from './../services/paths'
-import { egPaths } from '../temp/eg_path_features.js'
+// import { egPaths } from '../temp/eg_path_features.js'
 
 const initialPaths = {
-  pathFC: turf.asFeatureCollection(egPaths),
+  qPathFC: turf.asFeatureCollection([]),
+  sPathFC: turf.asFeatureCollection([]),
 }
 
 const pathsReducer = (store = initialPaths, action) => {
@@ -12,20 +13,21 @@ const pathsReducer = (store = initialPaths, action) => {
     case 'SET_SHORTEST_PATH':
       return {
         ...store,
-        pathFC: turf.asFeatureCollection([action.pathFC])
+        sPathFC: turf.asFeatureCollection(action.sPath)
       }
 
-    case 'SET_QUIET_PATHS':
+    case 'SET_QUIET_PATH':
       return {
         ...store,
-        pathFC: turf.asFeatureCollection(action.pathFC)
+        qPathFC: turf.asFeatureCollection(action.qPaths)
       }
 
     case 'SET_ORIGIN':
     case 'SET_TARGET':
       return {
         ...store,
-        pathFC: turf.asFeatureCollection([])
+        qPathFC: turf.asFeatureCollection([]),
+        sPathFC: turf.asFeatureCollection([]),
       }
 
     case 'RESET_PATHS':
@@ -46,9 +48,12 @@ export const getShortestPath = (originCoords, targetCoords) => {
 
 export const getQuietPaths = (originCoords, targetCoords) => {
   return async (dispatch) => {
-    const pathFC = await paths.getQuietPaths(originCoords, targetCoords)
-    console.log('quietPaths', pathFC)
-    dispatch({ type: 'SET_QUIET_PATHS', pathFC })
+    const pathFeats = await paths.getQuietPaths(originCoords, targetCoords)
+    console.log('pathFC', pathFeats)
+    const sPath = pathFeats.filter(feat => feat.properties.type === 'short')
+    const qPaths = pathFeats.filter(feat => feat.properties.type === 'quiet' && feat.properties.diff_len !== 0)
+    dispatch({ type: 'SET_SHORTEST_PATH', sPath })
+    dispatch({ type: 'SET_QUIET_PATH', qPaths })
   }
 }
 

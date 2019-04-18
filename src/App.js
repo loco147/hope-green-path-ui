@@ -4,7 +4,8 @@ import { connect } from 'react-redux'
 import Map from './components/map/Map'
 import Menu from './components/Menu'
 import PathInfo from './components/PathInfo'
-import Paths from './components/map/Paths'
+import PathShort from './components/map/PathShort'
+import PathQuiet from './components/map/PathQuiet'
 import OriginTargetPoints from './components/map/OriginTargetPoints'
 
 const AbsoluteContainer = styled.div`
@@ -20,15 +21,16 @@ const BottomPanel = styled(AbsoluteContainer)`
 
 class App extends Component {
   render() {
-    const { pathFC } = this.props.paths
+    const { sPathFC } = this.props
     return (
       <div>
         <Map>
-          <Paths />
+          <PathShort />
+          <PathQuiet />
           <OriginTargetPoints />
         </Map>
         <BottomPanel>
-          {pathFC.features.length === 0
+          {sPathFC.features.length === 0
             ? <Menu />
             : <PathInfo />
           }
@@ -39,7 +41,7 @@ class App extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  paths: state.paths,
+  sPathFC: state.paths.sPathFC,
 })
 
 const ConnectedApp = connect(mapStateToProps, null)(App)

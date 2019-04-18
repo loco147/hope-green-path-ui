@@ -139,22 +139,21 @@ const QuietPathStats = ({ q_paths }) => {
 
 class PathInfo extends Component {
   render() {
-    const { pathFC } = this.props.paths
-    if (pathFC.features.length === 0) return null
-    const s_paths = pathFC.features.filter(feat => feat.properties.type === 'short')
-    const q_paths = pathFC.features.filter(feat => feat.properties.type === 'quiet' && feat.properties.diff_len !== 0)
+    const { sPathFC, qPathFC } = this.props
+    if (sPathFC.features.length === 0) return null
 
     return (
       <OuterFlex>
-        <ShortPathStats s_paths={s_paths} />
-        <QuietPathStats q_paths={q_paths} />
+        <ShortPathStats s_paths={sPathFC.features} />
+        <QuietPathStats q_paths={qPathFC.features} />
       </OuterFlex>
     )
   }
 }
 
 const mapStateToProps = (state) => ({
-  paths: state.paths,
+  sPathFC: state.paths.sPathFC,
+  qPathFC: state.paths.qPathFC,
 })
 
 const ConnectedPathInfo = connect(mapStateToProps, null)(PathInfo)
