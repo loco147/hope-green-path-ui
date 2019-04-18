@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { Button } from './Button'
+import Notification from './Notification'
 import { getShortestPath, getQuietPaths } from './../reducers/pathsReducer'
 import { utils } from './../utils'
 
@@ -20,6 +21,7 @@ class Menu extends Component {
 
     return (
       <OuterFlex>
+        <Notification />
         <Button onClick={() => this.props.getQuietPaths(originCoords, targetCoords)}> Get route</Button>
       </OuterFlex>
     )

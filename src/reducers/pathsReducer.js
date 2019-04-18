@@ -69,6 +69,7 @@ export const getShortestPath = (originCoords, targetCoords) => {
 
 export const getQuietPaths = (originCoords, targetCoords) => {
   return async (dispatch) => {
+    dispatch({ type: 'ROUTING_STARTED' })
     const pathFeats = await paths.getQuietPaths(originCoords, targetCoords)
     console.log('pathFC', pathFeats)
     const sPath = pathFeats.filter(feat => feat.properties.type === 'short')
