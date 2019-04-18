@@ -8,6 +8,9 @@ const OuterFlex = styled.div`
   flex-direction: column;
   margin: 0 10px 10px 10px;
   align-items: center;
+  max-height: 243px;
+  overflow: auto;
+  pointer-events: auto;
 `
 const StyledPathStats = styled.div`
   display: flex;
