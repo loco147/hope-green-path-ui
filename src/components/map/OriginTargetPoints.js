@@ -31,20 +31,9 @@ class OriginTarget extends React.Component {
                 type: 'circle',
                 paint: this.circleStyle,
             })
-            map.on('mouseenter', this.layerId, () => { map.getCanvas().style.cursor = 'pointer' })
-            map.on('mouseleave', this.layerId, () => { map.getCanvas().style.cursor = '' })
-            map.on('click', this.layerId, (e) => {
-                const clickFeat = e.features[0]
-                console.log('clickFeat:', clickFeat)
-            })
             setMapReferenceForPopups(map)
             map.on('click', (e) => {
                 setSelectLocationsPopup(e.lngLat)
-                // console.log('clickFeat:', e.lngLat)
-                // new MapboxGL.Popup()
-                //     .setLngLat(e.lngLat)
-                //     .setHTML('asdf')
-                //     .addTo(map)
             })
         })
     }

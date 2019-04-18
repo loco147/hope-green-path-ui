@@ -156,7 +156,6 @@ class PathInfo extends Component {
       selPathId = selPathFC.features[0].properties.id
     }
 
-    console.log('selPathId', selPathId)
     return (
       <OuterFlex>
         <ShortPathStats selPathId={selPathId} s_paths={sPathFC.features} setSelectedPath={setSelectedPath} />
