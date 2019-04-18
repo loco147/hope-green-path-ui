@@ -1,5 +1,6 @@
 import { turf } from '../utils/index'
 import * as paths from './../services/paths'
+import { showNotification } from './notificationReducer'
 // import { egPaths } from '../temp/eg_path_features.js'
 
 const initialPaths = {
@@ -70,7 +71,13 @@ export const getShortestPath = (originCoords, targetCoords) => {
 export const getQuietPaths = (originCoords, targetCoords) => {
   return async (dispatch) => {
     dispatch({ type: 'ROUTING_STARTED' })
-    const pathFeats = await paths.getQuietPaths(originCoords, targetCoords)
+    let pathFeats
+    try {
+      pathFeats = await paths.getQuietPaths(originCoords, targetCoords)
+    } catch (error) {
+      dispatch(showNotification("Couldn't get path", 'error', 4))
+      return
+    }
     console.log('pathFC', pathFeats)
     const sPath = pathFeats.filter(feat => feat.properties.type === 'short')
     const qPaths = pathFeats.filter(feat => feat.properties.type === 'quiet' && feat.properties.diff_len !== 0)

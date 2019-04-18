@@ -56,7 +56,7 @@ const Db = styled.div`
   background-color: #000000db;
 `
 const LenDiffBox = styled(Db)`
-  background-color: #af2f2f;
+  background-color: transparent;
   ${props => props.dB < 0 && css`
     background-color: green;
   `}

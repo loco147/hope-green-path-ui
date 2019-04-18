@@ -6,7 +6,6 @@ const StyledNotificationDiv = styled.div`
   margin: 5px 6px;
   padding: 4px 9px;
   border-radius: 5px;
-  border: 1px solid grey;
   width: max-content;
   color: white;
   background: rgba(0, 0, 0, 0.74);
@@ -16,8 +15,8 @@ const StyledNotificationDiv = styled.div`
   font-weight: 300;
   letter-spacing: 1.3px;
   ${props => props.look === 'error' && css`
-    color: #ff7ff3;
-    border-color: #ff7ff3ab;
+    color: white;
+    background-color: #380000bd;
   `}
 `
 
