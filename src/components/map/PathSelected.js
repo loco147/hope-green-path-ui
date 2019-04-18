@@ -1,14 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-class PathShort extends React.Component {
-    layerId = 'shortestPath'
+class PathSelected extends React.Component {
+    layerId = 'selectedPath'
     source
     paint = {
-        'line-width': 3,
+        'line-width': 6,
         'line-opacity': 1,
-        'line-color': 'red',
-        'line-dasharray': [1, 2],
+        'line-color': 'yellow',
     }
     layout = {
         'line-join': 'round',
@@ -16,10 +15,10 @@ class PathShort extends React.Component {
     }
 
     componentDidMount() {
-        const { map, sPathFC } = this.props
+        const { map, selPathFC } = this.props
         map.once('load', () => {
             // Add layer
-            map.addSource(this.layerId, { type: 'geojson', data: sPathFC })
+            map.addSource(this.layerId, { type: 'geojson', data: selPathFC })
             this.source = map.getSource(this.layerId)
             map.addLayer({
                 id: this.layerId,
@@ -32,14 +31,13 @@ class PathShort extends React.Component {
     }
 
     componentDidUpdate = () => {
-        const { map, sPathFC } = this.props
-        map.moveLayer('quietPaths', this.layerId)
+        const { map, selPathFC } = this.props
 
         if (this.source !== undefined) {
-            this.source.setData(sPathFC)
+            this.source.setData(selPathFC)
         } else {
             map.once('sourcedata', () => {
-                this.source.setData(sPathFC)
+                this.source.setData(selPathFC)
             })
         }
     }
@@ -50,9 +48,9 @@ class PathShort extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-    sPathFC: state.paths.sPathFC,
+    selPathFC: state.paths.selPathFC,
 })
 
-const ConnectedPathShort = connect(mapStateToProps, null)(PathShort)
+const ConnectedPathSelected = connect(mapStateToProps, null)(PathSelected)
 
-export default ConnectedPathShort
+export default ConnectedPathSelected

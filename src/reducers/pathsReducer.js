@@ -5,6 +5,7 @@ import * as paths from './../services/paths'
 const initialPaths = {
   qPathFC: turf.asFeatureCollection([]),
   sPathFC: turf.asFeatureCollection([]),
+  selPathFC: turf.asFeatureCollection([]),
 }
 
 const pathsReducer = (store = initialPaths, action) => {
@@ -22,12 +23,19 @@ const pathsReducer = (store = initialPaths, action) => {
         qPathFC: turf.asFeatureCollection(action.qPaths)
       }
 
+    case 'SET_SELECTED_PATH':
+      return {
+        ...store,
+        selPathFC: turf.asFeatureCollection([action.selPathFeat])
+      }
+
     case 'SET_ORIGIN':
     case 'SET_TARGET':
       return {
         ...store,
         qPathFC: turf.asFeatureCollection([]),
         sPathFC: turf.asFeatureCollection([]),
+        selPathFC: turf.asFeatureCollection([]),
       }
 
     case 'RESET_PATHS':
@@ -55,6 +63,11 @@ export const getQuietPaths = (originCoords, targetCoords) => {
     dispatch({ type: 'SET_SHORTEST_PATH', sPath })
     dispatch({ type: 'SET_QUIET_PATH', qPaths })
   }
+}
+
+export const setSelectedPath = (selPathFeat) => {
+  console.log('selected pathFeature:', selPathFeat)
+  return { type: 'SET_SELECTED_PATH', selPathFeat }
 }
 
 export default pathsReducer

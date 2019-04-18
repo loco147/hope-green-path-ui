@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import styled, { css } from 'styled-components'
 import { connect } from 'react-redux'
 import { utils } from './../utils/index'
+import { setSelectedPath } from './../reducers/pathsReducer'
 
 const OuterFlex = styled.div`
   display: flex;
@@ -85,10 +86,10 @@ const DbLenPair = ({ dB, value, box }) => {
   )
 }
 
-const ShortPathStats = ({ s_paths }) => {
+const ShortPathStats = ({ s_paths, setSelectedPath }) => {
   const sPath = s_paths[0]
   return (
-    <StyledPathStats>
+    <StyledPathStats onClick={() => setSelectedPath(sPath)}>
       <PathInfoFlex>
         <PathName>{utils.getKmFromM(sPath.properties.length)} km </PathName>
         <LenDiff>Shortest</LenDiff>
@@ -109,11 +110,11 @@ const ShortPathStats = ({ s_paths }) => {
   )
 }
 
-const QuietPathStats = ({ q_paths }) => {
+const QuietPathStats = ({ q_paths, setSelectedPath }) => {
   return (
     <div>
       {q_paths.map(path => (
-        <StyledPathStats green key={path.properties.length}>
+        <StyledPathStats green key={path.properties.length} onClick={() => setSelectedPath(path)}>
           <PathInfoFlex>
             <PathName>{utils.getKmFromM(path.properties.length)} km </PathName>
             <LenDiff>{utils.formatDiffM(path.properties.diff_len, true)} m{' '}</LenDiff>
@@ -139,13 +140,13 @@ const QuietPathStats = ({ q_paths }) => {
 
 class PathInfo extends Component {
   render() {
-    const { sPathFC, qPathFC } = this.props
+    const { sPathFC, qPathFC, setSelectedPath } = this.props
     if (sPathFC.features.length === 0) return null
 
     return (
       <OuterFlex>
-        <ShortPathStats s_paths={sPathFC.features} />
-        <QuietPathStats q_paths={qPathFC.features} />
+        <ShortPathStats s_paths={sPathFC.features} setSelectedPath={setSelectedPath} />
+        <QuietPathStats q_paths={qPathFC.features} setSelectedPath={setSelectedPath} />
       </OuterFlex>
     )
   }
@@ -154,7 +155,8 @@ class PathInfo extends Component {
 const mapStateToProps = (state) => ({
   sPathFC: state.paths.sPathFC,
   qPathFC: state.paths.qPathFC,
+  selPathFC: state.paths.selPathFC,
 })
 
-const ConnectedPathInfo = connect(mapStateToProps, null)(PathInfo)
+const ConnectedPathInfo = connect(mapStateToProps, { setSelectedPath })(PathInfo)
 export default ConnectedPathInfo

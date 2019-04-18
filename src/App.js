@@ -6,6 +6,7 @@ import Menu from './components/Menu'
 import PathInfo from './components/PathInfo'
 import PathShort from './components/map/PathShort'
 import PathQuiet from './components/map/PathQuiet'
+import PathSelected from './components/map/PathSelected'
 import OriginTargetPoints from './components/map/OriginTargetPoints'
 
 const AbsoluteContainer = styled.div`
@@ -25,6 +26,7 @@ class App extends Component {
     return (
       <div>
         <Map>
+          <PathSelected />
           <PathShort />
           <PathQuiet />
           <OriginTargetPoints />
