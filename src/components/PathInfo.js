@@ -7,7 +7,7 @@ import { setSelectedPath } from './../reducers/pathsReducer'
 const OuterFlex = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 0 auto;
+  margin: 4px;
   align-items: center;
   max-height: 255px;
   overflow: auto;
@@ -23,9 +23,11 @@ const StyledPathStats = styled.div`
   margin: 0px 0px;
   background-color: rgba(0,0,0,0.67);
   border: 2px solid transparent;
-  padding: 6px 5px 6px 10px;
+  padding: 6px 5px;
   color: white;
   width: fit-content;
+  cursor: default;
+  transition-duration: 0.15s;
   ${props => props.green && css`
     margin: 3px 0px;
     background-color: #0e2702c2;
@@ -77,7 +79,7 @@ const FlexCols = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  width: 118px;
+  width: 111px;
 `
 const DbLenFlex = styled.div`
   display: flex;
@@ -94,10 +96,10 @@ const DbLenPair = ({ dB, value, box }) => {
   )
 }
 
-const ShortPathStats = ({ s_paths, setSelectedPath, selPathId }) => {
+const ShortPathStats = ({ s_paths }) => {
   const sPath = s_paths[0]
   return (
-    <StyledPathStats selected={sPath.properties.id === selPathId} onClick={() => setSelectedPath(sPath)}>
+    <StyledPathStats>
       <PathInfoFlex>
         <PathName>{utils.getKmFromM(sPath.properties.length)} km </PathName>
         <LenDiff>Shortest</LenDiff>

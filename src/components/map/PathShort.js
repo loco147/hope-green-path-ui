@@ -8,7 +8,7 @@ class PathShort extends React.Component {
         'line-width': 3,
         'line-opacity': 1,
         'line-color': 'red',
-        'line-dasharray': [1, 2],
+        'line-dasharray': [1, 2.5],
     }
     layout = {
         'line-join': 'round',
