@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { initializeMap, updateCamera } from './../../reducers/mapReducer'
 import { unsetSelectedPath } from './../../reducers/pathsReducer'
 import { initialMapCenter, BASEMAPS } from './../../constants'
+import { utils } from './../../utils/index'
 
 MapboxGL.accessToken = process.env.REACT_APP_MB_ACCESS || 'Mapbox token is needed in order to use the map'
 
@@ -53,8 +54,11 @@ class Map extends React.Component {
     })
 
     this.map.on('click', (e) => {
-      this.props.unsetSelectedPath()
-  })
+      const features = utils.getLayersFeaturesAroundClickE(['quietPaths'], e, 8, this.map)
+      if (features.length === 0) {
+        this.props.unsetSelectedPath()
+      }
+    })
 
   }
 

@@ -25,3 +25,10 @@ export const formatDiffM = (num, signs) => {
   }
   return String(round)
 }
+
+export const getLayersFeaturesAroundClickE = (layers, e, tolerance, map) => {
+  // tolerance: pixels around point
+  const bbox = [[e.point.x - tolerance, e.point.y - tolerance], [e.point.x + tolerance, e.point.y + tolerance]]
+  const features = map.queryRenderedFeatures(bbox, { layers })
+  return features
+}

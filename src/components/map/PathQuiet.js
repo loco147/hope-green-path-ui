@@ -1,6 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { setSelectedPath } from './../../reducers/pathsReducer'
+import { clickTol } from './../../constants'
+import { utils } from './../../utils/index'
 
 class PathQuiet extends React.Component {
     layerId = 'quietPaths'
@@ -30,9 +32,12 @@ class PathQuiet extends React.Component {
             })
             map.on('mouseenter', this.layerId, () => { map.getCanvas().style.cursor = 'pointer' })
             map.on('mouseleave', this.layerId, () => { map.getCanvas().style.cursor = '' })
-            map.on('click', this.layerId, (e) => {
-                const clickedFeat = e.features[0]
-                setSelectedPath(clickedFeat.properties.id)
+            map.on('click', (e) => {
+                const features = utils.getLayersFeaturesAroundClickE(['quietPaths'], e, clickTol, map)
+                if (features.length > 0) {
+                    const clickedFeat = features[0]
+                    setSelectedPath(clickedFeat.properties.id)
+                }
             })
         })
     }

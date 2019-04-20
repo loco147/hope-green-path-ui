@@ -1,6 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { setMapReferenceForPopups, setSelectLocationsPopup } from './../../reducers/mapPopupReducer'
+import { clickTol } from './../../constants'
+import { utils } from './../../utils/index'
 
 class OriginTarget extends React.Component {
     layerId = 'OriginTarget'
@@ -33,7 +35,11 @@ class OriginTarget extends React.Component {
             })
             setMapReferenceForPopups(map)
             map.on('click', (e) => {
-                setSelectLocationsPopup(e.lngLat)
+                // show popup only if path was not clicked
+                const features = utils.getLayersFeaturesAroundClickE(['quietPaths'], e, clickTol, map)
+                if (features.length === 0) {
+                    setSelectLocationsPopup(e.lngLat)
+                }
             })
         })
     }

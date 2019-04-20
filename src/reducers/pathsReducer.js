@@ -90,7 +90,6 @@ export const getQuietPaths = (originCoords, targetCoords) => {
 }
 
 export const setSelectedPath = (selPathId) => {
-  console.log('selected pathFeature:', selPathId)
   return { type: 'SET_SELECTED_PATH', selPathId }
 }
 
