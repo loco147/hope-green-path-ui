@@ -1,5 +1,5 @@
 # quiet-path-ui
-An user interface for quiet path routing application developed within my master's thesis.
+A user interface for [quiet path routing application](https://github.com/hellej/gradu-pocs) developed within my master's thesis. 
 
 ## Built With
 * React, Redux & Thunk
@@ -16,7 +16,8 @@ Update your Mapbox access token to `src/components/map/Map.js`<br>
 Open browser to http://localhost:3000/
 
 ## UI
-<img src="images/quiet-path_UI-1.png" width="300">
+![UIexample1](/images/quiet-path-UI-1.png)
+![UIexample2](/images/quiet-path-UI-2.png)
 
 ## License
 [MIT](LICENSE)
