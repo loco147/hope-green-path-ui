@@ -26,14 +26,17 @@ const pathsReducer = (store = initialPaths, action) => {
 
     case 'SET_SELECTED_PATH': {
       // unselect path by clicking it again
-      if (clickedPathAgain(store.selPathFC, action.selPathFeat)) {
+      if (clickedPathAgain(store.selPathFC, action.selPathId)) {
         return {
           ...store,
           selPathFC: turf.asFeatureCollection([])
         }
-      } else return {
-        ...store,
-        selPathFC: turf.asFeatureCollection([action.selPathFeat])
+      } else {
+        const sPath = store.qPathFC.features.filter(feat => feat.properties.id === action.selPathId)
+        return {
+          ...store,
+          selPathFC: turf.asFeatureCollection(sPath)
+        }
       }
     }
 
@@ -86,16 +89,16 @@ export const getQuietPaths = (originCoords, targetCoords) => {
   }
 }
 
-export const setSelectedPath = (selPathFeat) => {
-  console.log('selected pathFeature:', selPathFeat)
-  return { type: 'SET_SELECTED_PATH', selPathFeat }
+export const setSelectedPath = (selPathId) => {
+  console.log('selected pathFeature:', selPathId)
+  return { type: 'SET_SELECTED_PATH', selPathId }
 }
 
 export const unsetSelectedPath = () => {
   return { type: 'UNSET_SELECTED_PATH' }
 }
 
-const clickedPathAgain = (storeSelPathFC, clickedPath) => {
-  return storeSelPathFC.features[0] && clickedPath.properties.id === storeSelPathFC.features[0].properties.id
+const clickedPathAgain = (storeSelPathFC, clickedPathId) => {
+  return storeSelPathFC.features[0] && clickedPathId === storeSelPathFC.features[0].properties.id
 }
 export default pathsReducer

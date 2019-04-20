@@ -124,7 +124,7 @@ const QuietPathStats = ({ q_paths, setSelectedPath, selPathId }) => {
   return (
     <div>
       {q_paths.map(path => (
-        <StyledPathStats green selected={path.properties.id === selPathId} key={path.properties.length} onClick={() => setSelectedPath(path)}>
+        <StyledPathStats green selected={path.properties.id === selPathId} key={path.properties.length} onClick={() => setSelectedPath(path.properties.id)}>
           <PathInfoFlex>
             <PathName>{utils.getKmFromM(path.properties.length)} km </PathName>
             <LenDiff>{utils.formatDiffM(path.properties.diff_len, true)} m{' '}</LenDiff>
