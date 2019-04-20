@@ -81,7 +81,6 @@ export const getQuietPaths = (originCoords, targetCoords) => {
       dispatch(showNotification("Couldn't get path", 'error', 4))
       return
     }
-    console.log('pathFC', pathFeats)
     const sPath = pathFeats.filter(feat => feat.properties.type === 'short')
     const qPaths = pathFeats.filter(feat => feat.properties.type === 'quiet' && feat.properties.diff_len !== 0)
     dispatch({ type: 'SET_SHORTEST_PATH', sPath })

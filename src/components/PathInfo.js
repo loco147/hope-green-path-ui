@@ -9,13 +9,16 @@ const OuterFlex = styled.div`
   flex-direction: column;
   margin: 4px;
   align-items: center;
-  max-height: 255px;
+  max-height: calc(100vh - 42px);
   overflow: auto;
   pointer-events: auto;
   width: max-content;
   background: rgba(0,0,0,0.1);
-  padding: 5px;
+  padding: 5px 5px 2px 5px;
   border-radius: 8px;
+  @media (max-width: 710px) {
+    max-height: 255px; 
+  }
 `
 const StyledPathStats = styled.div`
   display: flex;
@@ -28,12 +31,21 @@ const StyledPathStats = styled.div`
   width: fit-content;
   cursor: default;
   transition-duration: 0.15s;
-  ${props => props.green && css`
+  ${props => props.quiet && css`
     margin: 3px 0px;
     background-color: #0e2702c2;
-    `}
+    &:hover { 
+      background-color: #2d2a00c2;
+      cursor: pointer;
+    }
+  `}
   ${props => props.selected === true && css`
     border: 2px solid yellow;
+    background-color: #2d2a00c2;
+    &:hover { 
+      background-color: #0e2702c2;
+      cursor: pointer;
+    }
   `}
 `
 const PathName = styled.div`
@@ -80,6 +92,7 @@ const FlexCols = styled.div`
   flex-direction: column;
   justify-content: space-evenly;
   width: 111px;
+  min-width: fit-content;
 `
 const DbLenFlex = styled.div`
   display: flex;
@@ -124,7 +137,7 @@ const QuietPathStats = ({ q_paths, setSelectedPath, selPathId }) => {
   return (
     <div>
       {q_paths.map(path => (
-        <StyledPathStats green selected={path.properties.id === selPathId} key={path.properties.length} onClick={() => setSelectedPath(path.properties.id)}>
+        <StyledPathStats quiet selected={path.properties.id === selPathId} key={path.properties.length} onClick={() => setSelectedPath(path.properties.id)}>
           <PathInfoFlex>
             <PathName>{utils.getKmFromM(path.properties.length)} km </PathName>
             <LenDiff>{utils.formatDiffM(path.properties.diff_len, true)} m{' '}</LenDiff>

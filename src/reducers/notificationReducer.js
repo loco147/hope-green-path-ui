@@ -12,7 +12,7 @@ const notificationReducer = (store = initialNotification, action) => {
             return { text: action.text, look: action.look }
 
         case 'ROUTING_STARTED':
-            return { text: 'Loading routes...' }
+            return { text: 'Calculating routes...' }
 
         case 'SET_SHORTEST_PATH':
         case 'RMNOTIF':

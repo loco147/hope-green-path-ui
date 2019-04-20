@@ -22,7 +22,7 @@ class Menu extends Component {
     return (
       <OuterFlex>
         <Notification />
-        <Button onClick={() => this.props.getQuietPaths(originCoords, targetCoords)}> Get route</Button>
+        <Button onClick={() => this.props.getQuietPaths(originCoords, targetCoords)}> Get routes</Button>
       </OuterFlex>
     )
   }
