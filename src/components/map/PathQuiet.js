@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { setSelectedPath } from './../../reducers/pathsReducer'
 
 class PathQuiet extends React.Component {
     layerId = 'quietPaths'
@@ -15,7 +16,7 @@ class PathQuiet extends React.Component {
     }
 
     componentDidMount() {
-        const { map, qPathFC } = this.props
+        const { map, qPathFC, setSelectedPath } = this.props
         map.once('load', () => {
             // Add layer
             map.addSource(this.layerId, { type: 'geojson', data: qPathFC })
@@ -26,6 +27,12 @@ class PathQuiet extends React.Component {
                 type: 'line',
                 paint: this.paint,
                 layout: this.layout,
+            })
+            map.on('mouseenter', this.layerId, () => { map.getCanvas().style.cursor = 'pointer' })
+            map.on('mouseleave', this.layerId, () => { map.getCanvas().style.cursor = '' })
+            map.on('click', this.layerId, (e) => {
+                const clickedFeat = e.features[0]
+                setSelectedPath(clickedFeat.properties.id)
             })
         })
     }
@@ -51,6 +58,6 @@ const mapStateToProps = (state) => ({
     qPathFC: state.paths.qPathFC,
 })
 
-const ConnectedPathQuiet = connect(mapStateToProps, null)(PathQuiet)
+const ConnectedPathQuiet = connect(mapStateToProps, { setSelectedPath })(PathQuiet)
 
 export default ConnectedPathQuiet
