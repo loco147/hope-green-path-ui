@@ -27,7 +27,7 @@ class Map extends React.Component {
 
     this.map = new MapboxGL.Map({
       container: this.mapContainer,
-      style: BASEMAPS.Light.url,
+      style: BASEMAPS.QuietPathLight.url,
       center: initialMapCenter,
       zoom: 13,
       boxZoom: false,

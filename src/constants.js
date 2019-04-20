@@ -10,6 +10,9 @@ export const BASEMAPS = {
   },
   JustBlack: {
     url: 'mapbox://styles/joose/cjrotaibq2ctx2sldk6txgq9u'
+  },
+  QuietPathLight: {
+    url: 'mapbox://styles/joose/cjup4uo4i0omw1fr2z1j5onm3'
   }
 }
 
