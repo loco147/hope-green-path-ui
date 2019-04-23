@@ -15,6 +15,10 @@ $ npm start
 Update your Mapbox access token to `src/components/map/Map.js`<br>
 Open browser to http://localhost:3000/
 
+## Data
+* [Traffic noise zones in Helsinki 2017](https://hri.fi/data/en_GB/dataset/helsingin-kaupungin-meluselvitys-2017)
+* [OpenStreetMap](https://www.openstreetmap.org/about/)
+
 ## UI
 ![UIexample1](/images/quiet-path-UI-1.png)
 ![UIexample2](/images/quiet-path-UI-2.png)
