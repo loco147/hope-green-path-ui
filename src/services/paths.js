@@ -1,6 +1,10 @@
 import axios from 'axios'
 
-const baseurl = 'http://localhost:5000/'
+let baseurl = process.env.REACT_APP_QP_URL
+
+if (process.env.NODE_ENV !== 'production') {
+    baseurl = 'http://localhost:5000/'
+}
 
 export const getShortestPath = async (originCoords, targetCoords) => {
     const fromC = originCoords.map(coord => String(coord))
@@ -11,6 +15,7 @@ export const getShortestPath = async (originCoords, targetCoords) => {
 }
 
 export const getQuietPaths = async (originCoords, targetCoords) => {
+    console.log('baseurl', baseurl)
     const fromC = originCoords.map(coord => String(coord))
     const toC = targetCoords.map(coord => String(coord))
     const coordString = fromC[1].concat(',',fromC[0],'/',toC[1],',',toC[0])
