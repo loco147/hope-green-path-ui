@@ -18,11 +18,15 @@ class Menu extends Component {
     const { originTargetFC } = this.props
     const originCoords = utils.getOriginCoordsFromFC(originTargetFC)
     const targetCoords = utils.getTargetCoordsFromFC(originTargetFC)
+    const originOrTargetMissing = originCoords === null || targetCoords === null
 
     return (
       <OuterFlex>
         <Notification />
-        <Button onClick={() => this.props.getQuietPaths(originCoords, targetCoords)}> Get routes</Button>
+        {originOrTargetMissing
+          ? null
+          : <Button onClick={() => this.props.getQuietPaths(originCoords, targetCoords)}> Get routes</Button>
+        }
       </OuterFlex>
     )
   }

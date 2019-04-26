@@ -1,12 +1,14 @@
 
 export const getOriginCoordsFromFC = (FC) => {
   const origin = FC.features.filter(feat => feat.properties.type === 'origin')
+  if (origin.length === 0) return null
   const coords = origin[0].geometry.coordinates
   return coords.map(coord => Math.round(coord * 100000) / 100000)
 }
 
 export const getTargetCoordsFromFC = (FC) => {
   const target = FC.features.filter(feat => feat.properties.type === 'target')
+  if (target.length === 0) return null
   const coords = target[0].geometry.coordinates
   return coords.map(coord => Math.round(coord * 100000) / 100000)
 }

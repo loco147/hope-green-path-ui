@@ -14,6 +14,13 @@ const notificationReducer = (store = initialNotification, action) => {
         case 'ROUTING_STARTED':
             return { text: 'Calculating routes...' }
 
+        case 'WAIT_FOR_USER_LOC_ORIGIN':
+            return { text: 'Locating...' }
+
+        case 'UPDATE_USER_LOCATION': {
+            if (store.text === 'Locating...') return initialNotification
+            return store
+        }
         case 'SET_SHORTEST_PATH':
         case 'RMNOTIF':
             return initialNotification

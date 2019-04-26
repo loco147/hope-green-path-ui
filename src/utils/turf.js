@@ -31,3 +31,14 @@ export const combineFCs = (fc1, fc2) => {
 export const getFirstPointCoords = (FC) => {
   return FC.features[0].geometry.coordinates
 }
+
+export const toLngLat = (coords) => {
+  return { lng: coords[0], lat: coords[1] }
+}
+
+export const getLngLatFromFC = (FC) => {
+  const feat = FC.features[0]
+  if (feat) {
+    return toLngLat(feat.geometry.coordinates)
+  } else return null
+}
