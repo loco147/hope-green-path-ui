@@ -76,8 +76,8 @@ const StyledOption = styled.option`
   display: block;
   padding-left: 10px;
   box-sizing: border-box;
-
 `
+
 class DetourLimitInput extends Component {
   render() {
 
@@ -86,6 +86,8 @@ class DetourLimitInput extends Component {
         <StyledText> Set max detour distance: </StyledText>
         <SelectWrapper>
           <StyledSelect onChange={(e) => this.props.setDetourLimit(e.target.value)} defaultValue={400}>
+            <StyledOption value={50}>50 m</StyledOption>
+            <StyledOption value={100}>100 m</StyledOption>
             <StyledOption value={200}>200 m</StyledOption>
             <StyledOption value={400}>400 m</StyledOption>
             <StyledOption value={600}>600 m</StyledOption>

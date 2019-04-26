@@ -29,6 +29,7 @@ export const Button = styled.div.attrs(props => ({
     background-color: #17af40e8;
     color: white;
     font-size: 18px;
+    border: 1px solid white;
     &:hover { 
       background-color: #128a32e8;
     }

@@ -11,6 +11,7 @@ const ControlBox = styled.div`
   padding: 3px 5px 5px 5px;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.15), 0 6px 20px 0 rgba(0,0,0,0.09);
 `
 const ButtonFlex = styled.div`
   display: flex;

@@ -28,6 +28,7 @@ code {
 .mapboxgl-popup-close-button {
   color: white;
   font-size: 20px;
+  padding: 0px 6px 0px 0px;
 }
 .mapboxgl-ctrl-top-left, .mapboxgl-ctrl-top-right, .mapboxgl-ctrl-bottom-left, .mapboxgl-ctrl-bottom-right {
   position: absolute;
