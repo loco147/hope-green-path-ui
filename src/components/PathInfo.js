@@ -8,27 +8,27 @@ const OuterFlex = styled.div`
   display: flex;
   flex-direction: column;
   margin: 4px;
-  align-items: center;
   max-height: calc(100vh - 42px);
   overflow: auto;
   pointer-events: auto;
-  width: max-content;
   background: rgba(0,0,0,0.1);
   padding: 5px 5px 2px 5px;
   border-radius: 8px;
+  width: fit-content;
   @media (max-width: 710px) {
-    max-height: 255px; 
+    max-height: 220px;
+    max-width: calc(100% - 17px);
   }
 `
 const StyledPathStats = styled.div`
   display: flex;
+  width: max-content;
   border-radius: 6px;
   margin: 0px 0px;
   background-color: rgba(0,0,0,0.67);
   border: 2px solid transparent;
   padding: 6px 5px;
   color: white;
-  width: fit-content;
   cursor: default;
   transition-duration: 0.15s;
   ${props => props.quiet && css`
@@ -52,13 +52,13 @@ const PathName = styled.div`
   margin: 0 1px 0 0px;
   font-size: 15px;
   padding: 1px 4px;
-  height: fit-content;
+  white-space: nowrap;
 `
 const LenDiff = styled.div`
   margin: 0 1px 0 0px;
   padding: 1px 4px;
   font-size: 12px;
-  height: fit-content;
+  white-space: nowrap;
 `
 const Db = styled.div`
   border-radius: 4px;
@@ -66,7 +66,6 @@ const Db = styled.div`
   padding: 2px 5px;
   font-size: 12px;
   margin: 2px 3px 2px 3px;
-  width: fit-content;
   background-color: #000000db;
 `
 const LenDiffBox = styled(Db)`
@@ -85,18 +84,17 @@ const PathInfoFlex = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  width: 72px;
+  width: 70px;
 `
 const FlexCols = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
   width: 111px;
-  min-width: fit-content;
 `
 const DbLenFlex = styled.div`
   display: flex;
   margin: 0px;
+  white-space: nowrap;
 `
 
 const DbLenPair = ({ dB, value, box }) => {
@@ -113,51 +111,23 @@ const ShortPathStats = ({ s_paths }) => {
   const sPath = s_paths[0]
   return (
     <StyledPathStats>
-      <PathInfoFlex>
-        <PathName>{utils.getKmFromM(sPath.properties.length)} km </PathName>
-        <LenDiff>Shortest</LenDiff>
-      </PathInfoFlex>
-      <FlexCols>
-        <DbLenPair box={false} dB={50} value={utils.formatDiffM(sPath.properties.noises[50], false)} m />
-        <DbLenPair box={false} dB={55} value={utils.formatDiffM(sPath.properties.noises[55], false)} m />
-      </FlexCols>
-      <FlexCols>
-        <DbLenPair box={false} dB={60} value={utils.formatDiffM(sPath.properties.noises[60], false)} m />
-        <DbLenPair box={false} dB={65} value={utils.formatDiffM(sPath.properties.noises[65], false)} m />
-      </FlexCols>
-      <FlexCols>
-        <DbLenPair box={false} dB={70} value={utils.formatDiffM(sPath.properties.noises[70], false)} m />
-        <DbLenPair box={false} dB={75} value={utils.formatDiffM(sPath.properties.noises[75], false)} m />
-      </FlexCols>
+        <PathInfoFlex>
+          <PathName>{utils.getKmFromM(sPath.properties.length)} km </PathName>
+          <LenDiff>Shortest</LenDiff>
+        </PathInfoFlex>
+        <FlexCols>
+          <DbLenPair box={false} dB={50} value={utils.formatDiffM(sPath.properties.noises[50], false)} m />
+          <DbLenPair box={false} dB={55} value={utils.formatDiffM(sPath.properties.noises[55], false)} m />
+        </FlexCols>
+        <FlexCols>
+          <DbLenPair box={false} dB={60} value={utils.formatDiffM(sPath.properties.noises[60], false)} m />
+          <DbLenPair box={false} dB={65} value={utils.formatDiffM(sPath.properties.noises[65], false)} m />
+        </FlexCols>
+        <FlexCols>
+          <DbLenPair box={false} dB={70} value={utils.formatDiffM(sPath.properties.noises[70], false)} m />
+          <DbLenPair box={false} dB={75} value={utils.formatDiffM(sPath.properties.noises[75], false)} m />
+        </FlexCols>
     </StyledPathStats>
-  )
-}
-
-const QuietPathStats = ({ q_paths, setSelectedPath, selPathId }) => {
-  return (
-    <div>
-      {q_paths.map(path => (
-        <StyledPathStats quiet selected={path.properties.id === selPathId} key={path.properties.length} onClick={() => setSelectedPath(path.properties.id)}>
-          <PathInfoFlex>
-            <PathName>{utils.getKmFromM(path.properties.length)} km </PathName>
-            <LenDiff>{utils.formatDiffM(path.properties.diff_len, true)} m{' '}</LenDiff>
-          </PathInfoFlex>
-          <FlexCols>
-            <DbLenPair dB={50} value={utils.formatDiffM(path.properties.noises_diff[50], true)} m />
-            <DbLenPair dB={55} value={utils.formatDiffM(path.properties.noises_diff[55], true)} m />
-          </FlexCols>
-          <FlexCols>
-            <DbLenPair dB={60} value={utils.formatDiffM(path.properties.noises_diff[60], true)} m />
-            <DbLenPair dB={65} value={utils.formatDiffM(path.properties.noises_diff[65], true)} m />
-          </FlexCols>
-          <FlexCols>
-            <DbLenPair dB={70} value={utils.formatDiffM(path.properties.noises_diff[70], true)} m />
-            <DbLenPair dB={75} value={utils.formatDiffM(path.properties.noises_diff[75], true)} m />
-          </FlexCols>
-        </StyledPathStats>
-      )
-      )}
-    </div>
   )
 }
 
@@ -174,7 +144,27 @@ class PathInfo extends Component {
     return (
       <OuterFlex>
         <ShortPathStats selPathId={selPathId} s_paths={sPathFC.features} setSelectedPath={setSelectedPath} />
-        <QuietPathStats selPathId={selPathId} q_paths={qPathFC.features} setSelectedPath={setSelectedPath} />
+        {qPathFC.features.map(path => (
+          <StyledPathStats quiet selected={path.properties.id === selPathId} key={path.properties.length} onClick={() => setSelectedPath(path.properties.id)}>
+            <PathInfoFlex>
+              <PathName>{utils.getKmFromM(path.properties.length)} km </PathName>
+              <LenDiff>{utils.formatDiffM(path.properties.diff_len, true)} m{' '}</LenDiff>
+            </PathInfoFlex>
+            <FlexCols>
+              <DbLenPair dB={50} value={utils.formatDiffM(path.properties.noises_diff[50], true)} />
+              <DbLenPair dB={55} value={utils.formatDiffM(path.properties.noises_diff[55], true)} />
+            </FlexCols>
+            <FlexCols>
+              <DbLenPair dB={60} value={utils.formatDiffM(path.properties.noises_diff[60], true)} />
+              <DbLenPair dB={65} value={utils.formatDiffM(path.properties.noises_diff[65], true)} />
+            </FlexCols>
+            <FlexCols>
+              <DbLenPair dB={70} value={utils.formatDiffM(path.properties.noises_diff[70], true)} />
+              <DbLenPair dB={75} value={utils.formatDiffM(path.properties.noises_diff[75], true)} />
+            </FlexCols>
+          </StyledPathStats>
+        )
+        )}
       </OuterFlex>
     )
   }
