@@ -11,6 +11,10 @@ const SelectFlex = styled.div`
   display: flex;
   padding: 5px 0px 5px 10px;
   width: 355px;
+  @media (max-width: 410px) {
+    padding: 5px 0px 5px 0px;
+    justify-content: left;
+  }
 `
 const StyledText = styled.span`
   font-size: 22px;
@@ -18,6 +22,9 @@ const StyledText = styled.span`
   color: black;
   border-radius: 8px;
   padding: 5px 13px;
+  @media (max-width: 410px) {
+    font-size: 20px;
+  }
 `
 const SelectWrapper = styled.div`
   align-items: center;
@@ -59,6 +66,9 @@ const StyledSelect = styled.select`
   }
   &:hover { 
     background-color: #128a32e8 !important;
+  }
+  @media (max-width: 410px) {
+    font-size: 17px;
   }
 `
 const StyledOption = styled.option`
