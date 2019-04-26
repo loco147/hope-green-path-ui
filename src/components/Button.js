@@ -32,8 +32,17 @@ export const Button = styled.div.attrs(props => ({
     &:hover { 
       background-color: #128a32e8;
     }
-`}
+  `}
+  ${props => props.small && css`
+    background-color: #17af40e8;
+    color: white;
+    font-size: 24px;
+    &:hover { 
+      background-color: #128a32e8;
+    }
+  `}
 `
+
 Button.propTypes = {
   visible: bool
 }

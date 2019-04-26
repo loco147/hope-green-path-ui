@@ -20,7 +20,7 @@ class Controls extends Component {
       <OuterFlex>
         {useUserLocOrigin
           ? null
-          : <Button onClick={() => this.props.useUserLocationOrigin(userLocFC)}> Use current location</Button>
+          : <Button small onClick={() => this.props.useUserLocationOrigin(userLocFC)}> Use current location</Button>
         }
       </OuterFlex>
     )
