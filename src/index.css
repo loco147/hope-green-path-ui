@@ -29,3 +29,8 @@ code {
   color: white;
   font-size: 20px;
 }
+.mapboxgl-ctrl-top-left, .mapboxgl-ctrl-top-right, .mapboxgl-ctrl-bottom-left, .mapboxgl-ctrl-bottom-right {
+  position: absolute;
+  pointer-events: none;
+  z-index: 8;
+}

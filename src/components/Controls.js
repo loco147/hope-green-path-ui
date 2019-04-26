@@ -2,12 +2,19 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { Button } from './Button'
+import DetourLimitInput from './DetourLimitInput'
 import { useUserLocationOrigin } from './../reducers/originTargetReducer'
 
-const OuterFlex = styled.div`
+const ControlBox = styled.div`
+  margin: 0px;
+  background-color: rgba(255,255,255,0.8);
+  padding: 3px 5px 5px 5px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+`
+const ButtonFlex = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 0 10px 0 10px;
   align-items: center;
 `
 
@@ -17,12 +24,15 @@ class Controls extends Component {
     const { useUserLocOrigin } = this.props.originTarget
 
     return (
-      <OuterFlex>
-        {useUserLocOrigin
-          ? null
-          : <Button small onClick={() => this.props.useUserLocationOrigin(userLocFC)}> Use current location</Button>
-        }
-      </OuterFlex>
+      <ControlBox>
+        <DetourLimitInput />
+        <ButtonFlex>
+          {useUserLocOrigin
+            ? null
+            : <Button small onClick={() => this.props.useUserLocationOrigin(userLocFC)}> Use current location</Button>
+          }
+        </ButtonFlex>
+      </ControlBox>
     )
   }
 }

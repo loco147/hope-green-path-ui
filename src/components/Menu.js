@@ -25,7 +25,7 @@ class Menu extends Component {
         <Notification />
         {originOrTargetMissing
           ? null
-          : <Button onClick={() => this.props.getQuietPaths(originCoords, targetCoords)}> Get routes</Button>
+          : <Button shadow onClick={() => this.props.getQuietPaths(originCoords, targetCoords)}> Get routes</Button>
         }
       </OuterFlex>
     )

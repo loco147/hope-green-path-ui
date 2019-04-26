@@ -8,7 +8,7 @@ export const Button = styled.div.attrs(props => ({
   cursor: pointer;
   padding: 6px 13px;
   color: white;
-  border: 1px solid;
+  // border: 1px solid;
   border-radius: 8px;
   background-color: #17af40e8;
   margin: 5px 6px;
@@ -40,6 +40,9 @@ export const Button = styled.div.attrs(props => ({
     &:hover { 
       background-color: #128a32e8;
     }
+  `}
+  ${props => props.shadow && css`
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.22), 0 6px 20px 0 rgba(0,0,0,0.14);
   `}
 `
 

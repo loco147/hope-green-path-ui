@@ -134,7 +134,7 @@ const ShortPathStats = ({ s_paths }) => {
 
 class PathInfo extends Component {
   render() {
-    const { sPathFC, qPathFC, selPathFC, setSelectedPath } = this.props
+    const { sPathFC, qPathFC, selPathFC, setSelectedPath, detourLimit } = this.props
     if (sPathFC.features.length === 0) { return null }
 
     let selPathId = 'none'
@@ -142,10 +142,12 @@ class PathInfo extends Component {
       selPathId = selPathFC.features[0].properties.id
     }
 
+    const qPaths = qPathFC.features.filter(path => path.properties.diff_len < detourLimit)
+
     return (
       <OuterFlex>
         <ShortPathStats selPathId={selPathId} s_paths={sPathFC.features} setSelectedPath={setSelectedPath} />
-        {qPathFC.features.map(path => (
+        {qPaths.map(path => (
           <StyledPathStats quiet selected={path.properties.id === selPathId} key={path.properties.length} onClick={() => setSelectedPath(path.properties.id)}>
             <PathInfoFlex>
               <PathName>{utils.getKmFromM(path.properties.length)} km </PathName>
@@ -175,6 +177,7 @@ const mapStateToProps = (state) => ({
   sPathFC: state.paths.sPathFC,
   qPathFC: state.paths.qPathFC,
   selPathFC: state.paths.selPathFC,
+  detourLimit: state.paths.detourLimit,
 })
 
 const ConnectedPathInfo = connect(mapStateToProps, { setSelectedPath })(PathInfo)

@@ -16,7 +16,7 @@ const AbsoluteContainer = styled.div`
   z-index: 2;
 `
 const TopPanel = styled(AbsoluteContainer)`
-  top: 10px;
+  top: 0px;
   left: 0px;
   right: 0px;
 `
