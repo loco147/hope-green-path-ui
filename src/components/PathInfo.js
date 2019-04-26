@@ -5,8 +5,6 @@ import { utils } from './../utils/index'
 import { setSelectedPath } from './../reducers/pathsReducer'
 
 const OuterFlex = styled.div`
-  display: flex;
-  flex-direction: column;
   margin: 4px;
   max-height: calc(100vh - 42px);
   overflow: auto;
@@ -23,6 +21,7 @@ const OuterFlex = styled.div`
 const StyledPathStats = styled.div`
   display: flex;
   width: max-content;
+  height: 46px;
   border-radius: 6px;
   margin: 0px 0px;
   background-color: rgba(0,0,0,0.67);
@@ -85,11 +84,13 @@ const PathInfoFlex = styled.div`
   flex-direction: column;
   justify-content: space-evenly;
   width: 70px;
+  height: 46px;
 `
 const FlexCols = styled.div`
   display: flex;
   flex-direction: column;
   width: 111px;
+  height: 46px;
 `
 const DbLenFlex = styled.div`
   display: flex;
