@@ -89,7 +89,7 @@ export const getQuietPaths = (originCoords, targetCoords) => {
       return
     }
     const sPath = pathFeats.filter(feat => feat.properties.type === 'short')
-    const qPaths = pathFeats.filter(feat => feat.properties.type === 'quiet' && feat.properties.diff_len !== 0)
+    const qPaths = pathFeats.filter(feat => feat.properties.type === 'quiet' && feat.properties.len_diff !== 0)
     dispatch({ type: 'SET_SHORTEST_PATH', sPath })
     dispatch({ type: 'SET_QUIET_PATH', qPaths })
   }

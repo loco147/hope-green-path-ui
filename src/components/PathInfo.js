@@ -169,7 +169,7 @@ class PathInfo extends Component {
       selPathId = selPathFC.features[0].properties.id
     }
 
-    const qPaths = qPathFC.features.filter(path => path.properties.diff_len < detourLimit)
+    const qPaths = qPathFC.features.filter(path => path.properties.len_diff < detourLimit)
 
     return (
       <div>
@@ -180,7 +180,7 @@ class PathInfo extends Component {
               <StyledPathStats quiet selected={path.properties.id === selPathId} key={path.properties.length} onClick={() => setSelectedPath(path.properties.id)}>
                 <PathInfoFlex>
                   <PathName>{utils.getKmFromM(path.properties.length)} km </PathName>
-                  <LenDiff>{utils.formatDiffM(path.properties.diff_len, true)} m{' '}</LenDiff>
+                  <LenDiff>{utils.formatDiffM(path.properties.len_diff, true)} m{' '}</LenDiff>
                 </PathInfoFlex>
                 <FlexCols>
                   <DbLenPair dB={50} value={utils.formatDiffM(path.properties.noises_diff[50], true)} />
