@@ -6,7 +6,6 @@ import { setDetourLimit } from './../reducers/pathsReducer'
 
 const SelectFlex = styled.div`
   align-items: center;
-  justify-content: space-around;
   border-radius: 7px; 
   display: flex;
   padding: 5px 0px 5px 10px;
@@ -17,7 +16,7 @@ const SelectFlex = styled.div`
   }
 `
 const StyledText = styled.span`
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 300;
   color: black;
   border-radius: 8px;

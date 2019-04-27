@@ -31,14 +31,16 @@ class PathSelected extends React.Component {
     }
 
     componentDidUpdate = () => {
-        const { map, selPathFC } = this.props
+        const { map, selPathFC, detourLimit } = this.props
 
         if (this.source !== undefined) {
             this.source.setData(selPathFC)
+            map.setFilter(this.layerId, ['<=', 'diff_len', detourLimit])
         } else {
             map.once('sourcedata', () => {
                 this.source.setData(selPathFC)
             })
+            map.setFilter(this.layerId, ['<=', 'diff_len', detourLimit])
         }
     }
 
@@ -49,6 +51,7 @@ class PathSelected extends React.Component {
 
 const mapStateToProps = (state) => ({
     selPathFC: state.paths.selPathFC,
+    detourLimit: state.paths.detourLimit,
 })
 
 const ConnectedPathSelected = connect(mapStateToProps, null)(PathSelected)

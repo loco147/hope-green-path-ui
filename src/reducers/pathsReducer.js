@@ -57,15 +57,13 @@ const pathsReducer = (store = initialPaths, action) => {
     case 'SET_TARGET':
     case 'WAIT_FOR_USER_LOC_ORIGIN':
     case 'SET_ORIGIN_TO_USER_LOC':
+    case 'RESET_PATHS':
       return {
         ...store,
         qPathFC: turf.asFeatureCollection([]),
         sPathFC: turf.asFeatureCollection([]),
         selPathFC: turf.asFeatureCollection([]),
       }
-
-    case 'RESET_PATHS':
-      return initialPaths
 
     default:
       return store
@@ -107,6 +105,10 @@ export const setDetourLimit = (detourLimit) => {
 
 export const unsetSelectedPath = () => {
   return { type: 'UNSET_SELECTED_PATH' }
+}
+
+export const resetPaths = () => {
+  return { type: 'RESET_PATHS' }
 }
 
 const clickedPathAgain = (storeSelPathFC, clickedPathId) => {

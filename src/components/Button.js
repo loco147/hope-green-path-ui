@@ -37,9 +37,15 @@ export const Button = styled.div.attrs(props => ({
   ${props => props.small && css`
     background-color: #17af40e8;
     color: white;
-    font-size: 24px;
+    font-size: 20px;
     &:hover { 
       background-color: #128a32e8;
+    }
+  `}
+  ${props => props.blue && css`
+    background-color: #1791afe8;
+    &:hover { 
+      background-color: #136c82e8;
     }
   `}
   ${props => props.shadow && css`
