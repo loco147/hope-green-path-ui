@@ -7,11 +7,13 @@ import { Button } from './Button'
 
 const BottomControlPanel = styled.div`
   background: rgba(255,255,255,0.85);
-  border-top-right-radius: 15px;
   height: 53px;
   width: 100%;
   margin-left: 0px;
   display: flex;
+  @media (min-width: 444px) {
+    border-top-right-radius: 15px;
+  }
 `
 const BottomControlFlex = styled.div`
   display: flex;
@@ -27,7 +29,7 @@ const PathPanel = styled.div`
   margin: 0px;
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;
-  max-height: calc(100vh - 116px);
+  max-height: calc(100vh - 121px);
   background: rgba(255,255,255,0.85);
   overflow: auto;
   pointer-events: auto;
@@ -40,7 +42,7 @@ const PathPanel = styled.div`
 const StyledPathStats = styled.div`
   display: flex;
   pointer-events: auto;
-  width: max-content;
+  min-width: 331px;
   height: 67px;
   border-radius: 6px;
   margin: 0px 0px;
@@ -79,7 +81,7 @@ const LenDiff = styled.div`
   font-size: 12px;
   white-space: nowrap;
 `
-const Db = styled.div`
+const Key = styled.div`
   border-radius: 4px;
   background-color: #c59300;
   padding: 2px 5px;
@@ -87,12 +89,12 @@ const Db = styled.div`
   margin: 2px 3px 2px 3px;
   background-color: #000000db;
 `
-const LenDiffBox = styled(Db)`
+const LenDiffBox = styled(Key)`
   background-color: transparent;
-  ${props => props.dB < 0 && css`
+  ${props => props.value < 0 && css`
     background-color: green;
   `}
-  ${props => props.dB > 0 && css`
+  ${props => props.value > 0 && css`
     background-color: transparent;
   `}
   ${props => props.blank === true && css`
@@ -108,21 +110,22 @@ const PathInfoFlex = styled.div`
 const FlexCols = styled.div`
   display: flex;
   flex-direction: column;
-  width: 90px;
+  padding: 0px 1px 0px 1px;
+  justify-content: space-evenly;
 `
-const DbLenFlex = styled.div`
+const KeyValueFlex = styled.div`
   display: flex;
   margin: 0px;
   white-space: nowrap;
 `
 
-const DbLenPair = ({ dB, value, box }) => {
+const KeyValuePair = ({ prop, value, box, unit }) => {
   const blank = value === 0 || box === false
   return (
-    <DbLenFlex>
-      <Db>{dB}</Db>
-      <LenDiffBox dB={value} blank={blank}>{value} m</LenDiffBox>
-    </DbLenFlex>
+    <KeyValueFlex>
+      <Key>{prop}</Key>
+      <LenDiffBox value={value} blank={blank}>{value} {unit}</LenDiffBox>
+    </KeyValueFlex>
   )
 }
 
@@ -135,14 +138,18 @@ const ShortPathStats = ({ s_paths }) => {
         <LenDiff>Shortest</LenDiff>
       </PathInfoFlex>
       <FlexCols>
-        <DbLenPair box={false} dB={50} value={utils.formatDiffM(sPath.properties.noises[50], false)} m />
-        <DbLenPair box={false} dB={55} value={utils.formatDiffM(sPath.properties.noises[55], false)} m />
-        <DbLenPair box={false} dB={60} value={utils.formatDiffM(sPath.properties.noises[60], false)} m />
+        <KeyValuePair prop={'E'} value={Math.round(sPath.properties.nei)} />
+        <KeyValuePair prop={'En'} value={sPath.properties.nei_norm} />
       </FlexCols>
       <FlexCols>
-        <DbLenPair box={false} dB={65} value={utils.formatDiffM(sPath.properties.noises[65], false)} m />
-        <DbLenPair box={false} dB={70} value={utils.formatDiffM(sPath.properties.noises[70], false)} m />
-        <DbLenPair box={false} dB={75} value={utils.formatDiffM(sPath.properties.noises[70], false)} m />
+        <KeyValuePair box={false} prop={50} value={utils.formatDiffM(sPath.properties.noises[50], false)} unit={'m'} />
+        <KeyValuePair box={false} prop={55} value={utils.formatDiffM(sPath.properties.noises[55], false)} unit={'m'} />
+        <KeyValuePair box={false} prop={60} value={utils.formatDiffM(sPath.properties.noises[60], false)} unit={'m'} />
+      </FlexCols>
+      <FlexCols>
+        <KeyValuePair box={false} prop={65} value={utils.formatDiffM(sPath.properties.noises[65], false)} unit={'m'} />
+        <KeyValuePair box={false} prop={70} value={utils.formatDiffM(sPath.properties.noises[70], false)} unit={'m'} />
+        <KeyValuePair box={false} prop={75} value={utils.formatDiffM(sPath.properties.noises[70], false)} unit={'m'} />
       </FlexCols>
     </StyledPathStats>
   )
@@ -181,16 +188,22 @@ class PathInfo extends Component {
                 <PathInfoFlex>
                   <PathName>{utils.getKmFromM(path.properties.length)} km </PathName>
                   <LenDiff>{utils.formatDiffM(path.properties.len_diff, true)} m{' '}</LenDiff>
+                  <LenDiff>S. {path.properties.path_score}</LenDiff>
                 </PathInfoFlex>
                 <FlexCols>
-                  <DbLenPair dB={50} value={utils.formatDiffM(path.properties.noises_diff[50], true)} />
-                  <DbLenPair dB={55} value={utils.formatDiffM(path.properties.noises_diff[55], true)} />
-                  <DbLenPair dB={60} value={utils.formatDiffM(path.properties.noises_diff[60], true)} />
+                  <KeyValuePair prop={'E'} value={Math.round(path.properties.nei)} />
+                  <KeyValuePair prop={'E'} value={Math.round(path.properties.nei_diff_rat)} unit={'%'} />
+                  <KeyValuePair prop={'En'} value={path.properties.nei_norm} />
                 </FlexCols>
                 <FlexCols>
-                  <DbLenPair dB={65} value={utils.formatDiffM(path.properties.noises_diff[65], true)} />
-                  <DbLenPair dB={70} value={utils.formatDiffM(path.properties.noises_diff[70], true)} />
-                  <DbLenPair dB={75} value={utils.formatDiffM(path.properties.noises_diff[75], true)} />
+                  <KeyValuePair prop={50} value={utils.formatDiffM(path.properties.noises_diff[50], true)} unit={'m'} />
+                  <KeyValuePair prop={55} value={utils.formatDiffM(path.properties.noises_diff[55], true)} unit={'m'} />
+                  <KeyValuePair prop={60} value={utils.formatDiffM(path.properties.noises_diff[60], true)} unit={'m'} />
+                </FlexCols>
+                <FlexCols>
+                  <KeyValuePair prop={65} value={utils.formatDiffM(path.properties.noises_diff[65], true)} unit={'m'} />
+                  <KeyValuePair prop={70} value={utils.formatDiffM(path.properties.noises_diff[70], true)} unit={'m'} />
+                  <KeyValuePair prop={75} value={utils.formatDiffM(path.properties.noises_diff[75], true)} unit={'m'} />
                 </FlexCols>
               </StyledPathStats>
             )
