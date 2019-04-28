@@ -33,10 +33,14 @@ const pathsReducer = (store = initialPaths, action) => {
           selPathFC: turf.asFeatureCollection([])
         }
       } else {
-        const sPath = store.qPathFC.features.filter(feat => feat.properties.id === action.selPathId)
+        let selPath = store.qPathFC.features.filter(feat => feat.properties.id === action.selPathId)
+        // select shortest path if no quiet path id match the selected id
+        if (selPath.length === 0) {
+          selPath = store.sPathFC.features
+        }
         return {
           ...store,
-          selPathFC: turf.asFeatureCollection(sPath)
+          selPathFC: turf.asFeatureCollection(selPath)
         }
       }
     }

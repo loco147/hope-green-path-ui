@@ -52,24 +52,20 @@ const StyledPathStats = styled.div`
   color: white;
   cursor: default;
   transition-duration: 0.15s;
-  ${props => props.quiet && css`
-    margin: 3px 0px;
-    background-color: #0e2702c2;
-    &:hover { 
-      cursor: pointer;
-      @media (min-width: 644px) {
-        background-color: #2d2a00c2;
-      }
+  &:hover { 
+    cursor: pointer;
+    @media (min-width: 644px) {
+      background-color: rgba(0,0,0,0.72);
     }
+  }
+  ${props => props.quiet && css`
+    background-color: #0e2702c2;
+    margin: 3px 0px;
   `}
   ${props => props.selected === true && css`
     border: 2px solid yellow;
-    background-color: #2d2a00c2;
-    &:hover { 
+    &:hover {
       cursor: pointer;
-      @media (min-width: 644px) {
-        background-color: #0e2702c2;
-      }
     }
   `}
 `
@@ -133,10 +129,10 @@ const KeyValuePair = ({ prop, value, box, unit }) => {
   )
 }
 
-const ShortPathStats = ({ s_paths }) => {
+const ShortPathStats = ({ s_paths, selPathId, setSelectedPath }) => {
   const sPath = s_paths[0]
   return (
-    <StyledPathStats>
+    <StyledPathStats selected={sPath.properties.id === selPathId} onClick={() => setSelectedPath(sPath.properties.id)} >
       <PathInfoFlex>
         <PathName>{utils.getKmFromM(sPath.properties.length)} km </PathName>
         <LenDiff>Shortest</LenDiff>
@@ -155,7 +151,7 @@ const ShortPathStats = ({ s_paths }) => {
         <KeyValuePair box={false} prop={70} value={utils.formatDiffM(sPath.properties.noises[70], false)} unit={'m'} />
         <KeyValuePair box={false} prop={75} value={utils.formatDiffM(sPath.properties.noises[75], false)} unit={'m'} />
       </FlexCols>
-    </StyledPathStats>
+    </StyledPathStats >
   )
 }
 
