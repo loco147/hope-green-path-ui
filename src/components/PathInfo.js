@@ -4,7 +4,21 @@ import { connect } from 'react-redux'
 import { utils } from './../utils/index'
 import { setSelectedPath, resetPaths } from './../reducers/pathsReducer'
 import { Button } from './Button'
+import { FaStar } from 'react-icons/fa'
 
+const IconDiv = styled.div`
+  margin: 2px 5px 2px 4px;
+  display: table;
+  color: #fffd00;
+  transition-duration: 0.2s;
+  -webkit-transition-duration: 0.2s; /* Safari */
+`
+const Star = styled(FaStar)`
+  font-size: 13px;
+  vertical-align: middle;
+  display: table-cell;
+  text-align: center;
+`
 const BottomControlPanel = styled.div`
   background: rgba(255,255,255,0.85);
   height: 53px;
@@ -76,10 +90,15 @@ const PathName = styled.div`
   white-space: nowrap;
 `
 const LenDiff = styled.div`
-  margin: 0 1px 0 0px;
+  margin: 0 1px 0 3px;
   padding: 1px 4px;
   font-size: 12px;
   white-space: nowrap;
+  display: flex;
+  align-items: center;
+  ${props => props.bold && css`
+    font-weight: 450;
+`}
 `
 const Key = styled.div`
   border-radius: 4px;
@@ -188,7 +207,7 @@ class PathInfo extends Component {
                 <PathInfoFlex>
                   <PathName>{utils.getKmFromM(path.properties.length)} km </PathName>
                   <LenDiff>{utils.formatDiffM(path.properties.len_diff, true)} m{' '}</LenDiff>
-                  <LenDiff>S. {path.properties.path_score}</LenDiff>
+                  <LenDiff bold>{path.properties.path_score}<IconDiv><Star/></IconDiv></LenDiff>
                 </PathInfoFlex>
                 <FlexCols>
                   <KeyValuePair prop={'En'} value={path.properties.nei_norm} />
