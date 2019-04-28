@@ -153,7 +153,7 @@ const ShortPathStats = ({ s_paths }) => {
       <FlexCols>
         <KeyValuePair box={false} prop={65} value={utils.formatDiffM(sPath.properties.noises[65], false)} unit={'m'} />
         <KeyValuePair box={false} prop={70} value={utils.formatDiffM(sPath.properties.noises[70], false)} unit={'m'} />
-        <KeyValuePair box={false} prop={75} value={utils.formatDiffM(sPath.properties.noises[70], false)} unit={'m'} />
+        <KeyValuePair box={false} prop={75} value={utils.formatDiffM(sPath.properties.noises[75], false)} unit={'m'} />
       </FlexCols>
     </StyledPathStats>
   )
