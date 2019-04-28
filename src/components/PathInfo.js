@@ -56,16 +56,20 @@ const StyledPathStats = styled.div`
     margin: 3px 0px;
     background-color: #0e2702c2;
     &:hover { 
-      background-color: #2d2a00c2;
       cursor: pointer;
+      @media (min-width: 644px) {
+        background-color: #2d2a00c2;
+      }
     }
   `}
   ${props => props.selected === true && css`
     border: 2px solid yellow;
     background-color: #2d2a00c2;
     &:hover { 
-      background-color: #0e2702c2;
       cursor: pointer;
+      @media (min-width: 644px) {
+        background-color: #0e2702c2;
+      }
     }
   `}
 `
@@ -138,8 +142,8 @@ const ShortPathStats = ({ s_paths }) => {
         <LenDiff>Shortest</LenDiff>
       </PathInfoFlex>
       <FlexCols>
-        <KeyValuePair prop={'E'} value={Math.round(sPath.properties.nei)} />
         <KeyValuePair prop={'En'} value={sPath.properties.nei_norm} />
+        <KeyValuePair prop={'Ec'} value={Math.round(sPath.properties.nei)} />
       </FlexCols>
       <FlexCols>
         <KeyValuePair box={false} prop={50} value={utils.formatDiffM(sPath.properties.noises[50], false)} unit={'m'} />
@@ -191,9 +195,9 @@ class PathInfo extends Component {
                   <LenDiff>S. {path.properties.path_score}</LenDiff>
                 </PathInfoFlex>
                 <FlexCols>
-                  <KeyValuePair prop={'E'} value={Math.round(path.properties.nei)} />
-                  <KeyValuePair prop={'E'} value={Math.round(path.properties.nei_diff_rat)} unit={'%'} />
                   <KeyValuePair prop={'En'} value={path.properties.nei_norm} />
+                  <KeyValuePair prop={'Ec'} value={Math.round(path.properties.nei)} />
+                  <KeyValuePair prop={'Ed'} value={Math.round(path.properties.nei_diff_rat)} unit={'%'} />
                 </FlexCols>
                 <FlexCols>
                   <KeyValuePair prop={50} value={utils.formatDiffM(path.properties.noises_diff[50], true)} unit={'m'} />
