@@ -91,8 +91,9 @@ const Key = styled.div`
 `
 const ValueBox = styled(Key)`
   margin: 0px 3px 2px 3px;
-  background-color: #f5f5f5;
+  background-color: #efefef;
   color: black;
+  padding: 4px 7px;
 `
 const KeyValueFlex = styled.div`
   display: flex;
@@ -135,7 +136,7 @@ const Guide = (props) => {
               <ValueBox>
                 This index describes the goodness of the quiet path. The higher the better.
                 It tells how much exposure to traffic noise is avoided per every extra meter walked.
-                Values lower than 1 suggest that the path is not very useful in avoiding exposure to traffic noise compared to the shortest path.
+                Values lower than 1.0 suggest that the path is not very useful in avoiding exposure to traffic noise compared to the shortest path.
               </ValueBox>
               </KeyValueFlex>
             </P>
@@ -144,13 +145,13 @@ const Guide = (props) => {
                 href='https://hri.fi/data/en_GB/dataset/helsingin-kaupungin-meluselvitys-2017'
                 target='_blank' rel='noopener noreferrer'>Traffic noise data</a>{' '} is based on assessment made by the municipality of Helsinki.
             It is modelled data that represents the typical daytime traffic noise levels. Thus, the quiet paths are most applicable at times when
-            the traffic flows are average.
+            the traffic flows are near average.
             </P>
             <P>
               Code: <br></br>
-              <a href='https://github.com/hellej/gradu-pocs' target='_blank' rel='noopener noreferrer'>github.com/hellej/HelPop</a>{' '}
-              <br></br>
               <a href='https://github.com/hellej/quiet-path-ui' target='_blank' rel='noopener noreferrer'>github.com/hellej/quiet-path-ui</a>{' '}
+              <br></br>
+              <a href='https://github.com/hellej/gradu-pocs' target='_blank' rel='noopener noreferrer'>github.com/hellej/gradu-pocs</a>{' '}
             </P>
           </Instructions>
           <ButtonDiv>

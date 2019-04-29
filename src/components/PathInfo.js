@@ -13,6 +13,7 @@ const BottomControlPanel = styled.div`
   margin-left: 0px;
   display: flex;
   box-shadow: 0 -4px 8px 0 rgba(0,0,0,0.07), 0 -6px 20px 0 rgba(0,0,0,0.04);
+  border: 1px solid #d0d0d0;
   @media (min-width: 444px) {
     border-top-right-radius: 15px;
   }

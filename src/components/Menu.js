@@ -23,7 +23,7 @@ class Menu extends Component {
     return (
       <OuterFlex>
         <Notification />
-        {originOrTargetMissing
+        {originOrTargetMissing || this.props.waitingPaths
           ? null
           : <Button shadow onClick={() => this.props.getQuietPaths(originCoords, targetCoords)}> Get routes</Button>
         }
@@ -35,6 +35,7 @@ class Menu extends Component {
 const mapStateToProps = (state) => ({
   userLocation: state.userLocation,
   originTargetFC: state.originTarget.originTargetFC,
+  waitingPaths: state.paths.waitingPaths,
 })
 
 const ConnectedMenu = connect(mapStateToProps, { getShortestPath, getQuietPaths })(Menu)
