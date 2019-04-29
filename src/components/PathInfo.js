@@ -4,21 +4,8 @@ import { connect } from 'react-redux'
 import { utils } from './../utils/index'
 import { setSelectedPath, resetPaths } from './../reducers/pathsReducer'
 import { Button } from './Button'
-import { FaStar } from 'react-icons/fa'
+import { IconDiv, Star } from './Icons'
 
-const IconDiv = styled.div`
-  margin: 0 0 0 2px;
-  display: table;
-  color: #00ba0a;
-  transition-duration: 0.2s;
-  -webkit-transition-duration: 0.2s; /* Safari */
-`
-const Star = styled(FaStar)`
-  font-size: 13px;
-  vertical-align: middle;
-  display: table-cell;
-  text-align: center;
-`
 const BottomControlPanel = styled.div`
   background: rgba(255,255,255,0.95);
   height: 53px;
@@ -164,8 +151,8 @@ const ShortPathStats = ({ s_paths, selPathId, setSelectedPath }) => {
         <LenDiff>Shortest</LenDiff>
       </PathInfoFlex>
       <FlexCols>
+        <KeyValuePair prop={'Et'} value={Math.round(sPath.properties.nei)} />
         <KeyValuePair prop={'En'} value={sPath.properties.nei_norm} />
-        <KeyValuePair prop={'Ec'} value={Math.round(sPath.properties.nei)} />
       </FlexCols>
       <FlexCols>
         <KeyValuePair box={false} prop={50} value={utils.formatDiffM(sPath.properties.noises[50], false)} unit={'m'} />
@@ -217,9 +204,9 @@ class PathInfo extends Component {
                   <LenDiff bold>{path.properties.path_score}<IconDiv><Star/></IconDiv></LenDiff>
                 </PathInfoFlex>
                 <FlexCols>
-                  <KeyValuePair prop={'En'} value={path.properties.nei_norm} />
-                  <KeyValuePair prop={'Ec'} value={Math.round(path.properties.nei)} />
+                  <KeyValuePair prop={'Et'} value={Math.round(path.properties.nei)} />
                   <KeyValuePair prop={'Ed'} value={Math.round(path.properties.nei_diff_rat)} unit={'%'} />
+                  <KeyValuePair prop={'En'} value={path.properties.nei_norm} />
                 </FlexCols>
                 <FlexCols>
                   <KeyValuePair prop={50} value={utils.formatDiffM(path.properties.noises_diff[50], true)} unit={'m'} />

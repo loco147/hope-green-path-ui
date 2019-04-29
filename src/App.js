@@ -10,6 +10,9 @@ import PathShort from './components/map/PathShort'
 import PathQuiet from './components/map/PathQuiet'
 import PathSelected from './components/map/PathSelected'
 import OriginTargetPoints from './components/map/OriginTargetPoints'
+import ToggleGuideButton from './components/guide/ToggleGuideButton'
+import Guide from './components/guide/Guide'
+import DimLayer from './components/DimLayer'
 
 const AbsoluteContainer = styled.div`
   position: absolute;
@@ -39,6 +42,9 @@ class App extends Component {
           <PathQuiet />
           <OriginTargetPoints />
         </Map>
+        <DimLayer />
+        <ToggleGuideButton />
+        <Guide />
         <TopPanel>
           <Controls/>
         </TopPanel>
