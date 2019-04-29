@@ -33,7 +33,7 @@ class Controls extends Component {
   render() {
     const { userLocFC } = this.props.userLocation
     const { useUserLocOrigin } = this.props.originTarget
-    const showingPaths = this.props.sPathFC.features.length > 0
+    const showingPaths = this.props.sPathFC.features.length > 0 || this.props.waitingPaths
 
     return (
       <ControlBox>
@@ -53,6 +53,7 @@ const mapStateToProps = (state) => ({
   userLocation: state.userLocation,
   originTarget: state.originTarget,
   sPathFC: state.paths.sPathFC,
+  waitingPaths: state.paths.waitingPaths,
 })
 
 const ConnectedControls = connect(mapStateToProps, { useUserLocationOrigin })(Controls)

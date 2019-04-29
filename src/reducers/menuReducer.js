@@ -1,5 +1,5 @@
 const initialMenuState = {
-  guide: true,
+  guide: false,
 }
 
 const menuReducer = (store = initialMenuState, action) => {

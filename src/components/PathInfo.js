@@ -73,6 +73,9 @@ const StyledPathStats = styled.div`
       cursor: pointer;
     }
   `}
+  ${props => props.onlyShort === true && css`
+    margin: 0px 0px 9px 0px;
+  `}
 `
 const PathName = styled.div`
   margin: 0 1px 0 1px;
@@ -142,10 +145,11 @@ const KeyValuePair = ({ prop, value, box, unit }) => {
   )
 }
 
-const ShortPathStats = ({ s_paths, selPathId, setSelectedPath }) => {
-  const sPath = s_paths[0]
+const ShortPathStats = ({ sPaths, selPathId, setSelectedPath, qPaths }) => {
+  const sPath = sPaths[0]
+  const onlyShort = qPaths.length === 0
   return (
-    <StyledPathStats selected={sPath.properties.id === selPathId} onClick={() => setSelectedPath(sPath.properties.id)} >
+    <StyledPathStats onlyShort={onlyShort} selected={sPath.properties.id === selPathId} onClick={() => setSelectedPath(sPath.properties.id)} >
       <PathInfoFlex>
         <PathName>{utils.getKmFromM(sPath.properties.length)} km </PathName>
         <LenDiff>Shortest</LenDiff>
@@ -195,13 +199,13 @@ class PathInfo extends Component {
       <div>
         {this.state.pathStatsVisible
           ? <PathPanel>
-            <ShortPathStats selPathId={selPathId} s_paths={sPathFC.features} setSelectedPath={setSelectedPath} />
+            <ShortPathStats selPathId={selPathId} sPaths={sPathFC.features} setSelectedPath={setSelectedPath} qPaths={qPaths} />
             {qPaths.map(path => (
               <StyledPathStats quiet selected={path.properties.id === selPathId} key={path.properties.length} onClick={() => setSelectedPath(path.properties.id)}>
                 <PathInfoFlex>
                   <PathName>{utils.getKmFromM(path.properties.length)} km </PathName>
                   <LenDiff>{utils.formatDiffM(path.properties.len_diff, true)} m{' '}</LenDiff>
-                  <LenDiff bold>{path.properties.path_score}<IconDiv><Star/></IconDiv></LenDiff>
+                  <LenDiff bold>{path.properties.path_score}<IconDiv><Star /></IconDiv></LenDiff>
                 </PathInfoFlex>
                 <FlexCols>
                   <KeyValuePair prop={'Et'} value={Math.round(path.properties.nei)} />
