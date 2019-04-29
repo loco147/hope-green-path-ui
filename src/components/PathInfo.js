@@ -9,7 +9,7 @@ import { FaStar } from 'react-icons/fa'
 const IconDiv = styled.div`
   margin: 2px 5px 2px 4px;
   display: table;
-  color: #fffd00;
+  color: #00ba0a;
   transition-duration: 0.2s;
   -webkit-transition-duration: 0.2s; /* Safari */
 `
@@ -20,11 +20,12 @@ const Star = styled(FaStar)`
   text-align: center;
 `
 const BottomControlPanel = styled.div`
-  background: rgba(255,255,255,0.85);
+  background: rgba(255,255,255,0.95);
   height: 53px;
   width: 100%;
   margin-left: 0px;
   display: flex;
+  box-shadow: 0 -4px 8px 0 rgba(0,0,0,0.07), 0 -6px 20px 0 rgba(0,0,0,0.04);
   @media (min-width: 444px) {
     border-top-right-radius: 15px;
   }
@@ -44,12 +45,13 @@ const PathPanel = styled.div`
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;
   max-height: calc(100vh - 121px);
-  background: rgba(255,255,255,0.85);
+  background: rgba(255,255,255,0.95);
   overflow: auto;
   pointer-events: auto;
   width: fit-content;
   padding: 10px 10px 0px 10px;
-  @media (max-width: 444px) {
+  box-shadow: 0 -4px 8px 0 rgba(0,0,0,0.07), 0 -6px 20px 0 rgba(0,0,0,0.04);
+  @media (max-width: 544px) {
     max-height: 220px;
   }
 `
@@ -60,31 +62,33 @@ const StyledPathStats = styled.div`
   height: 67px;
   border-radius: 6px;
   margin: 0px 0px;
-  background-color: rgba(0,0,0,0.67);
+  background-color: #fffafc;
   border: 2px solid transparent;
-  padding: 6px 5px;
-  color: white;
+  padding: 3px 4px;
+  color: black;
   cursor: default;
   transition-duration: 0.15s;
+  box-shadow: 0 -1px 7px 0 rgba(0,0,0,0.3), 0 3px 3px 0 rgba(0,0,0,0.2);
   &:hover { 
     cursor: pointer;
     @media (min-width: 644px) {
-      background-color: rgba(0,0,0,0.72);
+      background-color: #ffffff;
     }
   }
   ${props => props.quiet && css`
-    background-color: #0e2702c2;
-    margin: 3px 0px;
+    background-color: #f9fff7;
+    margin: 9px 0px;
   `}
   ${props => props.selected === true && css`
-    border: 2px solid yellow;
+    border: 2px solid #ed7b00;
+    box-shadow: 0 -1px 7px 0 rgba(0, 0, 0, 0.15), 0 4px 7px 0 rgba(0, 0, 0, 0.25);
     &:hover {
       cursor: pointer;
     }
   `}
 `
 const PathName = styled.div`
-  margin: 0 1px 0 0px;
+  margin: 0 1px 0 1px;
   font-size: 15px;
   padding: 1px 4px;
   white-space: nowrap;
@@ -104,14 +108,17 @@ const Key = styled.div`
   border-radius: 4px;
   background-color: #c59300;
   padding: 2px 5px;
+  color: white;
   font-size: 12px;
   margin: 2px 3px 2px 3px;
   background-color: #000000db;
 `
-const LenDiffBox = styled(Key)`
+const ValueBox = styled(Key)`
   background-color: transparent;
+  color: black;
   ${props => props.value < 0 && css`
     background-color: green;
+    color: white;
   `}
   ${props => props.value > 0 && css`
     background-color: transparent;
@@ -143,7 +150,7 @@ const KeyValuePair = ({ prop, value, box, unit }) => {
   return (
     <KeyValueFlex>
       <Key>{prop}</Key>
-      <LenDiffBox value={value} blank={blank}>{value} {unit}</LenDiffBox>
+      <ValueBox value={value} blank={blank}>{value} {unit}</ValueBox>
     </KeyValueFlex>
   )
 }
