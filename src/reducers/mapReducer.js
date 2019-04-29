@@ -1,3 +1,5 @@
+import { turf } from '../utils/index'
+
 const initialMapState = {
   initialized: false,
   zoomToBbox: [],
@@ -12,6 +14,12 @@ const mapReducer = (store = initialMapState, action) => {
 
     case 'INITIALIZE_MAP':
       return { ...store, initialized: true }
+
+    case 'SET_QUIET_PATH':
+      return { ...store, zoomToBbox: turf.getBbox(turf.getBuffer(turf.asFeatureCollection(action.qPaths), 400)) }
+
+    case 'SET_ORIGIN_TO_USER_LOC':
+      return { ...store, zoomToBbox: turf.getBbox(turf.getBuffer(action.userLocFC, 800)) }
 
     case 'UPDATE_CAMERA':
       return { ...store, center: action.center, zoom: action.zoom }

@@ -65,7 +65,7 @@ export const useUserLocationOrigin = (userLocFC) => {
     const userLngLat = turf.getLngLatFromFC(userLocFC)
     dispatch(closePopup())
     if (userLngLat) {
-      dispatch({ type: 'SET_ORIGIN_TO_USER_LOC', userLngLat })
+      dispatch({ type: 'SET_ORIGIN_TO_USER_LOC', userLngLat, userLocFC })
     } else {
       dispatch({ type: 'WAIT_FOR_USER_LOC_ORIGIN' })
       dispatch(startTrackingUserLocation())

@@ -72,7 +72,7 @@ const StyledPathStats = styled.div`
   &:hover { 
     cursor: pointer;
     @media (min-width: 644px) {
-      background-color: #ffffff;
+      box-shadow: 0 -1px 7px 0 rgba(0, 0, 0, 0.15), 0 4px 7px 0 rgba(0, 0, 0, 0.25);
     }
   }
   ${props => props.quiet && css`

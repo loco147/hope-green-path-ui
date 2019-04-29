@@ -5,6 +5,7 @@ import Map from './components/map/Map'
 import Menu from './components/Menu'
 import Controls from './components/Controls'
 import PathInfo from './components/PathInfo'
+import MapControl from './components/map/MapControl'
 import PathShort from './components/map/PathShort'
 import PathQuiet from './components/map/PathQuiet'
 import PathSelected from './components/map/PathSelected'
@@ -32,6 +33,7 @@ class App extends Component {
     return (
       <div>
         <Map>
+          <MapControl />
           <PathSelected />
           <PathShort />
           <PathQuiet />
