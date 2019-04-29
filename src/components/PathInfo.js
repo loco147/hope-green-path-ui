@@ -7,7 +7,7 @@ import { Button } from './Button'
 import { FaStar } from 'react-icons/fa'
 
 const IconDiv = styled.div`
-  margin: 2px 5px 2px 4px;
+  margin: 0 0 0 2px;
   display: table;
   color: #00ba0a;
   transition-duration: 0.2s;

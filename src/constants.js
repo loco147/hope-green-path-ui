@@ -16,7 +16,7 @@ export const BASEMAPS = {
   }
 }
 
-export const clickTol = 8
+export const clickTol = 12
 
 export const initialMapCenter = { lng: 24.9664, lat: 60.2110 }
 

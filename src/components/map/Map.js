@@ -5,6 +5,7 @@ import { initializeMap, updateCamera } from './../../reducers/mapReducer'
 import { unsetSelectedPath } from './../../reducers/pathsReducer'
 import { initialMapCenter, initialMapCenterProd, BASEMAPS } from './../../constants'
 import { utils } from './../../utils/index'
+import { clickTol } from './../../constants'
 
 MapboxGL.accessToken = process.env.REACT_APP_MB_ACCESS || 'Mapbox token is needed in order to use the map'
 
@@ -57,7 +58,7 @@ class Map extends React.Component {
     })
 
     this.map.on('click', (e) => {
-      const features = utils.getLayersFeaturesAroundClickE(['quietPaths', 'shortestPath'], e, 8, this.map)
+      const features = utils.getLayersFeaturesAroundClickE(['quietPaths', 'shortestPath'], e, clickTol, this.map)
       if (features.length === 0) {
         this.props.unsetSelectedPath()
       }
