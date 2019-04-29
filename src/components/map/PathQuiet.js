@@ -33,7 +33,7 @@ class PathQuiet extends React.Component {
             map.on('mouseenter', this.layerId, () => { map.getCanvas().style.cursor = 'pointer' })
             map.on('mouseleave', this.layerId, () => { map.getCanvas().style.cursor = '' })
             map.on('click', (e) => {
-                const features = utils.getLayersFeaturesAroundClickE(['quietPaths'], e, clickTol, map)
+                const features = utils.getLayersFeaturesAroundClickE([this.layerId], e, clickTol, map)
                 if (features.length > 0) {
                     const clickedFeat = features[0]
                     setSelectedPath(clickedFeat.properties.id)

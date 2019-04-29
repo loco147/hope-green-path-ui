@@ -57,7 +57,7 @@ class Map extends React.Component {
     })
 
     this.map.on('click', (e) => {
-      const features = utils.getLayersFeaturesAroundClickE(['quietPaths'], e, 8, this.map)
+      const features = utils.getLayersFeaturesAroundClickE(['quietPaths', 'shortestPath'], e, 8, this.map)
       if (features.length === 0) {
         this.props.unsetSelectedPath()
       }

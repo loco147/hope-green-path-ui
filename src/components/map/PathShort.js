@@ -1,5 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { setSelectedPath } from './../../reducers/pathsReducer'
+import { clickTol } from './../../constants'
+import { utils } from './../../utils/index'
 
 class PathShort extends React.Component {
     layerId = 'shortestPath'
@@ -16,7 +19,7 @@ class PathShort extends React.Component {
     }
 
     componentDidMount() {
-        const { map, sPathFC } = this.props
+        const { map, sPathFC, setSelectedPath } = this.props
         map.once('load', () => {
             // Add layer
             map.addSource(this.layerId, { type: 'geojson', data: sPathFC })
@@ -27,6 +30,15 @@ class PathShort extends React.Component {
                 type: 'line',
                 paint: this.paint,
                 layout: this.layout,
+            })
+            map.on('mouseenter', this.layerId, () => { map.getCanvas().style.cursor = 'pointer' })
+            map.on('mouseleave', this.layerId, () => { map.getCanvas().style.cursor = '' })
+            map.on('click', (e) => {
+                const features = utils.getLayersFeaturesAroundClickE([this.layerId], e, clickTol, map)
+                if (features.length > 0) {
+                    const clickedFeat = features[0]
+                    setSelectedPath(clickedFeat.properties.id)
+                }
             })
         })
     }
@@ -53,6 +65,6 @@ const mapStateToProps = (state) => ({
     sPathFC: state.paths.sPathFC,
 })
 
-const ConnectedPathShort = connect(mapStateToProps, null)(PathShort)
+const ConnectedPathShort = connect(mapStateToProps, { setSelectedPath })(PathShort)
 
 export default ConnectedPathShort
