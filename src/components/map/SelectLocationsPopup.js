@@ -13,22 +13,22 @@ const StyledPopupDiv = styled.div`
 class SelectLocationsPopup extends React.Component {
 
   render() {
-    const lngLat = this.props.lngLat
-    if (!this.props.visible) return null
+    const { visible, lngLat, originTargetFC } = this.props
+    if (!visible) return null
 
     return (
       <StyledPopupDiv>
         <Button setLoc disabled={false} submit onClick={() => store.dispatch(setOrigin(lngLat))}>Route from here</Button>
-        <Button setLoc disabled={false} submit onClick={() => store.dispatch(setTarget(lngLat))}>Route here</Button>
+        <Button setLoc disabled={false} submit onClick={() => store.dispatch(setTarget(lngLat, originTargetFC))}>Route here</Button>
       </StyledPopupDiv >
     )
   }
 }
 
-
 const mapStateToProps = (state) => ({
   visible: state.mapPopup.visible,
   lngLat: state.mapPopup.lngLat,
+  originTargetFC: state.originTarget.originTargetFC,
 })
 
 const ConnectedSelectLocationsPopup = connect(mapStateToProps, null)(SelectLocationsPopup)

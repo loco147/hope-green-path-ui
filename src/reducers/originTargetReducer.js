@@ -2,6 +2,8 @@ import { turf } from '../utils/index'
 import { initialOriginTargetFeatures } from './../constants'
 import { closePopup } from './mapPopupReducer'
 import { startTrackingUserLocation } from './userLocationReducer'
+import { getQuietPaths } from './pathsReducer'
+import { utils } from './../utils/index'
 
 const initialOriginTarget = {
   originTargetFC: turf.asFeatureCollection(process.env.NODE_ENV !== 'production' ? initialOriginTargetFeatures : []),
@@ -37,8 +39,7 @@ const pathsReducer = (store = initialOriginTarget, action) => {
     }
 
     case 'SET_TARGET': {
-      const originTargetFC = updateTargetToFC(store.originTargetFC, action.lngLat)
-      return { ...store, originTargetFC }
+      return { ...store, originTargetFC: action.updateOriginTargetFC }
     }
 
     default:
@@ -53,10 +54,17 @@ export const setOrigin = (lngLat) => {
   }
 }
 
-export const setTarget = (lngLat) => {
+export const setTarget = (lngLat, originTargetFC) => {
   return async (dispatch) => {
-    dispatch({ type: 'SET_TARGET', lngLat })
+    const updateOriginTargetFC = updateTargetToFC(originTargetFC, lngLat)
+    dispatch({ type: 'SET_TARGET', updateOriginTargetFC })
     dispatch(closePopup())
+    const originSet = originTargetFC.features.filter(feat => feat.properties.type === 'origin').length > 0
+    if (originSet) {
+      const originCoords = utils.getOriginCoordsFromFC(updateOriginTargetFC)
+      const targetCoords = utils.getTargetCoordsFromFC(updateOriginTargetFC)
+      dispatch(getQuietPaths(originCoords, targetCoords))
+    }
   }
 }
 

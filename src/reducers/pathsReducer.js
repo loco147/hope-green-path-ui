@@ -7,15 +7,22 @@ const initialPaths = {
   qPathFC: turf.asFeatureCollection([]),
   sPathFC: turf.asFeatureCollection([]),
   selPathFC: turf.asFeatureCollection([]),
+  waitingPaths: false,
   detourLimit: 1000,
 }
 
 const pathsReducer = (store = initialPaths, action) => {
 
   switch (action.type) {
+    case 'ROUTING_STARTED':
+      return {
+        ...store,
+        waitingPaths: true
+      }
     case 'SET_SHORTEST_PATH':
       return {
         ...store,
+        waitingPaths: false,
         sPathFC: turf.asFeatureCollection(action.sPath)
       }
 
@@ -100,7 +107,7 @@ export const getQuietPaths = (originCoords, targetCoords) => {
     const maxQpathScore = Math.max(...qPaths.map(path => path.properties.path_score))
     console.log('maxQpathScore', maxQpathScore)
     if (maxQpathScore > 1.9) {
-      const selPath= pathFeats.filter(feat => feat.properties.path_score === maxQpathScore)[0]
+      const selPath = pathFeats.filter(feat => feat.properties.path_score === maxQpathScore)[0]
       if (selPath.properties.nei_diff_rat < -9) {
         dispatch(setSelectedPath(selPath.properties.id))
       }
