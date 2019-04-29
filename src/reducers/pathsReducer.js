@@ -7,7 +7,7 @@ const initialPaths = {
   qPathFC: turf.asFeatureCollection([]),
   sPathFC: turf.asFeatureCollection([]),
   selPathFC: turf.asFeatureCollection([]),
-  detourLimit: 400,
+  detourLimit: 1000,
 }
 
 const pathsReducer = (store = initialPaths, action) => {

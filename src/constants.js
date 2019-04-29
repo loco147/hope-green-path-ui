@@ -20,6 +20,8 @@ export const clickTol = 8
 
 export const initialMapCenter = { lng: 24.9664, lat: 60.2110 }
 
+export const initialMapCenterProd = { lng: 24.937886, lat: 60.180808 }
+
 export const initialOriginTargetFeatures = [
   {
     type: 'Feature',

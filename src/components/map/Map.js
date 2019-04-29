@@ -3,10 +3,13 @@ import MapboxGL from 'mapbox-gl/dist/mapbox-gl.js'
 import { connect } from 'react-redux'
 import { initializeMap, updateCamera } from './../../reducers/mapReducer'
 import { unsetSelectedPath } from './../../reducers/pathsReducer'
-import { initialMapCenter, BASEMAPS } from './../../constants'
+import { initialMapCenter, initialMapCenterProd, BASEMAPS } from './../../constants'
 import { utils } from './../../utils/index'
 
 MapboxGL.accessToken = process.env.REACT_APP_MB_ACCESS || 'Mapbox token is needed in order to use the map'
+
+const mapCenter = process.env.NODE_ENV !== 'production' ? initialMapCenter : initialMapCenterProd
+const zoom = process.env.NODE_ENV !== 'production' ? 13 : 12
 
 class Map extends React.Component {
 
@@ -28,8 +31,8 @@ class Map extends React.Component {
     this.map = new MapboxGL.Map({
       container: this.mapContainer,
       style: BASEMAPS.QuietPathLight.url,
-      center: initialMapCenter,
-      zoom: 13,
+      center: mapCenter,
+      zoom: zoom,
       boxZoom: false,
       trackResize: true
     })

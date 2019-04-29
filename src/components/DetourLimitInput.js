@@ -84,7 +84,7 @@ class DetourLimitInput extends Component {
       <SelectFlex>
         <StyledText> Set max detour distance: </StyledText>
         <SelectWrapper>
-          <StyledSelect onChange={(e) => this.props.setDetourLimit(e.target.value)} defaultValue={400}>
+          <StyledSelect onChange={(e) => this.props.setDetourLimit(e.target.value)} defaultValue={1000}>
             <StyledOption value={50}>50 m</StyledOption>
             <StyledOption value={100}>100 m</StyledOption>
             <StyledOption value={200}>200 m</StyledOption>

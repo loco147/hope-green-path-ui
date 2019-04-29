@@ -4,7 +4,7 @@ import { closePopup } from './mapPopupReducer'
 import { startTrackingUserLocation } from './userLocationReducer'
 
 const initialOriginTarget = {
-  originTargetFC: turf.asFeatureCollection(initialOriginTargetFeatures),
+  originTargetFC: turf.asFeatureCollection(process.env.NODE_ENV !== 'production' ? initialOriginTargetFeatures : []),
   useUserLocOrigin: false,
 }
 
