@@ -11,7 +11,7 @@ const GuideContainer = styled.div`
   right: 0px;
   bottom: 0px;
   left: 0px;
-  z-index: 4;
+  z-index: 7;
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -30,7 +30,7 @@ const WhiteBox = styled.div`
   display: flex;
   flex-direction: column;
   letter-spacing: 0.6px;
-  padding: 18px 27px;
+  padding: 18px 27px 5px 27px;
   background-color: rgba(255, 255, 255, 1);
   border-radius: 8px;
   font-weight: 300;
@@ -42,7 +42,7 @@ const WhiteBox = styled.div`
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.22), 0 6px 20px 0 rgba(0,0,0,0.14);
 `
 const Instructions = styled.div`
-  max-height: 72vh;
+  max-height: 68vh;
   overflow: auto;
 `
 const Title = styled.div`

@@ -1,5 +1,5 @@
 
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 import { FaStar } from 'react-icons/fa'
 
 export const IconDiv = styled.div`

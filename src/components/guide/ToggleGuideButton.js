@@ -7,7 +7,7 @@ import { toggleGuide } from './../../reducers/menuReducer'
 const StyledToggleGuideButton = styled(Button)`
   position: absolute;
   pointer-events: none;
-  z-index: 5;
+  z-index: 8;
   top: 105px;
   right: 6px;
   padding: 2px 10px;
