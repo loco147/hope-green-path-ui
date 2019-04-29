@@ -34,3 +34,16 @@ export const getLayersFeaturesAroundClickE = (layers, e, tolerance, map) => {
   const features = map.queryRenderedFeatures(bbox, { layers })
   return features
 }
+
+export const getBestPath = (qPaths) => {
+  // if the greatest quiet path score among the paths is greater than 2 -> select the path
+  if (qPaths.length > 0) {
+    const goodPaths = qPaths.filter(feat => feat.properties.path_score > 1 && feat.properties.nei_diff_rat < -9)
+    if (goodPaths.length > 0) {
+      const maxQpathScore = Math.max(...goodPaths.map(path => path.properties.path_score))
+      const bestPath = goodPaths.filter(feat => feat.properties.path_score === maxQpathScore)[0]
+      return bestPath
+    }
+  }
+  return null
+}

@@ -1,6 +1,7 @@
 import { turf } from '../utils/index'
 import * as paths from './../services/paths'
 import { showNotification } from './notificationReducer'
+import { utils } from './../utils/index'
 // import { egPaths } from '../temp/eg_path_features.js'
 
 const initialPaths = {
@@ -103,15 +104,8 @@ export const getQuietPaths = (originCoords, targetCoords) => {
     const qPaths = pathFeats.filter(feat => feat.properties.type === 'quiet' && feat.properties.len_diff !== 0)
     dispatch({ type: 'SET_SHORTEST_PATH', sPath })
     dispatch({ type: 'SET_QUIET_PATH', qPaths })
-    // if the greatest quiet path score among the paths is greater than 2 -> select the path
-    const maxQpathScore = Math.max(...qPaths.map(path => path.properties.path_score))
-    console.log('maxQpathScore', maxQpathScore)
-    if (maxQpathScore > 1.9) {
-      const selPath = pathFeats.filter(feat => feat.properties.path_score === maxQpathScore)[0]
-      if (selPath.properties.nei_diff_rat < -9) {
-        dispatch(setSelectedPath(selPath.properties.id))
-      }
-    }
+    const bestPath = utils.getBestPath(qPaths)
+    if (bestPath) dispatch(setSelectedPath(bestPath.properties.id))
   }
 }
 
@@ -134,4 +128,5 @@ export const resetPaths = () => {
 const clickedPathAgain = (storeSelPathFC, clickedPathId) => {
   return storeSelPathFC.features[0] && clickedPathId === storeSelPathFC.features[0].properties.id
 }
+
 export default pathsReducer
