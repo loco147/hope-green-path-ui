@@ -1,5 +1,5 @@
 # Quiet path UI
-A user interface (route planner) for quiet path route optimization application developed as part of my master's thesis ([github.com/hellej/gradu-pocs](https://github.com/hellej/gradu-pocs)). One important goal of this project is to facilitate citizens to find better walking routes as alternatives to the very shortest paths. 
+A user interface (route planner) for quiet path route optimization application developed as part of my master's thesis ([github.com/hellej/gradu-pocs](https://github.com/hellej/gradu-pocs)). One important goal of this project is to facilitate citizens to find better walking routes as alternatives to the very shortest paths. [Live demo](https://quietpath.firebaseapp.com/)
 
 ## Built With
 * React, Redux & Thunk
