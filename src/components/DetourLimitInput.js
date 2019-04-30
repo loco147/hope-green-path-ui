@@ -100,6 +100,9 @@ class DetourLimitInput extends Component {
             <StyledOption value={3000}> 3 km</StyledOption>
             <StyledOption value={4000}> 4 km</StyledOption>
             <StyledOption value={5000}> 5 km</StyledOption>
+            <StyledOption value={7000}> 7 km</StyledOption>
+            <StyledOption value={10000}> 10 km</StyledOption>
+            <StyledOption value={15000}> 15 km</StyledOption>
           </StyledSelect>
         </SelectWrapper>
       </SelectFlex>
