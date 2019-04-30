@@ -127,11 +127,11 @@ const Guide = (props) => {
             </SubHeading>
             <P>
               <KeyValuePair prop={'Et'} value={'Total cumulative exposure (index) to traffic noise along the path.'} />
-              <KeyValuePair prop={'Ed'} value={"How much smaller (%) is the quiet path's exposure compared to the shortest path's exposure."} />
-              <KeyValuePair prop={'En'} value={'Normalized traffic noise exposure index. Varies between 0 and 1 (higher is worse).'} />
+              <KeyValuePair prop={'Ed'} value={"How much smaller (%) is the quiet path's exposure (to noise) compared to the shortest path's exposure."} />
+              <KeyValuePair prop={'En'} value={'Distance-normalized traffic noise exposure index. Varies between 0 and 1 (higher is worse). This can be used to compare paths with different lengths.'} />
               <KeyValuePair prop={'60'} value={'Shortest path: exposure to 60dB traffic noise as cumulative walking distance (m) along the path.'} />
               <KeyValuePair prop={'XX'} value={'Shortest path: exposure to XXdB traffic noise as cumulative walking distance (m) along the path.'} />
-              <KeyValuePair prop={'XX'} value={'Quiet path: difference in exposure to XXdB traffic noise compared to the respective exposure (to XXdB) along the shortest path.'} />
+              <KeyValuePair prop={'XX'} value={'Quiet path: difference in exposure to XXdB traffic noise compared to the respective exposure (to XXdB) along the shortest path (m).'} />
               <KeyValueFlex stars>
               <Key stars> 2.1 <IconDiv><Star /></IconDiv> </Key>
               <ValueBox>
@@ -144,8 +144,8 @@ const Guide = (props) => {
             <P>
               <a
                 href='https://hri.fi/data/en_GB/dataset/helsingin-kaupungin-meluselvitys-2017'
-                target='_blank' rel='noopener noreferrer'>Traffic noise data</a>{' '} is based on an assessment made by the city of Helsinki.
-            It is modelled data that represents the typical daytime traffic noise levels. Thus, the quiet paths are most applicable at times when
+                target='_blank' rel='noopener noreferrer'>Traffic noise data</a>{' '} is based on an assessment conducted by the city of Helsinki.
+            It is modelled data that represents typical daytime traffic noise levels. Thus, the quiet paths are most applicable at times when
             the traffic flows are near average.
             </P>
             <P>
