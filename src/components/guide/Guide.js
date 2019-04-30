@@ -143,7 +143,7 @@ const Guide = (props) => {
             <P>
               <a
                 href='https://hri.fi/data/en_GB/dataset/helsingin-kaupungin-meluselvitys-2017'
-                target='_blank' rel='noopener noreferrer'>Traffic noise data</a>{' '} is based on assessment made by the municipality of Helsinki.
+                target='_blank' rel='noopener noreferrer'>Traffic noise data</a>{' '} is based on assessment made by the city of Helsinki.
             It is modelled data that represents the typical daytime traffic noise levels. Thus, the quiet paths are most applicable at times when
             the traffic flows are near average.
             </P>

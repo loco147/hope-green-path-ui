@@ -22,13 +22,16 @@ const BottomControlFlex = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-left: 96px;
+  margin: auto;
   @media (min-width: 600px) {
     justify-content: flex-start;
     margin-left: 145px;
   }
 `
-const PathPanel = styled.div`
+const PathPanel = styled.div.attrs(props => ({
+    style: ({ display: props.visible ? '' : 'none', })
+  })
+)`
   margin: 0px;
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;
@@ -43,7 +46,14 @@ const PathPanel = styled.div`
     max-height: 220px;
   }
 `
-const StyledPathStats = styled.div`
+const StyledPathStats = styled.div.attrs(props => ({
+  style:
+    ({
+      border: props.selected ? '2px solid #ed7b00' : '',
+      boxShadow: props.selected ? '0 -1px 7px 0 rgba(0, 0, 0, 0.15), 0 4px 7px 0 rgba(0, 0, 0, 0.25)' : ''
+    })
+})
+)`
   display: flex;
   pointer-events: auto;
   min-width: 331px;
@@ -63,16 +73,12 @@ const StyledPathStats = styled.div`
       box-shadow: 0 -1px 7px 0 rgba(0, 0, 0, 0.15), 0 4px 7px 0 rgba(0, 0, 0, 0.25);
     }
   }
+  @media (max-width: 372px) {
+    min-width: min-content;
+  }
   ${props => props.quiet && css`
     background-color: #f9fff7;
     margin: 9px 0px;
-  `}
-  ${props => props.selected === true && css`
-    border: 2px solid #ed7b00;
-    box-shadow: 0 -1px 7px 0 rgba(0, 0, 0, 0.15), 0 4px 7px 0 rgba(0, 0, 0, 0.25);
-    &:hover {
-      cursor: pointer;
-    }
   `}
   ${props => props.onlyShort === true && css`
     margin: 0px 0px 9px 0px;
@@ -122,13 +128,18 @@ const PathInfoFlex = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  width: 70px;
+  width: 66px;
 `
 const FlexCols = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0px 1px 0px 1px;
   justify-content: space-evenly;
+  ${props => props.hideOnSmallScreen && css`
+    @media (max-width: 372px) {
+      display: none;
+    }
+`}
 `
 const KeyValueFlex = styled.div`
   display: flex;
@@ -159,7 +170,7 @@ const ShortPathStats = ({ sPaths, selPathId, setSelectedPath, qPaths }) => {
         <KeyValuePair prop={'Et'} value={Math.round(sPath.properties.nei)} />
         <KeyValuePair prop={'En'} value={sPath.properties.nei_norm} />
       </FlexCols>
-      <FlexCols>
+      <FlexCols hideOnSmallScreen>
         <KeyValuePair box={false} prop={50} value={utils.formatDiffM(sPath.properties.noises[50], false)} unit={'m'} />
         <KeyValuePair box={false} prop={55} value={utils.formatDiffM(sPath.properties.noises[55], false)} unit={'m'} />
         <KeyValuePair box={false} prop={60} value={utils.formatDiffM(sPath.properties.noises[60], false)} unit={'m'} />
@@ -198,37 +209,34 @@ class PathInfo extends Component {
 
     return (
       <div>
-        {this.state.pathStatsVisible
-          ? <PathPanel>
-            <ShortPathStats selPathId={selPathId} sPaths={sPathFC.features} setSelectedPath={setSelectedPath} qPaths={qPaths} />
-            {qPaths.map(path => (
-              <StyledPathStats quiet selected={path.properties.id === selPathId} key={path.properties.length} onClick={() => setSelectedPath(path.properties.id)}>
-                <PathInfoFlex>
-                  <PathName>{utils.getKmFromM(path.properties.length)} km </PathName>
-                  <LenDiff>{utils.formatDiffM(path.properties.len_diff, true)} m{' '}</LenDiff>
-                  <LenDiff bold>{path.properties.path_score}<IconDiv><Star /></IconDiv></LenDiff>
-                </PathInfoFlex>
-                <FlexCols>
-                  <KeyValuePair prop={'Et'} value={Math.round(path.properties.nei)} />
-                  <KeyValuePair prop={'Ed'} value={Math.round(path.properties.nei_diff_rat)} unit={'%'} />
-                  <KeyValuePair prop={'En'} value={path.properties.nei_norm} />
-                </FlexCols>
-                <FlexCols>
-                  <KeyValuePair prop={50} value={utils.formatDiffM(path.properties.noises_diff[50], true)} unit={'m'} />
-                  <KeyValuePair prop={55} value={utils.formatDiffM(path.properties.noises_diff[55], true)} unit={'m'} />
-                  <KeyValuePair prop={60} value={utils.formatDiffM(path.properties.noises_diff[60], true)} unit={'m'} />
-                </FlexCols>
-                <FlexCols>
-                  <KeyValuePair prop={65} value={utils.formatDiffM(path.properties.noises_diff[65], true)} unit={'m'} />
-                  <KeyValuePair prop={70} value={utils.formatDiffM(path.properties.noises_diff[70], true)} unit={'m'} />
-                  <KeyValuePair prop={75} value={utils.formatDiffM(path.properties.noises_diff[75], true)} unit={'m'} />
-                </FlexCols>
-              </StyledPathStats>
-            )
-            )}
-          </PathPanel>
-          : null
-        }
+        <PathPanel visible={this.state.pathStatsVisible}>
+          <ShortPathStats selPathId={selPathId} sPaths={sPathFC.features} setSelectedPath={setSelectedPath} qPaths={qPaths} />
+          {qPaths.map(path => (
+            <StyledPathStats quiet selected={path.properties.id === selPathId} key={path.properties.length} onClick={() => setSelectedPath(path.properties.id)}>
+              <PathInfoFlex>
+                <PathName>{utils.getKmFromM(path.properties.length)} km </PathName>
+                <LenDiff>{utils.formatDiffM(path.properties.len_diff, true)} m{' '}</LenDiff>
+                <LenDiff bold>{path.properties.path_score}<IconDiv><Star /></IconDiv></LenDiff>
+              </PathInfoFlex>
+              <FlexCols>
+                <KeyValuePair prop={'Et'} value={Math.round(path.properties.nei)} />
+                <KeyValuePair prop={'Ed'} value={Math.round(path.properties.nei_diff_rat)} unit={'%'} />
+                <KeyValuePair prop={'En'} value={path.properties.nei_norm} />
+              </FlexCols>
+              <FlexCols hideOnSmallScreen>
+                <KeyValuePair prop={50} value={utils.formatDiffM(path.properties.noises_diff[50], true)} unit={'m'} />
+                <KeyValuePair prop={55} value={utils.formatDiffM(path.properties.noises_diff[55], true)} unit={'m'} />
+                <KeyValuePair prop={60} value={utils.formatDiffM(path.properties.noises_diff[60], true)} unit={'m'} />
+              </FlexCols>
+              <FlexCols>
+                <KeyValuePair prop={65} value={utils.formatDiffM(path.properties.noises_diff[65], true)} unit={'m'} />
+                <KeyValuePair prop={70} value={utils.formatDiffM(path.properties.noises_diff[70], true)} unit={'m'} />
+                <KeyValuePair prop={75} value={utils.formatDiffM(path.properties.noises_diff[75], true)} unit={'m'} />
+              </FlexCols>
+            </StyledPathStats>
+          )
+          )}
+        </PathPanel>
         <BottomControlPanel>
           <BottomControlFlex>
             <Button small onClick={this.togglePathStatsVisibility}> {this.state.pathStatsVisible ? 'Hide stats' : 'Show stats'}</Button>

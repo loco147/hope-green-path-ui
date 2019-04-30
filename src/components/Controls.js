@@ -12,19 +12,20 @@ const ControlBox = styled.div`
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.15), 0 6px 20px 0 rgba(0,0,0,0.09);
-  @media (min-width:660px) {
+  justify-content: center;
+  @media (min-width:591px) {
     display: flex;
     flex-direction: row;
     align-items: center;
   }
 `
 const ButtonFlex = styled.div`
-  @media (max-width: 659px) {
+  @media (max-width: 590px) {
     display: flex;
     flex-direction: column;
     align-items: center;
     }
-  @media (min-width:660px) {
+  @media (min-width:591px) {
     margin: 0 0 0 5px;
     }
 `

@@ -17,17 +17,18 @@ import DimLayer from './components/DimLayer'
 const AbsoluteContainer = styled.div`
   position: absolute;
   pointer-events: none;
-  z-index: 2;
-`
+  `
 const TopPanel = styled(AbsoluteContainer)`
   top: 0px;
   left: 0px;
   right: 0px;
-`
-const BottomPanel = styled(AbsoluteContainer)`
+  z-index: 2;
+  `
+  const BottomPanel = styled(AbsoluteContainer)`
   bottom: 0px;
   left: 0px;
   right: 0px;
+  z-index: 3;
 `
 
 class App extends Component {

@@ -9,10 +9,15 @@ const SelectFlex = styled.div`
   border-radius: 7px; 
   display: flex;
   padding: 5px 0px 5px 10px;
-  width: 355px;
-  @media (max-width: 410px) {
+  // width: 355px;
+  justify-content: center;
+  @media (max-width: 360px) {
     padding: 5px 0px 5px 0px;
     justify-content: left;
+  }
+  @media (min-width:591px) {
+    padding-left: 0px;
+    margin-left: -40px;
   }
 `
 const StyledText = styled.span`
@@ -21,7 +26,7 @@ const StyledText = styled.span`
   color: black;
   border-radius: 8px;
   padding: 5px 13px;
-  @media (max-width: 410px) {
+  @media (max-width: 600px) {
     font-size: 20px;
   }
 `
@@ -50,11 +55,11 @@ const StyledSelect = styled.select`
   color: white;
   cursor: pointer;
   display: inline-block;
-  height: 38px; //2.6em;
+  height: 35px;
   margin: 0px 10px 0px 0px;
   text-align: center;
   width: max-content;
-  padding: 5px 12px;
+  padding: 2px 12px;
   vertical-align: middle;
   -webkit-appearance: none!important;
   transition-duration: 0.2s;
@@ -66,7 +71,7 @@ const StyledSelect = styled.select`
   &:hover { 
     background-color: #128a32e8 !important;
   }
-  @media (max-width: 410px) {
+  @media (max-width: 600px) {
     font-size: 17px;
   }
 `
@@ -82,7 +87,7 @@ class DetourLimitInput extends Component {
 
     return (
       <SelectFlex>
-        <StyledText> Set max detour distance: </StyledText>
+        <StyledText> Set max detour: </StyledText>
         <SelectWrapper>
           <StyledSelect onChange={(e) => this.props.setDetourLimit(e.target.value)} defaultValue={1000}>
             <StyledOption value={50}>50 m</StyledOption>
