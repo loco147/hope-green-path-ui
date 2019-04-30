@@ -60,7 +60,7 @@ const StyledPathStats = styled.div.attrs(props => ({
   height: 67px;
   border-radius: 6px;
   margin: 0px 0px;
-  background-color: #fffafc;
+  background-color: white;
   border: 2px solid transparent;
   padding: 3px 4px;
   color: black;
@@ -77,7 +77,6 @@ const StyledPathStats = styled.div.attrs(props => ({
     min-width: min-content;
   }
   ${props => props.quiet && css`
-    background-color: #f9fff7;
     margin: 9px 0px;
   `}
   ${props => props.onlyShort === true && css`
@@ -98,7 +97,7 @@ const LenDiff = styled.div`
   display: flex;
   align-items: center;
   ${props => props.bold && css`
-    font-weight: 450;
+    font-weight: 500;
 `}
 `
 const Key = styled.div`
@@ -164,7 +163,7 @@ const ShortPathStats = ({ sPaths, selPathId, setSelectedPath, qPaths }) => {
     <StyledPathStats onlyShort={onlyShort} selected={sPath.properties.id === selPathId} onClick={() => setSelectedPath(sPath.properties.id)} >
       <PathInfoFlex>
         <PathName>{utils.getKmFromM(sPath.properties.length)} km </PathName>
-        <LenDiff>Shortest</LenDiff>
+        <LenDiff bold>Shortest</LenDiff>
       </PathInfoFlex>
       <FlexCols>
         <KeyValuePair prop={'Et'} value={Math.round(sPath.properties.nei)} />

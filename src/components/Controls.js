@@ -7,7 +7,7 @@ import { useUserLocationOrigin } from './../reducers/originTargetReducer'
 
 const ControlBox = styled.div`
   margin: 0px;
-  background-color: rgba(255,255,255,0.9);
+  background-color: rgba(255,255,255,0.95);
   padding: 3px 5px 2px 5px;
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
