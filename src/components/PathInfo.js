@@ -116,11 +116,13 @@ const ValueBox = styled(Key)`
     background-color: green;
     color: white;
   `}
-  ${props => props.value > 0 && css`
-    background-color: transparent;
-  `}
-  ${props => props.blank === true && css`
-    background-color: transparent;
+  ${props => props.value > 0 && css` background-color: transparent;`}
+  ${props => props.blank === true && css` background-color: transparent;`}
+  ${props => props.en && css`
+    ${props => props.value < 0.25 && css` background-color: #ade2ad;`}
+    ${props => props.value >= 0.25 && css` background-color: #f2db5d;`}
+    ${props => props.value >= 0.5 && css` background-color: #ffba3d;`}
+    ${props => props.value >= 0.7 && css` background-color: #ff8173;`}
   `}
 `
 const PathInfoFlex = styled.div`
@@ -166,8 +168,8 @@ const ShortPathStats = ({ sPaths, selPathId, setSelectedPath, qPaths }) => {
         <LenDiff bold>Shortest</LenDiff>
       </PathInfoFlex>
       <FlexCols>
-        <KeyValuePair prop={'Et'} value={Math.round(sPath.properties.nei)} />
-        <KeyValuePair prop={'En'} value={sPath.properties.nei_norm} />
+        <KeyValueFlex> <Key>Et</Key> <ValueBox>{Math.round(sPath.properties.nei)}</ValueBox> </KeyValueFlex>
+        <KeyValueFlex> <Key>En</Key> <ValueBox en value={sPath.properties.nei_norm}>{sPath.properties.nei_norm}</ValueBox> </KeyValueFlex>
       </FlexCols>
       <FlexCols hideOnSmallScreen>
         <KeyValuePair box={false} prop={50} value={utils.formatDiffM(sPath.properties.noises[50], false)} unit={'m'} />
@@ -218,9 +220,9 @@ class PathInfo extends Component {
                 <LenDiff bold>{path.properties.path_score}<IconDiv><Star /></IconDiv></LenDiff>
               </PathInfoFlex>
               <FlexCols>
-                <KeyValuePair prop={'Et'} value={Math.round(path.properties.nei)} />
+                <KeyValueFlex> <Key>Et</Key> <ValueBox>{Math.round(path.properties.nei)}</ValueBox> </KeyValueFlex>
                 <KeyValuePair prop={'Ed'} value={Math.round(path.properties.nei_diff_rat)} unit={'%'} />
-                <KeyValuePair prop={'En'} value={path.properties.nei_norm} />
+                <KeyValueFlex> <Key>En</Key> <ValueBox en value={path.properties.nei_norm}>{path.properties.nei_norm}</ValueBox> </KeyValueFlex>
               </FlexCols>
               <FlexCols hideOnSmallScreen>
                 <KeyValuePair prop={50} value={utils.formatDiffM(path.properties.noises_diff[50], true)} unit={'m'} />
