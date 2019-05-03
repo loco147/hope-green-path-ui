@@ -15,7 +15,7 @@ const OuterFlex = styled.div`
 
 class Menu extends Component {
   render() {
-    const { originTargetFC } = this.props
+    const { originTargetFC, originTargetError } = this.props
     const originCoords = utils.getOriginCoordsFromFC(originTargetFC)
     const targetCoords = utils.getTargetCoordsFromFC(originTargetFC)
     const originOrTargetMissing = originCoords === null || targetCoords === null
@@ -23,9 +23,9 @@ class Menu extends Component {
     return (
       <OuterFlex>
         <Notification />
-        {originOrTargetMissing || this.props.waitingPaths
+        {originOrTargetMissing || this.props.waitingPaths || originTargetError
           ? null
-          : <Button shadow onClick={() => this.props.getQuietPaths(originCoords, targetCoords)}> Get routes</Button>
+          : <Button border shadow onClick={() => this.props.getQuietPaths(originCoords, targetCoords)}> Get routes</Button>
         }
       </OuterFlex>
     )
@@ -33,8 +33,8 @@ class Menu extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  userLocation: state.userLocation,
   originTargetFC: state.originTarget.originTargetFC,
+  originTargetError: state.originTarget.error,
   waitingPaths: state.paths.waitingPaths,
 })
 

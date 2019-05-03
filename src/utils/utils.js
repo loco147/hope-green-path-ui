@@ -1,3 +1,5 @@
+import { turf } from './index'
+import helPoly from './../helPoly.json'
 
 export const getOriginCoordsFromFC = (FC) => {
   const origin = FC.features.filter(feat => feat.properties.type === 'origin')
@@ -44,6 +46,19 @@ export const getBestPath = (qPaths) => {
       const bestPath = goodPaths.filter(feat => feat.properties.path_score === maxQpathScore)[0]
       return bestPath
     }
+  }
+  return null
+}
+
+export const originTargetwithinSupportedArea = (originTargetFC) => {
+  const origin = originTargetFC.features.filter(feat => feat.properties.type === 'origin')
+  const target = originTargetFC.features.filter(feat => feat.properties.type === 'target')
+  const extentFeat = helPoly.features[0]
+  if (origin.length > 0 && !turf.within(origin[0], extentFeat)) {
+    return 'Origin is outside the supported area'
+  }
+  if (target.length > 0 && !turf.within(target[0], extentFeat)) {
+    return 'Destination is outside the supported area'
   }
   return null
 }

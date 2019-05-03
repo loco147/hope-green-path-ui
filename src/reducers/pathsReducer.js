@@ -65,6 +65,9 @@ const pathsReducer = (store = initialPaths, action) => {
         detourLimit: action.detourLimit
       }
 
+    case 'ERROR_IN_ROUTING':
+      return { ...store, waitingPaths: false }
+
     case 'SET_ORIGIN':
     case 'SET_TARGET':
     case 'WAIT_FOR_USER_LOC_ORIGIN':
@@ -97,6 +100,7 @@ export const getQuietPaths = (originCoords, targetCoords) => {
     try {
       pathFeats = await paths.getQuietPaths(originCoords, targetCoords)
     } catch (error) {
+      dispatch({ type: 'ERROR_IN_ROUTING' })
       dispatch(showNotification("Couldn't get path", 'error', 4))
       return
     }

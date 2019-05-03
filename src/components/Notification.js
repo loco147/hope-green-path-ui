@@ -14,6 +14,9 @@ const StyledNotificationDiv = styled.div`
   font-size: 23px;
   font-weight: 300;
   letter-spacing: 1.3px;
+  max-width: 93%;
+  text-align: center;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.22), 0 6px 20px 0 rgba(0,0,0,0.14);
   ${props => props.look === 'error' && css`
     color: white;
     background-color: #380000bd;
@@ -21,17 +24,24 @@ const StyledNotificationDiv = styled.div`
 `
 
 const Notification = (props) => {
-  if (props.notification.text === null) return null
+  if (!props.notification.text && !props.originTargetError) return null
+  const look = props.originTargetError ? 'error' : props.notification.look
 
   return (
-    <StyledNotificationDiv look={props.notification.look}>
+    <StyledNotificationDiv look={look}>
+    <div>
       {props.notification.text}
+    </div>
+    <div>
+      {props.originTargetError}
+    </div>
     </StyledNotificationDiv>
   )
 }
 
 const mapStateToProps = (state) => ({
-  notification: state.notification
+  notification: state.notification,
+  originTargetError: state.originTarget.error,
 })
 
 const ConnectedNotification = connect(mapStateToProps, null)(Notification)

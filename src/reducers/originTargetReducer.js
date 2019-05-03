@@ -8,6 +8,7 @@ import { utils } from './../utils/index'
 const initialOriginTarget = {
   originTargetFC: turf.asFeatureCollection(process.env.NODE_ENV !== 'production' ? initialOriginTargetFeatures : []),
   useUserLocOrigin: false,
+  error: null,
 }
 
 const pathsReducer = (store = initialOriginTarget, action) => {
@@ -18,8 +19,8 @@ const pathsReducer = (store = initialOriginTarget, action) => {
       return initialOriginTarget
 
     case 'SET_ORIGIN': {
-      const originTargetFC = updateOriginToFC(store.originTargetFC, action.lngLat)
-      return { ...store, originTargetFC, useUserLocOrigin: false }
+      const error = utils.originTargetwithinSupportedArea(action.updateOriginTargetFC)
+      return { ...store, originTargetFC: action.updateOriginTargetFC, error: error ? error : null, useUserLocOrigin: false }
     }
 
     case 'SET_ORIGIN_TO_USER_LOC': {
@@ -34,12 +35,15 @@ const pathsReducer = (store = initialOriginTarget, action) => {
 
     case 'UPDATE_USER_LOCATION': {
       if (store.useUserLocOrigin) {
-        return { ...store, originTargetFC: updateOriginToFC(store.originTargetFC, turf.toLngLat(action.coords)) }
+        const updateOriginTargetFC = updateOriginToFC(store.originTargetFC, turf.toLngLat(action.coords))
+        const error = utils.originTargetwithinSupportedArea(updateOriginTargetFC)
+        return { ...store, originTargetFC: updateOriginTargetFC, error: error ? error : null }
       } else return store
     }
 
     case 'SET_TARGET': {
-      return { ...store, originTargetFC: action.updateOriginTargetFC }
+      const error = utils.originTargetwithinSupportedArea(action.updateOriginTargetFC)
+      return { ...store, originTargetFC: action.updateOriginTargetFC, error: error ? error : null }
     }
 
     default:
@@ -47,9 +51,10 @@ const pathsReducer = (store = initialOriginTarget, action) => {
   }
 }
 
-export const setOrigin = (lngLat) => {
+export const setOrigin = (lngLat, originTargetFC) => {
   return async (dispatch) => {
-    dispatch({ type: 'SET_ORIGIN', lngLat })
+    const updateOriginTargetFC = updateOriginToFC(originTargetFC, lngLat)
+    dispatch({ type: 'SET_ORIGIN', updateOriginTargetFC })
     dispatch(closePopup())
   }
 }
@@ -59,11 +64,15 @@ export const setTarget = (lngLat, originTargetFC) => {
     const updateOriginTargetFC = updateTargetToFC(originTargetFC, lngLat)
     dispatch({ type: 'SET_TARGET', updateOriginTargetFC })
     dispatch(closePopup())
-    const originSet = originTargetFC.features.filter(feat => feat.properties.type === 'origin').length > 0
-    if (originSet) {
-      const originCoords = utils.getOriginCoordsFromFC(updateOriginTargetFC)
-      const targetCoords = utils.getTargetCoordsFromFC(updateOriginTargetFC)
-      dispatch(getQuietPaths(originCoords, targetCoords))
+    // start routing after target is set (if at supported area)
+    const error = utils.originTargetwithinSupportedArea(updateOriginTargetFC)
+    if (!error) {
+      const originSet = originTargetFC.features.filter(feat => feat.properties.type === 'origin').length > 0
+      if (originSet) {
+        const originCoords = utils.getOriginCoordsFromFC(updateOriginTargetFC)
+        const targetCoords = utils.getTargetCoordsFromFC(updateOriginTargetFC)
+        dispatch(getQuietPaths(originCoords, targetCoords))
+      }
     }
   }
 }

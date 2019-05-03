@@ -18,8 +18,8 @@ class SelectLocationsPopup extends React.Component {
 
     return (
       <StyledPopupDiv>
-        <Button setLoc disabled={false} submit onClick={() => store.dispatch(setOrigin(lngLat))}>Route from here</Button>
-        <Button setLoc disabled={false} submit onClick={() => store.dispatch(setTarget(lngLat, originTargetFC))}>Route here</Button>
+        <Button setLoc border disabled={false} submit onClick={() => store.dispatch(setOrigin(lngLat, originTargetFC))}>Route from here</Button>
+        <Button setLoc border disabled={false} submit onClick={() => store.dispatch(setTarget(lngLat, originTargetFC))}>Route here</Button>
       </StyledPopupDiv >
     )
   }
