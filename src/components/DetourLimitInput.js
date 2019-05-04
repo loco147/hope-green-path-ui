@@ -84,25 +84,16 @@ const StyledOption = styled.option`
 
 class DetourLimitInput extends Component {
   render() {
+    const { detourLimit, detourLimits } = this.props
 
     return (
       <SelectFlex>
-        <StyledText> Set max detour: </StyledText>
+        <StyledText> Filter by detour: </StyledText>
         <SelectWrapper>
-          <StyledSelect onChange={(e) => this.props.setDetourLimit(e.target.value)} defaultValue={1000}>
-            <StyledOption value={50}>50 m</StyledOption>
-            <StyledOption value={100}>100 m</StyledOption>
-            <StyledOption value={200}>200 m</StyledOption>
-            <StyledOption value={400}>400 m</StyledOption>
-            <StyledOption value={600}>600 m</StyledOption>
-            <StyledOption value={1000}>1 km </StyledOption>
-            <StyledOption value={2000}>2 km </StyledOption>
-            <StyledOption value={3000}> 3 km</StyledOption>
-            <StyledOption value={4000}> 4 km</StyledOption>
-            <StyledOption value={5000}> 5 km</StyledOption>
-            <StyledOption value={7000}> 7 km</StyledOption>
-            <StyledOption value={10000}> 10 km</StyledOption>
-            <StyledOption value={15000}> 15 km</StyledOption>
+          <StyledSelect onChange={(e) => this.props.setDetourLimit(e.target.value)} value={detourLimit}>
+            {detourLimits.map(limit => (
+              <StyledOption key={limit.label} value={limit.limit}>{limit.label}</StyledOption>
+            ))}
           </StyledSelect>
         </SelectWrapper>
       </SelectFlex>
@@ -111,8 +102,8 @@ class DetourLimitInput extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  userLocation: state.userLocation,
-  originTargetFC: state.originTarget.originTargetFC,
+  detourLimit: state.paths.detourLimit,
+  detourLimits: state.paths.detourLimits,
 })
 
 const ConnectedDetourLimitInput = connect(mapStateToProps, { setDetourLimit })(DetourLimitInput)

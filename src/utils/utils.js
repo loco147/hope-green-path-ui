@@ -50,6 +50,41 @@ export const getBestPath = (qPaths) => {
   return null
 }
 
+const getDetourLimit = (len_diff, rounding) => Math.ceil(len_diff / rounding) * rounding
+
+export const getDetourLimits = (qPaths) => {
+  const pathLenDiffs = qPaths.map(feat => feat.properties.len_diff)
+  const pathProps = qPaths.map(feat => feat.properties)
+  const limits = pathProps.reduce((acc, props) => {
+    const lenDiff = props.len_diff
+    if (lenDiff > 50) {
+      // get limit as rounded value higher the len diff
+      const limit = lenDiff > 1000 ? getDetourLimit(lenDiff, 100) : getDetourLimit(lenDiff, 50)
+      // add new limit if it's not in the limits list yeet
+      if (acc.map(limit => limit.limit).indexOf(limit) === -1) {
+        // create label for len diff to be shown in options input
+        const pathCount = pathLenDiffs.filter(x => x < limit).length
+        const limitText = limit < 1000 ? String(limit) + ' m' : String(limit / 1000) + ' km'
+        const label = limitText + ' (' + (String(pathCount)) + ')'
+        acc.push({ limit, count: pathCount, label, minNt: props.min_nt })
+      }
+    }
+    return acc
+  }, [])
+  return limits
+}
+
+export const getInitialDetourLimit = (detourLimits) => {
+  if (detourLimits.length === 0) return 0
+  console.log('detourLimits', detourLimits)
+  for (let i = 0; i < detourLimits.length; i++) {
+    if (detourLimits[i].minNt >= 20 && i > 0) {
+      return detourLimits[i - 1].limit
+    } else { continue }
+  }
+  return detourLimits[detourLimits.length - 1].limit
+}
+
 export const originTargetwithinSupportedArea = (originTargetFC) => {
   const origin = originTargetFC.features.filter(feat => feat.properties.type === 'origin')
   const target = originTargetFC.features.filter(feat => feat.properties.type === 'target')

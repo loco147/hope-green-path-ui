@@ -8,8 +8,9 @@ const initialPaths = {
   qPathFC: turf.asFeatureCollection([]),
   sPathFC: turf.asFeatureCollection([]),
   selPathFC: turf.asFeatureCollection([]),
+  detourLimit: 0,
+  detourLimits: [],
   waitingPaths: false,
-  detourLimit: 1000,
 }
 
 const pathsReducer = (store = initialPaths, action) => {
@@ -25,6 +26,12 @@ const pathsReducer = (store = initialPaths, action) => {
         ...store,
         waitingPaths: false,
         sPathFC: turf.asFeatureCollection(action.sPath)
+      }
+    case 'SET_DETOUR_LIMITS':
+      return {
+        ...store,
+        detourLimits: action.detourLimits,
+        detourLimit: action.initialDetourLimit,
       }
 
     case 'SET_QUIET_PATH':
@@ -78,8 +85,9 @@ const pathsReducer = (store = initialPaths, action) => {
         qPathFC: turf.asFeatureCollection([]),
         sPathFC: turf.asFeatureCollection([]),
         selPathFC: turf.asFeatureCollection([]),
+        detourLimit: 0,
+        detourLimits: [],
       }
-
     default:
       return store
   }
@@ -106,8 +114,12 @@ export const getQuietPaths = (originCoords, targetCoords) => {
     }
     const sPath = pathFeats.filter(feat => feat.properties.type === 'short')
     const qPaths = pathFeats.filter(feat => feat.properties.type === 'quiet' && feat.properties.len_diff !== 0)
+    const qPathsSorted = qPaths.sort((a, b) => a.properties.len_diff - b.properties.len_diff)
+    const detourLimits = utils.getDetourLimits(qPathsSorted)
+    const initialDetourLimit = utils.getInitialDetourLimit(detourLimits)
+    dispatch({ type: 'SET_DETOUR_LIMITS', detourLimits, initialDetourLimit })
     dispatch({ type: 'SET_SHORTEST_PATH', sPath })
-    dispatch({ type: 'SET_QUIET_PATH', qPaths })
+    dispatch({ type: 'SET_QUIET_PATH', qPaths: qPathsSorted })
     const bestPath = utils.getBestPath(qPaths)
     if (bestPath) dispatch(setSelectedPath(bestPath.properties.id))
   }

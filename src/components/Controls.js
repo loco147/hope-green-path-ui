@@ -32,28 +32,30 @@ const ButtonFlex = styled.div`
 
 class Controls extends Component {
   render() {
-    const { userLocFC } = this.props.userLocation
-    const { useUserLocOrigin } = this.props.originTarget
-    const showingPaths = this.props.sPathFC.features.length > 0 || this.props.waitingPaths
+    const { userLocFC, detourLimit, useUserLocOrigin, sPathFC, waitingPaths, qPaths } = this.props
+    const showingPaths = sPathFC.features.length > 0 || waitingPaths
+
+    if (detourLimit === 0 && (useUserLocOrigin || showingPaths)) return null
 
     return (
       <ControlBox>
-        <DetourLimitInput />
-        <ButtonFlex>
-          {useUserLocOrigin || showingPaths
-            ? null
-            : <Button small onClick={() => this.props.useUserLocationOrigin(userLocFC)}> Use current location</Button>
-          }
-        </ButtonFlex>
+        {detourLimit === 0 || qPaths.length < 2 ? null : <DetourLimitInput />}
+        {useUserLocOrigin || showingPaths
+          ? null
+          : <ButtonFlex>
+            <Button small onClick={() => this.props.useUserLocationOrigin(userLocFC)}> Use current location</Button>
+          </ButtonFlex>}
       </ControlBox>
     )
   }
 }
 
 const mapStateToProps = (state) => ({
-  userLocation: state.userLocation,
-  originTarget: state.originTarget,
+  userLocFC: state.userLocation.userLocFC,
+  detourLimit: state.paths.detourLimit,
+  useUserLocOrigin: state.originTarget.useUserLocOrigin,
   sPathFC: state.paths.sPathFC,
+  qPaths: state.paths.qPathFC.features,
   waitingPaths: state.paths.waitingPaths,
 })
 
