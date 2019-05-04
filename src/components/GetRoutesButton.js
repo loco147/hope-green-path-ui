@@ -2,9 +2,8 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { Button } from './Button'
-import Notification from './Notification'
-import { getShortestPath, getQuietPaths } from './../reducers/pathsReducer'
-import { utils } from './../utils'
+import { getShortestPath, getQuietPaths } from '../reducers/pathsReducer'
+import { utils } from '../utils'
 
 const OuterFlex = styled.div`
   display: flex;
@@ -13,7 +12,7 @@ const OuterFlex = styled.div`
   align-items: center;
 `
 
-class Menu extends Component {
+class GetRoutesButton extends Component {
   render() {
     const { originTargetFC, originTargetError } = this.props
     const originCoords = utils.getOriginCoordsFromFC(originTargetFC)
@@ -22,7 +21,7 @@ class Menu extends Component {
 
     return (
       <OuterFlex>
-        <Notification />
+        {/* hide the button when not ready for routing*/}
         {originOrTargetMissing || this.props.waitingPaths || originTargetError
           ? null
           : <Button border shadow onClick={() => this.props.getQuietPaths(originCoords, targetCoords)}> Get routes</Button>
@@ -38,6 +37,6 @@ const mapStateToProps = (state) => ({
   waitingPaths: state.paths.waitingPaths,
 })
 
-const ConnectedMenu = connect(mapStateToProps, { getShortestPath, getQuietPaths })(Menu)
+const ConnectedGetRoutesButton = connect(mapStateToProps, { getShortestPath, getQuietPaths })(GetRoutesButton)
 
-export default ConnectedMenu
+export default ConnectedGetRoutesButton

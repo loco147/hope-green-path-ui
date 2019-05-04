@@ -57,17 +57,15 @@ export const getDetourLimits = (qPaths) => {
   const pathProps = qPaths.map(feat => feat.properties)
   const limits = pathProps.reduce((acc, props) => {
     const lenDiff = props.len_diff
-    if (lenDiff > 50) {
-      // get limit as rounded value higher the len diff
-      const limit = lenDiff > 1000 ? getDetourLimit(lenDiff, 100) : getDetourLimit(lenDiff, 50)
-      // add new limit if it's not in the limits list yeet
-      if (acc.map(limit => limit.limit).indexOf(limit) === -1) {
-        // create label for len diff to be shown in options input
-        const pathCount = pathLenDiffs.filter(x => x < limit).length
-        const limitText = limit < 1000 ? String(limit) + ' m' : String(limit / 1000) + ' km'
-        const label = limitText + ' (' + (String(pathCount)) + ')'
-        acc.push({ limit, count: pathCount, label, minNt: props.min_nt })
-      }
+    // get limit as rounded value higher the len diff
+    const limit = lenDiff > 1000 ? getDetourLimit(lenDiff, 100) : getDetourLimit(lenDiff, 50)
+    // add new limit if it's not in the limits list yeet
+    if (acc.map(limit => limit.limit).indexOf(limit) === -1) {
+      // create label for len diff to be shown in options input
+      const pathCount = pathLenDiffs.filter(x => x < limit).length
+      const limitText = limit < 1000 ? String(limit) + ' m' : String(limit / 1000) + ' km'
+      const label = limitText + ' (' + (String(pathCount)) + ')'
+      acc.push({ limit, count: pathCount, label, minNt: props.min_nt })
     }
     return acc
   }, [])
@@ -76,8 +74,8 @@ export const getDetourLimits = (qPaths) => {
 
 export const getInitialDetourLimit = (detourLimits) => {
   if (detourLimits.length === 0) return 0
-  console.log('detourLimits', detourLimits)
   for (let i = 0; i < detourLimits.length; i++) {
+    // initial detour limit should filter out paths with NT higher than 20
     if (detourLimits[i].minNt >= 20 && i > 0) {
       return detourLimits[i - 1].limit
     } else { continue }

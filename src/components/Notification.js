@@ -2,6 +2,12 @@ import React from 'react'
 import { connect } from 'react-redux'
 import styled, { css } from 'styled-components'
 
+const OuterFlex = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 0 10px 13px 10px;
+  align-items: center;
+`
 const StyledNotificationDiv = styled.div`
   margin: 5px 6px;
   padding: 4px 9px;
@@ -28,14 +34,16 @@ const Notification = (props) => {
   const look = props.originTargetError ? 'error' : props.notification.look
 
   return (
-    <StyledNotificationDiv look={look}>
-    <div>
-      {props.notification.text}
-    </div>
-    <div>
-      {props.originTargetError}
-    </div>
-    </StyledNotificationDiv>
+    <OuterFlex>
+      <StyledNotificationDiv look={look}>
+        <div>
+          {props.notification.text}
+        </div>
+        <div>
+          {props.originTargetError}
+        </div>
+      </StyledNotificationDiv>
+    </OuterFlex>
   )
 }
 

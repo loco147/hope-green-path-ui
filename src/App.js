@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import Map from './components/map/Map'
-import Menu from './components/Menu'
-import Controls from './components/Controls'
+import Notification from './components/Notification'
+import GetRoutesButton from './components/GetRoutesButton'
+import TopControls from './components/TopControls'
 import PathInfo from './components/PathInfo'
 import MapControl from './components/map/MapControl'
 import PathShort from './components/map/PathShort'
@@ -47,11 +48,12 @@ class App extends Component {
         <ToggleGuideButton />
         <Guide />
         <TopPanel>
-          <Controls/>
+          <TopControls/>
         </TopPanel>
         <BottomPanel>
+          <Notification />
           {sPathFC.features.length === 0
-            ? <Menu />
+            ? <GetRoutesButton />
             : <PathInfo />
           }
         </BottomPanel>

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { Button } from './Button'
 import DetourLimitInput from './DetourLimitInput'
-import { useUserLocationOrigin } from './../reducers/originTargetReducer'
+import { useUserLocationOrigin } from '../reducers/originTargetReducer'
 
 const ControlBox = styled.div`
   margin: 0px;
@@ -30,17 +30,19 @@ const ButtonFlex = styled.div`
     }
 `
 
-class Controls extends Component {
+class TopControls extends Component {
   render() {
-    const { userLocFC, detourLimit, useUserLocOrigin, sPathFC, waitingPaths, qPaths } = this.props
+    const { userLocFC, detourLimit, useUserLocOrigin, sPathFC, waitingPaths, detourLimits } = this.props
     const showingPaths = sPathFC.features.length > 0 || waitingPaths
 
-    if (detourLimit === 0 && (useUserLocOrigin || showingPaths)) return null
+    const hideDetourLimitInput = detourLimit === 0 || detourLimits.length < 2
+    const hideUserLocButton = useUserLocOrigin || showingPaths
 
+    if (hideDetourLimitInput && hideUserLocButton) return null
     return (
       <ControlBox>
-        {detourLimit === 0 || qPaths.length < 2 ? null : <DetourLimitInput />}
-        {useUserLocOrigin || showingPaths
+        {hideDetourLimitInput ? null : <DetourLimitInput />}
+        {hideUserLocButton
           ? null
           : <ButtonFlex>
             <Button small onClick={() => this.props.useUserLocationOrigin(userLocFC)}> Use current location</Button>
@@ -53,12 +55,12 @@ class Controls extends Component {
 const mapStateToProps = (state) => ({
   userLocFC: state.userLocation.userLocFC,
   detourLimit: state.paths.detourLimit,
+  detourLimits: state.paths.detourLimits,
   useUserLocOrigin: state.originTarget.useUserLocOrigin,
   sPathFC: state.paths.sPathFC,
-  qPaths: state.paths.qPathFC.features,
   waitingPaths: state.paths.waitingPaths,
 })
 
-const ConnectedControls = connect(mapStateToProps, { useUserLocationOrigin })(Controls)
+const ConnectedTopControls = connect(mapStateToProps, { useUserLocationOrigin })(TopControls)
 
-export default ConnectedControls
+export default ConnectedTopControls
