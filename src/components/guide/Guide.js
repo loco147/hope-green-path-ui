@@ -126,9 +126,9 @@ const Guide = (props) => {
               Path attributes:
             </SubHeading>
             <P>
-              <KeyValuePair prop={'Et'} value={'Total cumulative exposure (index) to traffic noise along the path.'} />
-              <KeyValuePair prop={'Ed'} value={"How much smaller (%) is the quiet path's exposure (to noise) compared to the shortest path's exposure."} />
-              <KeyValuePair prop={'En'} value={'Distance-normalized traffic noise exposure index. Varies between 0 and 1 (higher is worse). This can be used to compare paths with different lengths.'} />
+              <KeyValuePair prop={'Et'} value={'Total cumulative exposure to traffic noise along the path (index).'} />
+              <KeyValuePair prop={'Ed'} value={'How much smaller (%) is the exposure (to traffic noise) along the quiet path compared to the one along the shortest path.'} />
+              <KeyValuePair prop={'En'} value={'Distance-normalized exposure to traffic noise (index). Varies between 0 and 1 (higher is worse). This can be used to compare paths with different lengths.'} />
               <KeyValuePair prop={'60'} value={'Shortest path: exposure to 60dB traffic noise as cumulative walking distance (m) along the path.'} />
               <KeyValuePair prop={'XX'} value={'Shortest path: exposure to XXdB traffic noise as cumulative walking distance (m) along the path.'} />
               <KeyValuePair prop={'XX'} value={'Quiet path: difference in exposure to XXdB traffic noise compared to the respective exposure (to XXdB) along the shortest path (m).'} />

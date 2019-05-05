@@ -65,12 +65,12 @@ const StyledPathStats = styled.div.attrs(props => ({
   padding: 3px 4px;
   color: black;
   cursor: default;
-  transition-duration: 0.15s;
-  box-shadow: 0 -1px 7px 0 rgba(0,0,0,0.3), 0 3px 3px 0 rgba(0,0,0,0.2);
+  transition-duration: 0.12s;
+  box-shadow: 0 -1px 6px 0 rgba(0,0,0,0.25), 0 3px 4px 0 rgba(0,0,0,0.3);
   &:hover { 
     cursor: pointer;
-    @media (min-width: 644px) {
-      box-shadow: 0 -1px 7px 0 rgba(0, 0, 0, 0.15), 0 4px 7px 0 rgba(0, 0, 0, 0.25);
+    @media (min-width: 600px) {
+      box-shadow: 0 -1px 8px 0 rgba(0,0,0,0.3), 0 4px 8px 0 rgba(0,0,0,0.35);
     }
   }
   @media (max-width: 372px) {
