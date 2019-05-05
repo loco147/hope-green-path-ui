@@ -103,7 +103,7 @@ export const getShortestPath = (originCoords, targetCoords) => {
 
 export const getQuietPaths = (originCoords, targetCoords) => {
   return async (dispatch) => {
-    dispatch({ type: 'ROUTING_STARTED' })
+    dispatch({ type: 'ROUTING_STARTED', originCoords, targetCoords })
     let pathFeats
     try {
       pathFeats = await paths.getQuietPaths(originCoords, targetCoords)
