@@ -31,7 +31,7 @@ class Map extends React.Component {
 
     this.map = new MapboxGL.Map({
       container: this.mapContainer,
-      style: BASEMAPS.QuietPathLight.url,
+      style: BASEMAPS.Streets.url,
       center: mapCenter,
       zoom: zoom,
       boxZoom: false,
