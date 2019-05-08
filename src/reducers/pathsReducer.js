@@ -103,6 +103,14 @@ export const getShortestPath = (originCoords, targetCoords) => {
 
 export const getQuietPaths = (originCoords, targetCoords) => {
   return async (dispatch) => {
+    const distance = turf.getDistance(originCoords, targetCoords)
+    console.log('distance', distance)
+    if (distance > 5200) {
+      if (!window.confirm('Long distance routing might take longer than 15 s')) {
+        return
+      }
+    }
+
     dispatch({ type: 'ROUTING_STARTED', originCoords, targetCoords })
     let pathFeats
     try {

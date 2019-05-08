@@ -1,5 +1,6 @@
 import bbox from '@turf/bbox'
 import buffer from '@turf/buffer'
+import distance from '@turf/distance'
 import booleanWithin from '@turf/boolean-within'
 import { featureCollection } from '@turf/helpers'
 import { point } from '@turf/helpers'
@@ -22,6 +23,11 @@ export const getBbox = (geojsonFeature) => {
 
 export const within = (feat, feat2) => {
   return booleanWithin(feat, feat2)
+}
+
+export const getDistance = (originCoords, destCoords) => {
+  const dist = distance(asPoint(originCoords), asPoint(destCoords), { units: 'meters' })
+  return Math.round(dist)
 }
 
 export const combineFCs = (fc1, fc2) => {
