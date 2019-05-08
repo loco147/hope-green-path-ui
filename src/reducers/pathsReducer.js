@@ -2,7 +2,6 @@ import { turf } from '../utils/index'
 import * as paths from './../services/paths'
 import { showNotification } from './notificationReducer'
 import { utils } from './../utils/index'
-// import { egPaths } from '../temp/eg_path_features.js'
 
 const initialPaths = {
   qPathFC: turf.asFeatureCollection([]),
@@ -11,36 +10,54 @@ const initialPaths = {
   detourLimit: 0,
   detourLimits: [],
   waitingPaths: false,
+  routingId: 0,
 }
 
 const pathsReducer = (store = initialPaths, action) => {
 
   switch (action.type) {
+
     case 'ROUTING_STARTED':
       return {
         ...store,
-        waitingPaths: true
+        waitingPaths: true,
+        routingId: action.routingId,
       }
-    case 'SET_SHORTEST_PATH':
+
+    case 'SET_SHORTEST_PATH': {
+      const cancelledRouting = store.routingId !== action.routingId
+      if (cancelledRouting) return store
       return {
         ...store,
         waitingPaths: false,
-        sPathFC: turf.asFeatureCollection(action.sPath)
+        sPathFC: turf.asFeatureCollection(action.sPath),
       }
-    case 'SET_DETOUR_LIMITS':
+    }
+
+    case 'SET_DETOUR_LIMITS': {
+      const cancelledRouting = store.routingId !== action.routingId
+      if (cancelledRouting) return store
       return {
         ...store,
         detourLimits: action.detourLimits,
         detourLimit: action.initialDetourLimit,
       }
+    }
 
-    case 'SET_QUIET_PATH':
+    case 'SET_QUIET_PATH': {
+      const cancelledRouting = store.routingId !== action.routingId
+      if (cancelledRouting) return store
       return {
         ...store,
         qPathFC: turf.asFeatureCollection(action.qPaths)
       }
+    }
 
     case 'SET_SELECTED_PATH': {
+      if (action.routingId) {
+        const cancelledRouting = store.routingId !== action.routingId
+        if (cancelledRouting) return store
+      }
       // unselect path by clicking it again
       if (clickedPathAgain(store.selPathFC, action.selPathId)) {
         return {
@@ -48,8 +65,8 @@ const pathsReducer = (store = initialPaths, action) => {
           selPathFC: turf.asFeatureCollection([])
         }
       } else {
-        let selPath = store.qPathFC.features.filter(feat => feat.properties.id === action.selPathId)
         // select shortest path if no quiet path id match the selected id
+        let selPath = store.qPathFC.features.filter(feat => feat.properties.id === action.selPathId)
         if (selPath.length === 0) {
           selPath = store.sPathFC.features
         }
@@ -75,18 +92,15 @@ const pathsReducer = (store = initialPaths, action) => {
     case 'ERROR_IN_ROUTING':
       return { ...store, waitingPaths: false }
 
-    case 'SET_ORIGIN':
+    // reset paths and cancel previous routing requests (if any) on these actions
     case 'SET_TARGET':
     case 'WAIT_FOR_USER_LOC_ORIGIN':
-    case 'SET_ORIGIN_TO_USER_LOC':
     case 'RESET_PATHS':
+    case 'SET_ORIGIN':
+    case 'SET_ORIGIN_TO_USER_LOC':
       return {
-        ...store,
-        qPathFC: turf.asFeatureCollection([]),
-        sPathFC: turf.asFeatureCollection([]),
-        selPathFC: turf.asFeatureCollection([]),
-        detourLimit: 0,
-        detourLimits: [],
+        ...initialPaths,
+        routingId: store.routingId + 1,
       }
     default:
       return store
@@ -101,35 +115,33 @@ export const getShortestPath = (originCoords, targetCoords) => {
   }
 }
 
-export const getQuietPaths = (originCoords, targetCoords) => {
+export const getQuietPaths = (originCoords, targetCoords, prevRoutingId) => {
   return async (dispatch) => {
     const distance = turf.getDistance(originCoords, targetCoords)
-    console.log('distance', distance)
     if (distance > 5200) {
-      if (!window.confirm('Long distance routing might take longer than 15 s')) {
+      if (!window.confirm('Long distance routing may take longer than 10 s')) {
         return
       }
     }
-
-    dispatch({ type: 'ROUTING_STARTED', originCoords, targetCoords })
-    let pathFeats
+    const routingId = prevRoutingId + 1
+    dispatch({ type: 'ROUTING_STARTED', originCoords, targetCoords, routingId })
     try {
-      pathFeats = await paths.getQuietPaths(originCoords, targetCoords)
+      const pathFeats = await paths.getQuietPaths(originCoords, targetCoords)
+      const sPath = pathFeats.filter(feat => feat.properties.type === 'short')
+      const qPaths = pathFeats.filter(feat => feat.properties.type === 'quiet' && feat.properties.len_diff !== 0)
+      const qPathsSorted = qPaths.sort((a, b) => a.properties.len_diff - b.properties.len_diff)
+      const detourLimits = utils.getDetourLimits(qPathsSorted)
+      const initialDetourLimit = utils.getInitialDetourLimit(detourLimits)
+      dispatch({ type: 'SET_DETOUR_LIMITS', detourLimits, initialDetourLimit, routingId })
+      dispatch({ type: 'SET_SHORTEST_PATH', sPath, routingId })
+      dispatch({ type: 'SET_QUIET_PATH', qPaths: qPathsSorted, routingId })
+      const bestPath = utils.getBestPath(qPaths)
+      if (bestPath) dispatch({ type: 'SET_SELECTED_PATH', selPathId: bestPath.properties.id, routingId })
     } catch (error) {
       dispatch({ type: 'ERROR_IN_ROUTING' })
       dispatch(showNotification("Couldn't get path", 'error', 4))
       return
     }
-    const sPath = pathFeats.filter(feat => feat.properties.type === 'short')
-    const qPaths = pathFeats.filter(feat => feat.properties.type === 'quiet' && feat.properties.len_diff !== 0)
-    const qPathsSorted = qPaths.sort((a, b) => a.properties.len_diff - b.properties.len_diff)
-    const detourLimits = utils.getDetourLimits(qPathsSorted)
-    const initialDetourLimit = utils.getInitialDetourLimit(detourLimits)
-    dispatch({ type: 'SET_DETOUR_LIMITS', detourLimits, initialDetourLimit })
-    dispatch({ type: 'SET_SHORTEST_PATH', sPath })
-    dispatch({ type: 'SET_QUIET_PATH', qPaths: qPathsSorted })
-    const bestPath = utils.getBestPath(qPaths)
-    if (bestPath) dispatch(setSelectedPath(bestPath.properties.id))
   }
 }
 

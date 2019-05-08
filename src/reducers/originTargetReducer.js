@@ -66,7 +66,7 @@ export const setOrigin = (lngLat, originTargetFC) => {
   }
 }
 
-export const setTarget = (lngLat, originTargetFC) => {
+export const setTarget = (lngLat, originTargetFC, routingId) => {
   return async (dispatch) => {
     const updateOriginTargetFC = updateTargetToFC(originTargetFC, lngLat)
     dispatch({ type: 'SET_TARGET', updateOriginTargetFC })
@@ -78,7 +78,7 @@ export const setTarget = (lngLat, originTargetFC) => {
       if (originSet) {
         const originCoords = utils.getOriginCoordsFromFC(updateOriginTargetFC)
         const targetCoords = utils.getTargetCoordsFromFC(updateOriginTargetFC)
-        dispatch(getQuietPaths(originCoords, targetCoords))
+        dispatch(getQuietPaths(originCoords, targetCoords, routingId))
       }
     }
   }

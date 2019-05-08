@@ -14,7 +14,7 @@ const OuterFlex = styled.div`
 
 class GetRoutesButton extends Component {
   render() {
-    const { originTargetFC, originTargetError } = this.props
+    const { originTargetFC, originTargetError, routingId } = this.props
     const originCoords = utils.getOriginCoordsFromFC(originTargetFC)
     const targetCoords = utils.getTargetCoordsFromFC(originTargetFC)
     const originOrTargetMissing = originCoords === null || targetCoords === null
@@ -24,7 +24,7 @@ class GetRoutesButton extends Component {
         {/* hide the button when not ready for routing*/}
         {originOrTargetMissing || this.props.waitingPaths || originTargetError
           ? null
-          : <Button border shadow onClick={() => this.props.getQuietPaths(originCoords, targetCoords)}> Get routes</Button>
+          : <Button border shadow onClick={() => this.props.getQuietPaths(originCoords, targetCoords, routingId)}> Get routes</Button>
         }
       </OuterFlex>
     )
@@ -35,6 +35,7 @@ const mapStateToProps = (state) => ({
   originTargetFC: state.originTarget.originTargetFC,
   originTargetError: state.originTarget.error,
   waitingPaths: state.paths.waitingPaths,
+  routingId: state.paths.routingId,
 })
 
 const ConnectedGetRoutesButton = connect(mapStateToProps, { getShortestPath, getQuietPaths })(GetRoutesButton)

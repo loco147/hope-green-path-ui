@@ -19,12 +19,18 @@ const notificationReducer = (store = initialNotification, action) => {
 
         case 'UPDATE_USER_LOCATION': {
             if (store.text === 'Locating...') return initialNotification
-            return store
+            else return store
         }
         // hide initial tooltip / notification (on how to set the destination) if popup is opened
         case 'SET_POPUP': {
             if (store.text && store.text.includes('Click on the map')) return initialNotification
             return store
+        }
+        // cancel ongoing routing if new origin or target is set
+        case 'SET_ORIGIN':
+        case 'SET_TARGET': {
+            if (store.text === 'Calculating routes...') return initialNotification
+            else return store
         }
         case 'SET_SHORTEST_PATH':
         case 'RMNOTIF':
