@@ -3,6 +3,7 @@ import { initialOriginTargetFeatures } from './../constants'
 import { closePopup } from './mapPopupReducer'
 import { startTrackingUserLocation } from './userLocationReducer'
 import { getQuietPaths } from './pathsReducer'
+import { showNotification } from './notificationReducer'
 import { utils } from './../utils/index'
 
 const initialOriginTarget = {
@@ -48,6 +49,12 @@ const pathsReducer = (store = initialOriginTarget, action) => {
 
     default:
       return store
+  }
+}
+
+export const showSetDestinationTooltip = () => {
+  return async (dispatch) => {
+    dispatch(showNotification('Click on the map to set the destination', 'info', 5))
   }
 }
 

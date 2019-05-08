@@ -14,6 +14,7 @@ import OriginTargetPoints from './components/map/OriginTargetPoints'
 import ToggleGuideButton from './components/guide/ToggleGuideButton'
 import Guide from './components/guide/Guide'
 import DimLayer from './components/DimLayer'
+import { showSetDestinationTooltip } from './reducers/originTargetReducer'
 
 const AbsoluteContainer = styled.div`
   position: absolute;
@@ -33,6 +34,11 @@ const TopPanel = styled(AbsoluteContainer)`
 `
 
 class App extends Component {
+
+  componentDidMount() {
+    this.props.showSetDestinationTooltip()
+  }
+
   render() {
     const { sPathFC } = this.props
     return (
@@ -66,5 +72,5 @@ const mapStateToProps = (state) => ({
   sPathFC: state.paths.sPathFC,
 })
 
-const ConnectedApp = connect(mapStateToProps, null)(App)
+const ConnectedApp = connect(mapStateToProps, { showSetDestinationTooltip })(App)
 export default ConnectedApp

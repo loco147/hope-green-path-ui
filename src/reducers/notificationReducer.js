@@ -21,6 +21,11 @@ const notificationReducer = (store = initialNotification, action) => {
             if (store.text === 'Locating...') return initialNotification
             return store
         }
+        // hide initial tooltip / notification (on how to set the destination) if popup is opened
+        case 'SET_POPUP': {
+            if (store.text && store.text.includes('Click on the map')) return initialNotification
+            return store
+        }
         case 'SET_SHORTEST_PATH':
         case 'RMNOTIF':
             return initialNotification
