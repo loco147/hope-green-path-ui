@@ -18,7 +18,7 @@ export const Button = styled.div.attrs(props => ({
   letter-spacing: 1px;
   max-width: 90%;
   overflow: auto;
-  height: min-content;
+  height: auto;
   pointer-events: auto;
   transition-duration: 0.2s;
   -webkit-transition-duration: 0.2s; /* Safari */

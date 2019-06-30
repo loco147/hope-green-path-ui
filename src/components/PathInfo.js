@@ -9,7 +9,7 @@ import { IconDiv, Star } from './Icons'
 const BottomControlPanel = styled.div`
   background: rgba(255,255,255,0.95);
   height: 53px;
-  width: 100%;
+  width: calc(100% - 2px);
   margin-left: 0px;
   display: flex;
   box-shadow: 0 -4px 8px 0 rgba(0,0,0,0.07), 0 -6px 20px 0 rgba(0,0,0,0.04);

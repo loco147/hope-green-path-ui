@@ -21,7 +21,7 @@ const StyledToggleGuideButton = styled(Button)`
   transition-duration: 0s;
   -webkit-transition-duration: 0s; /* Safari */
   &:before {
-    content: 'i';
+    content: '?';
   }
   &:hover {
     margin-right: 2px;
