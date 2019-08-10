@@ -7,10 +7,8 @@ import { resetPaths } from './../reducers/pathsReducer'
 
 const ControlPanel = styled.div`
   margin: 0px;
-  background-color: rgba(255,255,255,0.95);
+  background-color: rgba(255,255,255,0.98);
   padding: 3px 5px 2px 5px;
-  border-bottom-left-radius: 15px;
-  border-bottom-right-radius: 15px;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.15), 0 6px 20px 0 rgba(0,0,0,0.09);
   justify-content: center;
   @media (min-width:591px) {
@@ -39,10 +37,10 @@ const TopControlPanel = (props) => {
     <ControlPanel>
       <ButtonFlex>
         {showingPaths
-          ? <Button small blue onClick={() => resetPaths()}> Reset</Button>
+          ? <Button small bold white onClick={() => resetPaths()}> Reset</Button>
           : null}
         {showUserLocButton
-          ? <Button small onClick={() => props.useUserLocationOrigin(userLocFC)}> Use current location</Button>
+          ? <Button small bold onClick={() => props.useUserLocationOrigin(userLocFC)}> Use current location</Button>
           : null}
       </ButtonFlex>
     </ControlPanel>

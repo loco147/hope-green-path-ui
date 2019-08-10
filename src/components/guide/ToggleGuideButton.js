@@ -1,22 +1,18 @@
 import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { Button } from '../Button'
 import { toggleGuide } from './../../reducers/menuReducer'
 
-const StyledToggleGuideButton = styled(Button)`
-  pointer-events: none;
-  z-index: 8;
-  top: 105px;
-  right: 6px;
-  padding: 2px 10px;
-  font-weight: 450;
-  border: 2px solid black;
+const StyledToggleGuideButton = styled.div`
+  pointer-events: auto;
+  cursor: pointer;
+  padding: 1px 10px;
+  font-weight: 500;
+  border-radius: 8px;
+  font-size: 22px;
+  border: 3px solid black;
   background-color: white;
   color: black;
-  margin-right: 0px;
-  cursor: pointer;
-  pointer-events: auto;
   transition-duration: 0s;
   -webkit-transition-duration: 0s; /* Safari */
   &:before {

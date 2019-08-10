@@ -3,12 +3,10 @@ import { bool } from 'prop-types'
 
 export const Button = styled.div.attrs(props => ({
   style: ({ display: props.visible ? '' : 'none', })
-})
-)`
+}))`
   cursor: pointer;
   padding: 6px 13px;
   color: white;
-  // border: 1px solid;
   border-radius: 8px;
   background-color: #17af40e8;
   margin: 5px 6px;
@@ -44,11 +42,17 @@ export const Button = styled.div.attrs(props => ({
       background-color: #128a32e8;
     }
   `}
-  ${props => props.blue && css`
-    background-color: #1791afe8;
+  ${props => props.white && css`
+    background-color: white;
+    color: black;
+    border: 2px solid black;
     &:hover { 
-      background-color: #136c82e8;
+      color: white
+      background-color: black;
     }
+  `}
+  ${props => props.bold && css`
+    font-weight: 500;
   `}
   ${props => props.shadow && css`
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.22), 0 6px 20px 0 rgba(0,0,0,0.14);
