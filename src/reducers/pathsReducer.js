@@ -10,6 +10,7 @@ const initialPaths = {
   detourLimit: 0,
   detourLimits: [],
   waitingPaths: false,
+  showingPaths: false,
   routingId: 0,
 }
 
@@ -30,6 +31,7 @@ const pathsReducer = (store = initialPaths, action) => {
       return {
         ...store,
         waitingPaths: false,
+        showingPaths: true,
         sPathFC: turf.asFeatureCollection(action.sPath),
       }
     }
@@ -100,6 +102,7 @@ const pathsReducer = (store = initialPaths, action) => {
     case 'SET_ORIGIN_TO_USER_LOC':
       return {
         ...initialPaths,
+        showingPaths: false,
         routingId: store.routingId + 1,
       }
     default:

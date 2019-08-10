@@ -5,7 +5,6 @@ import { Button } from '../Button'
 import { toggleGuide } from './../../reducers/menuReducer'
 
 const StyledToggleGuideButton = styled(Button)`
-  position: absolute;
   pointer-events: none;
   z-index: 8;
   top: 105px;
@@ -24,7 +23,6 @@ const StyledToggleGuideButton = styled(Button)`
     content: '?';
   }
   &:hover {
-    margin-right: 2px;
     background-color: white;
   }
 `

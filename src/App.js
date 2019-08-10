@@ -4,14 +4,14 @@ import { connect } from 'react-redux'
 import Map from './components/map/Map'
 import Notification from './components/Notification'
 import GetRoutesButton from './components/GetRoutesButton'
-import TopControls from './components/TopControls'
-import PathInfo from './components/PathInfo'
+import TopControlPanel from './components/TopControlPanel'
+import BottomControlPanel from './components/BottomControlPanel'
+import PathPanel from './components/pathpanel/PathPanel'
 import MapControl from './components/map/MapControl'
 import PathShort from './components/map/PathShort'
 import PathQuiet from './components/map/PathQuiet'
 import PathSelected from './components/map/PathSelected'
 import OriginTargetPoints from './components/map/OriginTargetPoints'
-import ToggleGuideButton from './components/guide/ToggleGuideButton'
 import Guide from './components/guide/Guide'
 import DimLayer from './components/DimLayer'
 import { showSetDestinationTooltip } from './reducers/originTargetReducer'
@@ -26,7 +26,7 @@ const TopPanel = styled(AbsoluteContainer)`
   right: 0px;
   z-index: 2;
   `
-  const BottomPanel = styled(AbsoluteContainer)`
+const BottomPanel = styled(AbsoluteContainer)`
   bottom: 0px;
   left: 0px;
   right: 0px;
@@ -40,9 +40,10 @@ class App extends Component {
   }
 
   render() {
-    const { sPathFC } = this.props
+    const { showingPaths } = this.props
     return (
       <div>
+        <DimLayer />
         <Map>
           <MapControl />
           <PathSelected />
@@ -50,18 +51,18 @@ class App extends Component {
           <PathQuiet />
           <OriginTargetPoints />
         </Map>
-        <DimLayer />
-        <ToggleGuideButton />
         <Guide />
         <TopPanel>
-          <TopControls/>
+          <TopControlPanel />
         </TopPanel>
         <BottomPanel>
           <Notification />
-          {sPathFC.features.length === 0
-            ? <GetRoutesButton />
-            : <PathInfo />
-          }
+          {showingPaths
+            ? <div>
+              <PathPanel />
+              <BottomControlPanel />
+            </div>
+            : <GetRoutesButton />}
         </BottomPanel>
       </div>
     )
@@ -69,7 +70,7 @@ class App extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  sPathFC: state.paths.sPathFC,
+  showingPaths: state.paths.showingPaths,
 })
 
 const ConnectedApp = connect(mapStateToProps, { showSetDestinationTooltip })(App)

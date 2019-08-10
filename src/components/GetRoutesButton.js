@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { Button } from './Button'
@@ -12,23 +12,18 @@ const OuterFlex = styled.div`
   align-items: center;
 `
 
-class GetRoutesButton extends Component {
-  render() {
-    const { originTargetFC, originTargetError, routingId } = this.props
-    const originCoords = utils.getOriginCoordsFromFC(originTargetFC)
-    const targetCoords = utils.getTargetCoordsFromFC(originTargetFC)
-    const originOrTargetMissing = originCoords === null || targetCoords === null
+const GetRoutesButton = ({ originTargetFC, originTargetError, routingId, waitingPaths, getQuietPaths }) => {
+  const originCoords = utils.getOriginCoordsFromFC(originTargetFC)
+  const targetCoords = utils.getTargetCoordsFromFC(originTargetFC)
+  const originOrTargetMissing = originCoords === null || targetCoords === null
 
-    return (
-      <OuterFlex>
-        {/* hide the button when not ready for routing*/}
-        {originOrTargetMissing || this.props.waitingPaths || originTargetError
-          ? null
-          : <Button border shadow onClick={() => this.props.getQuietPaths(originCoords, targetCoords, routingId)}> Get routes</Button>
-        }
-      </OuterFlex>
-    )
-  }
+  return (
+    <OuterFlex>
+      {originOrTargetMissing || waitingPaths || originTargetError
+        ? null
+        : <Button border shadow onClick={() => getQuietPaths(originCoords, targetCoords, routingId)}> Get routes</Button>}
+    </OuterFlex>
+  )
 }
 
 const mapStateToProps = (state) => ({
