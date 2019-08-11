@@ -5,6 +5,7 @@ import { FiFilter } from 'react-icons/fi'
 import { IoIosArrowUp } from 'react-icons/io'
 import { IoIosArrowDown } from 'react-icons/io'
 import { IoIosArrowForward } from 'react-icons/io'
+import { IoIosArrowBack } from 'react-icons/io'
 
 const IconButton = styled.div`
   cursor: pointer;
@@ -47,6 +48,12 @@ const ArrowForward = styled(IoIosArrowForward)`
   display: table-cell;
   text-align: center;
 `
+const ArrowBack = styled(IoIosArrowBack)`
+  font-size: 31px;
+  vertical-align: middle;
+  display: table-cell;
+  text-align: center;
+`
 
 export const FilterButton = ({ onClick }) => {
   return (
@@ -76,6 +83,14 @@ export const ArrowForwardButton = ({ onClick }) => {
   return (
     <IconButton onClick={onClick}>
       <IconDiv leftMargin={'-3px'}> <ArrowForward /></IconDiv>
+    </IconButton>
+  )
+}
+
+export const ArrowBackButton = ({ onClick }) => {
+  return (
+    <IconButton onClick={onClick}>
+      <IconDiv leftMargin={'-6px'}> <ArrowBack /></IconDiv>
     </IconButton>
   )
 }

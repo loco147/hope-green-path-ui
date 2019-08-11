@@ -7,6 +7,7 @@ const initialPaths = {
   qPathFC: turf.asFeatureCollection([]),
   sPathFC: turf.asFeatureCollection([]),
   selPathFC: turf.asFeatureCollection([]),
+  openedPath: null,
   detourLimit: 0,
   detourLimits: [],
   waitingPaths: false,
@@ -85,6 +86,18 @@ const pathsReducer = (store = initialPaths, action) => {
         selPathFC: turf.asFeatureCollection([])
       }
 
+    case 'SET_OPENED_PATH':
+      return {
+        ...store,
+        openedPath: action.path
+      }
+
+    case 'UNSET_OPENED_PATH':
+      return {
+        ...store,
+        openedPath: null
+      }
+
     case 'SET_DETOUR_LIMIT':
       return {
         ...store,
@@ -150,6 +163,14 @@ export const getQuietPaths = (originCoords, targetCoords, prevRoutingId) => {
 
 export const setSelectedPath = (selPathId) => {
   return { type: 'SET_SELECTED_PATH', selPathId }
+}
+
+export const setOpenedPath = (path) => {
+  return { type: 'SET_OPENED_PATH', path }
+}
+
+export const unsetOpenedPath = () => {
+  return { type: 'UNSET_OPENED_PATH' }
 }
 
 export const setDetourLimit = (detourLimit) => {

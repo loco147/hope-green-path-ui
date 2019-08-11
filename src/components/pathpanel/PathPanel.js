@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { PathInfoBox, OpenPathBox } from './PathInfoBox'
-import { setSelectedPath } from './../../reducers/pathsReducer'
+import { PathInfoBox, OpenPathBox, ClosePathBox } from './PathInfoBox'
+import { setSelectedPath, setOpenedPath, unsetOpenedPath } from './../../reducers/pathsReducer'
 
 const PathPanelContainer = styled.div`
   margin: 0px;
@@ -24,8 +24,24 @@ const PathRowFlex = styled.div`
   display: flex;
   justify-content: space-around;
 `
+const OpenedPathPanel = ({ path, unsetOpenedPath }) => {
+  return (
+    <PathPanelContainer>
+      <PathRowFlex>
+        <ClosePathBox
+          handleClick={unsetOpenedPath} />
+        <PathInfoBox
+          path={path}
+          pathType={path.properties.type}
+          selected={false} />
+      </PathRowFlex>
+    </PathPanelContainer>
+  )
+}
 
-const PathPanel = ({ showingPaths, pathStatsVisible, sPathFC, qPathFC, selPathFC, detourLimit, setSelectedPath }) => {
+const PathPanel = ({ paths, pathStatsVisible, setSelectedPath, setOpenedPath, unsetOpenedPath }) => {
+  const { showingPaths, sPathFC, qPathFC, selPathFC, openedPath, detourLimit } = paths
+
   if (!showingPaths || !pathStatsVisible) { return null }
 
   const selPathId = selPathFC.features.length > 0
@@ -35,40 +51,40 @@ const PathPanel = ({ showingPaths, pathStatsVisible, sPathFC, qPathFC, selPathFC
   const sPath = sPathFC.features[0]
   const qPaths = qPathFC.features.filter(path => path.properties.len_diff < detourLimit)
 
-  return (
-    <PathPanelContainer>
-      <PathRowFlex>
-        <PathInfoBox
-          path={sPath}
-          handleClick={() => setSelectedPath(sPath.properties.id)}
-          pathType={'short'}
-          selected={sPath.properties.id === selPathId} />
-        <OpenPathBox
-          pathType={'short'} />
-      </PathRowFlex>
-      {qPaths.map(path => (
-        <PathRowFlex key={path.properties.id}>
+  if (openedPath) {
+    return (<OpenedPathPanel path={openedPath} unsetOpenedPath={unsetOpenedPath} />)
+  } else {
+    return (
+      <PathPanelContainer>
+        <PathRowFlex>
           <PathInfoBox
-            path={path}
-            handleClick={() => setSelectedPath(path.properties.id)}
-            pathType={'quiet'}
-            selected={path.properties.id === selPathId} />
+            path={sPath}
+            handleClick={() => setSelectedPath(sPath.properties.id)}
+            pathType={'short'}
+            selected={sPath.properties.id === selPathId} />
           <OpenPathBox
-            pathType={'quiet'} />
+            handleClick={() => setOpenedPath(sPath)} />
         </PathRowFlex>
-      ))}
-    </PathPanelContainer>
-  )
+        {qPaths.map(path => (
+          <PathRowFlex key={path.properties.id}>
+            <PathInfoBox
+              path={path}
+              handleClick={() => setSelectedPath(path.properties.id)}
+              pathType={'quiet'}
+              selected={path.properties.id === selPathId} />
+            <OpenPathBox
+              handleClick={() => setOpenedPath(path)} />
+          </PathRowFlex>
+        ))}
+      </PathPanelContainer>
+    )
+  }
 }
 
 const mapStateToProps = (state) => ({
-  sPathFC: state.paths.sPathFC,
-  qPathFC: state.paths.qPathFC,
-  selPathFC: state.paths.selPathFC,
-  detourLimit: state.paths.detourLimit,
-  showingPaths: state.paths.showingPaths,
+  paths: state.paths,
   pathStatsVisible: state.menu.pathStats,
 })
 
-const ConnectedPathPanel = connect(mapStateToProps, { setSelectedPath })(PathPanel)
+const ConnectedPathPanel = connect(mapStateToProps, { setSelectedPath, setOpenedPath, unsetOpenedPath })(PathPanel)
 export default ConnectedPathPanel

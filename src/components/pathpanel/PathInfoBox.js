@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { utils } from '../../utils/index'
-import { ArrowForwardButton } from './../Icons'
+import { ArrowForwardButton, ArrowBackButton } from './../Icons'
 import { PathNoisesBar } from './PathNoisesBar'
 
 const StyledPathInfoBox = styled.div.attrs(props => ({
@@ -44,7 +44,7 @@ const PathPropsRow = styled.div`
 export const PathInfoBox = ({ path, selected, pathType, handleClick }) => {
   return (
     <StyledPathInfoBox pathType={pathType} selected={selected} onClick={handleClick}>
-      <PathNoisesBar noisePcts={path.properties.noise_pcts}/>
+      <PathNoisesBar noisePcts={path.properties.noise_pcts} />
       <PathPropsRow>
         <div>
           {pathType === 'short'
@@ -52,9 +52,9 @@ export const PathInfoBox = ({ path, selected, pathType, handleClick }) => {
             : utils.getFormattedDistanceString(path.properties.len_diff, true)}
         </div>
         <div>
-        {pathType === 'short'
-          ? path.properties.nei_norm +' noise index'
-          : Math.round(path.properties.nei_diff_rat) +' % noise'}
+          {pathType === 'short'
+            ? path.properties.nei_norm + ' noise index'
+            : Math.round(path.properties.nei_diff_rat) + ' % noise'}
         </div>
         <div>
           {pathType === 'short'
@@ -89,10 +89,18 @@ const StyledOpenPathBox = styled.div`
   width: 21px;
 `
 
-export const OpenPathBox = ({ pathType }) => {
+export const OpenPathBox = ({ handleClick }) => {
   return (
-    <StyledOpenPathBox pathType={pathType}>
+    <StyledOpenPathBox onClick={handleClick}>
       <ArrowForwardButton />
+    </StyledOpenPathBox>
+  )
+}
+
+export const ClosePathBox = ({ handleClick }) => {
+  return (
+    <StyledOpenPathBox onClick={handleClick}>
+      <ArrowBackButton />
     </StyledOpenPathBox>
   )
 }
