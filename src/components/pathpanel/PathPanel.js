@@ -9,7 +9,7 @@ const PathPanelContainer = styled.div`
   background: rgba(255,255,255,0.95);
   overflow: auto;
   width: auto;
-  max-height: 220px;
+  max-height: 184px;
   pointer-events: auto;
   padding: 6px 6px 3px 6px;
   box-shadow: 0 -4px 8px 0 rgba(0,0,0,0.07), 0 -6px 20px 0 rgba(0,0,0,0.04);
@@ -24,6 +24,7 @@ const PathRowFlex = styled.div`
   display: flex;
   justify-content: space-around;
 `
+
 const OpenedPathPanel = ({ path, unsetOpenedPath }) => {
   return (
     <PathPanelContainer>

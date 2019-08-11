@@ -89,7 +89,8 @@ const pathsReducer = (store = initialPaths, action) => {
     case 'SET_OPENED_PATH':
       return {
         ...store,
-        openedPath: action.path
+        selPathFC: turf.asFeatureCollection([action.path]),
+        openedPath: action.path,
       }
 
     case 'UNSET_OPENED_PATH':
