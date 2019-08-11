@@ -4,13 +4,14 @@ import { FaStar } from 'react-icons/fa'
 import { FiFilter } from 'react-icons/fi'
 import { IoIosArrowUp } from 'react-icons/io'
 import { IoIosArrowDown } from 'react-icons/io'
+import { IoIosArrowForward } from 'react-icons/io'
 
 const IconButton = styled.div`
   cursor: pointer;
   pointer-events: auto;
 `
 export const IconDiv = styled.div`
-  margin: 0 0 0 2px;
+  margin-left: ${props => props.leftMargin || '0px'};
   display: table;
   color: black;
   transition-duration: 0.2s;
@@ -40,6 +41,12 @@ const ArrowDown = styled(IoIosArrowDown)`
   display: table-cell;
   text-align: center;
 `
+const ArrowForward = styled(IoIosArrowForward)`
+  font-size: 36px;
+  vertical-align: middle;
+  display: table-cell;
+  text-align: center;
+`
 
 export const FilterButton = ({ onClick }) => {
   return (
@@ -61,6 +68,14 @@ export const ArrowDownButton = ({ onClick }) => {
   return (
     <IconButton onClick={onClick}>
       <IconDiv> <ArrowDown /></IconDiv>
+    </IconButton>
+  )
+}
+
+export const ArrowForwardButton = ({ onClick }) => {
+  return (
+    <IconButton onClick={onClick}>
+      <IconDiv leftMargin={'-3px'}> <ArrowForward /></IconDiv>
     </IconButton>
   )
 }

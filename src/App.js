@@ -40,7 +40,6 @@ class App extends Component {
   }
 
   render() {
-    const { showingPaths } = this.props
     return (
       <div>
         <DimLayer />
@@ -57,21 +56,14 @@ class App extends Component {
         </TopPanel>
         <BottomPanel>
           <Notification />
-          {showingPaths
-            ? <div>
-              <PathPanel />
-              <BottomControlPanel />
-            </div>
-            : <GetRoutesButton />}
+          <GetRoutesButton />
+          <PathPanel />
+          <BottomControlPanel />
         </BottomPanel>
       </div>
     )
   }
 }
 
-const mapStateToProps = (state) => ({
-  showingPaths: state.paths.showingPaths,
-})
-
-const ConnectedApp = connect(mapStateToProps, { showSetDestinationTooltip })(App)
+const ConnectedApp = connect(null, { showSetDestinationTooltip })(App)
 export default ConnectedApp

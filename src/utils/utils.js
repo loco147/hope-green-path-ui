@@ -15,13 +15,27 @@ export const getTargetCoordsFromFC = (FC) => {
   return coords.map(coord => Math.round(coord * 100000) / 100000)
 }
 
-export const getKmFromM = (m) => {
+const getFormattedKmString = (m, digits) => {
   const km = m / 1000
-  const roundedKm = Math.round(km * 100) / 100
-  return roundedKm
+  const roundedKm = Math.round(km * (10 * digits)) / (10 * digits)
+  return String(roundedKm) + ' km'
 }
 
-export const formatDiffM = (num, signs) => {
+export const getFormattedDistanceString = (m, withSign) => {
+  let distanceString
+  if (m >= 1000) {
+    distanceString = getFormattedKmString(m, 1)
+  } else {
+    distanceString = String(Math.round(m)) + ' m'
+  }
+  if (withSign && Math.round(m) > 0) {
+    return '+'.concat(distanceString)
+  } else {
+    return distanceString
+  }
+}
+
+export const getMString = (num, signs) => {
   if (!num) return 0
   const round = Math.round(num)
   if (signs) {

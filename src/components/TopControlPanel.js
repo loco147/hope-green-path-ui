@@ -37,10 +37,10 @@ const TopControlPanel = (props) => {
     <ControlPanel>
       <ButtonFlex>
         {showingPaths
-          ? <Button small bold white onClick={() => resetPaths()}> Reset</Button>
+          ? <Button smaller bold white onClick={() => resetPaths()}> Reset</Button>
           : null}
         {showUserLocButton
-          ? <Button small bold onClick={() => props.useUserLocationOrigin(userLocFC)}> Use current location</Button>
+          ? <Button small bold green onClick={() => props.useUserLocationOrigin(userLocFC)}> Use current location</Button>
           : null}
       </ButtonFlex>
     </ControlPanel>

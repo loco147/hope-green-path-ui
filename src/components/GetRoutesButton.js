@@ -12,16 +12,16 @@ const OuterFlex = styled.div`
   align-items: center;
 `
 
-const GetRoutesButton = ({ originTargetFC, originTargetError, routingId, waitingPaths, getQuietPaths }) => {
+const GetRoutesButton = ({ originTargetFC, originTargetError, routingId, waitingPaths, showingPaths, getQuietPaths }) => {
   const originCoords = utils.getOriginCoordsFromFC(originTargetFC)
   const targetCoords = utils.getTargetCoordsFromFC(originTargetFC)
   const originOrTargetMissing = originCoords === null || targetCoords === null
 
   return (
     <OuterFlex>
-      {originOrTargetMissing || waitingPaths || originTargetError
+      {originOrTargetMissing || showingPaths || waitingPaths || originTargetError
         ? null
-        : <Button border shadow onClick={() => getQuietPaths(originCoords, targetCoords, routingId)}> Get routes</Button>}
+        : <Button border green shadow onClick={() => getQuietPaths(originCoords, targetCoords, routingId)}> Get routes</Button>}
     </OuterFlex>
   )
 }
@@ -30,6 +30,7 @@ const mapStateToProps = (state) => ({
   originTargetFC: state.originTarget.originTargetFC,
   originTargetError: state.originTarget.error,
   waitingPaths: state.paths.waitingPaths,
+  showingPaths: state.paths.showingPaths,
   routingId: state.paths.routingId,
 })
 
