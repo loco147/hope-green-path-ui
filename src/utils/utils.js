@@ -22,17 +22,20 @@ const getFormattedKmString = (m, digits) => {
 }
 
 export const getFormattedDistanceString = (m, withSign) => {
+  const distObj = {}
+  distObj.m = Math.round(m)
   let distanceString
-  if (m >= 1000) {
+  if (m >= 1000 || m <= -1000) {
     distanceString = getFormattedKmString(m, 1)
   } else {
     distanceString = String(Math.round(m)) + ' m'
   }
   if (withSign && Math.round(m) > 0) {
-    return '+'.concat(distanceString)
+    distObj.string = '+'.concat(distanceString)
   } else {
-    return distanceString
+    distObj.string = distanceString
   }
+  return distObj
 }
 
 export const getMString = (num, signs) => {

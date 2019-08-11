@@ -4,6 +4,9 @@ import styled, { css } from 'styled-components'
 const StyledNoiseBar = styled.div`
   display: flex;
   width: 94%;
+  ${props => props.withMargins === true && css`
+    margin: 3px 0px 3px 0px;
+  `}
 `
 const StyledNoisePc = styled.div`
   height: 8px;
@@ -17,12 +20,12 @@ const StyledNoisePc = styled.div`
   box-shadow: 0 3px 5px 0 rgba(0,0,0,0.05), 0 3px 4px 0 rgba(0,0,0,0.01);
 `
 
-export const PathNoisesBar = ({ noisePcts }) => {
+export const PathNoisesBar = ({ noisePcts, withMargins }) => {
   const dBKeys = Object.keys(noisePcts)
   const dBs = dBKeys.map(dB => Number(dB)).sort()
 
   return (
-    <StyledNoiseBar>
+    <StyledNoiseBar withMargins={withMargins}>
       {dBs.map(dB => (
         <StyledNoisePc key={dB} dB={dB} pc={noisePcts[dB]} />
       ))}

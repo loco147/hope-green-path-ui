@@ -73,6 +73,7 @@ const pathsReducer = (store = initialPaths, action) => {
         if (selPath.length === 0) {
           selPath = store.sPathFC.features
         }
+        console.log('Selecting path:', selPath[0])
         return {
           ...store,
           selPathFC: turf.asFeatureCollection(selPath)

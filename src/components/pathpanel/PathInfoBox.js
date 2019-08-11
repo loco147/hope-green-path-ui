@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
 import { utils } from '../../utils/index'
-import { ArrowForwardButton, ArrowBackButton } from './../Icons'
 import { PathNoisesBar } from './PathNoisesBar'
 
 const StyledPathInfoBox = styled.div.attrs(props => ({
@@ -26,7 +25,7 @@ const StyledPathInfoBox = styled.div.attrs(props => ({
   cursor: default;
   transition-duration: 0.12s;
   box-shadow: 0 -1px 6px 0 rgba(0,0,0,0.25), 0 3px 4px 0 rgba(0,0,0,0.3);
-  width: calc(90% - 21px);
+  width: calc(88% - 21px);
   &:hover { 
     cursor: pointer;
     @media (min-width: 600px) {
@@ -37,7 +36,7 @@ const StyledPathInfoBox = styled.div.attrs(props => ({
 const PathPropsRow = styled.div`
   display: flex;
   justify-content: space-around;
-  font-size: 14px;
+  font-size: 13px;
   width: 100%;
 `
 
@@ -48,8 +47,8 @@ export const PathInfoBox = ({ path, selected, pathType, handleClick }) => {
       <PathPropsRow>
         <div>
           {pathType === 'short'
-            ? utils.getFormattedDistanceString(path.properties.length, false)
-            : utils.getFormattedDistanceString(path.properties.len_diff, true)}
+            ? utils.getFormattedDistanceString(path.properties.length, false).string
+            : utils.getFormattedDistanceString(path.properties.len_diff, true).string}
         </div>
         <div>
           {pathType === 'short'
@@ -63,44 +62,5 @@ export const PathInfoBox = ({ path, selected, pathType, handleClick }) => {
         </div>
       </PathPropsRow>
     </StyledPathInfoBox>
-  )
-}
-
-const StyledOpenPathBox = styled.div`
-  display: flex;
-  align-items: center;
-  pointer-events: auto;
-  height: 48px;
-  border-radius: 5px;
-  background-color: white;
-  border: 2px solid transparent;
-  padding: 3px 4px;
-  color: black;
-  cursor: default;
-  transition-duration: 0.12s;
-  box-shadow: 0 -1px 6px 0 rgba(0,0,0,0.25), 0 3px 4px 0 rgba(0,0,0,0.3);
-  margin: 4px 0px 4px 0px
-  &:hover { 
-    cursor: pointer;
-    @media (min-width: 600px) {
-      box-shadow: 0 -1px 8px 0 rgba(0,0,0,0.3), 0 4px 8px 0 rgba(0,0,0,0.35);
-    }
-  }
-  width: 21px;
-`
-
-export const OpenPathBox = ({ handleClick }) => {
-  return (
-    <StyledOpenPathBox onClick={handleClick}>
-      <ArrowForwardButton />
-    </StyledOpenPathBox>
-  )
-}
-
-export const ClosePathBox = ({ handleClick }) => {
-  return (
-    <StyledOpenPathBox onClick={handleClick}>
-      <ArrowBackButton />
-    </StyledOpenPathBox>
   )
 }

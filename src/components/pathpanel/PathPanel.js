@@ -1,7 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { PathInfoBox, OpenPathBox, ClosePathBox } from './PathInfoBox'
+import { PathInfoBox } from './PathInfoBox'
+import { OpenPathBox } from './OpenClosePathBoxes'
+import { OpenedPathInfo } from './OpenedPathInfo'
 import { setSelectedPath, setOpenedPath, unsetOpenedPath } from './../../reducers/pathsReducer'
 
 const PathPanelContainer = styled.div`
@@ -25,21 +27,6 @@ const PathRowFlex = styled.div`
   justify-content: space-around;
 `
 
-const OpenedPathPanel = ({ path, unsetOpenedPath }) => {
-  return (
-    <PathPanelContainer>
-      <PathRowFlex>
-        <ClosePathBox
-          handleClick={unsetOpenedPath} />
-        <PathInfoBox
-          path={path}
-          pathType={path.properties.type}
-          selected={false} />
-      </PathRowFlex>
-    </PathPanelContainer>
-  )
-}
-
 const PathPanel = ({ paths, pathStatsVisible, setSelectedPath, setOpenedPath, unsetOpenedPath }) => {
   const { showingPaths, sPathFC, qPathFC, selPathFC, openedPath, detourLimit } = paths
 
@@ -53,7 +40,7 @@ const PathPanel = ({ paths, pathStatsVisible, setSelectedPath, setOpenedPath, un
   const qPaths = qPathFC.features.filter(path => path.properties.len_diff < detourLimit)
 
   if (openedPath) {
-    return (<OpenedPathPanel path={openedPath} unsetOpenedPath={unsetOpenedPath} />)
+    return (<OpenedPathInfo path={openedPath} sPath={sPath} unsetOpenedPath={unsetOpenedPath} />)
   } else {
     return (
       <PathPanelContainer>
