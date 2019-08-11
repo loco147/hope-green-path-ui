@@ -76,7 +76,9 @@ const pathsReducer = (store = initialPaths, action) => {
         console.log('Selecting path:', selPath[0])
         return {
           ...store,
-          selPathFC: turf.asFeatureCollection(selPath)
+          // if openedPath is set, change it to the selected path
+          openedPath: store.openedPath ? selPath[0] : null,
+          selPathFC: turf.asFeatureCollection(selPath),
         }
       }
     }
