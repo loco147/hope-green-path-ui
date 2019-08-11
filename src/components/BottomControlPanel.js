@@ -14,7 +14,7 @@ const ControlPanel = styled.div`
   border: 1px solid #d0d0d0;
   @media (min-width: 600px) {
     width 340px;
-    padding: 0px 10px 0px 10px;
+    padding: 0px 6px 0px 6px;
     border: none;
   }
 `

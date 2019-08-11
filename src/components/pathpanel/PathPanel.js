@@ -10,7 +10,7 @@ const PathPanelContainer = styled.div`
   width: auto;
   max-height: 220px;
   pointer-events: auto;
-  padding: 6px 7px 3px 6px;
+  padding: 6px 6px 3px 6px;
   box-shadow: 0 -4px 8px 0 rgba(0,0,0,0.07), 0 -6px 20px 0 rgba(0,0,0,0.04);
   @media (min-width: 600px) {
     width 340px;
@@ -38,7 +38,6 @@ const PathPanel = ({ showingPaths, pathStatsVisible, sPathFC, qPathFC, selPathFC
     <PathPanelContainer>
       <PathRowFlex>
         <PathInfoBox
-          key={sPath.properties.id}
           path={sPath}
           pathType={'short'}
           selected={sPath.properties.id === selPathId} />

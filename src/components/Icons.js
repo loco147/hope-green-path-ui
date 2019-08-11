@@ -42,7 +42,7 @@ const ArrowDown = styled(IoIosArrowDown)`
   text-align: center;
 `
 const ArrowForward = styled(IoIosArrowForward)`
-  font-size: 36px;
+  font-size: 31px;
   vertical-align: middle;
   display: table-cell;
   text-align: center;

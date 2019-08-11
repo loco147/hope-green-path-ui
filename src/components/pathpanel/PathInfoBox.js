@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { utils } from '../../utils/index'
 import { ArrowForwardButton } from './../Icons'
+import { PathNoisesBar } from './PathNoisesBar'
 
 const StyledPathInfoBox = styled.div.attrs(props => ({
   style:
@@ -11,9 +12,11 @@ const StyledPathInfoBox = styled.div.attrs(props => ({
     })
 }))`
   display: flex;
+  flex-direction: column;
   align-items: center;
+  justify-content: space-evenly;
   pointer-events: auto;
-  height: 67px;
+  height: 48px;
   border-radius: 5px;
   margin: 4px 0px 4px 0px
   background-color: white;
@@ -23,7 +26,7 @@ const StyledPathInfoBox = styled.div.attrs(props => ({
   cursor: default;
   transition-duration: 0.12s;
   box-shadow: 0 -1px 6px 0 rgba(0,0,0,0.25), 0 3px 4px 0 rgba(0,0,0,0.3);
-  width: 82%;
+  width: calc(90% - 21px);
   &:hover { 
     cursor: pointer;
     @media (min-width: 600px) {
@@ -40,7 +43,8 @@ const PathPropsRow = styled.div`
 
 export const PathInfoBox = ({ path, selected, pathType }) => {
   return (
-    <StyledPathInfoBox pathType={pathType}>
+    <StyledPathInfoBox pathType={pathType} selected={selected}>
+      <PathNoisesBar noisePcts={path.properties.noise_pcts}/>
       <PathPropsRow>
         <div>
           {pathType === 'short'
@@ -55,7 +59,7 @@ export const PathInfoBox = ({ path, selected, pathType }) => {
         <div>
           {pathType === 'short'
             ? Math.round(path.properties.mdB)
-            : Math.round(path.properties.mdB_diff)} dB (mean)
+            : Math.round(path.properties.mdB_diff)} dB<sub>mean</sub>
         </div>
       </PathPropsRow>
     </StyledPathInfoBox>
@@ -66,7 +70,7 @@ const StyledOpenPathBox = styled.div`
   display: flex;
   align-items: center;
   pointer-events: auto;
-  height: 67px;
+  height: 48px;
   border-radius: 5px;
   background-color: white;
   border: 2px solid transparent;
@@ -82,7 +86,7 @@ const StyledOpenPathBox = styled.div`
       box-shadow: 0 -1px 8px 0 rgba(0,0,0,0.3), 0 4px 8px 0 rgba(0,0,0,0.35);
     }
   }
-  width: 7%;
+  width: 21px;
 `
 
 export const OpenPathBox = ({ pathType }) => {
