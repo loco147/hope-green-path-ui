@@ -41,9 +41,9 @@ const PathPropsRow = styled.div`
   width: 100%;
 `
 
-export const PathInfoBox = ({ path, selected, pathType }) => {
+export const PathInfoBox = ({ path, selected, pathType, handleClick }) => {
   return (
-    <StyledPathInfoBox pathType={pathType} selected={selected}>
+    <StyledPathInfoBox pathType={pathType} selected={selected} onClick={handleClick}>
       <PathNoisesBar noisePcts={path.properties.noise_pcts}/>
       <PathPropsRow>
         <div>

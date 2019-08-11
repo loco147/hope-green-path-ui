@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { PathInfoBox, OpenPathBox } from './PathInfoBox'
+import { setSelectedPath } from './../../reducers/pathsReducer'
 
 const PathPanelContainer = styled.div`
   margin: 0px;
@@ -24,7 +25,7 @@ const PathRowFlex = styled.div`
   justify-content: space-around;
 `
 
-const PathPanel = ({ showingPaths, pathStatsVisible, sPathFC, qPathFC, selPathFC, detourLimit }) => {
+const PathPanel = ({ showingPaths, pathStatsVisible, sPathFC, qPathFC, selPathFC, detourLimit, setSelectedPath }) => {
   if (!showingPaths || !pathStatsVisible) { return null }
 
   const selPathId = selPathFC.features.length > 0
@@ -39,6 +40,7 @@ const PathPanel = ({ showingPaths, pathStatsVisible, sPathFC, qPathFC, selPathFC
       <PathRowFlex>
         <PathInfoBox
           path={sPath}
+          handleClick={() => setSelectedPath(sPath.properties.id)}
           pathType={'short'}
           selected={sPath.properties.id === selPathId} />
         <OpenPathBox
@@ -48,6 +50,7 @@ const PathPanel = ({ showingPaths, pathStatsVisible, sPathFC, qPathFC, selPathFC
         <PathRowFlex key={path.properties.id}>
           <PathInfoBox
             path={path}
+            handleClick={() => setSelectedPath(path.properties.id)}
             pathType={'quiet'}
             selected={path.properties.id === selPathId} />
           <OpenPathBox
@@ -67,5 +70,5 @@ const mapStateToProps = (state) => ({
   pathStatsVisible: state.menu.pathStats,
 })
 
-const ConnectedPathPanel = connect(mapStateToProps, null)(PathPanel)
+const ConnectedPathPanel = connect(mapStateToProps, { setSelectedPath })(PathPanel)
 export default ConnectedPathPanel
