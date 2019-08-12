@@ -64,7 +64,45 @@ const DistBox = styled.div`
   color: black;
 `
 
-const DBLenDiff = ({ dB, path }) => {
+export const OpenedPathNoiseStats = ({ path, pathType }) => {
+  if (pathType === 'short') {
+    return <OpenedShortPathNoiseStats path={path} />
+  } else
+    return <OpenedQuietPathNoiseStats path={path} />
+}
+
+const DBLenKeyValue = ({ dB, path }) => {
+  let dist = path.properties.noises[dB]
+  let distObj = { m: 0, string: '0 m' }
+  if (dist) distObj = utils.getFormattedDistanceString(dist, false)
+  return (
+    <KeyValueFlex>
+      <DBKey>{dB}dB</DBKey>
+      <DistBox>{distObj.string}</DistBox>
+    </KeyValueFlex>
+  )
+}
+
+const OpenedShortPathNoiseStats = ({ path }) => {
+  return (
+    <StyledOpenedPathNoiseStats>
+      <PathPropsRow>
+        <FlexCols >
+          <DBLenKeyValue path={path} dB={50} />
+          <DBLenKeyValue path={path} dB={55} />
+          <DBLenKeyValue path={path} dB={60} />
+        </FlexCols>
+        <FlexCols>
+          <DBLenKeyValue path={path} dB={65} />
+          <DBLenKeyValue path={path} dB={70} />
+          <DBLenKeyValue path={path} dB={75} />
+        </FlexCols>
+      </PathPropsRow>
+    </StyledOpenedPathNoiseStats>
+  )
+}
+
+const DBLenDiffKeyValue = ({ dB, path }) => {
   let dist = path.properties.noises[dB]
   let distObj = { m: 0, string: '0 m' }
   let distDiffObj = { m: 0, string: '0 m' }
@@ -74,34 +112,28 @@ const DBLenDiff = ({ dB, path }) => {
   }
   return (
     <KeyValueFlex>
-      <DBKey dB={dB}>{dB}dB</DBKey>
+      <DBKey>{dB}dB</DBKey>
       <DistDiffBox value={distDiffObj.m}> {distDiffObj.string}</DistDiffBox>
       <DistBox> {' ('}{distObj.string}{')'}</DistBox>
     </KeyValueFlex>
   )
 }
 
-const QuietPathNoiseInfo = ({ path }) => {
+const OpenedQuietPathNoiseStats = ({ path }) => {
   return (
-    <PathPropsRow>
-      <FlexCols >
-        <DBLenDiff path={path} dB={50} />
-        <DBLenDiff path={path} dB={55} />
-        <DBLenDiff path={path} dB={60} />
-      </FlexCols>
-      <FlexCols>
-        <DBLenDiff path={path} dB={65} />
-        <DBLenDiff path={path} dB={70} />
-        <DBLenDiff path={path} dB={75} />
-      </FlexCols>
-    </PathPropsRow>
-  )
-}
-
-export const OpenedPathNoiseStats = ({ path, pathType }) => {
-  return (
-    <StyledOpenedPathNoiseStats pathType={pathType}>
-      <QuietPathNoiseInfo path={path} />
-    </StyledOpenedPathNoiseStats >
+    <StyledOpenedPathNoiseStats>
+      <PathPropsRow>
+        <FlexCols >
+          <DBLenDiffKeyValue path={path} dB={50} />
+          <DBLenDiffKeyValue path={path} dB={55} />
+          <DBLenDiffKeyValue path={path} dB={60} />
+        </FlexCols>
+        <FlexCols>
+          <DBLenDiffKeyValue path={path} dB={65} />
+          <DBLenDiffKeyValue path={path} dB={70} />
+          <DBLenDiffKeyValue path={path} dB={75} />
+        </FlexCols>
+      </PathPropsRow>
+    </StyledOpenedPathNoiseStats>
   )
 }

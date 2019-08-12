@@ -28,9 +28,10 @@ const PathRowFlex = styled.div`
 const NoiseBarsFlex = styled.div`
   display: flex;
   width: calc(90% - 21px);
+  min-height: 56px;
   flex-direction: column;
   justify-content: space-around;
-  margin: 2px 0px 0px 0px;
+  margin: 3px 0px 0px 0px;
 `
 const BarsLabel = styled.div`
   font-size: 14px;
@@ -45,6 +46,14 @@ const PathPropsRow = styled.div`
 `
 
 export const OpenedPathInfo = ({ path, sPath, unsetOpenedPath }) => {
+  if (path.properties.type === 'short') {
+    return <OpenedShortPathInfo path={path} sPath={sPath} unsetOpenedPath={unsetOpenedPath} />
+  } else {
+    return <OpenedQuietPathInfo path={path} sPath={sPath} unsetOpenedPath={unsetOpenedPath} />
+  }
+}
+
+export const OpenedQuietPathInfo = ({ path, sPath, unsetOpenedPath }) => {
   return (
     <PathPanelContainer>
       <PathRowFlex>
@@ -58,7 +67,7 @@ export const OpenedPathInfo = ({ path, sPath, unsetOpenedPath }) => {
       <PathPropsRow>
         <div>
           {utils.getFormattedDistanceString(path.properties.length, false).string}
-          {' ('}{utils.getFormattedDistanceString(path.properties.len_diff, true).string}
+          {' (+ '}{utils.getFormattedDistanceString(path.properties.len_diff, false).string}
           {' / '}{Math.round(path.properties.len_diff_rat)} %)
           </div>
         <div>
@@ -69,7 +78,33 @@ export const OpenedPathInfo = ({ path, sPath, unsetOpenedPath }) => {
           {' '}({Math.round(path.properties.mdB)}dB)
         </div>
       </PathPropsRow>
-      <OpenedPathNoiseStats path={path} sPath={sPath} pathType={path.properties.type} />
+      <OpenedPathNoiseStats path={path} sPath={sPath} pathType='quiet' />
+    </PathPanelContainer>
+  )
+}
+
+export const OpenedShortPathInfo = ({ path, sPath, unsetOpenedPath }) => {
+  return (
+    <PathPanelContainer>
+      <PathRowFlex>
+        <ClosePathBox handleClick={unsetOpenedPath} />
+        <NoiseBarsFlex>
+          <BarsLabel>Exposures to different traffic noise levels on the selected (shortest) path: </BarsLabel>
+          <PathNoisesBar withMargins={true} noisePcts={path.properties.noise_pcts} />
+        </NoiseBarsFlex>
+      </PathRowFlex >
+      <PathPropsRow>
+        <div>
+          {utils.getFormattedDistanceString(path.properties.length, false).string}
+        </div>
+        <div>
+          {path.properties.nei_norm} noise index
+        </div>
+        <div>
+          {Math.round(path.properties.mdB)} dB<sub>mean</sub>
+        </div>
+      </PathPropsRow>
+      <OpenedPathNoiseStats path={path} sPath={sPath} pathType='short' />
     </PathPanelContainer>
   )
 }
