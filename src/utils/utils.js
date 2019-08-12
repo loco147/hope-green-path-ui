@@ -15,13 +15,38 @@ export const getTargetCoordsFromFC = (FC) => {
   return coords.map(coord => Math.round(coord * 100000) / 100000)
 }
 
-export const getKmFromM = (m) => {
-  const km = m / 1000
-  const roundedKm = Math.round(km * 100) / 100
-  return roundedKm
+export const getNoiseIndexLabel = (ni) => {
+  if (ni < 0.15) return 'very low'
+  if (ni < 0.3) return 'low'
+  if (ni < 0.5) return 'moderate'
+  if (ni < 0.7) return 'high'
+  if (ni >= 0.7) return 'very high'
 }
 
-export const formatDiffM = (num, signs) => {
+const getFormattedKmString = (m, digits) => {
+  const km = m / 1000
+  const roundedKm = Math.round(km * (10 * digits)) / (10 * digits)
+  return String(roundedKm) + ' km'
+}
+
+export const getFormattedDistanceString = (m, withSign) => {
+  const distObj = {}
+  distObj.m = Math.round(m)
+  let distanceString
+  if (m >= 1000 || m <= -1000) {
+    distanceString = getFormattedKmString(m, 1)
+  } else {
+    distanceString = String(Math.round(m)) + ' m'
+  }
+  if (withSign && Math.round(m) > 0) {
+    distObj.string = '+'.concat(distanceString)
+  } else {
+    distObj.string = distanceString
+  }
+  return distObj
+}
+
+export const getMString = (num, signs) => {
   if (!num) return 0
   const round = Math.round(num)
   if (signs) {

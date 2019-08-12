@@ -7,9 +7,11 @@ const initialPaths = {
   qPathFC: turf.asFeatureCollection([]),
   sPathFC: turf.asFeatureCollection([]),
   selPathFC: turf.asFeatureCollection([]),
+  openedPath: null,
   detourLimit: 0,
   detourLimits: [],
   waitingPaths: false,
+  showingPaths: false,
   routingId: 0,
 }
 
@@ -30,6 +32,7 @@ const pathsReducer = (store = initialPaths, action) => {
       return {
         ...store,
         waitingPaths: false,
+        showingPaths: true,
         sPathFC: turf.asFeatureCollection(action.sPath),
       }
     }
@@ -70,9 +73,12 @@ const pathsReducer = (store = initialPaths, action) => {
         if (selPath.length === 0) {
           selPath = store.sPathFC.features
         }
+        console.log('Selecting path:', selPath[0])
         return {
           ...store,
-          selPathFC: turf.asFeatureCollection(selPath)
+          // if openedPath is set, change it to the selected path
+          openedPath: store.openedPath ? selPath[0] : null,
+          selPathFC: turf.asFeatureCollection(selPath),
         }
       }
     }
@@ -81,6 +87,19 @@ const pathsReducer = (store = initialPaths, action) => {
       return {
         ...store,
         selPathFC: turf.asFeatureCollection([])
+      }
+
+    case 'SET_OPENED_PATH':
+      return {
+        ...store,
+        selPathFC: turf.asFeatureCollection([action.path]),
+        openedPath: action.path,
+      }
+
+    case 'UNSET_OPENED_PATH':
+      return {
+        ...store,
+        openedPath: null
       }
 
     case 'SET_DETOUR_LIMIT':
@@ -100,6 +119,7 @@ const pathsReducer = (store = initialPaths, action) => {
     case 'SET_ORIGIN_TO_USER_LOC':
       return {
         ...initialPaths,
+        showingPaths: false,
         routingId: store.routingId + 1,
       }
     default:
@@ -147,6 +167,14 @@ export const getQuietPaths = (originCoords, targetCoords, prevRoutingId) => {
 
 export const setSelectedPath = (selPathId) => {
   return { type: 'SET_SELECTED_PATH', selPathId }
+}
+
+export const setOpenedPath = (path) => {
+  return { type: 'SET_OPENED_PATH', path }
+}
+
+export const unsetOpenedPath = () => {
+  return { type: 'UNSET_OPENED_PATH' }
 }
 
 export const setDetourLimit = (detourLimit) => {
