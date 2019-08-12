@@ -68,6 +68,7 @@ const ShortestPathInfoBox = ({ path, selected, handleClick }) => {
 }
 
 const QuietPathInfoBox = ({ path, selected, handleClick }) => {
+  const mdB_diff = path.properties.mdB_diff
   return (
     <StyledPathInfoBox selected={selected} onClick={handleClick}>
       <PathNoisesBar noisePcts={path.properties.noise_pcts} />
@@ -79,7 +80,7 @@ const QuietPathInfoBox = ({ path, selected, handleClick }) => {
           {Math.round(path.properties.nei_diff_rat) + ' % noise'}
         </div>
         <div>
-          {Math.round(path.properties.mdB_diff)} dB<sub>mean</sub>
+          {Math.abs(mdB_diff) < 1 ? mdB_diff : Math.round(mdB_diff)} dB<sub>mean</sub>
         </div>
       </PathPropsRow>
     </StyledPathInfoBox>

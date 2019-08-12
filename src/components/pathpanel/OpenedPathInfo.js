@@ -54,6 +54,7 @@ export const OpenedPathInfo = ({ path, sPath, unsetOpenedPath }) => {
 }
 
 export const OpenedQuietPathInfo = ({ path, sPath, unsetOpenedPath }) => {
+  const mdB_diff = path.properties.mdB_diff
   return (
     <PathPanelContainer>
       <PathRowFlex>
@@ -74,7 +75,7 @@ export const OpenedQuietPathInfo = ({ path, sPath, unsetOpenedPath }) => {
           {Math.round(path.properties.nei_diff_rat) + ' % noise'}
         </div>
         <div>
-          {Math.round(path.properties.mdB_diff)} dB<sub>mean</sub>
+          {Math.abs(mdB_diff) < 1 ? mdB_diff : Math.round(mdB_diff)} dB<sub>mean</sub>
           {' '}({Math.round(path.properties.mdB)}dB)
         </div>
       </PathPropsRow>
