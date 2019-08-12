@@ -15,6 +15,14 @@ export const getTargetCoordsFromFC = (FC) => {
   return coords.map(coord => Math.round(coord * 100000) / 100000)
 }
 
+export const getNoiseIndexLabel = (ni) => {
+  if (ni < 0.15) return 'very low'
+  if (ni < 0.3) return 'low'
+  if (ni < 0.5) return 'moderate'
+  if (ni < 0.7) return 'high'
+  if (ni >= 0.7) return 'very high'
+}
+
 const getFormattedKmString = (m, digits) => {
   const km = m / 1000
   const roundedKm = Math.round(km * (10 * digits)) / (10 * digits)

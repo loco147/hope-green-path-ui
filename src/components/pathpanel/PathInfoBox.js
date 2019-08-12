@@ -57,7 +57,7 @@ const ShortestPathInfoBox = ({ path, selected, handleClick }) => {
           {utils.getFormattedDistanceString(path.properties.length, false).string}
         </div>
         <div>
-          {path.properties.nei_norm} <sub>ni</sub>
+          {path.properties.nei_norm} <sub>ni</sub> ({utils.getNoiseIndexLabel(path.properties.nei_norm)})
         </div>
         <div>
           {Math.round(path.properties.mdB)} dB<sub>mean</sub>

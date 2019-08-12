@@ -42,7 +42,7 @@ const PathPropsRow = styled.div`
   margin: 6px 0px 6px 0px;
   justify-content: space-around;
   font-size: 12px;
-  width: 100%;
+  width: 99%;
 `
 
 export const OpenedPathInfo = ({ path, sPath, unsetOpenedPath }) => {
@@ -98,7 +98,7 @@ export const OpenedShortPathInfo = ({ path, sPath, unsetOpenedPath }) => {
           {utils.getFormattedDistanceString(path.properties.length, false).string}
         </div>
         <div>
-          {path.properties.nei_norm} noise index
+          {path.properties.nei_norm} <sub>ni</sub> ({utils.getNoiseIndexLabel(path.properties.nei_norm)})
         </div>
         <div>
           {Math.round(path.properties.mdB)} dB<sub>mean</sub>
