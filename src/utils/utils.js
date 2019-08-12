@@ -19,8 +19,9 @@ export const getNoiseIndexLabel = (ni) => {
   if (ni < 0.15) return 'very low'
   if (ni < 0.3) return 'low'
   if (ni < 0.5) return 'moderate'
-  if (ni < 0.7) return 'high'
-  if (ni >= 0.7) return 'very high'
+  if (ni < 0.65) return 'high'
+  if (ni < 0.75) return 'very high'
+  if (ni >= 0.75) return 'extreme'
 }
 
 const getFormattedKmString = (m, digits) => {
