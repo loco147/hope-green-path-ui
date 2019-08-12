@@ -36,29 +36,50 @@ const StyledPathInfoBox = styled.div.attrs(props => ({
 const PathPropsRow = styled.div`
   display: flex;
   justify-content: space-around;
-  font-size: 13px;
+  font-size: 12px;
   width: 100%;
 `
 
 export const PathInfoBox = ({ path, selected, pathType, handleClick }) => {
+  if (pathType === 'short') {
+    return <ShortestPathInfoBox path={path} selected={selected} handleClick={handleClick} />
+  } else {
+    return <QuietPathInfoBox path={path} selected={selected} handleClick={handleClick} />
+  }
+}
+
+const ShortestPathInfoBox = ({ path, selected, handleClick }) => {
   return (
-    <StyledPathInfoBox pathType={pathType} selected={selected} onClick={handleClick}>
+    <StyledPathInfoBox selected={selected} onClick={handleClick}>
       <PathNoisesBar noisePcts={path.properties.noise_pcts} />
       <PathPropsRow>
         <div>
-          {pathType === 'short'
-            ? utils.getFormattedDistanceString(path.properties.length, false).string
-            : utils.getFormattedDistanceString(path.properties.len_diff, true).string}
+          {utils.getFormattedDistanceString(path.properties.length, false).string}
         </div>
         <div>
-          {pathType === 'short'
-            ? path.properties.nei_norm + ' noise index'
-            : Math.round(path.properties.nei_diff_rat) + ' % noise'}
+          {path.properties.nei_norm} <sub>ni</sub>
         </div>
         <div>
-          {pathType === 'short'
-            ? Math.round(path.properties.mdB)
-            : Math.round(path.properties.mdB_diff)} dB<sub>mean</sub>
+          {Math.round(path.properties.mdB)} dB<sub>mean</sub>
+        </div>
+      </PathPropsRow>
+    </StyledPathInfoBox>
+  )
+}
+
+const QuietPathInfoBox = ({ path, selected, handleClick }) => {
+  return (
+    <StyledPathInfoBox selected={selected} onClick={handleClick}>
+      <PathNoisesBar noisePcts={path.properties.noise_pcts} />
+      <PathPropsRow>
+        <div>
+          {utils.getFormattedDistanceString(path.properties.len_diff, true).string}
+        </div>
+        <div>
+          {Math.round(path.properties.nei_diff_rat) + ' % noise'}
+        </div>
+        <div>
+          {Math.round(path.properties.mdB_diff)} dB<sub>mean</sub>
         </div>
       </PathPropsRow>
     </StyledPathInfoBox>
