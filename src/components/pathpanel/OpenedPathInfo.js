@@ -60,7 +60,7 @@ export const OpenedQuietPathInfo = ({ path, sPath, unsetOpenedPath }) => {
       <PathRowFlex>
         <ClosePathBox handleClick={unsetOpenedPath} />
         <NoiseBarsFlex>
-          <BarsLabel>Exposures to different traffic noise levels on the shortest and the selected quiet path: </BarsLabel>
+          <BarsLabel>Exposure to different traffic noise levels on the shortest and the selected quiet path: </BarsLabel>
           <PathNoisesBar withMargins={true} noisePcts={sPath.properties.noise_pcts} />
           <PathNoisesBar withMargins={true} noisePcts={path.properties.noise_pcts} />
         </NoiseBarsFlex>
@@ -90,7 +90,7 @@ export const OpenedShortPathInfo = ({ path, sPath, unsetOpenedPath }) => {
       <PathRowFlex>
         <ClosePathBox handleClick={unsetOpenedPath} />
         <NoiseBarsFlex>
-          <BarsLabel>Exposures to different traffic noise levels on the selected (shortest) path: </BarsLabel>
+          <BarsLabel>Exposure to different traffic noise levels on the selected (shortest) path: </BarsLabel>
           <PathNoisesBar withMargins={true} noisePcts={path.properties.noise_pcts} />
         </NoiseBarsFlex>
       </PathRowFlex >
