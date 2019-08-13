@@ -1,9 +1,9 @@
 import React from 'react'
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { Button } from '../Button'
 import { toggleGuide } from './../../reducers/menuReducer'
-import { dBColors } from './../../constants'
+import DbColorLegend from './DbColorLegend'
 
 const GuideContainer = styled.div`
   position: absolute;
@@ -84,16 +84,20 @@ const Guide = (props) => {
         <WhiteBox>
           <Instructions>
             <Title>Quiet Paths <Colored color='#14b514'>beta</Colored></Title>
-            <SubHeading> Legend for noise colors</SubHeading>
+            <SubHeading> Noise bar chart</SubHeading>
+            <DbColorLegend />
+            <P>
+              Bar charts visualize the cumulative exposures (%) to selected noise level ranges.
+            </P>
             <SubHeading> Noise cost </SubHeading>
             <P>
               Additional noise cost is assigned to edges in the network when optimizing quiet paths.
               Noise cost is calculated from contaminated distances to different noise levels using higher noise cost coefficients for higher noise levels.
-              Cumulative noise cost of a path is calculated from the noise costs of the edges along the path.
+              Cumulative noise cost of a path is calculated in similar way.
             </P>
             <SubHeading> Noise index (ni) </SubHeading>
             <P>
-              Distance-normalized traffic noise index is shown for the shortest path. The index varies between 0 and 1. Higher value indicates higher noise levels along the path.
+              Distance-normalized traffic noise index is shown for the shortest path. The index varies between 0 and 1. Higher value indicates exposure to higher noise levels along the path.
             </P>
             <SubHeading> Difference in noise </SubHeading>
             <P>
@@ -111,7 +115,6 @@ const Guide = (props) => {
               Street network data is downloaded from <Link href='https://www.openstreetmap.org/copyright' target='_blank' rel='noopener noreferrer'>OpenStreetMap</Link>{' '}
               (CC BY-SA).
             </P>
-
             <SubHeading> Code </SubHeading>
             <P>
               <Link href='https://github.com/hellej/quiet-path-ui' target='_blank' rel='noopener noreferrer'>github.com/hellej/quiet-path-ui</Link>{' '}
