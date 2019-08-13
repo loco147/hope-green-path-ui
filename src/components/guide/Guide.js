@@ -93,15 +93,15 @@ const Guide = (props) => {
             <P>
               Additional noise cost is assigned to edges in the network when optimizing quiet paths.
               Noise cost is calculated from contaminated distances to different noise levels using higher noise cost coefficients for higher noise levels.
-              Cumulative noise cost of a path is calculated in similar way.
+              The cumulative noise cost of a path is calculated in a similar way.
             </P>
             <SubHeading> Noise index (ni) </SubHeading>
             <P>
               Distance-normalized traffic noise index is shown for the shortest path. The index varies between 0 and 1. Higher value indicates exposure to higher noise levels along the path.
             </P>
-            <SubHeading> Difference in noise </SubHeading>
+            <SubHeading> Difference in noise (%) </SubHeading>
             <P>
-              How much smaller (%) is the cumulative noise cost of the quiet path compared to the one of the shortest path.
+              The difference in noise between quiet and shortest path is calculated as the difference in cumulative noise cost between the two paths.
             </P>
             <SubHeading> Sources </SubHeading>
             <P>
