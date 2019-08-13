@@ -72,9 +72,8 @@ export const OpenedPathNoiseStats = ({ path, pathType }) => {
 }
 
 const DBLenKeyValue = ({ dB, path }) => {
-  let dist = path.properties.noises[dB]
-  let distObj = { m: 0, string: '0 m' }
-  if (dist) distObj = utils.getFormattedDistanceString(dist, false)
+  const dist = path.properties.noises[dB]
+  const distObj = dist ? utils.getFormattedDistanceString(dist, false) : { m: 0, string: '0 m' }
   return (
     <KeyValueFlex>
       <DBKey>{dB}dB</DBKey>
@@ -103,17 +102,13 @@ const OpenedShortPathNoiseStats = ({ path }) => {
 }
 
 const DBLenDiffKeyValue = ({ dB, path }) => {
-  let dist = path.properties.noises[dB]
-  let distObj = { m: 0, string: '0 m' }
-  let distDiffObj = { m: 0, string: '0 m' }
-  if (dist) {
-    distObj = utils.getFormattedDistanceString(dist, false)
-    distDiffObj = utils.getFormattedDistanceString(path.properties.noises_diff[dB], true)
-  }
+  const dist = path.properties.noises[dB]
+  const distObj = dist ? utils.getFormattedDistanceString(dist, false) : { m: 0, string: '0 m' }
+  const distDiffObj = utils.getFormattedDistanceString(path.properties.noises_diff[dB], true)
   return (
     <KeyValueFlex>
       <DBKey>{dB}dB</DBKey>
-      <DistDiffBox value={distDiffObj.m}> {distDiffObj.string}</DistDiffBox>
+      {distDiffObj.m === 0 && distObj.m  === 0 ? null : <DistDiffBox value={distDiffObj.m}> {distDiffObj.string}</DistDiffBox>}
       <DistBox> {' ('}{distObj.string}{')'}</DistBox>
     </KeyValueFlex>
   )
