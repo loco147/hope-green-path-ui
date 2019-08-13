@@ -13,7 +13,7 @@ const StyledNoisePc = styled.div`
   height: 8px;
   box-shadow: 0 3px 5px 0 rgba(0,0,0,0.05), 0 3px 4px 0 rgba(0,0,0,0.01);
   width: ${props => props.pc || '0'}%;
-  ${props => props.dB && css` background-color: ${dBColors[props.dB]};`}
+  background-color: ${props => dBColors[props.dB] || 'grey'};
 `
 
 export const PathNoisesBar = ({ noisePcts, withMargins }) => {
