@@ -47,7 +47,7 @@ const PathPropsRow = styled.div`
 
 export const OpenedPathInfo = ({ path, sPath, unsetOpenedPath }) => {
   if (path.properties.type === 'short') {
-    return <OpenedShortPathInfo path={path} sPath={sPath} unsetOpenedPath={unsetOpenedPath} />
+    return <OpenedShortPathInfo path={path} unsetOpenedPath={unsetOpenedPath} />
   } else {
     return <OpenedQuietPathInfo path={path} sPath={sPath} unsetOpenedPath={unsetOpenedPath} />
   }
@@ -84,7 +84,7 @@ export const OpenedQuietPathInfo = ({ path, sPath, unsetOpenedPath }) => {
   )
 }
 
-export const OpenedShortPathInfo = ({ path, sPath, unsetOpenedPath }) => {
+export const OpenedShortPathInfo = ({ path, unsetOpenedPath }) => {
   return (
     <PathPanelContainer>
       <PathRowFlex>
@@ -93,7 +93,7 @@ export const OpenedShortPathInfo = ({ path, sPath, unsetOpenedPath }) => {
           <BarsLabel>Exposure to different traffic noise levels on the selected (shortest) path: </BarsLabel>
           <PathNoisesBar withMargins={true} noisePcts={path.properties.noise_pcts} />
         </NoiseBarsFlex>
-      </PathRowFlex >
+      </PathRowFlex>
       <PathPropsRow>
         <div>
           {utils.getFormattedDistanceString(path.properties.length, false).string}
@@ -105,7 +105,7 @@ export const OpenedShortPathInfo = ({ path, sPath, unsetOpenedPath }) => {
           {Math.round(path.properties.mdB)} dB<sub>mean</sub>
         </div>
       </PathPropsRow>
-      <OpenedPathNoiseStats path={path} sPath={sPath} pathType='short' />
+      <OpenedPathNoiseStats path={path} pathType='short' />
     </PathPanelContainer>
   )
 }
