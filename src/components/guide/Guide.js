@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components'
 import { connect } from 'react-redux'
 import { Button } from '../Button'
 import { toggleGuide } from './../../reducers/menuReducer'
-import { IconDiv, Star } from './../Icons'
+import { dBColors } from './../../constants'
 
 const GuideContainer = styled.div`
   position: absolute;
@@ -53,15 +53,17 @@ const Title = styled.div`
 const Colored = styled.span`
   color: ${props => props.color ? props.color : ''};
 `
+const SubHeading = styled.div`
+  margin: 7px 0px 0px 0px;
+  font-weight: 550;
+`
 const P = styled.div`
-  padding: 7px 0;
-  line-height: 1.5;
+  padding: 7px 0px 5px 0;
+  line-height: 1.3;
   font-weight: 350;
   font-size: 14px;
   letter-spacing: 0.5px;
-`
-const SubHeading = styled.div`
-  font-weight: 500;
+  color: rgb(40, 40, 40);
 `
 const ButtonDiv = styled.div`
   width: 100%;
@@ -69,49 +71,9 @@ const ButtonDiv = styled.div`
   justify-content: center;
   padding: 9px 0 5px 0px;
 `
-const Key = styled.div`
-  height: min-content;
-  border-radius: 4px;
-  background-color: #c59300;
-  padding: 3px 5px;
-  color: white;
-  font-size: 14px;
-  margin: 2px 3px 2px 3px;
-  min-width: 18px;
-  background-color: #000000db;
-  display: flex;
-  align-items: center;
-  ${props => props.stars && css`
-    min-width: min-content;
-    color: black;
-    background-color: white;
-    margin: 13px 3px 4px 3px;
-    border: 1px solid black;
-`}
-`
-const ValueBox = styled(Key)`
-  margin: 0px 3px 2px 3px;
-  background-color: #efefef;
+const Link = styled.a`
   color: black;
-  padding: 4px 7px;
 `
-const KeyValueFlex = styled.div`
-  display: flex;
-  margin: 5px 0px;
-  align-items: center;
-  ${props => props.stars && css`
-  align-items: flex-start;
-`}
-`
-
-const KeyValuePair = ({ prop, value }) => {
-  return (
-    <KeyValueFlex>
-      <Key>{prop}</Key>
-      <ValueBox> {value}</ValueBox>
-    </KeyValueFlex>
-  )
-}
 
 const Guide = (props) => {
   if (!props.menu.guide) return null
@@ -122,37 +84,39 @@ const Guide = (props) => {
         <WhiteBox>
           <Instructions>
             <Title>Quiet Paths <Colored color='#14b514'>beta</Colored></Title>
-            <SubHeading>
-              Path attributes:
-            </SubHeading>
+            <SubHeading> Legend for noise colors</SubHeading>
+            <SubHeading> Noise cost </SubHeading>
             <P>
-              <KeyValuePair prop={'Et'} value={'Total cumulative exposure to traffic noise along the path (index).'} />
-              <KeyValuePair prop={'Ed'} value={'How much smaller (%) is the exposure (to traffic noise) along the quiet path compared to the one along the shortest path.'} />
-              <KeyValuePair prop={'En'} value={'Distance-normalized exposure to traffic noise (index). Varies between 0 and 1 (higher is worse). This can be used to compare paths with different lengths.'} />
-              <KeyValuePair prop={'60'} value={'Shortest path: exposure to 60dB traffic noise as cumulative walking distance (m) along the path.'} />
-              <KeyValuePair prop={'XX'} value={'Shortest path: exposure to XXdB traffic noise as cumulative walking distance (m) along the path.'} />
-              <KeyValuePair prop={'XX'} value={'Quiet path: difference in exposure to XXdB traffic noise compared to the respective exposure (to XXdB) along the shortest path (m).'} />
-              <KeyValueFlex stars>
-              <Key stars> 2.1 <IconDiv><Star /></IconDiv> </Key>
-              <ValueBox>
-                This index describes the goodness of the quiet path. The higher the better.
-                It tells how much exposure to traffic noise is avoided per every extra meter walked.
-                Values lower than 1.0 suggest that the path is not very useful in avoiding exposure to traffic noise compared to the shortest path.
-              </ValueBox>
-              </KeyValueFlex>
+              Additional noise cost is assigned to edges in the network when optimizing quiet paths.
+              Noise cost is calculated from contaminated distances to different noise levels using higher noise cost coefficients for higher noise levels.
+              Cumulative noise cost of a path is calculated from the noise costs of the edges along the path.
             </P>
+            <SubHeading> Noise index (ni) </SubHeading>
             <P>
-              <a
+              Distance-normalized traffic noise index is shown for the shortest path. The index varies between 0 and 1. Higher value indicates higher noise levels along the path.
+            </P>
+            <SubHeading> Difference in noise </SubHeading>
+            <P>
+              How much smaller (%) is the cumulative noise cost of the quiet path compared to the one of the shortest path.
+            </P>
+            <SubHeading> Sources </SubHeading>
+            <P>
+              <Link
                 href='https://hri.fi/data/en_GB/dataset/helsingin-kaupungin-meluselvitys-2017'
-                target='_blank' rel='noopener noreferrer'>Traffic noise data</a>{' '} is based on an assessment conducted by the city of Helsinki.
-            It is modelled data that represents typical daytime traffic noise levels. Thus, the quiet paths are most applicable at times when
-            the traffic flows are near average.
+                target='_blank' rel='noopener noreferrer'>Traffic noise data</Link>{' '} is based on an assessment conducted by the city of Helsinki (CC BY 4.0).
+              It is modelled GIS data for typical daytime traffic noise levels. Thus, the quiet paths are most applicable at times when
+              traffic flows are near average.
             </P>
             <P>
-              Code: <br></br>
-              <a href='https://github.com/hellej/quiet-path-ui' target='_blank' rel='noopener noreferrer'>github.com/hellej/quiet-path-ui</a>{' '}
+              Street network data is downloaded from <Link href='https://www.openstreetmap.org/copyright' target='_blank' rel='noopener noreferrer'>OpenStreetMap</Link>{' '}
+              (CC BY-SA).
+            </P>
+
+            <SubHeading> Code </SubHeading>
+            <P>
+              <Link href='https://github.com/hellej/quiet-path-ui' target='_blank' rel='noopener noreferrer'>github.com/hellej/quiet-path-ui</Link>{' '}
               <br></br>
-              <a href='https://github.com/hellej/gradu-pocs' target='_blank' rel='noopener noreferrer'>github.com/hellej/gradu-pocs</a>{' '}
+              <Link href='https://github.com/hellej/quiet-path-msc' target='_blank' rel='noopener noreferrer'>github.com/hellej/quiet-path-msc</Link>{' '}
             </P>
           </Instructions>
           <ButtonDiv>
