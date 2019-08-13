@@ -121,3 +121,30 @@ export const originTargetwithinSupportedArea = (originTargetFC) => {
   }
   return null
 }
+
+export const validateNoiseDiffs = (sPaths, qPaths) => {
+  if (process.env.NODE_ENV !== 'production') {
+    let distancesOk = true
+    const sPath = sPaths[0]
+    for (let qPath of qPaths) {
+      for (let dB of [40, 45, 50, 55, 60, 65, 70, 75]) {
+        const qDist = qPath.properties.noises[dB] ? qPath.properties.noises[dB] : 0
+        const qDistDiff = qPath.properties.noises_diff[dB] ? qPath.properties.noises_diff[dB] : 0
+        const sDist = sPath.properties.noises[dB] ? sPath.properties.noises[dB] : 0
+        const sDistCheck = qDist - qDistDiff
+        const distCheckDiff = sDistCheck - sDist
+        if (Math.abs(distCheckDiff) > 1) {
+          distancesOk = false
+          console.log('Error in qPath dB distance diff vs sPath dB distance:')
+          console.log('dB:', dB)
+          console.log('qDist:', qDist)
+          console.log('qDistDiff:', qDistDiff)
+          console.log('sDist:', sDist)
+          console.log('sDistCheck:', sDistCheck, '(should be same as sDist)')
+          console.log('distCheckDiff:', distCheckDiff)
+        }
+      }
+    }
+    distancesOk ? console.log('dB distances ok') : console.log('error in dB distances')
+  }
+}

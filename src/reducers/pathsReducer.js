@@ -73,7 +73,7 @@ const pathsReducer = (store = initialPaths, action) => {
         if (selPath.length === 0) {
           selPath = store.sPathFC.features
         }
-        console.log('Selecting path:', selPath[0])
+        console.log('selecting path:', selPath[0])
         return {
           ...store,
           // if openedPath is set, change it to the selected path
@@ -149,6 +149,7 @@ export const getQuietPaths = (originCoords, targetCoords, prevRoutingId) => {
       const pathFeats = await paths.getQuietPaths(originCoords, targetCoords)
       const sPath = pathFeats.filter(feat => feat.properties.type === 'short')
       const qPaths = pathFeats.filter(feat => feat.properties.type === 'quiet' && feat.properties.len_diff !== 0)
+      utils.validateNoiseDiffs(sPath, qPaths)
       const qPathsSorted = qPaths.sort((a, b) => a.properties.len_diff - b.properties.len_diff)
       const detourLimits = utils.getDetourLimits(qPathsSorted)
       const initialDetourLimit = utils.getInitialDetourLimit(detourLimits)
