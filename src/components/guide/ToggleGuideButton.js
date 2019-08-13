@@ -7,7 +7,7 @@ const StyledToggleGuideButton = styled.div`
   pointer-events: auto;
   cursor: pointer;
   padding: 1px 10px;
-  font-weight: 500;
+  font-weight: 640;
   border-radius: 8px;
   font-size: 22px;
   border: 3px solid black;
@@ -23,11 +23,7 @@ const StyledToggleGuideButton = styled.div`
   }
 `
 
-export const ToggleGuideButton = (props) => {
-  return (
-    <StyledToggleGuideButton onClick={props.toggleGuide} guide={props.menu.guide} />
-  )
-}
+export const ToggleGuideButton = (props) => (<StyledToggleGuideButton onClick={props.toggleGuide} guide={props.menu.guide} />)
 
 const mapStateToProps = (state) => ({
   menu: state.menu,
