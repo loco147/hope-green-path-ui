@@ -7,6 +7,15 @@ export const BASEMAPS = {
   }
 }
 
+export const dBColors = {
+  40: '#00EC00',
+  50: '#56FF3B',
+  55: '#C6F519',
+  60: '#FFD000',
+  65: '#FF6E1B',
+  70: '#FF270E',
+}
+
 export const clickTol = 12
 
 export const initialMapCenter = { lng: 24.9664, lat: 60.2110 }
