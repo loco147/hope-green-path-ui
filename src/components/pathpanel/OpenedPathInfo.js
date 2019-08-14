@@ -5,22 +5,6 @@ import { OpenedPathNoiseStats } from './OpenedPathNoiseStats'
 import { ClosePathBox } from './OpenClosePathBoxes'
 import { utils } from '../../utils/index'
 
-const PathPanelContainer = styled.div`
-  margin: 0px;
-  background: rgba(255,255,255,0.95);
-  overflow: auto;
-  width: auto;
-  max-height: 184px;
-  pointer-events: auto;
-  padding: 6px 6px 3px 6px;
-  box-shadow: 0 -4px 8px 0 rgba(0,0,0,0.07), 0 -6px 20px 0 rgba(0,0,0,0.04);
-  @media (min-width: 600px) {
-    width 340px;
-    max-height: calc(100vh - 121px);
-    border-top-right-radius: 6px;
-    border-top-left-radius: 6px;
-  }
-`
 const PathRowFlex = styled.div`
   display: flex;
   justify-content: space-around;
@@ -45,7 +29,7 @@ const PathPropsRow = styled.div`
   width: 99%;
 `
 
-export const OpenedPathInfo = ({ path, sPath, unsetOpenedPath }) => {
+const OpenedPathInfo = ({ path, sPath, unsetOpenedPath }) => {
   if (path.properties.type === 'short') {
     return <OpenedShortPathInfo path={path} unsetOpenedPath={unsetOpenedPath} />
   } else {
@@ -56,7 +40,7 @@ export const OpenedPathInfo = ({ path, sPath, unsetOpenedPath }) => {
 export const OpenedQuietPathInfo = ({ path, sPath, unsetOpenedPath }) => {
   const mdB_diff = path.properties.mdB_diff
   return (
-    <PathPanelContainer>
+    <div>
       <PathRowFlex>
         <ClosePathBox handleClick={unsetOpenedPath} />
         <NoiseBarsFlex>
@@ -80,13 +64,13 @@ export const OpenedQuietPathInfo = ({ path, sPath, unsetOpenedPath }) => {
         </div>
       </PathPropsRow>
       <OpenedPathNoiseStats path={path} sPath={sPath} pathType='quiet' />
-    </PathPanelContainer>
+    </div>
   )
 }
 
 export const OpenedShortPathInfo = ({ path, unsetOpenedPath }) => {
   return (
-    <PathPanelContainer>
+    <div>
       <PathRowFlex>
         <ClosePathBox handleClick={unsetOpenedPath} />
         <NoiseBarsFlex>
@@ -106,6 +90,8 @@ export const OpenedShortPathInfo = ({ path, unsetOpenedPath }) => {
         </div>
       </PathPropsRow>
       <OpenedPathNoiseStats path={path} pathType='short' />
-    </PathPanelContainer>
+    </div>
   )
 }
+
+export default OpenedPathInfo

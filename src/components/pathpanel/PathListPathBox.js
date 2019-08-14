@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { utils } from '../../utils/index'
 import { PathNoisesBar } from './PathNoisesBar'
 
-const StyledPathInfoBox = styled.div.attrs(props => ({
+const StyledPathListPathBox = styled.div.attrs(props => ({
   style:
     ({
       border: props.selected ? '2px solid #ed7b00' : '',
@@ -40,17 +40,17 @@ const PathPropsRow = styled.div`
   width: 100%;
 `
 
-export const PathInfoBox = ({ path, selected, pathType, handleClick }) => {
+const PathListPathBox = ({ path, selected, pathType, handleClick }) => {
   if (pathType === 'short') {
-    return <ShortestPathInfoBox path={path} selected={selected} handleClick={handleClick} />
+    return <ShortestPathBox path={path} selected={selected} handleClick={handleClick} />
   } else {
-    return <QuietPathInfoBox path={path} selected={selected} handleClick={handleClick} />
+    return <QuietPathBox path={path} selected={selected} handleClick={handleClick} />
   }
 }
 
-const ShortestPathInfoBox = ({ path, selected, handleClick }) => {
+const ShortestPathBox = ({ path, selected, handleClick }) => {
   return (
-    <StyledPathInfoBox selected={selected} onClick={handleClick}>
+    <StyledPathListPathBox selected={selected} onClick={handleClick}>
       <PathNoisesBar noisePcts={path.properties.noise_pcts} />
       <PathPropsRow>
         <div>
@@ -63,14 +63,14 @@ const ShortestPathInfoBox = ({ path, selected, handleClick }) => {
           {Math.round(path.properties.mdB)} dB<sub>mean</sub>
         </div>
       </PathPropsRow>
-    </StyledPathInfoBox>
+    </StyledPathListPathBox>
   )
 }
 
-const QuietPathInfoBox = ({ path, selected, handleClick }) => {
+const QuietPathBox = ({ path, selected, handleClick }) => {
   const mdB_diff = path.properties.mdB_diff
   return (
-    <StyledPathInfoBox selected={selected} onClick={handleClick}>
+    <StyledPathListPathBox selected={selected} onClick={handleClick}>
       <PathNoisesBar noisePcts={path.properties.noise_pcts} />
       <PathPropsRow>
         <div>
@@ -83,6 +83,8 @@ const QuietPathInfoBox = ({ path, selected, handleClick }) => {
           {Math.abs(mdB_diff) < 1 ? mdB_diff : Math.round(mdB_diff)} dB<sub>mean</sub>
         </div>
       </PathPropsRow>
-    </StyledPathInfoBox>
+    </StyledPathListPathBox>
   )
 }
+
+export default PathListPathBox
