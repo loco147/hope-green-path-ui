@@ -10,6 +10,7 @@ import { IoIosArrowBack } from 'react-icons/io'
 const IconButton = styled.div`
   cursor: pointer;
   pointer-events: auto;
+  padding: ${props => props.padding || '0px'};
 `
 export const IconDiv = styled.div`
   margin-left: ${props => props.leftMargin || '0px'};
@@ -57,7 +58,7 @@ const ArrowBack = styled(IoIosArrowBack)`
 
 export const FilterButton = ({ onClick }) => {
   return (
-    <IconButton onClick={onClick}>
+    <IconButton padding='5px' onClick={onClick}>
       <IconDiv> <Filter /></IconDiv>
     </IconButton>
   )
