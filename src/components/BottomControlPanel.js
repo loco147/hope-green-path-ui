@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { togglePathPanel } from './../reducers/menuReducer'
+import { togglePathPanel, togglemaxDetourFilterSelector } from './../reducers/menuReducer'
 import ToggleGuideButton from './guide/ToggleGuideButton'
 import { FilterButton, ArrowUpButton, ArrowDownButton } from './Icons'
 
@@ -25,13 +25,13 @@ const ButtonFlex = styled.div`
   align-items: center;
   width: 100%;
 `
-const BottomControlPanel = ({ showingPaths, togglePathPanel, pathPanelVisible }) => {
+const BottomControlPanel = ({ showingPaths, pathPanelVisible, togglePathPanel, togglemaxDetourFilterSelector }) => {
   if (!showingPaths) { return null }
 
   return (
     <ControlPanel pathPanelVisible={pathPanelVisible}>
       <ButtonFlex>
-        <FilterButton />
+        <FilterButton onClick={togglemaxDetourFilterSelector} />
         {pathPanelVisible
           ? <ArrowDownButton onClick={togglePathPanel}></ArrowDownButton>
           : <ArrowUpButton onClick={togglePathPanel}></ArrowUpButton>}
@@ -46,5 +46,5 @@ const mapStateToProps = (state) => ({
   pathPanelVisible: state.menu.pathPanel,
 })
 
-const ConnectedBottomControlPanel = connect(mapStateToProps, { togglePathPanel })(BottomControlPanel)
+const ConnectedBottomControlPanel = connect(mapStateToProps, { togglePathPanel, togglemaxDetourFilterSelector })(BottomControlPanel)
 export default ConnectedBottomControlPanel

@@ -1,7 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { setSelectedPath, setOpenedPath, unsetOpenedPath } from './../../reducers/pathsReducer'
+import { setSelectedPath, setOpenedPath, unsetOpenedPath, setDetourLimit } from './../../reducers/pathsReducer'
+import MaxDetourFilterSelector from './MaxDetourFilterSelector'
 import PathList from './PathList'
 import OpenedPathInfo from './OpenedPathInfo'
 
@@ -23,19 +24,26 @@ const PathPanelContainer = styled.div`
 `
 
 const PathPanel = (props) => {
-  const { paths, pathPanelVisible, setSelectedPath, setOpenedPath, unsetOpenedPath } = props
-  const { showingPaths, sPathFC, openedPath, } = paths
+  const { paths, pathPanelVisible, maxDetourFilterSelectorVisible } = props
+  const { setSelectedPath, setOpenedPath, unsetOpenedPath, setDetourLimit } = props
+  const { showingPaths, sPathFC, openedPath, detourLimit, detourLimits } = paths
 
-  if (!showingPaths || !pathPanelVisible) { return null }
+  if (!showingPaths || !pathPanelVisible) return null
+  console.log('maxDetourFilterSelectorVisible', maxDetourFilterSelectorVisible)
 
   return (
     <PathPanelContainer>
-      {!openedPath ?
+      {maxDetourFilterSelectorVisible ?
+        <MaxDetourFilterSelector
+          detourLimit={detourLimit}
+          detourLimits={detourLimits}
+          setDetourLimit={setDetourLimit} /> : null}
+      {!openedPath && !maxDetourFilterSelectorVisible ?
         <PathList
           paths={paths}
           setSelectedPath={setSelectedPath}
           setOpenedPath={setOpenedPath} /> : null}
-      {openedPath ?
+      {openedPath && !maxDetourFilterSelectorVisible ?
         <OpenedPathInfo
           path={openedPath}
           sPath={sPathFC.features[0]}
@@ -44,11 +52,18 @@ const PathPanel = (props) => {
   )
 }
 
-
 const mapStateToProps = (state) => ({
   paths: state.paths,
   pathPanelVisible: state.menu.pathPanel,
+  maxDetourFilterSelectorVisible: state.menu.maxDetourFilterSelector,
 })
 
-const ConnectedPathPanel = connect(mapStateToProps, { setSelectedPath, setOpenedPath, unsetOpenedPath })(PathPanel)
+const mapDispatchToProps = {
+  setSelectedPath,
+  setOpenedPath,
+  unsetOpenedPath,
+  setDetourLimit,
+}
+
+const ConnectedPathPanel = connect(mapStateToProps, mapDispatchToProps)(PathPanel)
 export default ConnectedPathPanel

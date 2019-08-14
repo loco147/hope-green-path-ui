@@ -91,7 +91,7 @@ export const getDetourLimits = (qPaths) => {
       const pathCount = pathLenDiffs.filter(x => x < limit).length
       const limitText = limit < 1000 ? String(limit) + ' m' : String(limit / 1000) + ' km'
       const label = limitText + ' (' + (String(pathCount)) + ')'
-      acc.push({ limit, count: pathCount, label, minNt: props.min_nt })
+      acc.push({ limit, count: pathCount, label })
     }
     return acc
   }, [])
