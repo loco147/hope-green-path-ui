@@ -15,11 +15,11 @@ const NoiseBarsFlex = styled.div`
   min-height: 56px;
   flex-direction: column;
   justify-content: space-around;
-  margin: 3px 0px 0px 0px;
+  margin: 3px 0px 1px 0px;
 `
 const BarsLabel = styled.div`
   font-size: 14px;
-  margin: 0px 0px 3px 0px;
+  margin: 1px 0px 5px 0px;
 `
 const PathPropsRow = styled.div`
   display: flex;
@@ -49,6 +49,7 @@ export const OpenedQuietPathInfo = ({ path, sPath, unsetOpenedPath }) => {
           <PathNoisesBar withMargins={true} noisePcts={path.properties.noise_pcts} />
         </NoiseBarsFlex>
       </PathRowFlex >
+      <OpenedPathNoiseStats path={path} sPath={sPath} pathType='quiet' />
       <PathPropsRow>
         <div>
           {utils.getFormattedDistanceString(path.properties.length, false).string}
@@ -63,7 +64,6 @@ export const OpenedQuietPathInfo = ({ path, sPath, unsetOpenedPath }) => {
           {' '}({Math.round(path.properties.mdB)}dB)
         </div>
       </PathPropsRow>
-      <OpenedPathNoiseStats path={path} sPath={sPath} pathType='quiet' />
     </div>
   )
 }
@@ -78,6 +78,7 @@ export const OpenedShortPathInfo = ({ path, unsetOpenedPath }) => {
           <PathNoisesBar withMargins={true} noisePcts={path.properties.noise_pcts} />
         </NoiseBarsFlex>
       </PathRowFlex>
+      <OpenedPathNoiseStats path={path} pathType='short' />
       <PathPropsRow>
         <div>
           {utils.getFormattedDistanceString(path.properties.length, false).string}
@@ -89,7 +90,6 @@ export const OpenedShortPathInfo = ({ path, unsetOpenedPath }) => {
           {Math.round(path.properties.mdB)} dB<sub>mean</sub>
         </div>
       </PathPropsRow>
-      <OpenedPathNoiseStats path={path} pathType='short' />
     </div>
   )
 }
