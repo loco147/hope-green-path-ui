@@ -14,10 +14,9 @@ const menuReducer = (store = initialMenuState, action) => {
 
     case 'TOGGLE_PATH_PANEL': return { ...store, pathPanel: !store.pathPanel }
 
-    case 'TOGGLE_MAX_DETOUR_FILTER_SELECTOR': {
-      const maxDetourFilterSelector = store.pathPanel ? !store.maxDetourFilterSelector : true
-      return { ...store, pathPanel: true, maxDetourFilterSelector }
-    }
+    case 'SHOW_PATH_LIST': return { ...store, pathPanel: true, maxDetourFilterSelector: false }
+
+    case 'SHOW_DETOUR_FILTER_SELECTOR': return { ...store, pathPanel: true, maxDetourFilterSelector: true }
 
     default:
       return store
@@ -26,7 +25,9 @@ const menuReducer = (store = initialMenuState, action) => {
 
 export const toggleGuide = () => ({ type: 'TOGGLE_GUIDE' })
 
-export const togglemaxDetourFilterSelector = () => ({ type: 'TOGGLE_MAX_DETOUR_FILTER_SELECTOR' })
+export const showMaxDetourFilterSelector = () => ({ type: 'SHOW_DETOUR_FILTER_SELECTOR' })
+
+export const showPathList = () => ({ type: 'SHOW_PATH_LIST' })
 
 export const togglePathPanel = () => ({ type: 'TOGGLE_PATH_PANEL' })
 

@@ -6,6 +6,7 @@ import { IoIosArrowDown } from 'react-icons/io'
 import { IoIosArrowForward } from 'react-icons/io'
 import { IoIosArrowBack } from 'react-icons/io'
 import { IoIosClose } from 'react-icons/io'
+import { IoMdMenu } from 'react-icons/io'
 
 const iconStyle = `
   vertical-align: middle;
@@ -34,7 +35,11 @@ const ArrowBack = styled(IoIosArrowBack)`
 `
 const Close = styled(IoIosClose)`
   ${iconStyle}
-  font-size:  ${props => props.size || '31'}px;
+  font-size:  ${props => props.size || '10'}px;
+  `
+const List = styled(IoMdMenu)`
+  ${iconStyle}
+  font-size: 36px;
 `
 
 const IconButton = styled.div`
@@ -59,3 +64,5 @@ export const ArrowForwardButton = ({ onClick }) => <IconButton onClick={onClick}
 export const ArrowBackButton = ({ onClick }) => <IconButton onClick={onClick} leftMargin={'-6px'}> <ArrowBack /></IconButton>
 
 export const CloseButton = ({ onClick, size }) => <IconButton onClick={onClick}> <Close size={size} /></IconButton>
+
+export const ListButton = ({ onClick }) => <IconButton onClick={onClick}> <List /></IconButton>

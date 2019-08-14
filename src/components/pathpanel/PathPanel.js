@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { setSelectedPath, setOpenedPath, unsetOpenedPath, setDetourLimit } from './../../reducers/pathsReducer'
+import { showPathList } from './../../reducers/menuReducer'
 import MaxDetourFilterSelector from './MaxDetourFilterSelector'
 import PathList from './PathList'
 import OpenedPathInfo from './OpenedPathInfo'
@@ -25,7 +26,7 @@ const PathPanelContainer = styled.div`
 
 const PathPanel = (props) => {
   const { paths, pathPanelVisible, maxDetourFilterSelectorVisible } = props
-  const { setSelectedPath, setOpenedPath, unsetOpenedPath, setDetourLimit } = props
+  const { setSelectedPath, setOpenedPath, unsetOpenedPath, setDetourLimit, showPathList } = props
   const { showingPaths, sPathFC, openedPath, detourLimit, detourLimits } = paths
 
   if (!showingPaths || !pathPanelVisible) return null
@@ -37,7 +38,8 @@ const PathPanel = (props) => {
         <MaxDetourFilterSelector
           detourLimit={detourLimit}
           detourLimits={detourLimits}
-          setDetourLimit={setDetourLimit} /> : null}
+          setDetourLimit={setDetourLimit}
+          showPathList={showPathList} /> : null}
       {!openedPath && !maxDetourFilterSelectorVisible ?
         <PathList
           paths={paths}
@@ -63,6 +65,7 @@ const mapDispatchToProps = {
   setOpenedPath,
   unsetOpenedPath,
   setDetourLimit,
+  showPathList,
 }
 
 const ConnectedPathPanel = connect(mapStateToProps, mapDispatchToProps)(PathPanel)

@@ -1,13 +1,23 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
+import { CloseButton } from './../Icons'
 
 const OuterDiv = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  width: 100%;
+`
+const FlexRow = styled.div`
+  display: flex;
+  align-items: center;
+`
+const CloseButtonBox = styled.div`
+  margin: 0px -10px 0px 5px;
 `
 const TooltipStyle = styled.div`
-  font-weight: 550;
+  font-weight: 500;
   text-align: center;
   margin: 2px 0px 7px 0px;
 `
@@ -19,7 +29,7 @@ const StyledMaxDetourOption = styled.div`
   padding: 5px 10px;
   width: max-content;
   color: white;
-  border-radius: 5px;
+  border-radius: 29px;
   margin: 3px 3px 3px 3px;
   ${props => props.selected === true && css`
     background-color: white;
@@ -37,12 +47,15 @@ const MaxDetourOption = ({ dl, selected, setDetourLimit }) => {
   )
 }
 
-const MaxDetourFilterSelector = ({ detourLimit, detourLimits, setDetourLimit }) => {
+const MaxDetourFilterSelector = ({ detourLimit, detourLimits, setDetourLimit, showPathList }) => {
   console.log('detourLimit', detourLimit)
   console.log('detourLimits', detourLimits)
   return (
     <OuterDiv>
-      <TooltipStyle> Filter paths by selecting <br />maximum detour distance</TooltipStyle>
+      <FlexRow>
+        <TooltipStyle> Filter paths by selecting <br />maximum detour distance</TooltipStyle>
+        <CloseButtonBox><CloseButton size={50} onClick={showPathList} /> </CloseButtonBox>
+      </FlexRow>
       {detourLimits.map(dl => (
         <MaxDetourOption
           key={dl.label}

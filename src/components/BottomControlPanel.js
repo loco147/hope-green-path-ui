@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { togglePathPanel, togglemaxDetourFilterSelector } from './../reducers/menuReducer'
+import { togglePathPanel, showPathList, showMaxDetourFilterSelector } from './../reducers/menuReducer'
 import ToggleGuideButton from './guide/ToggleGuideButton'
-import { FilterButton, ArrowUpButton, ArrowDownButton } from './Icons'
+import { FilterButton, ListButton, ArrowUpButton, ArrowDownButton } from './Icons'
 
 const ControlPanel = styled.div`
   background: rgba(255,255,255,0.98);
@@ -25,13 +25,16 @@ const ButtonFlex = styled.div`
   align-items: center;
   width: 100%;
 `
-const BottomControlPanel = ({ showingPaths, pathPanelVisible, togglePathPanel, togglemaxDetourFilterSelector }) => {
+const BottomControlPanel = (props) => {
+  const { showingPaths, pathPanelVisible, filterSelectorVisible, togglePathPanel, showPathList, showMaxDetourFilterSelector } = props
   if (!showingPaths) { return null }
 
   return (
     <ControlPanel pathPanelVisible={pathPanelVisible}>
       <ButtonFlex>
-        <FilterButton onClick={togglemaxDetourFilterSelector} />
+        {filterSelectorVisible
+          ? <ListButton onClick={showPathList} />
+          : <FilterButton onClick={showMaxDetourFilterSelector} />}
         {pathPanelVisible
           ? <ArrowDownButton onClick={togglePathPanel}></ArrowDownButton>
           : <ArrowUpButton onClick={togglePathPanel}></ArrowUpButton>}
@@ -44,7 +47,8 @@ const BottomControlPanel = ({ showingPaths, pathPanelVisible, togglePathPanel, t
 const mapStateToProps = (state) => ({
   showingPaths: state.paths.showingPaths,
   pathPanelVisible: state.menu.pathPanel,
+  filterSelectorVisible: state.menu.maxDetourFilterSelector,
 })
 
-const ConnectedBottomControlPanel = connect(mapStateToProps, { togglePathPanel, togglemaxDetourFilterSelector })(BottomControlPanel)
+const ConnectedBottomControlPanel = connect(mapStateToProps, { togglePathPanel, showPathList, showMaxDetourFilterSelector })(BottomControlPanel)
 export default ConnectedBottomControlPanel
