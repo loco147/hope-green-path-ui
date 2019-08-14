@@ -28,10 +28,11 @@ const PathList = ({ paths, setSelectedPath, setOpenedPath }) => {
         <OpenPathBox
           handleClick={() => setOpenedPath(sPath)} />
       </PathRowFlex>
-      {qPaths.map(path => (
+      {qPaths.map((path, index) => (
         <PathRowFlex key={path.properties.id}>
           <PathListPathBox
             path={path}
+            index={index}
             handleClick={() => setSelectedPath(path.properties.id)}
             pathType={'quiet'}
             selected={path.properties.id === selPathId} />

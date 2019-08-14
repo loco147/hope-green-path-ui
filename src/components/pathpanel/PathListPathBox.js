@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { utils } from '../../utils/index'
 import { PathNoisesBar } from './PathNoisesBar'
 
@@ -39,12 +39,32 @@ const PathPropsRow = styled.div`
   font-size: 12px;
   width: 100%;
 `
+const PathIdTag = styled.div`
+  background-color: white;
+  color: black;
+  border: 1px solid black;
+  border-radius: 50%;
+  font-size: 9px;
+  text-align: center;
+  line-height: 14px;
+  width: 14px;
+  height: 14px;
+  min-width: min-content;
+  margin-right: -8px;
+  ${props => props.quiet && css`
+    line-height: 15px;
+    width: 15px;
+    height: 15px;
+    color: white;
+    background-color: #007700;
+    border: none;`}
+`
 
-const PathListPathBox = ({ path, selected, pathType, handleClick }) => {
+const PathListPathBox = ({ path, index, selected, pathType, handleClick }) => {
   if (pathType === 'short') {
     return <ShortestPathBox path={path} selected={selected} handleClick={handleClick} />
   } else {
-    return <QuietPathBox path={path} selected={selected} handleClick={handleClick} />
+    return <QuietPathBox path={path} index={index} selected={selected} handleClick={handleClick} />
   }
 }
 
@@ -53,6 +73,7 @@ const ShortestPathBox = ({ path, selected, handleClick }) => {
     <StyledPathListPathBox selected={selected} onClick={handleClick}>
       <PathNoisesBar noisePcts={path.properties.noise_pcts} />
       <PathPropsRow>
+        <PathIdTag>S</PathIdTag>
         <div>
           {utils.getFormattedDistanceString(path.properties.length, false).string}
         </div>
@@ -67,12 +88,13 @@ const ShortestPathBox = ({ path, selected, handleClick }) => {
   )
 }
 
-const QuietPathBox = ({ path, selected, handleClick }) => {
+const QuietPathBox = ({ path, index, selected, handleClick }) => {
   const mdB_diff = path.properties.mdB_diff
   return (
     <StyledPathListPathBox selected={selected} onClick={handleClick}>
       <PathNoisesBar noisePcts={path.properties.noise_pcts} />
       <PathPropsRow>
+        <PathIdTag quiet>{index + 1}</PathIdTag>
         <div>
           {utils.getFormattedDistanceString(path.properties.len_diff, true).string}
         </div>
