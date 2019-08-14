@@ -1,6 +1,6 @@
 const initialMenuState = {
   guide: false,
-  maxDetourFilterSelector: true,
+  maxDetourFilterSelector: false,
   pathPanel: false,
 }
 

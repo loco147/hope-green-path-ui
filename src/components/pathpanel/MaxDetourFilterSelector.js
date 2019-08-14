@@ -14,7 +14,7 @@ const FlexRow = styled.div`
   align-items: center;
 `
 const CloseButtonBox = styled.div`
-  margin: 0px -10px 0px 5px;
+  margin: 1px -10px 4px 5px;
 `
 const TooltipStyle = styled.div`
   font-weight: 500;
@@ -48,8 +48,6 @@ const MaxDetourOption = ({ dl, selected, setDetourLimit }) => {
 }
 
 const MaxDetourFilterSelector = ({ detourLimit, detourLimits, setDetourLimit, showPathList }) => {
-  console.log('detourLimit', detourLimit)
-  console.log('detourLimits', detourLimits)
   return (
     <OuterDiv>
       <FlexRow>
