@@ -11,6 +11,7 @@ const ControlPanel = styled.div`
   height: 53px;
   margin-left: 0px;
   display: flex;
+  pointer-events: auto;
   box-shadow: 0 -4px 8px 0 rgba(0,0,0,0.07), 0 -6px 20px 0 rgba(0,0,0,0.04);
   border: 1px solid #d0d0d0;
   border-top-right-radius: ${props => props.pathPanelVisible === true ? '0px' : '6px'};
