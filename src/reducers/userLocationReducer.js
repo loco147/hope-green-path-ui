@@ -6,6 +6,7 @@ const geoOptions = {
   timeout: 8000,
 }
 const initialUserLocation = {
+  watchId: 0,
   expireTime: '',
   error: null,
   userLocFC: turf.asFeatureCollection([]),
@@ -20,6 +21,9 @@ const userLocationReducer = (store = initialUserLocation, action) => {
         ...store,
         error: 'Waiting for location...'
       }
+
+    case 'SET_WATCH_ID': return { ...store, watchId: action.watchId }
+
     case 'ERROR_IN_POSITIONING': {
       const error = store.userLocHistory.length > 0 ? null : 'Have you enabled location services?'
       return {
@@ -55,6 +59,7 @@ export const mockUserLocation = () => {
     })
   }
 }
+
 export const startTrackingUserLocation = () => {
   return (dispatch) => {
     dispatch({ type: 'START_TRACKING_USER_LOCATION' })
@@ -77,7 +82,9 @@ export const updateUserLocation = () => {
         userLocFC,
       })
     }
-    navigator.geolocation.watchPosition(watchPosition, geoError, geoOptions)
+    const watchId = navigator.geolocation.watchPosition(watchPosition, geoError, geoOptions)
+    console.log('geolocation watchId:', watchId)
+    dispatch({ type: 'SET_WATCH_ID', watchId })
   }
 }
 

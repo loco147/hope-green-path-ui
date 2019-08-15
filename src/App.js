@@ -8,6 +8,7 @@ import TopControlPanel from './components/TopControlPanel'
 import BottomControlPanel from './components/BottomControlPanel'
 import PathPanel from './components/pathpanel/PathPanel'
 import MapControl from './components/map/MapControl'
+import UserLocation from './components/map/UserLocation'
 import PathShort from './components/map/PathShort'
 import PathQuiet from './components/map/PathQuiet'
 import PathSelected from './components/map/PathSelected'
@@ -45,6 +46,7 @@ class App extends Component {
         <DimLayer />
         <Map>
           <MapControl />
+          <UserLocation />
           <PathSelected />
           <PathShort />
           <PathQuiet />

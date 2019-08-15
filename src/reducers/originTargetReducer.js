@@ -84,12 +84,12 @@ export const setTarget = (lngLat, originTargetFC, routingId) => {
   }
 }
 
-export const useUserLocationOrigin = (userLocFC) => {
+export const useUserLocationOrigin = (userLocation) => {
   return async (dispatch) => {
-    const userLngLat = turf.getLngLatFromFC(userLocFC)
+    const userLngLat = turf.getLngLatFromFC(userLocation.userLocFC)
     dispatch(closePopup())
     if (userLngLat) {
-      dispatch({ type: 'SET_ORIGIN_TO_USER_LOC', userLngLat, userLocFC })
+      dispatch({ type: 'SET_ORIGIN_TO_USER_LOC', userLngLat, userLocFC: userLocation.userLocFC })
     } else {
       dispatch({ type: 'WAIT_FOR_USER_LOC_ORIGIN' })
       dispatch(startTrackingUserLocation())

@@ -29,7 +29,7 @@ const ButtonFlex = styled.div`
 `
 
 const TopControlPanel = (props) => {
-  const { showingPaths, waitingPaths, resetPaths, userLocFC, useUserLocOrigin } = props
+  const { showingPaths, waitingPaths, resetPaths, userLocation, useUserLocOrigin } = props
   const showUserLocButton = !useUserLocOrigin && !showingPaths && !waitingPaths
 
   if (!showUserLocButton && !showingPaths) return null
@@ -40,7 +40,7 @@ const TopControlPanel = (props) => {
           ? <Button smaller bold white onClick={() => resetPaths()}> Reset</Button>
           : null}
         {showUserLocButton
-          ? <Button small bold green onClick={() => props.useUserLocationOrigin(userLocFC)}> Use current location</Button>
+          ? <Button small bold green onClick={() => props.useUserLocationOrigin(userLocation)}> Use current location</Button>
           : null}
       </ButtonFlex>
     </ControlPanel>
@@ -48,7 +48,7 @@ const TopControlPanel = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-  userLocFC: state.userLocation.userLocFC,
+  userLocation: state.userLocation,
   useUserLocOrigin: state.originTarget.useUserLocOrigin,
   showingPaths: state.paths.showingPaths,
   waitingPaths: state.paths.waitingPaths,
