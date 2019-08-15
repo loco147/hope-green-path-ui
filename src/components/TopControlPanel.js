@@ -6,6 +6,7 @@ import { useUserLocationOrigin } from '../reducers/originTargetReducer'
 import { zoomToUserLocation } from '../reducers/userLocationReducer'
 import { resetPaths } from './../reducers/pathsReducer'
 import { LocateButton } from './Icons'
+import ToggleGuideButton from './guide/ToggleGuideButton'
 
 const ControlPanel = styled.div`
   margin: 0px;
@@ -13,39 +14,29 @@ const ControlPanel = styled.div`
   padding: 3px 5px 2px 5px;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.15), 0 6px 20px 0 rgba(0,0,0,0.09);
   justify-content: center;
-  @media (min-width:591px) {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
+  pointer-events: auto;
 `
 const ButtonFlex = styled.div`
   display: flex;
-  width: calc(100% - 33px);
+  width: calc(100% - 36px);
   justify-content: space-evenly;
-  @media (max-width: 590px) {
-    align-items: center;
-    }
-  @media (min-width:591px) {
-    margin: 0 0 0 5px;
-    }
+  align-items: center;
+  min-height: 43px;
 `
 
 const TopControlPanel = (props) => {
   const { showingPaths, waitingPaths, resetPaths, userLocation, useUserLocOrigin } = props
   const showUserLocButton = !useUserLocOrigin && !showingPaths && !waitingPaths
 
-  if (!showUserLocButton && !showingPaths) return null
   return (
     <ControlPanel>
       <ButtonFlex>
         <LocateButton handleClick={() => props.zoomToUserLocation(userLocation)} />
         {showingPaths
           ? <Button smaller bold white onClick={() => resetPaths()}> Reset</Button>
-          : null}
+          : !showUserLocButton ? <ToggleGuideButton /> : null}
         {showUserLocButton
-          ? <Button small bold green onClick={() => props.useUserLocationOrigin(userLocation)}> Use current location</Button>
-          : null}
+          ? <Button small bold green onClick={() => props.useUserLocationOrigin(userLocation)}> Use current location</Button> : null}
       </ButtonFlex>
     </ControlPanel>
   )
