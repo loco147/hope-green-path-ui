@@ -119,7 +119,7 @@ const Guide = (props) => {
             <P>
               <Link href='https://github.com/hellej/quiet-path-ui' target='_blank' rel='noopener noreferrer'>github.com/hellej/quiet-path-ui</Link>{' '}
               <br></br>
-              <Link href='https://github.com/hellej/quiet-path-msc' target='_blank' rel='noopener noreferrer'>github.com/hellej/quiet-path-msc</Link>{' '}
+              <Link href='https://github.com/hellej/quiet-paths-msc' target='_blank' rel='noopener noreferrer'>github.com/hellej/quiet-paths-msc</Link>{' '}
             </P>
           </Instructions>
           <ButtonDiv>
