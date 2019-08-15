@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
+import { menu } from './../../constants'
 import { setSelectedPath, setOpenedPath, unsetOpenedPath, setDetourLimit } from './../../reducers/pathsReducer'
 import { showPathList } from './../../reducers/menuReducer'
 import MaxDetourFilterSelector from './MaxDetourFilterSelector'
@@ -25,27 +26,27 @@ const PathPanelContainer = styled.div`
 `
 
 const PathPanel = (props) => {
-  const { paths, pathPanelVisible, maxDetourFilterSelectorVisible } = props
+  const { paths, pathPanelVisible, pathPanelContent } = props
   const { setSelectedPath, setOpenedPath, unsetOpenedPath, setDetourLimit, showPathList } = props
   const { showingPaths, sPathFC, openedPath, detourLimit, detourLimits } = paths
 
   if (!showingPaths || !pathPanelVisible) return null
-  console.log('maxDetourFilterSelectorVisible', maxDetourFilterSelectorVisible)
+  console.log('pathPanelContent:', pathPanelContent)
 
   return (
     <PathPanelContainer>
-      {maxDetourFilterSelectorVisible ?
+      {pathPanelContent === menu.detourFilterSelector ?
         <MaxDetourFilterSelector
           detourLimit={detourLimit}
           detourLimits={detourLimits}
           setDetourLimit={setDetourLimit}
           showPathList={showPathList} /> : null}
-      {!openedPath && !maxDetourFilterSelectorVisible ?
+      {pathPanelContent === menu.pathList && !openedPath ?
         <PathList
           paths={paths}
           setSelectedPath={setSelectedPath}
           setOpenedPath={setOpenedPath} /> : null}
-      {openedPath && !maxDetourFilterSelectorVisible ?
+      {openedPath && !(pathPanelContent === menu.detourFilterSelector) ?
         <OpenedPathInfo
           path={openedPath}
           sPath={sPathFC.features[0]}
@@ -57,7 +58,7 @@ const PathPanel = (props) => {
 const mapStateToProps = (state) => ({
   paths: state.paths,
   pathPanelVisible: state.menu.pathPanel,
-  maxDetourFilterSelectorVisible: state.menu.maxDetourFilterSelector,
+  pathPanelContent: state.menu.pathPanelContent,
 })
 
 const mapDispatchToProps = {

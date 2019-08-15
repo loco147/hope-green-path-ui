@@ -40,24 +40,14 @@ const PathPropsRow = styled.div`
   width: 100%;
 `
 const PathIdTag = styled.div`
-  background-color: white;
   color: black;
-  border: 1px solid black;
-  border-radius: 50%;
-  font-size: 9px;
-  text-align: center;
-  line-height: 14px;
-  width: 14px;
-  height: 14px;
-  min-width: min-content;
+  font-size: 12px;
+  font-weight: 500;
   margin-right: -8px;
+  text-align: center;
   ${props => props.quiet && css`
-    line-height: 15px;
-    width: 15px;
-    height: 15px;
-    color: white;
-    background-color: #007700;
-    border: none;`}
+    color: #0b5d21;
+    `}
 `
 
 const PathListPathBox = ({ path, index, selected, pathType, handleClick }) => {
@@ -73,7 +63,6 @@ const ShortestPathBox = ({ path, selected, handleClick }) => {
     <StyledPathListPathBox selected={selected} onClick={handleClick}>
       <PathNoisesBar noisePcts={path.properties.noise_pcts} />
       <PathPropsRow>
-        <PathIdTag>S</PathIdTag>
         <div>
           {utils.getFormattedDistanceString(path.properties.length, false).string}
         </div>
@@ -94,7 +83,7 @@ const QuietPathBox = ({ path, index, selected, handleClick }) => {
     <StyledPathListPathBox selected={selected} onClick={handleClick}>
       <PathNoisesBar noisePcts={path.properties.noise_pcts} />
       <PathPropsRow>
-        <PathIdTag quiet>{index + 1}</PathIdTag>
+        <PathIdTag quiet>Q{index + 1}</PathIdTag>
         <div>
           {utils.getFormattedDistanceString(path.properties.len_diff, true).string}
         </div>

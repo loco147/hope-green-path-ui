@@ -23,7 +23,7 @@ const BarsLabel = styled.div`
 `
 const PathPropsRow = styled.div`
   display: flex;
-  margin: 6px 0px 6px 0px;
+  margin: 8px 0px 8px 0px;
   justify-content: space-around;
   font-size: 12px;
   width: 99%;

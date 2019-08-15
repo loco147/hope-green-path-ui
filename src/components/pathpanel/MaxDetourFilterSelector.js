@@ -24,8 +24,8 @@ const TooltipStyle = styled.div`
 const StyledMaxDetourOption = styled.div`
   pointer-events: auto;
   cursor: pointer;
-  background-color: #3c3c3c;
-  border: 1px solid #3c3c3c;
+  background-color: #0b5d21;
+  border: 1px solid #0b5d21;
   padding: 5px 10px;
   width: max-content;
   color: white;
@@ -51,7 +51,7 @@ const MaxDetourFilterSelector = ({ detourLimit, detourLimits, setDetourLimit, sh
   return (
     <OuterDiv>
       <FlexRow>
-        <TooltipStyle> Filter paths by selecting <br />maximum detour distance</TooltipStyle>
+        <TooltipStyle> Filter quiet paths by selecting <br />maximum detour distance</TooltipStyle>
         <CloseButtonBox><CloseButton size={50} onClick={showPathList} /> </CloseButtonBox>
       </FlexRow>
       {detourLimits.map(dl => (

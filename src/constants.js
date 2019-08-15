@@ -16,6 +16,11 @@ export const dBColors = {
   70: '#FF270E',
 }
 
+export const menu = {
+  detourFilterSelector: 'detour_filter_selector',
+  pathList: 'path_list',
+}
+
 export const clickTol = 12
 
 export const initialMapCenter = { lng: 24.9664, lat: 60.2110 }
