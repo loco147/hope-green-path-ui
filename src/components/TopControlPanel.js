@@ -3,7 +3,9 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { Button } from './Button'
 import { useUserLocationOrigin } from '../reducers/originTargetReducer'
+import { zoomToUserLocation } from '../reducers/userLocationReducer'
 import { resetPaths } from './../reducers/pathsReducer'
+import { LocateButton } from './Icons'
 
 const ControlPanel = styled.div`
   margin: 0px;
@@ -18,9 +20,10 @@ const ControlPanel = styled.div`
   }
 `
 const ButtonFlex = styled.div`
+  display: flex;
+  width: calc(100% - 33px);
+  justify-content: space-evenly;
   @media (max-width: 590px) {
-    display: flex;
-    flex-direction: column;
     align-items: center;
     }
   @media (min-width:591px) {
@@ -36,6 +39,7 @@ const TopControlPanel = (props) => {
   return (
     <ControlPanel>
       <ButtonFlex>
+        <LocateButton handleClick={() => props.zoomToUserLocation(userLocation)} />
         {showingPaths
           ? <Button smaller bold white onClick={() => resetPaths()}> Reset</Button>
           : null}
@@ -54,6 +58,6 @@ const mapStateToProps = (state) => ({
   waitingPaths: state.paths.waitingPaths,
 })
 
-const ConnectedTopControlPanel = connect(mapStateToProps, { useUserLocationOrigin, resetPaths })(TopControlPanel)
+const ConnectedTopControlPanel = connect(mapStateToProps, { useUserLocationOrigin, zoomToUserLocation, resetPaths })(TopControlPanel)
 
 export default ConnectedTopControlPanel

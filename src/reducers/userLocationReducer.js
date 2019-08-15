@@ -31,6 +31,7 @@ const userLocationReducer = (store = initialUserLocation, action) => {
         error,
       }
     }
+    case 'ZOOM_TO_USER_LOCATION':
     case 'UPDATE_USER_LOCATION': {
       return {
         ...store,
@@ -85,6 +86,29 @@ export const updateUserLocation = () => {
     const watchId = navigator.geolocation.watchPosition(watchPosition, geoError, geoOptions)
     console.log('geolocation watchId:', watchId)
     dispatch({ type: 'SET_WATCH_ID', watchId })
+  }
+}
+
+export const zoomToUserLocation = (userLocation) => {
+  console.log('userLocation in zoom to user location', userLocation)
+  return (dispatch) => {
+    const handleNaviUserLocationZoom = (pos) => {
+      const lng = pos.coords.longitude
+      const lat = pos.coords.latitude
+      const userLocFC = turf.asFeatureCollection([turf.asPoint([lng, lat])])
+      console.log('pos.coords', pos.coords)
+      dispatch({
+        type: 'ZOOM_TO_USER_LOCATION',
+        coords: [lng, lat],
+        userLocFC,
+      })
+    }
+    if (navigator.geolocation) navigator.geolocation.getCurrentPosition(handleNaviUserLocationZoom)
+    const currentUserLngLat = turf.getLngLatFromFC(userLocation.userLocFC)
+    if (currentUserLngLat) {
+      dispatch({ type: 'ZOOM_TO_USER_LOCATION', userLngLat: currentUserLngLat, userLocFC: userLocation.userLocFC })
+    }
+    if (userLocation.watchId === 0) dispatch(startTrackingUserLocation())
   }
 }
 

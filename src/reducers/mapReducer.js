@@ -20,8 +20,12 @@ const mapReducer = (store = initialMapState, action) => {
       return { ...store, zoomToBbox: turf.getBbox(FC) }
     }
 
+    case 'ZOOM_TO_USER_LOCATION': {
+      return { ...store, zoomToBbox: turf.getBbox(turf.getBuffer(action.userLocFC, 250)) }
+    }
+
     case 'SET_ORIGIN_TO_USER_LOC':
-      return { ...store, zoomToBbox: turf.getBbox(turf.getBuffer(action.userLocFC, 700)) }
+      return { ...store, zoomToBbox: turf.getBbox(turf.getBuffer(action.userLocFC, 600)) }
 
     case 'UPDATE_CAMERA':
       return { ...store, center: action.center, zoom: action.zoom }
