@@ -10,6 +10,7 @@ const initialOriginTarget = {
   originTargetFC: turf.asFeatureCollection(process.env.NODE_ENV !== 'production' ? initialOriginTargetFeatures : []),
   useUserLocOrigin: false,
   error: null,
+  showingPaths: false,
 }
 
 const pathsReducer = (store = initialOriginTarget, action) => {
@@ -35,7 +36,7 @@ const pathsReducer = (store = initialOriginTarget, action) => {
     }
 
     case 'UPDATE_USER_LOCATION': {
-      if (store.useUserLocOrigin) {
+      if (store.useUserLocOrigin && !store.showingPaths) {
         const updateOriginTargetFC = updateOriginToFC(store.originTargetFC, turf.toLngLat(action.coords))
         const error = utils.originTargetwithinSupportedArea(updateOriginTargetFC)
         return { ...store, originTargetFC: updateOriginTargetFC, error: error ? error : null }
@@ -46,6 +47,9 @@ const pathsReducer = (store = initialOriginTarget, action) => {
       const error = utils.originTargetwithinSupportedArea(action.updateOriginTargetFC)
       return { ...store, originTargetFC: action.updateOriginTargetFC, error: error ? error : null }
     }
+
+    case 'SET_SHORTEST_PATH': return { ...store, showingPaths: true }
+    case 'RESET_PATHS': return { ...store, showingPaths: false }
 
     default:
       return store
@@ -61,6 +65,7 @@ export const showSetDestinationTooltip = () => {
 export const setOrigin = (lngLat, originTargetFC) => {
   return async (dispatch) => {
     const updateOriginTargetFC = updateOriginToFC(originTargetFC, lngLat)
+    dispatch({ type: 'RESET_PATHS' })
     dispatch({ type: 'SET_ORIGIN', updateOriginTargetFC })
     dispatch(closePopup())
   }
@@ -69,6 +74,7 @@ export const setOrigin = (lngLat, originTargetFC) => {
 export const setTarget = (lngLat, originTargetFC, routingId) => {
   return async (dispatch) => {
     const updateOriginTargetFC = updateTargetToFC(originTargetFC, lngLat)
+    dispatch({ type: 'RESET_PATHS' })
     dispatch({ type: 'SET_TARGET', updateOriginTargetFC })
     dispatch(closePopup())
     // start routing after target is set (if at supported area)
@@ -87,6 +93,7 @@ export const setTarget = (lngLat, originTargetFC, routingId) => {
 export const useUserLocationOrigin = (userLocation) => {
   return async (dispatch) => {
     const userLngLat = turf.getLngLatFromFC(userLocation.userLocFC)
+    dispatch({ type: 'RESET_PATHS' })
     dispatch(closePopup())
     if (userLngLat) {
       dispatch({ type: 'SET_ORIGIN_TO_USER_LOC', userLngLat, userLocFC: userLocation.userLocFC })

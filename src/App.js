@@ -46,11 +46,11 @@ class App extends Component {
         <DimLayer />
         <Map>
           <MapControl />
-          <UserLocation />
           <PathSelected />
-          <PathShort />
           <PathQuiet />
+          <PathShort />
           <OriginTargetPoints />
+          <UserLocation />
         </Map>
         <Guide />
         <TopPanel>

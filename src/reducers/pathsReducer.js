@@ -111,17 +111,13 @@ const pathsReducer = (store = initialPaths, action) => {
     case 'ERROR_IN_ROUTING':
       return { ...store, waitingPaths: false }
 
-    // reset paths and cancel previous routing requests (if any) on these actions
-    case 'SET_TARGET':
-    case 'WAIT_FOR_USER_LOC_ORIGIN':
     case 'RESET_PATHS':
-    case 'SET_ORIGIN':
-    case 'SET_ORIGIN_TO_USER_LOC':
       return {
         ...initialPaths,
         showingPaths: false,
         routingId: store.routingId + 1,
       }
+
     default:
       return store
   }
