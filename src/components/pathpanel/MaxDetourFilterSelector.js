@@ -24,17 +24,17 @@ const TooltipStyle = styled.div`
 const StyledMaxDetourOption = styled.div`
   pointer-events: auto;
   cursor: pointer;
-  background-color: #0b5d21;
-  border: 1px solid #0b5d21;
   padding: 5px 10px;
   width: max-content;
-  color: white;
   border-radius: 29px;
   margin: 3px 3px 3px 3px;
+  background-color: white;
+  border: 1px solid black;
+  color: black
   ${props => props.selected === true && css`
-    background-color: white;
-    border-color: black;
-    color: black
+    background-color: #0b5d21;
+    border-color: #0b5d21;
+    color: white;
   `}
 `
 
