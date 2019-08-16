@@ -183,7 +183,10 @@ export const unsetSelectedPath = () => {
 }
 
 export const resetPaths = (lngLat) => {
-  return { type: 'RESET_PATHS', lngLat }
+  return async (dispatch) => {
+    dispatch({ type: 'RESET_PATHS', lngLat })
+    dispatch(showNotification('Click on the map to set the origin / destination', 'info', 6))
+  }
 }
 
 const clickedPathAgain = (storeSelPathFC, clickedPathId) => {

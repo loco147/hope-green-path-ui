@@ -67,7 +67,7 @@ const pathsReducer = (store = initialOriginTarget, action) => {
 
 export const showSetDestinationTooltip = () => {
   return async (dispatch) => {
-    dispatch(showNotification('Click on the map to set the destination', 'info', 5))
+    dispatch(showNotification('Click on the map to set the origin / destination', 'info', 8))
   }
 }
 
