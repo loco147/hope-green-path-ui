@@ -182,8 +182,8 @@ export const unsetSelectedPath = () => {
   return { type: 'UNSET_SELECTED_PATH' }
 }
 
-export const resetPaths = () => {
-  return { type: 'RESET_PATHS' }
+export const resetPaths = (lngLat) => {
+  return { type: 'RESET_PATHS', lngLat }
 }
 
 const clickedPathAgain = (storeSelPathFC, clickedPathId) => {

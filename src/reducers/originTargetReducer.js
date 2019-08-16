@@ -49,7 +49,16 @@ const pathsReducer = (store = initialOriginTarget, action) => {
     }
 
     case 'SET_SHORTEST_PATH': return { ...store, showingPaths: true }
-    case 'RESET_PATHS': return { ...store, showingPaths: false }
+
+    case 'RESET_PATHS': {
+      if (action.lngLat && store.useUserLocOrigin) {
+        console.log('update origin to current user location:', action.lngLat)
+        const updateOriginTargetFC = updateOriginToFC(store.originTargetFC, action.lngLat)
+        const error = utils.originTargetwithinSupportedArea(updateOriginTargetFC)
+        return { ...store, showingPaths: false, originTargetFC: updateOriginTargetFC, error: error ? error : null }
+      }
+      else return { ...store, showingPaths: false }
+    }
 
     default:
       return store

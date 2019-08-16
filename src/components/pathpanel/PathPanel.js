@@ -31,7 +31,6 @@ const PathPanel = (props) => {
   const { showingPaths, sPathFC, openedPath, detourLimit, detourLimits } = paths
 
   if (!showingPaths || !pathPanelVisible) return null
-  console.log('pathPanelContent:', pathPanelContent)
 
   return (
     <PathPanelContainer>

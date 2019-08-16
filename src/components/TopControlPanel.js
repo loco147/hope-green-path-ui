@@ -33,7 +33,7 @@ const TopControlPanel = (props) => {
       <ButtonFlex>
         <LocateButton handleClick={() => props.zoomToUserLocation(userLocation)} />
         {showingPaths
-          ? <Button smaller bold white onClick={() => resetPaths()}> Reset</Button>
+          ? <Button smaller bold white onClick={() => resetPaths(userLocation.lngLat)}> Reset</Button>
           : !showUserLocButton ? <ToggleGuideButton /> : null}
         {showUserLocButton
           ? <Button small bold green onClick={() => props.useUserLocationOrigin(userLocation)}> Use current location</Button> : null}

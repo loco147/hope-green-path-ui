@@ -9,6 +9,7 @@ const initialUserLocation = {
   watchId: 0,
   expireTime: '',
   error: null,
+  lngLat: null,
   userLocFC: turf.asFeatureCollection([]),
   userLocHistory: [],
 }
@@ -36,6 +37,7 @@ const userLocationReducer = (store = initialUserLocation, action) => {
       return {
         ...store,
         userLocFC: action.userLocFC,
+        lngLat: action.lngLat,
         userLocHistory: store.userLocHistory.concat([action.coords]),
       }
     }
@@ -79,6 +81,7 @@ export const updateUserLocation = () => {
       const userLocFC = turf.asFeatureCollection([turf.asPoint([lng, lat])])
       dispatch({
         type: 'UPDATE_USER_LOCATION',
+        lngLat: { lng, lat },
         coords: [lng, lat],
         userLocFC,
       })
@@ -99,6 +102,7 @@ export const zoomToUserLocation = (userLocation) => {
       console.log('pos.coords', pos.coords)
       dispatch({
         type: 'ZOOM_TO_USER_LOCATION',
+        lngLat: { lng, lat },
         coords: [lng, lat],
         userLocFC,
       })
