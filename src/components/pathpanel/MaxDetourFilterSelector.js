@@ -39,7 +39,6 @@ const StyledMaxDetourOption = styled.div`
 `
 
 const MaxDetourOption = ({ dl, selected, setDetourLimit }) => {
-  console.log('selected', selected)
   return (
     <StyledMaxDetourOption selected={selected} onClick={() => setDetourLimit(dl.limit)}>
       {dl.label}
