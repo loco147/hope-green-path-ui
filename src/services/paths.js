@@ -6,6 +6,12 @@ if (process.env.NODE_ENV !== 'production') {
     baseurl = 'http://localhost:5000/'
 }
 
+export const getConnectionTestResponse = async () => {
+    console.log('testing connection to', baseurl)
+    const response = await axios.get(baseurl)
+    return response
+}
+
 export const getShortestPath = async (originCoords, targetCoords) => {
     const fromC = originCoords.map(coord => String(coord))
     const toC = targetCoords.map(coord => String(coord))

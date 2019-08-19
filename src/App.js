@@ -16,6 +16,7 @@ import OriginTargetPoints from './components/map/OriginTargetPoints'
 import Guide from './components/guide/Guide'
 import DimLayer from './components/DimLayer'
 import { showSetDestinationTooltip } from './reducers/originTargetReducer'
+import { testQuietPathServiceConnection } from './reducers/pathsReducer'
 
 const AbsoluteContainer = styled.div`
   position: absolute;
@@ -38,6 +39,7 @@ class App extends Component {
 
   componentDidMount() {
     this.props.showSetDestinationTooltip()
+    this.props.testQuietPathServiceConnection()
   }
 
   render() {
@@ -67,5 +69,5 @@ class App extends Component {
   }
 }
 
-const ConnectedApp = connect(null, { showSetDestinationTooltip })(App)
+const ConnectedApp = connect(null, { showSetDestinationTooltip, testQuietPathServiceConnection })(App)
 export default ConnectedApp

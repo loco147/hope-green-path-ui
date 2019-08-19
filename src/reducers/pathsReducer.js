@@ -123,6 +123,28 @@ const pathsReducer = (store = initialPaths, action) => {
   }
 }
 
+export const testQuietPathServiceConnection = () => {
+  return async (dispatch) => {
+    const startTime = performance.now()
+    try {
+      const connTestResponse = await paths.getConnectionTestResponse()
+      const tookTime = Math.round(performance.now() - startTime)
+      console.log('connection to qp service ok, response:', connTestResponse, 'took:', tookTime, 'ms')
+      if (tookTime < 3000) {
+        dispatch({ type: 'QP_CONNECTION_OK', tookTime })
+      } else {
+        dispatch({ type: 'QP_CONNECTION_SLOW', tookTime })
+        dispatch(showNotification('Quiet path service is under heavy use at the moment', 'info', 6))
+      }
+    } catch (error) {
+      const tookTime = Math.round(performance.now() - startTime)
+      console.log('error in connecting to qp service, took', tookTime, 'ms\n', error)
+      dispatch({ type: 'QP_CONNECTION_ERROR', tookTime })
+      dispatch(showNotification('Could not connect to quiet path service, please try again later', 'error', 15))
+    }
+  }
+}
+
 export const getShortestPath = (originCoords, targetCoords) => {
   return async (dispatch) => {
     const pathFC = await paths.getShortestPath(originCoords, targetCoords)
@@ -156,7 +178,7 @@ export const getQuietPaths = (originCoords, targetCoords, prevRoutingId) => {
       if (bestPath) dispatch({ type: 'SET_SELECTED_PATH', selPathId: bestPath.properties.id, routingId })
     } catch (error) {
       dispatch({ type: 'ERROR_IN_ROUTING' })
-      dispatch(showNotification("Couldn't get path", 'error', 4))
+      dispatch(showNotification('Could not connect to quiet path service, please try again later', 'error', 8))
       return
     }
   }
