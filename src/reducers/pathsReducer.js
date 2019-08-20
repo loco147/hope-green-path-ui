@@ -177,8 +177,13 @@ export const getQuietPaths = (originCoords, targetCoords, prevRoutingId) => {
       const bestPath = utils.getBestPath(qPaths)
       if (bestPath) dispatch({ type: 'SET_SELECTED_PATH', selPathId: bestPath.properties.id, routingId })
     } catch (error) {
+      console.log('catched error:', error)
       dispatch({ type: 'ERROR_IN_ROUTING' })
-      dispatch(showNotification('Could not connect to quiet path service, please try again later', 'error', 8))
+      if (typeof error === 'string') {
+        dispatch(showNotification(error, 'error', 8))
+      } else {
+        dispatch(showNotification('Error in routing', 'error', 8))
+      }
       return
     }
   }
