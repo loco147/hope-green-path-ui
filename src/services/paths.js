@@ -7,7 +7,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 export const getConnectionTestResponse = async () => {
-    console.log('testing connection to', baseurl)
+    console.log('testing connection to qp service at:', baseurl)
     const response = await axios.get(baseurl)
     return response
 }
