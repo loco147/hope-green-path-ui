@@ -4,7 +4,8 @@ import { connect } from 'react-redux'
 import { menu } from './../constants'
 import { togglePathPanel, showPathList, showMaxDetourFilterSelector } from './../reducers/menuReducer'
 import ToggleGuideButton from './guide/ToggleGuideButton'
-import { FilterButton, ListButton, ArrowUpButton, ArrowDownButton } from './Icons'
+import { ListButton, ArrowUpButton, ArrowDownButton } from './Icons'
+import FilterButton from './FilterButton'
 
 const ControlPanel = styled.div`
   background: rgba(255,255,255,0.98);
@@ -28,7 +29,7 @@ const ButtonFlex = styled.div`
   width: 100%;
 `
 const BottomControlPanel = (props) => {
-  const { showingPaths, pathPanelVisible, pathPanelContent, togglePathPanel, showPathList, showMaxDetourFilterSelector } = props
+  const { showingPaths, pathPanelVisible, pathPanelContent, detourLimit, detourLimits, togglePathPanel, showPathList, showMaxDetourFilterSelector } = props
   if (!showingPaths) { return null }
 
   return (
@@ -36,7 +37,7 @@ const BottomControlPanel = (props) => {
       <ButtonFlex>
         {pathPanelContent === menu.detourFilterSelector
           ? <ListButton onClick={showPathList} />
-          : <FilterButton onClick={showMaxDetourFilterSelector} />}
+          : <FilterButton detourLimit={detourLimit} detourLimits={detourLimits}  onClick={showMaxDetourFilterSelector} />}
         {pathPanelVisible
           ? <ArrowDownButton onClick={togglePathPanel}></ArrowDownButton>
           : <ArrowUpButton onClick={togglePathPanel}></ArrowUpButton>}
@@ -50,6 +51,8 @@ const mapStateToProps = (state) => ({
   showingPaths: state.paths.showingPaths,
   pathPanelVisible: state.menu.pathPanel,
   pathPanelContent: state.menu.pathPanelContent,
+  detourLimit: state.paths.detourLimit,
+  detourLimits: state.paths.detourLimits,
 })
 
 const ConnectedBottomControlPanel = connect(mapStateToProps, { togglePathPanel, showPathList, showMaxDetourFilterSelector })(BottomControlPanel)

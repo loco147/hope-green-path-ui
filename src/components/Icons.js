@@ -14,7 +14,7 @@ const iconStyle = `
   display: table-cell;
   text-align: center;
 `
-const Filter = styled(FiFilter)`
+export const Filter = styled(FiFilter)`
   ${iconStyle}
   font-size: 32px;
 `
