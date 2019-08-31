@@ -29,7 +29,7 @@ const ButtonFlex = styled.div`
   width: 100%;
 `
 const BottomControlPanel = (props) => {
-  const { showingPaths, pathPanelVisible, pathPanelContent, detourLimit, detourLimits, togglePathPanel, showPathList, showMaxDetourFilterSelector } = props
+  const { showingPaths, pathPanelVisible, pathPanelContent, qPathCount, detourLimit, detourLimits, togglePathPanel, showPathList, showMaxDetourFilterSelector } = props
   if (!showingPaths) { return null }
 
   return (
@@ -37,7 +37,7 @@ const BottomControlPanel = (props) => {
       <ButtonFlex>
         {pathPanelContent === menu.detourFilterSelector
           ? <ListButton onClick={showPathList} />
-          : <FilterButton detourLimit={detourLimit} detourLimits={detourLimits}  onClick={showMaxDetourFilterSelector} />}
+          : <FilterButton qPathCount={qPathCount} detourLimit={detourLimit} detourLimits={detourLimits}  onClick={showMaxDetourFilterSelector} />}
         {pathPanelVisible
           ? <ArrowDownButton onClick={togglePathPanel}></ArrowDownButton>
           : <ArrowUpButton onClick={togglePathPanel}></ArrowUpButton>}
@@ -51,6 +51,7 @@ const mapStateToProps = (state) => ({
   showingPaths: state.paths.showingPaths,
   pathPanelVisible: state.menu.pathPanel,
   pathPanelContent: state.menu.pathPanelContent,
+  qPathCount: state.paths.qPathFC.features.length,
   detourLimit: state.paths.detourLimit,
   detourLimits: state.paths.detourLimits,
 })

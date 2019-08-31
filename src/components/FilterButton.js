@@ -3,10 +3,12 @@ import styled, { css } from 'styled-components'
 import { Filter } from './Icons'
 
 const StyledButton = styled.div`
+  display: flex;
+  align-items: center;
   cursor: pointer;
   pointer-events: auto;
   padding: 5px;
-  display: table;
+  margin-right: -30px;
   color: black;
   transition-duration: 0.2s;
   -webkit-transition-duration: 0.2s; /* Safari */
@@ -15,11 +17,21 @@ const StyledButton = styled.div`
     pointer-events: none;
   `}
 `
+const FilterCount = styled.div`
+  letter-spacing: 1px;
+  font-size: 14px;
+  margin-left: 1px;
+`
 
-const FilterButton = ({ onClick, detourLimit, detourLimits }) => {
+const FilterButton = ({ onClick, qPathCount, detourLimit, detourLimits }) => {
   const disabled = detourLimits.length <= 1
   return (
-    <StyledButton disabled={disabled} onClick={onClick}> <Filter /> </StyledButton>
+    <StyledButton
+      disabled={disabled}
+      onClick={onClick}>
+      <Filter />
+      <FilterCount>{detourLimit.count + 1}/{qPathCount + 1}</FilterCount>
+    </StyledButton>
   )
 }
 
