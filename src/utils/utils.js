@@ -99,14 +99,9 @@ export const getDetourLimits = (qPaths) => {
 }
 
 export const getInitialDetourLimit = (detourLimits) => {
-  if (detourLimits.length === 0) return { limit: 0, count: 0, label: '' }
-  for (let i = 0; i < detourLimits.length; i++) {
-    // initial detour limit should filter out paths with NT higher than 20
-    if (detourLimits[i].minNt >= 20 && i > 0) {
-      return detourLimits[i - 1]
-    } else { continue }
-  }
-  return detourLimits[detourLimits.length - 1]
+  return detourLimits.length > 0
+    ? detourLimits[detourLimits.length - 1]
+    : { limit: 0, count: 0, label: '' }
 }
 
 export const originTargetwithinSupportedArea = (originTargetFC) => {
