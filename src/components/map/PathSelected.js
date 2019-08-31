@@ -35,12 +35,12 @@ class PathSelected extends React.Component {
 
         if (this.source !== undefined) {
             this.source.setData(selPathFC)
-            map.setFilter(this.layerId, ['<=', 'len_diff', detourLimit])
+            map.setFilter(this.layerId, ['<=', 'len_diff', detourLimit.limit])
         } else {
             map.once('sourcedata', () => {
                 this.source.setData(selPathFC)
             })
-            map.setFilter(this.layerId, ['<=', 'len_diff', detourLimit])
+            map.setFilter(this.layerId, ['<=', 'len_diff', detourLimit.limit])
         }
     }
 

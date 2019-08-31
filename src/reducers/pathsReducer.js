@@ -8,7 +8,7 @@ const initialPaths = {
   sPathFC: turf.asFeatureCollection([]),
   selPathFC: turf.asFeatureCollection([]),
   openedPath: null,
-  detourLimit: 0,
+  detourLimit: { limit: 0, count: 0, label: '' },
   detourLimits: [],
   waitingPaths: false,
   showingPaths: false,
@@ -202,7 +202,7 @@ export const unsetOpenedPath = () => {
 }
 
 export const setDetourLimit = (detourLimit) => {
-  return { type: 'SET_DETOUR_LIMIT', detourLimit: parseInt(detourLimit, 10) }
+  return { type: 'SET_DETOUR_LIMIT', detourLimit }
 }
 
 export const unsetSelectedPath = () => {

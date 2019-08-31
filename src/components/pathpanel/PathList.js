@@ -16,7 +16,7 @@ const PathList = ({ paths, setSelectedPath, setOpenedPath }) => {
     : 'none'
 
   const sPath = sPathFC.features[0]
-  const qPaths = qPathFC.features.filter(path => path.properties.len_diff < detourLimit)
+  const qPaths = qPathFC.features.filter(path => path.properties.len_diff < detourLimit.limit)
   return (
     <div>
       <PathRowFlex>

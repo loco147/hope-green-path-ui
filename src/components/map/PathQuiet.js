@@ -44,14 +44,15 @@ class PathQuiet extends React.Component {
 
     componentDidUpdate = () => {
         const { map, qPathFC, detourLimit } = this.props
+
         if (this.source !== undefined) {
             this.source.setData(qPathFC)
-            map.setFilter(this.layerId, ['<=', 'len_diff', detourLimit])
+            map.setFilter(this.layerId, ['<=', 'len_diff', detourLimit.limit])
         } else {
             map.once('sourcedata', () => {
                 this.source.setData(qPathFC)
             })
-            map.setFilter(this.layerId, ['<=', 'len_diff', detourLimit])
+            map.setFilter(this.layerId, ['<=', 'len_diff', detourLimit.limit])
         }
     }
 

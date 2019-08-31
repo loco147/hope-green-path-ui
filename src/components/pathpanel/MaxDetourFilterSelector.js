@@ -40,7 +40,7 @@ const StyledMaxDetourOption = styled.div`
 
 const MaxDetourOption = ({ dl, selected, setDetourLimit }) => {
   return (
-    <StyledMaxDetourOption selected={selected} onClick={() => setDetourLimit(dl.limit)}>
+    <StyledMaxDetourOption selected={selected} onClick={() => setDetourLimit(dl)}>
       {dl.label}
     </StyledMaxDetourOption>
   )
@@ -57,7 +57,7 @@ const MaxDetourFilterSelector = ({ detourLimit, detourLimits, setDetourLimit, sh
         <MaxDetourOption
           key={dl.label}
           dl={dl}
-          selected={detourLimit === dl.limit}
+          selected={detourLimit.limit === dl.limit}
           setDetourLimit={setDetourLimit} />))}
     </OuterDiv>
   )
