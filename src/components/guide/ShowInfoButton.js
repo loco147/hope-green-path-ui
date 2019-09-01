@@ -14,18 +14,20 @@ const StyledShowInfoButton = styled.div`
   font-weight: 640;
   border-radius: 8px;
   font-size: 22px;
-  border: 3px solid black;
+  border: 2px solid black;
   background-color: white;
   color: black;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.15), 0 6px 20px 0 rgba(0,0,0,0.09);
   transition-duration: 0.2s;
   -webkit-transition-duration: 0.2s; /* Safari */
   &:before {
     content: 'i';
   }
-  &:hover {
-    curosr: pointer;
-    color: white;
-    background-color: black;
+  @media (min-width: 600px) {
+    &:hover { 
+      background-color: black;
+      color: white;
+    }
   }
 `
 

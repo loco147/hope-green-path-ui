@@ -47,7 +47,7 @@ const Instructions = styled.div`
 `
 const Title = styled.div`
   font-weight: 300;
-  font-size: 21px;
+  font-size: 22px;
   padding: 7px 0 13px 0;
 `
 const Colored = styled.span`
@@ -83,7 +83,7 @@ const Guide = (props) => {
       <FlexDiv>
         <WhiteBox>
           <Instructions>
-            <Title>Quiet Paths <Colored color='#14b514'>beta</Colored></Title>
+            <Title>quiet paths <Colored color='#14b514'>beta</Colored></Title>
             <SubHeading> Noise bar chart</SubHeading>
             <DbColorLegend />
             <P>

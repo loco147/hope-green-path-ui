@@ -47,7 +47,7 @@ const Instructions = styled.div`
 const Title = styled.div`
   font-weight: 300;
   font-size: 21px;
-  padding: 7px 0 13px 0;
+  padding: 7px 0 11px 0;
 `
 const SubHeading = styled.div`
   margin: 7px 0px 0px 0px;
@@ -93,7 +93,7 @@ const WelcomeInfo = (props) => {
               </P>
             <P>
               Moreover, traffic noise usually works as a
-              pretty good proxy for other negative effects of traffic, including air pollution and unpleasant infrastructures.
+              proxy for other negative effects of traffic, including air pollution and unpleasant infrastructures.
             </P>
             <SubHeading> How? </SubHeading>
             <P>
@@ -104,8 +104,8 @@ const WelcomeInfo = (props) => {
               <Link
                 href='https://hri.fi/data/en_GB/dataset/helsingin-kaupungin-meluselvitys-2017'
                 target='_blank' rel='noopener noreferrer'>Traffic noise data</Link>{' '} is based on an assessment conducted by the city of Helsinki (CC BY 4.0).
-    It is modelled GIS data for typical daytime traffic noise levels. Thus, the quiet paths are most applicable at times when
-    traffic flows are near average.
+                It is modelled GIS data for typical daytime traffic noise levels. Thus, the quiet paths are most applicable at times when
+                traffic flows are near average.
             </P>
             <P>
               Street network data is downloaded from <Link href='https://www.openstreetmap.org/copyright' target='_blank' rel='noopener noreferrer'>OpenStreetMap</Link>{' '}

@@ -13,13 +13,16 @@ const StyledToggleGuideButton = styled.div`
   border: 3px solid black;
   background-color: white;
   color: black;
-  transition-duration: 0s;
-  -webkit-transition-duration: 0s; /* Safari */
+  transition-duration: 0.2s;
+  -webkit-transition-duration: 0.2s; /* Safari */
   &:before {
     content: '?';
   }
-  &:hover {
-    background-color: white;
+  @media (min-width: 600px) {
+    &:hover { 
+      background-color: black;
+      color: white;
+    }
   }
 `
 
