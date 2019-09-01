@@ -14,6 +14,7 @@ import PathQuiet from './components/map/PathQuiet'
 import PathSelected from './components/map/PathSelected'
 import OriginTargetPoints from './components/map/OriginTargetPoints'
 import Guide from './components/guide/Guide'
+import WelcomeInfo from './components/guide/WelcomeInfo'
 import DimLayer from './components/DimLayer'
 import { showSetDestinationTooltip } from './reducers/originTargetReducer'
 import { testQuietPathServiceConnection } from './reducers/pathsReducer'
@@ -55,6 +56,7 @@ class App extends Component {
           <UserLocation />
         </Map>
         <Guide />
+        <WelcomeInfo />
         <TopPanel>
           <TopControlPanel />
         </TopPanel>

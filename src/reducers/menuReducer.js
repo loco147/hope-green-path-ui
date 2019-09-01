@@ -2,6 +2,7 @@ import { menu } from './../constants'
 
 const initialMenuState = {
   guide: false,
+  info: true,
   pathPanel: false,
   pathPanelContent: null,
 }
@@ -11,6 +12,10 @@ const menuReducer = (store = initialMenuState, action) => {
   switch (action.type) {
 
     case 'TOGGLE_GUIDE': return { ...store, guide: !store.guide }
+
+    case 'SHOW_INFO': return { ...store, info: true }
+
+    case 'HIDE_INFO': return { ...store, info: false }
 
     case 'SET_SHORTEST_PATH': return { ...store, pathPanel: true, pathPanelContent: menu.pathList }
 
@@ -26,6 +31,10 @@ const menuReducer = (store = initialMenuState, action) => {
 }
 
 export const toggleGuide = () => ({ type: 'TOGGLE_GUIDE' })
+
+export const showInfo = () => ({ type: 'SHOW_INFO' })
+
+export const hideInfo = () => ({ type: 'HIDE_INFO' })
 
 export const showMaxDetourFilterSelector = () => ({ type: 'SHOW_DETOUR_FILTER_SELECTOR' })
 
