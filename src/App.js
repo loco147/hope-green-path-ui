@@ -16,7 +16,6 @@ import OriginTargetPoints from './components/map/OriginTargetPoints'
 import Guide from './components/guide/Guide'
 import WelcomeInfo from './components/guide/WelcomeInfo'
 import DimLayer from './components/DimLayer'
-import { showSetDestinationTooltip } from './reducers/originTargetReducer'
 import { testQuietPathServiceConnection } from './reducers/pathsReducer'
 import { showWelcomeIfFirstVisit } from './reducers/visitorReducer'
 import ShowInfoButton from './components/guide/ShowInfoButton'
@@ -74,5 +73,5 @@ class App extends Component {
   }
 }
 
-const ConnectedApp = connect(null, { showSetDestinationTooltip, showWelcomeIfFirstVisit, testQuietPathServiceConnection })(App)
+const ConnectedApp = connect(null, { showWelcomeIfFirstVisit, testQuietPathServiceConnection })(App)
 export default ConnectedApp

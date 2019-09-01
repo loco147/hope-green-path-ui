@@ -1,7 +1,7 @@
 import { menu } from './../constants'
 import { setVisitedCookie, getVisitedCookie } from './visitorReducer'
 import { showSetDestinationTooltip } from './originTargetReducer'
-import { testQuietPathServiceConnection } from './pathsReducer';
+import { testQuietPathServiceConnection } from './pathsReducer'
 
 const initialMenuState = {
   guide: false,
@@ -42,7 +42,7 @@ export const hideInfo = () => {
     const visited = getVisitedCookie()
     // if first visit, set visited cookie to yes and check connection to qp service
     if (visited !== 'yes') {
-      setVisitedCookie()
+      dispatch(setVisitedCookie())
       dispatch(testQuietPathServiceConnection())
     }
     dispatch(showSetDestinationTooltip())

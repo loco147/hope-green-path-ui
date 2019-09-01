@@ -71,6 +71,20 @@ const Link = styled.a`
   color: black;
 `
 
+const AcceptCookieText = ({ visitedBefore }) => {
+  if (visitedBefore) return null
+  return (
+    <div>
+      <P>
+        You've found the quiet path route planner app, great! &#127940;
+      </P>
+      <P>
+        Accept cookies by clicking OK below and this message won't be shown again in future visits.
+    </P>
+    </div>
+  )
+}
+
 const WelcomeInfo = (props) => {
   if (!props.menu.info) return null
 
@@ -80,12 +94,7 @@ const WelcomeInfo = (props) => {
         <WhiteBox>
           <Instructions>
             <Title>Welcome to quiet paths!</Title>
-            <P>
-              You've found the quiet paths route planner app, great! &#127940;
-            </P>
-            <P>
-              Accept cookies by clicking OK below and this message won't be shown again in future visits.
-            </P>
+            <AcceptCookieText visitedBefore={props.visitedBefore} />
             <SubHeading> Why quiet paths? </SubHeading>
             <P>
               If they are just slightly longer, why not? Numerous studies have shown that exposure to traffic noise is likely to cause
@@ -129,6 +138,7 @@ const WelcomeInfo = (props) => {
 
 const mapStateToProps = (state) => ({
   menu: state.menu,
+  visitedBefore: state.visitor.visitedBefore
 })
 
 const ConnectedWelcomeInfo = connect(mapStateToProps, { showInfo, hideInfo })(WelcomeInfo)
