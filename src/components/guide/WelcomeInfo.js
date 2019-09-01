@@ -2,16 +2,15 @@ import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { Button } from '../Button'
-import { toggleGuide } from './../../reducers/menuReducer'
-import DbColorLegend from './DbColorLegend'
+import { showInfo, hideInfo } from './../../reducers/menuReducer'
 
-const GuideContainer = styled.div`
+const InfoContainer = styled.div`
   position: absolute;
   top: 0px;
   right: 0px;
   bottom: 0px;
   left: 0px;
-  z-index: 7;
+  z-index: 8;
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -47,11 +46,8 @@ const Instructions = styled.div`
 `
 const Title = styled.div`
   font-weight: 300;
-  font-size: 22px;
-  padding: 7px 0 13px 0;
-`
-const Colored = styled.span`
-  color: ${props => props.color ? props.color : ''};
+  font-size: 21px;
+  padding: 7px 0 11px 0;
 `
 const SubHeading = styled.div`
   margin: 7px 0px 0px 0px;
@@ -75,41 +71,50 @@ const Link = styled.a`
   color: black;
 `
 
-const Guide = (props) => {
-  if (!props.menu.guide) return null
+const AcceptCookieText = ({ visitedBefore }) => {
+  if (visitedBefore) return null
+  return (
+    <div>
+      <P>
+        You've found the quiet path route planner app, great! &#127940;
+      </P>
+      <P>
+        Accept cookies by clicking OK below and this message won't be shown again in future visits.
+    </P>
+    </div>
+  )
+}
+
+const WelcomeInfo = (props) => {
+  if (!props.menu.info) return null
 
   return (
-    <GuideContainer>
+    <InfoContainer>
       <FlexDiv>
         <WhiteBox>
           <Instructions>
-            <Title>quiet paths <Colored color='#14b514'>beta</Colored></Title>
-            <SubHeading> Noise bar chart</SubHeading>
-            <DbColorLegend />
+            <Title>Welcome to quiet paths!</Title>
+            <AcceptCookieText visitedBefore={props.visitedBefore} />
+            <SubHeading> Why quiet paths? </SubHeading>
             <P>
-              Bar charts visualize the cumulative exposures (%) to selected noise level ranges.
-            </P>
-            <SubHeading> Noise cost </SubHeading>
+              If they are just slightly longer, why not? Numerous studies have shown that exposure to traffic noise is likely to cause
+              negative health effects such as increased stress levels and blood pressure.
+              </P>
             <P>
-              Additional noise cost is assigned to edges in the network when optimizing quiet paths.
-              Noise cost is calculated from contaminated distances to different noise levels using higher noise cost coefficients for higher noise levels.
-              The cumulative noise cost of a path is calculated in a similar way.
+              Moreover, traffic noise usually works as a
+              proxy for other negative effects of traffic, including air pollution and unpleasant infrastructures.
             </P>
-            <SubHeading> Noise index (ni) </SubHeading>
+            <SubHeading> How? </SubHeading>
             <P>
-              Distance-normalized traffic noise index is shown for the shortest path. The index varies between 0 and 1. Higher value indicates exposure to higher noise levels along the path.
+              The app utilizes quiet path optimization method developed as part of a{' '}
+              <Link href='https://github.com/hellej/quiet-paths-msc' target='_blank' rel='noopener noreferrer'>master's thesis</Link>. &#129299;
             </P>
-            <SubHeading> Difference in noise (%) </SubHeading>
-            <P>
-              The difference in noise between quiet and shortest path is calculated as the difference in cumulative noise cost between the two paths.
-            </P>
-            <SubHeading> Sources </SubHeading>
             <P>
               <Link
                 href='https://hri.fi/data/en_GB/dataset/helsingin-kaupungin-meluselvitys-2017'
                 target='_blank' rel='noopener noreferrer'>Traffic noise data</Link>{' '} is based on an assessment conducted by the city of Helsinki (CC BY 4.0).
-              It is modelled GIS data for typical daytime traffic noise levels. Thus, the quiet paths are most applicable at times when
-              traffic flows are near average.
+                It is modelled GIS data for typical daytime traffic noise levels. Thus, the quiet paths are most applicable at times when
+                traffic flows are near average.
             </P>
             <P>
               Street network data is downloaded from <Link href='https://www.openstreetmap.org/copyright' target='_blank' rel='noopener noreferrer'>OpenStreetMap</Link>{' '}
@@ -123,17 +128,18 @@ const Guide = (props) => {
             </P>
           </Instructions>
           <ButtonDiv>
-            <Button small green onClick={props.toggleGuide}>OK</Button>
+            <Button small green onClick={props.hideInfo}>OK</Button>
           </ButtonDiv>
         </WhiteBox>
       </FlexDiv>
-    </GuideContainer>
+    </InfoContainer>
   )
 }
 
 const mapStateToProps = (state) => ({
   menu: state.menu,
+  visitedBefore: state.visitor.visitedBefore
 })
 
-const ConnectedGuide = connect(mapStateToProps, { toggleGuide })(Guide)
-export default ConnectedGuide
+const ConnectedWelcomeInfo = connect(mapStateToProps, { showInfo, hideInfo })(WelcomeInfo)
+export default ConnectedWelcomeInfo
