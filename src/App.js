@@ -18,6 +18,7 @@ import WelcomeInfo from './components/guide/WelcomeInfo'
 import DimLayer from './components/DimLayer'
 import { showSetDestinationTooltip } from './reducers/originTargetReducer'
 import { testQuietPathServiceConnection } from './reducers/pathsReducer'
+import { showWelcomeIfFirstVisit } from './reducers/visitorReducer'
 import ShowInfoButton from './components/guide/ShowInfoButton'
 
 const AbsoluteContainer = styled.div`
@@ -40,7 +41,7 @@ const BottomPanel = styled(AbsoluteContainer)`
 class App extends Component {
 
   componentDidMount() {
-    this.props.showSetDestinationTooltip()
+    this.props.showWelcomeIfFirstVisit()
     this.props.testQuietPathServiceConnection()
   }
 
@@ -73,5 +74,5 @@ class App extends Component {
   }
 }
 
-const ConnectedApp = connect(null, { showSetDestinationTooltip, testQuietPathServiceConnection })(App)
+const ConnectedApp = connect(null, { showSetDestinationTooltip, showWelcomeIfFirstVisit, testQuietPathServiceConnection })(App)
 export default ConnectedApp

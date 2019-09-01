@@ -1,4 +1,7 @@
 import { menu } from './../constants'
+import { setVisitedCookie, getVisitedCookie } from './visitorReducer'
+import { showSetDestinationTooltip } from './originTargetReducer'
+import { testQuietPathServiceConnection } from './pathsReducer';
 
 const initialMenuState = {
   guide: false,
@@ -34,7 +37,18 @@ export const toggleGuide = () => ({ type: 'TOGGLE_GUIDE' })
 
 export const showInfo = () => ({ type: 'SHOW_INFO' })
 
-export const hideInfo = () => ({ type: 'HIDE_INFO' })
+export const hideInfo = () => {
+  return (dispatch) => {
+    const visited = getVisitedCookie()
+    // if first visit, set visited cookie to yes and check connection to qp service
+    if (visited !== 'yes') {
+      setVisitedCookie()
+      dispatch(testQuietPathServiceConnection())
+    }
+    dispatch(showSetDestinationTooltip())
+    dispatch({ type: 'HIDE_INFO' })
+  }
+}
 
 export const showMaxDetourFilterSelector = () => ({ type: 'SHOW_DETOUR_FILTER_SELECTOR' })
 
