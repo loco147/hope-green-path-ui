@@ -1,9 +1,6 @@
-import React from 'react'
-import styled from 'styled-components'
-import { connect } from 'react-redux'
-import { toggleGuide } from './../../reducers/menuReducer'
+import styled, { css } from 'styled-components'
 
-const StyledToggleGuideButton = styled.div`
+const ToggleGuideButton = styled.div`
   pointer-events: auto;
   cursor: pointer;
   padding: 1px 9px;
@@ -24,9 +21,8 @@ const StyledToggleGuideButton = styled.div`
       color: white;
     }
   }
+  ${props => props.small === true && css`
+    border: 2px solid black;
+  `}
 `
-
-export const ToggleGuideButton = (props) => (<StyledToggleGuideButton onClick={props.toggleGuide} />)
-
-const ConnectedToggleGuideButton = connect(null, { toggleGuide })(ToggleGuideButton)
-export default ConnectedToggleGuideButton
+export default ToggleGuideButton

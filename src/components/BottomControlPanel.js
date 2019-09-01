@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { menu } from './../constants'
-import { togglePathPanel, showPathList, showMaxDetourFilterSelector } from './../reducers/menuReducer'
+import { togglePathPanel, toggleGuide, showPathList, showMaxDetourFilterSelector } from './../reducers/menuReducer'
 import ToggleGuideButton from './guide/ToggleGuideButton'
 import { ListButton, ArrowUpButton, ArrowDownButton } from './Icons'
 import FilterButton from './FilterButton'
@@ -29,19 +29,21 @@ const ButtonFlex = styled.div`
   width: 100%;
 `
 const BottomControlPanel = (props) => {
-  const { showingPaths, pathPanelVisible, pathPanelContent, qPathCount, detourLimit, detourLimits, togglePathPanel, showPathList, showMaxDetourFilterSelector } = props
-  if (!showingPaths) { return null }
+  const { showingPaths, pathPanelVisible, pathPanelContent, qPathCount, detourLimit, detourLimits,
+    togglePathPanel, toggleGuide, showPathList, showMaxDetourFilterSelector } = props
+
+  if (!showingPaths) return null
 
   return (
     <ControlPanel pathPanelVisible={pathPanelVisible}>
       <ButtonFlex>
         {pathPanelContent === menu.detourFilterSelector
           ? <ListButton onClick={showPathList} />
-          : <FilterButton qPathCount={qPathCount} detourLimit={detourLimit} detourLimits={detourLimits}  onClick={showMaxDetourFilterSelector} />}
+          : <FilterButton qPathCount={qPathCount} detourLimit={detourLimit} detourLimits={detourLimits} onClick={showMaxDetourFilterSelector} />}
         {pathPanelVisible
           ? <ArrowDownButton onClick={togglePathPanel}></ArrowDownButton>
           : <ArrowUpButton onClick={togglePathPanel}></ArrowUpButton>}
-        <ToggleGuideButton />
+        <ToggleGuideButton onClick={toggleGuide} />
       </ButtonFlex>
     </ControlPanel >
   )
@@ -56,5 +58,5 @@ const mapStateToProps = (state) => ({
   detourLimits: state.paths.detourLimits,
 })
 
-const ConnectedBottomControlPanel = connect(mapStateToProps, { togglePathPanel, showPathList, showMaxDetourFilterSelector })(BottomControlPanel)
+const ConnectedBottomControlPanel = connect(mapStateToProps, { togglePathPanel, toggleGuide, showPathList, showMaxDetourFilterSelector })(BottomControlPanel)
 export default ConnectedBottomControlPanel

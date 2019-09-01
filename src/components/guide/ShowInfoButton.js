@@ -31,15 +31,15 @@ const StyledShowInfoButton = styled.div`
   }
 `
 
+const ShowInfoButton = ({ menu, absolute, showInfo }) => {
+  return !menu.info
+  ? <StyledShowInfoButton absolute={absolute} onClick={showInfo} />
+  : null
+}
+
 const mapStateToProps = (state) => ({
   menu: state.menu,
 })
-
-const ShowInfoButton = ({ menu, absolute, showInfo }) => {
-  return !menu.info
-    ? <StyledShowInfoButton absolute={absolute} onClick={showInfo} />
-    : null
-}
 
 const ConnectedShowInfoButton = connect(mapStateToProps, { showInfo })(ShowInfoButton)
 export default ConnectedShowInfoButton
