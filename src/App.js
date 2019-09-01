@@ -18,6 +18,7 @@ import WelcomeInfo from './components/guide/WelcomeInfo'
 import DimLayer from './components/DimLayer'
 import { showSetDestinationTooltip } from './reducers/originTargetReducer'
 import { testQuietPathServiceConnection } from './reducers/pathsReducer'
+import ShowInfoButton from './components/guide/ShowInfoButton'
 
 const AbsoluteContainer = styled.div`
   position: absolute;
@@ -56,6 +57,7 @@ class App extends Component {
           <UserLocation />
         </Map>
         <Guide />
+        <ShowInfoButton />
         <WelcomeInfo />
         <TopPanel>
           <TopControlPanel />

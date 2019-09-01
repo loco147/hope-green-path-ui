@@ -81,7 +81,7 @@ const WelcomeInfo = (props) => {
           <Instructions>
             <Title>Welcome to quiet paths!</Title>
             <P>
-              You've found the quiet paths route planner app, great! &#128526;
+              You've found the quiet paths route planner app, great! &#127940;
             </P>
             <P>
               Accept cookies by clicking OK below and this message won't be shown again in future visits.

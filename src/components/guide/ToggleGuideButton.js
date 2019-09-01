@@ -6,7 +6,7 @@ import { toggleGuide } from './../../reducers/menuReducer'
 const StyledToggleGuideButton = styled.div`
   pointer-events: auto;
   cursor: pointer;
-  padding: 1px 10px;
+  padding: 1px 9px;
   font-weight: 640;
   border-radius: 8px;
   font-size: 22px;
@@ -23,11 +23,7 @@ const StyledToggleGuideButton = styled.div`
   }
 `
 
-export const ToggleGuideButton = (props) => (<StyledToggleGuideButton onClick={props.toggleGuide} guide={props.menu.guide} />)
+export const ToggleGuideButton = (props) => (<StyledToggleGuideButton onClick={props.toggleGuide} />)
 
-const mapStateToProps = (state) => ({
-  menu: state.menu,
-})
-
-const ConnectedToggleGuideButton = connect(mapStateToProps, { toggleGuide })(ToggleGuideButton)
+const ConnectedToggleGuideButton = connect(null, { toggleGuide })(ToggleGuideButton)
 export default ConnectedToggleGuideButton

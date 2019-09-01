@@ -2,7 +2,7 @@ import { menu } from './../constants'
 
 const initialMenuState = {
   guide: false,
-  info: true,
+  info: false,
   pathPanel: false,
   pathPanelContent: null,
 }
