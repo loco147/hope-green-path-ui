@@ -4,6 +4,7 @@ import styled from 'styled-components'
 
 const DimDiv = styled.div`
   visibility: ${props => props.visible ? 'visible' : 'hidden'};
+  pointer-events: ${props => props.visible ? 'auto' : 'none'};
   opacity ${props => props.visible ? 1 : 0};
   position: absolute;
   top: 0px;
@@ -17,14 +18,13 @@ const DimDiv = styled.div`
   z-index: 4;
   transition: visibility 0.7s linear, opacity 0.7s linear;
   -webkit-transition-duration: 0.2s; /* Safari */
-  background: rgba(0,0,0,0.3);
-  //pointer-events: none;
+  background: rgba(5,5,5,0.5);
 `
 
 const DimLayer = (props) => {
 
   return (
-    <DimDiv visible={props.menu.guide} />
+    <DimDiv visible={props.menu.guide || props.menu.info} />
   )
 }
 
