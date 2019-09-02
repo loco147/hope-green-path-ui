@@ -6,7 +6,7 @@ import { setOrigin, setTarget } from '../../reducers/originTargetReducer'
 import { Button } from '../Button'
 
 const StyledPopupDiv = styled.div`
-  margin: -5px 9px -10px -6px;
+  margin: -5px 11px -10px -6px;
 `
 
 class SelectLocationsPopup extends React.Component {

@@ -53,8 +53,8 @@ export const OpenedQuietPathInfo = ({ path, sPath, unsetOpenedPath }) => {
       <PathPropsRow>
         <div>
           {utils.getFormattedDistanceString(path.properties.length, false).string}
-          {' (+ '}{utils.getFormattedDistanceString(path.properties.len_diff, false).string}
-          {' / '}{Math.round(path.properties.len_diff_rat)} %)
+          {' (+'}{utils.getFormattedDistanceString(path.properties.len_diff, false).string}
+          {' / +'}{Math.round(path.properties.len_diff_rat)} %)
           </div>
         <div>
           {Math.round(path.properties.nei_diff_rat) + ' % noise'}
