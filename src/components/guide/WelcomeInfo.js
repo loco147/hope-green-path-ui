@@ -79,8 +79,9 @@ const AcceptCookieText = ({ visitedBefore }) => {
         You've found the quiet path route planner app, great! &#127940;
       </P>
       <P>
-        Accept cookies by clicking OK below and this message won't be shown again in future visits.
-    </P>
+        This site uses a cookie to show this welcome message only on the first visit.
+        By clicking OK below, you accept this use of cookies.
+      </P>
     </div>
   )
 }
