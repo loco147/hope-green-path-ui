@@ -17,24 +17,28 @@ const visitorReducer = (store = initialVisitorState, action) => {
   }
 }
 
-export const setVisitedCookie = () => {
+export const setVisitedStatusVisited = () => {
   return async (dispatch) => {
-    Cookies.set('visited', 'yes')
+    Cookies.set('visited', 'yes', { expires: 365 })
+    localStorage.setItem('visited', 'yes')
     console.log("set visited before cookie to 'yes'")
     dispatch({ type: 'VISITED_BEFORE' })
   }
 }
 
-export const getVisitedCookie = () => {
-  const visited = Cookies.get('visited')
-  console.log('visited before (cookie):', visited)
-  return visited
+export const getVisitedStatus = () => {
+  const visitedC = Cookies.get('visited')
+  const visitedLs = localStorage.getItem('visited')
+  console.log('visited before (cookie):', visitedC)
+  console.log('visited before (ls):', visitedLs)
+  if (visitedC === 'yes' || visitedLs === 'yes') return true
+  return false
 }
 
 export const showWelcomeIfFirstVisit = () => {
   return async (dispatch) => {
-    const visited = getVisitedCookie()
-    if (visited === 'yes') {
+    const visited = getVisitedStatus()
+    if (visited) {
       dispatch(showSetDestinationTooltip())
       dispatch({ type: 'VISITED_BEFORE' })
     } else {
