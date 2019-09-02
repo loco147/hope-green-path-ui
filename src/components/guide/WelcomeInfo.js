@@ -129,7 +129,7 @@ const WelcomeInfo = (props) => {
             </P>
           </Instructions>
           <ButtonDiv>
-            <Button small green onClick={props.hideInfo}>OK</Button>
+            <Button small green onClick={() => props.hideInfo(props.showingPaths)}>OK</Button>
           </ButtonDiv>
         </WhiteBox>
       </FlexDiv>
@@ -139,7 +139,8 @@ const WelcomeInfo = (props) => {
 
 const mapStateToProps = (state) => ({
   menu: state.menu,
-  visitedBefore: state.visitor.visitedBefore
+  visitedBefore: state.visitor.visitedBefore,
+  showingPaths: state.paths.showingPaths,
 })
 
 const ConnectedWelcomeInfo = connect(mapStateToProps, { showInfo, hideInfo })(WelcomeInfo)

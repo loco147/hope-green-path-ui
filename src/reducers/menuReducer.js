@@ -37,7 +37,7 @@ export const toggleGuide = () => ({ type: 'TOGGLE_GUIDE' })
 
 export const showInfo = () => ({ type: 'SHOW_INFO' })
 
-export const hideInfo = () => {
+export const hideInfo = (showingPaths) => {
   return (dispatch) => {
     const visited = getVisitedStatus()
     // if first visit, set visited cookie to yes and check connection to qp service
@@ -45,7 +45,7 @@ export const hideInfo = () => {
       dispatch(setVisitedStatusVisited())
       dispatch(testQuietPathServiceConnection())
     }
-    dispatch(showSetDestinationTooltip())
+    if (!showingPaths) dispatch(showSetDestinationTooltip())
     dispatch({ type: 'HIDE_INFO' })
   }
 }
