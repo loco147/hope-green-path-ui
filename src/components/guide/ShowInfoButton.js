@@ -10,7 +10,7 @@ const StyledShowInfoButton = styled.div`
   z-index: 2;
   pointer-events: auto;
   cursor: pointer;
-  padding: 1px 10px;
+  padding: 1px 11px;
   font-weight: 640;
   border-radius: 8px;
   font-size: 22px;

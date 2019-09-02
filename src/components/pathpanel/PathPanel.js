@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { connect } from 'react-redux'
 import { menu } from './../../constants'
 import { setSelectedPath, setOpenedPath, unsetOpenedPath, setDetourLimit } from './../../reducers/pathsReducer'
@@ -23,6 +23,10 @@ const PathPanelContainer = styled.div`
     border-top-right-radius: 6px;
     border-top-left-radius: 6px;
   }
+  ${props => props.showingOpenedPath === true && css`
+    max-height: calc(100vh - 121px);
+    height: min-content;
+  `}
 `
 
 const PathPanel = (props) => {
@@ -32,20 +36,23 @@ const PathPanel = (props) => {
 
   if (!showingPaths || !pathPanelVisible) return null
 
+  const showingPathList = pathPanelContent === menu.pathList && !openedPath
+  const showingOpenedPath = openedPath && !(pathPanelContent === menu.detourFilterSelector)
+
   return (
-    <PathPanelContainer>
+    <PathPanelContainer showingOpenedPath={showingOpenedPath}>
       {pathPanelContent === menu.detourFilterSelector ?
         <MaxDetourFilterSelector
           detourLimit={detourLimit}
           detourLimits={detourLimits}
           setDetourLimit={setDetourLimit}
           showPathList={showPathList} /> : null}
-      {pathPanelContent === menu.pathList && !openedPath ?
+      {showingPathList ?
         <PathList
           paths={paths}
           setSelectedPath={setSelectedPath}
           setOpenedPath={setOpenedPath} /> : null}
-      {openedPath && !(pathPanelContent === menu.detourFilterSelector) ?
+      {showingOpenedPath ?
         <OpenedPathInfo
           path={openedPath}
           sPath={sPathFC.features[0]}
