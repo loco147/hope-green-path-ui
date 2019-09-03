@@ -10,12 +10,15 @@ const StyledButton = styled.div`
   padding: 5px;
   margin-right: -30px;
   color: black;
-  transition-duration: 0.2s;
-  -webkit-transition-duration: 0.2s; /* Safari */
   ${props => props.disabled === true && css`
     color: #989898;
     pointer-events: none;
   `}
+  @media (min-width: 600px) {
+    &:hover { 
+      padding-top: 2px;
+    }
+  }
 `
 const FilterCount = styled.div`
   letter-spacing: 1px;

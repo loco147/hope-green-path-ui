@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { FiFilter } from 'react-icons/fi'
 import { IoIosArrowUp } from 'react-icons/io'
 import { IoIosArrowDown } from 'react-icons/io'
@@ -54,15 +54,20 @@ const IconButton = styled.div`
   margin-left: ${props => props.leftMargin || '0px'};
   display: table;
   color: black;
-  transition-duration: 0.2s;
-  -webkit-transition-duration: 0.2s; /* Safari */
+  border-radius: 7px;
+  ${props => props.hoverJump && css`
+  @media (min-width: 600px) {
+    &:hover { 
+      margin-top: -3px;
+    }
+  }`}
 `
 
 export const FilterButton = ({ onClick }) => <IconButton padding='5px' onClick={onClick}> <Filter /> </IconButton>
 
-export const ArrowUpButton = ({ onClick }) => <IconButton onClick={onClick}> <ArrowUp /></IconButton>
+export const ArrowUpButton = ({ onClick }) => <IconButton hoverJump onClick={onClick}> <ArrowUp /></IconButton>
 
-export const ArrowDownButton = ({ onClick }) => <IconButton onClick={onClick}> <ArrowDown /></IconButton>
+export const ArrowDownButton = ({ onClick }) => <IconButton hoverJump onClick={onClick}> <ArrowDown /></IconButton>
 
 export const ArrowForwardButton = ({ onClick }) => <IconButton onClick={onClick} leftMargin={'-3px'}> <ArrowForward /> </IconButton>
 
@@ -70,6 +75,6 @@ export const ArrowBackButton = ({ onClick }) => <IconButton onClick={onClick} le
 
 export const CloseButton = ({ onClick, size }) => <IconButton onClick={onClick}> <Close size={size} /></IconButton>
 
-export const ListButton = ({ onClick }) => <IconButton onClick={onClick}> <List /></IconButton>
+export const ListButton = ({ onClick }) => <IconButton hoverJump onClick={onClick}> <List /></IconButton>
 
-export const LocateButton = ({ handleClick }) => <IconButton onClick={handleClick}> <Locate /></IconButton>
+export const LocateButton = ({ handleClick }) => <IconButton hoverJump onClick={handleClick}> <Locate /></IconButton>
