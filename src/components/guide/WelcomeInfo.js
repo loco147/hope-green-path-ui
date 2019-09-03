@@ -76,7 +76,7 @@ const AcceptCookieText = ({ visitedBefore }) => {
   return (
     <div>
       <P>
-        You've found the quiet path route planner app, great! &#127940;
+        You've found the quiet path route planner app, great! <span role="img" aria-label='surfer'>&#127940;</span>
       </P>
       <P>
         This site uses a cookie to show this welcome message only on the first visit.
@@ -108,7 +108,7 @@ const WelcomeInfo = (props) => {
             <SubHeading> How? </SubHeading>
             <P>
               The app utilizes quiet path optimization method developed as part of a{' '}
-              <Link href='https://github.com/hellej/quiet-paths-msc' target='_blank' rel='noopener noreferrer'>master's thesis</Link>. &#129299;
+              <Link href='https://github.com/hellej/quiet-paths-msc' target='_blank' rel='noopener noreferrer'>master's thesis</Link>. <span role="img" aria-label='surfer'>&#129299;</span>
             </P>
             <P>
               <Link
