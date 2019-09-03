@@ -16,7 +16,7 @@ const StyledButton = styled.div`
   `}
   @media (min-width: 600px) {
     &:hover { 
-      padding-top: 2px;
+      padding-top: 3px;
     }
   }
 `
