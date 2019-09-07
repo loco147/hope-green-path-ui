@@ -36,6 +36,11 @@ const StyledMaxDetourOption = styled.div`
     border-color: #0b5d21;
     color: white;
   `}
+  @media (min-width: 600px) {
+    &:hover { 
+      margin-left: 6px;
+    }
+  }
 `
 
 const MaxDetourOption = ({ dl, selected, setDetourLimit }) => {

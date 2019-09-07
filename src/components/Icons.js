@@ -58,7 +58,7 @@ const IconButton = styled.div`
   ${props => props.hoverJump && css`
   @media (min-width: 600px) {
     &:hover { 
-      margin-top: -3px;
+      padding-bottom: 3px;
     }
   }`}
 `
