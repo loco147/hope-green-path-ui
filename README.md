@@ -1,7 +1,18 @@
-# Quiet path UI
-A user interface (route planner) for quiet path route optimization application developed as part of my master's thesis -   [github.com/hellej/quiet-paths-msc](https://github.com/hellej/quiet-paths-msc). The goal of this project is to enable citizens to find better walking routes as alternatives to shortest paths. 
+# Green path UI
+
+A user interface for [a green path route optimization application](https://github.com/DigitalGeographyLab/hope-green-path-server/) being developed for [Urban Innovative Action](https://www.uia-initiative.eu/en), [HOPE](https://www.uia-initiative.eu/en/uia-cities/helsinki) – Healthy Outdoor Premises for Everyone.
+
+Its goal is to inform people on clean routes for walking and cycling in Helsinki region. It utilizes Air Quality Index (AQI) from the Enfuser model (by the Finnish Meteorological Institute) and modelled traffic noise data. AQI is based on hourly updated and combined information on NO2, PM2.5, PM10 and O3.
+
+Currently implemented features include calculation of walkable quiet paths with respect to typical daytime traffic noise levels. The quiet path optimization application and user interface are based on [an MSc thesis](https://github.com/hellej/quiet-paths-msc). 
 
 [Live demo](https://quietpath.web.app/)
+
+## Materials
+* [FMI Enfuser model](https://en.ilmatieteenlaitos.fi/environmental-information-fusion-service)
+* [HOPE project](https://ilmanlaatu.eu/briefly-in-english/)
+* [Traffic noise zones in Helsinki 2017](https://hri.fi/data/en_GB/dataset/helsingin-kaupungin-meluselvitys-2017)
+* [OpenStreetMap](https://www.openstreetmap.org/about/)
 
 ## Built With
 * React, Redux & Thunk
@@ -9,17 +20,13 @@ A user interface (route planner) for quiet path route optimization application d
 
 ## Installation
 ```
-$ git clone git@github.com:hellej/quiet-path-ui.git
-$ cd quiet-path-ui
+$ git clone git@github.com:DigitalGeographyLab/hope-green-path-ui.git
+$ cd hope-green-path-ui
 $ npm install
 $ npm start
 ```
 Update your Mapbox access token to `src/components/map/Map.js`<br>
 Open browser to http://localhost:3000/
-
-## Data
-* [Traffic noise zones in Helsinki 2017](https://hri.fi/data/en_GB/dataset/helsingin-kaupungin-meluselvitys-2017)
-* [OpenStreetMap](https://www.openstreetmap.org/about/)
 
 ## License
 [MIT](LICENSE)
