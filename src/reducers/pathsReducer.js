@@ -164,7 +164,8 @@ export const getQuietPaths = (originCoords, targetCoords, prevRoutingId) => {
     const routingId = prevRoutingId + 1
     dispatch({ type: 'ROUTING_STARTED', originCoords, targetCoords, routingId })
     try {
-      const pathFeats = await paths.getQuietPaths(originCoords, targetCoords)
+      const pathData = await paths.getQuietPaths(originCoords, targetCoords)
+      const pathFeats = pathData.path_FC.features
       const sPath = pathFeats.filter(feat => feat.properties.type === 'short')
       const qPaths = pathFeats.filter(feat => feat.properties.type === 'quiet' && feat.properties.len_diff !== 0)
       utils.validateNoiseDiffs(sPath, qPaths)
