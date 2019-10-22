@@ -73,7 +73,7 @@ const pathsReducer = (store = initialPaths, action) => {
         if (selPath.length === 0) {
           selPath = store.sPathFC.features
         }
-        console.log('selecting path:', selPath[0])
+        console.log('selecting path:', selPath[0].properties)
         return {
           ...store,
           // if openedPath is set, change it to the selected path
