@@ -19,8 +19,10 @@ const DBColorLabelPair = styled.div`
 const DBColorBox = styled.div`
   border-radius: 10px;
   margin: 0px 3px 0px 3px;
-  padding: 7px 8px;
+  padding: 5px 7px;
   font-size: 11px;
+  font-weight: 400;
+  border: 1px solid black;
   background-color: ${props => props.color || 'black'};
   ${props => props.index && css`
     background-color: black;

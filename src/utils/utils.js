@@ -34,7 +34,7 @@ export const getFormattedDistanceString = (m, withSign) => {
   const distObj = {}
   distObj.m = Math.round(m)
   let distanceString
-  if (Math.abs(m) >= 1000) {
+  if (Math.abs(m) >= 460) {
     distanceString = getFormattedKmString(m, 1)
   } else {
     distanceString = String(Math.round(m)) + ' m'
