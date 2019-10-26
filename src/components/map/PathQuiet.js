@@ -8,9 +8,9 @@ class PathQuiet extends React.Component {
     layerId = 'quietPaths'
     source
     paint = {
-        'line-width': 2.1,
+        'line-width': 5.0,
         'line-opacity': 1,
-        'line-color': 'green',
+        'line-color': 'black',
     }
     layout = {
         'line-join': 'round',

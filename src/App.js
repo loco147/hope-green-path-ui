@@ -11,6 +11,7 @@ import MapControl from './components/map/MapControl'
 import UserLocation from './components/map/UserLocation'
 import PathShort from './components/map/PathShort'
 import PathQuiet from './components/map/PathQuiet'
+import PathEdges from './components/map/PathEdges'
 import PathSelected from './components/map/PathSelected'
 import OriginTargetPoints from './components/map/OriginTargetPoints'
 import Guide from './components/guide/Guide'
@@ -53,6 +54,7 @@ class App extends Component {
           <PathSelected />
           <PathQuiet />
           <PathShort />
+          <PathEdges />
           <OriginTargetPoints />
           <UserLocation />
         </Map>
