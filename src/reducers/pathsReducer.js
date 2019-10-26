@@ -145,14 +145,6 @@ export const testQuietPathServiceConnection = () => {
   }
 }
 
-export const getShortestPath = (originCoords, targetCoords) => {
-  return async (dispatch) => {
-    const pathFC = await paths.getShortestPath(originCoords, targetCoords)
-    console.log('pathFC', pathFC)
-    dispatch({ type: 'SET_SHORTEST_PATH', pathFC })
-  }
-}
-
 export const getQuietPaths = (originCoords, targetCoords, prevRoutingId) => {
   return async (dispatch) => {
     const distance = turf.getDistance(originCoords, targetCoords)

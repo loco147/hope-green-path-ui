@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { Button } from './Button'
-import { getShortestPath, getQuietPaths } from '../reducers/pathsReducer'
+import { getQuietPaths } from '../reducers/pathsReducer'
 import { utils } from '../utils'
 
 const OuterFlex = styled.div`
@@ -34,6 +34,6 @@ const mapStateToProps = (state) => ({
   routingId: state.paths.routingId,
 })
 
-const ConnectedGetRoutesButton = connect(mapStateToProps, { getShortestPath, getQuietPaths })(GetRoutesButton)
+const ConnectedGetRoutesButton = connect(mapStateToProps, { getQuietPaths })(GetRoutesButton)
 
 export default ConnectedGetRoutesButton
