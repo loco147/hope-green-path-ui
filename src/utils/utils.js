@@ -66,7 +66,7 @@ export const getLayersFeaturesAroundClickE = (layers, e, tolerance, map) => {
 export const getBestPath = (qPaths) => {
   // if the greatest quiet path score among the paths is greater than 2 -> select the path
   if (qPaths.length > 0) {
-    const goodPaths = qPaths.filter(feat => feat.properties.path_score > 0.8 && feat.properties.nei_diff_rat < -9)
+    const goodPaths = qPaths.filter(feat => feat.properties.path_score > 0.8 && feat.properties.cost_coeff <= 10)
     if (goodPaths.length > 0) {
       const maxQpathScore = Math.max(...goodPaths.map(path => path.properties.path_score))
       const bestPath = goodPaths.filter(feat => feat.properties.path_score === maxQpathScore)[0]
@@ -91,7 +91,7 @@ export const getDetourLimits = (qPaths) => {
       const pathCount = pathLenDiffs.filter(x => x < limit).length
       const limitText = limit < 1000 ? String(limit) + ' m' : String(limit / 1000) + ' km'
       const label = limitText + ' (' + (String(pathCount)) + ')'
-      acc.push({ limit, count: pathCount, label })
+      acc.push({ limit, count: pathCount, label, cost_coeff: props.cost_coeff })
     }
     return acc
   }, [])
@@ -99,9 +99,17 @@ export const getDetourLimits = (qPaths) => {
 }
 
 export const getInitialDetourLimit = (detourLimits) => {
-  return detourLimits.length > 0
-    ? detourLimits[detourLimits.length - 1]
-    : { limit: 0, count: 0, label: '' }
+  // return detour limit that filters out paths with cost_coeff higher than 20 as initial detour limit
+  if (detourLimits.length > 0) {
+    if (detourLimits.length > 1) {
+      let prevDl = detourLimits[0]
+      for (let dL of detourLimits) {
+        if (dL.cost_coeff >= 20) return prevDl
+        prevDl = dL
+      }
+    }
+    return detourLimits[detourLimits.length - 1]
+  } else return { limit: 0, count: 0, label: '' }
 }
 
 export const originTargetwithinSupportedArea = (originTargetFC) => {

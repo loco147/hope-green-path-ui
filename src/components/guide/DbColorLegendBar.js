@@ -22,7 +22,7 @@ const DBColorBox = styled.div`
   padding: 5px 7px;
   font-size: 11px;
   font-weight: 400;
-  border: 1px solid black;
+  border: 1px solid #4c4c4c;
   background-color: ${props => props.color || 'black'};
   ${props => props.index && css`
     background-color: black;
