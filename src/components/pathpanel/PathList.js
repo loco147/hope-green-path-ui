@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import PathListPathBox from './PathListPathBox'
 import { OpenPathBox } from './OpenClosePathBoxes'
+import DbColorLegendBar from '../guide/DbColorLegendBar'
 
 const PathRowFlex = styled.div`
   display: flex;
@@ -19,6 +20,7 @@ const PathList = ({ paths, setSelectedPath, setOpenedPath }) => {
   const qPaths = qPathFC.features.filter(path => path.properties.len_diff < detourLimit.limit)
   return (
     <div>
+      <DbColorLegendBar />
       <PathRowFlex>
         <PathListPathBox
           path={sPath}
