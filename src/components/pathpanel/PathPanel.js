@@ -30,7 +30,7 @@ const PathPanelContainer = styled.div`
 `
 
 const PathPanel = (props) => {
-  const { paths, pathPanelVisible, pathPanelContent } = props
+  const { paths, scrollToPath, pathPanelVisible, pathPanelContent } = props
   const { setSelectedPath, setOpenedPath, unsetOpenedPath, setDetourLimit, showPathList } = props
   const { showingPaths, sPathFC, openedPath, detourLimit, detourLimits } = paths
 
@@ -50,6 +50,7 @@ const PathPanel = (props) => {
       {showingPathList ?
         <PathList
           paths={paths}
+          scrollToPath={scrollToPath}
           setSelectedPath={setSelectedPath}
           setOpenedPath={setOpenedPath} /> : null}
       {showingOpenedPath ?
@@ -63,6 +64,7 @@ const PathPanel = (props) => {
 
 const mapStateToProps = (state) => ({
   paths: state.paths,
+  scrollToPath: state.pathList.scrollToPath,
   pathPanelVisible: state.menu.pathPanel,
   pathPanelContent: state.menu.pathPanelContent,
 })

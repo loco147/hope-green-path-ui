@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { setSelectedPath } from './../../reducers/pathsReducer'
+import { scrollToPath } from './../../reducers/pathListReducer'
 import { clickTol } from './../../constants'
 import { utils } from './../../utils/index'
 
@@ -18,7 +19,7 @@ class PathQuiet extends React.Component {
     }
 
     componentDidMount() {
-        const { map, qPathFC, setSelectedPath } = this.props
+        const { map, qPathFC, setSelectedPath, scrollToPath } = this.props
         map.once('load', () => {
             // Add layer
             map.addSource(this.layerId, { type: 'geojson', data: qPathFC })
@@ -37,6 +38,7 @@ class PathQuiet extends React.Component {
                 if (features.length > 0) {
                     const clickedFeat = features[0]
                     setSelectedPath(clickedFeat.properties.id)
+                    scrollToPath(clickedFeat.properties.id)
                 }
             })
         })
@@ -66,6 +68,6 @@ const mapStateToProps = (state) => ({
     detourLimit: state.paths.detourLimit,
 })
 
-const ConnectedPathQuiet = connect(mapStateToProps, { setSelectedPath })(PathQuiet)
+const ConnectedPathQuiet = connect(mapStateToProps, { setSelectedPath, scrollToPath })(PathQuiet)
 
 export default ConnectedPathQuiet
