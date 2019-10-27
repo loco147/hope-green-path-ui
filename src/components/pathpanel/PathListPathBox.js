@@ -6,7 +6,7 @@ import { PathNoisesBar } from './PathNoisesBar'
 const StyledPathListPathBox = styled.div.attrs(props => ({
   style:
     ({
-      border: props.selected ? '2px solid #ed7b00' : '',
+      border: props.selected ? '2px solid black' : '',
       boxShadow: props.selected ? '0 -1px 7px 0 rgba(0, 0, 0, 0.15), 0 4px 7px 0 rgba(0, 0, 0, 0.25)' : ''
     })
 }))`
@@ -43,15 +43,15 @@ const PathPropsRow = styled.div`
 `
 
 const QuietPathLengthProps = styled.div`
-  margin-left: 4px;
+  margin-left: 2px;
   text-align: center;
 `
 
-const PathListPathBox = ({ path, index, selected, pathType, handleClick }) => {
+const PathListPathBox = ({ path, selected, pathType, handleClick }) => {
   if (pathType === 'short') {
     return <ShortestPathBox path={path} selected={selected} handleClick={handleClick} />
   } else {
-    return <QuietPathBox path={path} index={index} selected={selected} handleClick={handleClick} />
+    return <QuietPathBox path={path} selected={selected} handleClick={handleClick} />
   }
 }
 
@@ -74,12 +74,12 @@ const ShortestPathBox = ({ path, selected, handleClick }) => {
   )
 }
 
-const QuietPathBox = ({ path, index, selected, handleClick }) => {
+const QuietPathBox = ({ path, selected, handleClick }) => {
   const mdB_diff = path.properties.mdB_diff
   return (
     <StyledPathListPathBox selected={selected} onClick={handleClick}>
       <PathNoisesBar noisePcts={path.properties.noise_pcts} />
-      <PathPropsRow color={'#033403'}>
+      <PathPropsRow>
         <QuietPathLengthProps>
           {utils.getFormattedDistanceString(path.properties.length, false).string}
           <sub>
