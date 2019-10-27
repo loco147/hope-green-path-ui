@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { createRef } from 'react'
 import styled from 'styled-components'
 import PathListPathBox from './PathListPathBox'
 import { OpenPathBox } from './OpenClosePathBoxes'
@@ -9,41 +9,76 @@ const PathRowFlex = styled.div`
   justify-content: space-around;
 `
 
-const PathList = ({ paths, setSelectedPath, setOpenedPath }) => {
-  const { sPathFC, qPathFC, selPathFC, detourLimit } = paths
+class PathList extends React.Component {
 
-  const selPathId = selPathFC.features.length > 0
-    ? selPathFC.features[0].properties.id
-    : 'none'
+  constructor(props) {
+    super(props)
+    this.state = {
+      linkVisible: true,
+      pathRefs: { 'short_p': createRef() },
+    }
+  }
 
-  const sPath = sPathFC.features[0]
-  const qPaths = qPathFC.features.filter(path => path.properties.len_diff < detourLimit.limit)
-  return (
-    <div>
-      <DbColorLegendBar />
-      <PathRowFlex>
-        <PathListPathBox
-          path={sPath}
-          handleClick={() => setSelectedPath(sPath.properties.id)}
-          pathType={'short'}
-          selected={sPath.properties.id === selPathId} />
-        <OpenPathBox
-          handleClick={() => setOpenedPath(sPath)} />
-      </PathRowFlex>
-      {qPaths.map((path, index) => (
-        <PathRowFlex key={path.properties.id}>
+  componentDidUpdate(prevProps) {
+    const { qPathFC } = this.props.paths
+    let pathRefs = this.state.pathRefs
+    let updateRefs = false
+
+    for (let feat of qPathFC.features) {
+      if (!(feat.properties.id in pathRefs)) {
+        pathRefs[feat.properties.id] = createRef()
+        updateRefs = true
+      }
+    }
+    if (updateRefs) {
+      console.log('update refs')
+      this.setState({ pathRefs })
+    }
+    if (prevProps.scrollToPath !== this.props.scrollToPath) {
+      this.state.pathRefs[this.props.scrollToPath].current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+        inline: 'center',
+      })
+    }
+  }
+
+  render() {
+    const { paths, setSelectedPath, setOpenedPath } = this.props
+    const { sPathFC, qPathFC, selPathFC, detourLimit } = paths
+    const selPathId = selPathFC.features.length > 0
+      ? selPathFC.features[0].properties.id
+      : 'none'
+
+    const sPath = sPathFC.features[0]
+    const qPaths = qPathFC.features.filter(path => path.properties.len_diff < detourLimit.limit)
+
+    return (
+      <div>
+        <DbColorLegendBar />
+        <PathRowFlex ref={this.state.pathRefs[sPath.properties.id]}>
           <PathListPathBox
-            path={path}
-            index={index}
-            handleClick={() => setSelectedPath(path.properties.id)}
-            pathType={'quiet'}
-            selected={path.properties.id === selPathId} />
+            path={sPath}
+            handleClick={() => setSelectedPath(sPath.properties.id)}
+            pathType={'short'}
+            selected={sPath.properties.id === selPathId} />
           <OpenPathBox
-            handleClick={() => setOpenedPath(path)} />
+            handleClick={() => setOpenedPath(sPath)} />
         </PathRowFlex>
-      ))}
-    </div>
-  )
+        {qPaths.map((path) => (
+          <PathRowFlex key={path.properties.id} ref={this.state.pathRefs[path.properties.id]}>
+            <PathListPathBox
+              path={path}
+              handleClick={() => setSelectedPath(path.properties.id)}
+              pathType={'quiet'}
+              selected={path.properties.id === selPathId} />
+            <OpenPathBox
+              handleClick={() => setOpenedPath(path)} />
+          </PathRowFlex>
+        ))}
+      </div>
+    )
+  }
 }
 
 export default PathList
