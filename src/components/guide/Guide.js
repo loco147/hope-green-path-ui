@@ -83,7 +83,7 @@ const Guide = (props) => {
       <FlexDiv>
         <WhiteBox>
           <Instructions>
-            <Title>quiet paths <Colored color='#14b514'>beta</Colored></Title>
+            <Title>green paths <Colored color='#14b514'>beta</Colored></Title>
             <SubHeading> Noise bar chart</SubHeading>
             <DbColorLegend />
             <P>
@@ -91,7 +91,7 @@ const Guide = (props) => {
             </P>
             <SubHeading> Noise cost </SubHeading>
             <P>
-              Additional noise cost is assigned to edges in the network when optimizing quiet paths.
+              Additional noise cost is assigned to edges of the network when optimizing green (clean or quiet) paths.
               Noise cost is calculated from contaminated distances to different noise levels using higher noise cost coefficients for higher noise levels.
               The cumulative noise cost of a path is calculated in a similar way.
             </P>
@@ -101,7 +101,7 @@ const Guide = (props) => {
             </P>
             <SubHeading> Difference in noise (%) </SubHeading>
             <P>
-              The difference in noise between quiet and shortest path is calculated as the difference in cumulative noise cost between the two paths.
+              The difference in noise between green and shortest path is calculated as the difference in cumulative noise cost between the two paths.
             </P>
             <SubHeading> Sources </SubHeading>
             <P>
@@ -117,9 +117,9 @@ const Guide = (props) => {
             </P>
             <SubHeading> Code </SubHeading>
             <P>
-              <Link href='https://github.com/hellej/quiet-path-ui' target='_blank' rel='noopener noreferrer'>github.com/hellej/quiet-path-ui</Link>{' '}
+              <Link href='https://github.com/DigitalGeographyLab/hope-green-path-ui' target='_blank' rel='noopener noreferrer'>DigitalGeographyLab/hope-green-path-ui</Link>{' '}
               <br></br>
-              <Link href='https://github.com/hellej/quiet-paths-msc' target='_blank' rel='noopener noreferrer'>github.com/hellej/quiet-paths-msc</Link>{' '}
+              <Link href='https://github.com/DigitalGeographyLab/hope-green-path-server' target='_blank' rel='noopener noreferrer'>DigitalGeographyLab/hope-green-path-server</Link>{' '}
             </P>
           </Instructions>
           <ButtonDiv>

@@ -1,13 +1,26 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { setSelectedPath } from './../../reducers/pathsReducer'
+import { dBColors } from './../../constants'
 
-class PathSelected extends React.Component {
-    layerId = 'selectedPath'
+
+class PathEdges extends React.Component {
+    layerId = 'pathEdges'
     source
     paint = {
-        'line-width': 9,
-        'line-opacity': 0.7,
-        'line-color': 'yellow',
+        'line-width': 2.2,
+        'line-opacity': 1,
+        'line-color': [
+            'match',
+            ['get', 'value'],
+            40, dBColors[40],
+            50, dBColors[50],
+            55, dBColors[55],
+            60, dBColors[60],
+            65, dBColors[65],
+            70, dBColors[70],
+            /* other */ 'white'
+        ]
     }
     layout = {
         'line-join': 'round',
@@ -15,10 +28,10 @@ class PathSelected extends React.Component {
     }
 
     componentDidMount() {
-        const { map, selPathFC } = this.props
+        const { map, edgeFC } = this.props
         map.once('load', () => {
             // Add layer
-            map.addSource(this.layerId, { type: 'geojson', data: selPathFC })
+            map.addSource(this.layerId, { type: 'geojson', data: edgeFC })
             this.source = map.getSource(this.layerId)
             map.addLayer({
                 id: this.layerId,
@@ -31,14 +44,14 @@ class PathSelected extends React.Component {
     }
 
     componentDidUpdate = () => {
-        const { map, selPathFC, detourLimit } = this.props
+        const { map, edgeFC, detourLimit } = this.props
 
         if (this.source !== undefined) {
-            this.source.setData(selPathFC)
+            this.source.setData(edgeFC)
             map.setFilter(this.layerId, ['<=', 'len_diff', detourLimit.limit])
         } else {
             map.once('sourcedata', () => {
-                this.source.setData(selPathFC)
+                this.source.setData(edgeFC)
             })
             map.setFilter(this.layerId, ['<=', 'len_diff', detourLimit.limit])
         }
@@ -50,10 +63,10 @@ class PathSelected extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-    selPathFC: state.paths.selPathFC,
+    edgeFC: state.paths.edgeFC,
     detourLimit: state.paths.detourLimit,
 })
 
-const ConnectedPathSelected = connect(mapStateToProps, null)(PathSelected)
+const ConnectedPathEdges = connect(mapStateToProps, { setSelectedPath })(PathEdges)
 
-export default ConnectedPathSelected
+export default ConnectedPathEdges

@@ -25,7 +25,7 @@ $ cd hope-green-path-ui
 $ npm install
 $ npm start
 ```
-Update your Mapbox access token to `src/components/map/Map.js`<br>
+Create file `/.env` and add your Mapbox access token as variable `REACT_APP_MB_ACCESS=`<br>
 Open browser to http://localhost:3000/
 
 ## License

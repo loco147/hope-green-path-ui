@@ -1,6 +1,6 @@
 {
-  "name": "quiet-path-ui",
-  "version": "0.1.0",
+  "name": "green-paths-ui",
+  "version": "1.0.1",
   "private": true,
   "dependencies": {
     "@turf/area": "^6.0.1",
@@ -12,6 +12,7 @@
     "@turf/points-within-polygon": "^5.1.5",
     "axios": "^0.18.1",
     "cookies-js": "^1.2.3",
+    "firebase-tools": "^7.6.1",
     "mapbox-gl": "^0.53.1",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",

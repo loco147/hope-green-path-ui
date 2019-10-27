@@ -76,7 +76,7 @@ const AcceptCookieText = ({ visitedBefore }) => {
   return (
     <div>
       <P>
-        You've found the quiet path route planner app, great! <span role="img" aria-label='surfer'>&#127940;</span>
+        You've found the green paths route planner app, great! <span role="img" aria-label='surfer'>&#127940;</span>
       </P>
       <P>
         This site uses a cookie to show this welcome message only on the first visit.
@@ -94,7 +94,7 @@ const WelcomeInfo = (props) => {
       <FlexDiv>
         <WhiteBox>
           <Instructions>
-            <Title>Welcome to quiet paths!</Title>
+            <Title>Welcome to green paths!</Title>
             <AcceptCookieText visitedBefore={props.visitedBefore} />
             <SubHeading> Why quiet paths? </SubHeading>
             <P>
@@ -107,7 +107,7 @@ const WelcomeInfo = (props) => {
             </P>
             <SubHeading> How? </SubHeading>
             <P>
-              The app utilizes quiet path optimization method developed as part of a{' '}
+              The app utilizes a green path optimization method developed as part of a{' '}
               <Link href='https://github.com/hellej/quiet-paths-msc' target='_blank' rel='noopener noreferrer'>master's thesis</Link>. <span role="img" aria-label='surfer'>&#129299;</span>
             </P>
             <P>
@@ -123,9 +123,9 @@ const WelcomeInfo = (props) => {
             </P>
             <SubHeading> Code </SubHeading>
             <P>
-              <Link href='https://github.com/hellej/quiet-path-ui' target='_blank' rel='noopener noreferrer'>github.com/hellej/quiet-path-ui</Link>{' '}
+              <Link href='https://github.com/DigitalGeographyLab/hope-green-path-ui' target='_blank' rel='noopener noreferrer'>DigitalGeographyLab/hope-green-path-ui</Link>{' '}
               <br></br>
-              <Link href='https://github.com/hellej/quiet-paths-msc' target='_blank' rel='noopener noreferrer'>github.com/hellej/quiet-paths-msc</Link>{' '}
+              <Link href='https://github.com/DigitalGeographyLab/hope-green-path-server' target='_blank' rel='noopener noreferrer'>DigitalGeographyLab/hope-green-path-server</Link>{' '}
             </P>
           </Instructions>
           <ButtonDiv>

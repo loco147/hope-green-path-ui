@@ -5,6 +5,7 @@ import mapReducer from './reducers/mapReducer'
 import userLocationReducer from './reducers/userLocationReducer'
 import notificationReducer from './reducers/notificationReducer'
 import pathsReducer from './reducers/pathsReducer'
+import pathListReducer from './reducers/pathListReducer'
 import originTargetReducer from './reducers/originTargetReducer'
 import mapPopupReducer from './reducers/mapPopupReducer'
 import visitorReducer from './reducers/visitorReducer'
@@ -15,6 +16,7 @@ const reducer = combineReducers({
   userLocation: userLocationReducer,
   notification: notificationReducer,
   paths: pathsReducer,
+  pathList: pathListReducer,
   originTarget: originTargetReducer,
   mapPopup: mapPopupReducer,
   visitor: visitorReducer,

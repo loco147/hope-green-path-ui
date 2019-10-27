@@ -1,12 +1,12 @@
 import React from 'react'
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 import { utils } from '../../utils/index'
 import { PathNoisesBar } from './PathNoisesBar'
 
 const StyledPathListPathBox = styled.div.attrs(props => ({
   style:
     ({
-      border: props.selected ? '2px solid #ed7b00' : '',
+      border: props.selected ? '2px solid black' : '',
       boxShadow: props.selected ? '0 -1px 7px 0 rgba(0, 0, 0, 0.15), 0 4px 7px 0 rgba(0, 0, 0, 0.25)' : ''
     })
 }))`
@@ -37,24 +37,21 @@ const PathPropsRow = styled.div`
   display: flex;
   justify-content: space-around;
   font-size: 12px;
-  width: 100%;
-`
-const PathIdTag = styled.div`
-  color: black;
-  font-size: 12px;
   font-weight: 500;
-  margin-right: -8px;
-  text-align: center;
-  ${props => props.quiet && css`
-    color: #0b5d21;
-    `}
+  width: 96%;
+  color: ${props => props.color || '#3c3c3c'};
 `
 
-const PathListPathBox = ({ path, index, selected, pathType, handleClick }) => {
+const QuietPathLengthProps = styled.div`
+  margin-left: 2px;
+  text-align: center;
+`
+
+const PathListPathBox = ({ path, selected, pathType, handleClick }) => {
   if (pathType === 'short') {
     return <ShortestPathBox path={path} selected={selected} handleClick={handleClick} />
   } else {
-    return <QuietPathBox path={path} index={index} selected={selected} handleClick={handleClick} />
+    return <QuietPathBox path={path} selected={selected} handleClick={handleClick} />
   }
 }
 
@@ -77,16 +74,18 @@ const ShortestPathBox = ({ path, selected, handleClick }) => {
   )
 }
 
-const QuietPathBox = ({ path, index, selected, handleClick }) => {
+const QuietPathBox = ({ path, selected, handleClick }) => {
   const mdB_diff = path.properties.mdB_diff
   return (
     <StyledPathListPathBox selected={selected} onClick={handleClick}>
       <PathNoisesBar noisePcts={path.properties.noise_pcts} />
       <PathPropsRow>
-        <PathIdTag quiet>Q{index + 1}</PathIdTag>
-        <div>
-          {utils.getFormattedDistanceString(path.properties.len_diff, true).string}
-        </div>
+        <QuietPathLengthProps>
+          {utils.getFormattedDistanceString(path.properties.length, false).string}
+          <sub>
+            {' '}{utils.getFormattedDistanceString(path.properties.len_diff, true).string}
+          </sub>
+        </QuietPathLengthProps>
         <div>
           {Math.round(path.properties.nei_diff_rat) + ' % noise'}
         </div>
