@@ -1,5 +1,5 @@
 import React from 'react'
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 import { utils } from '../../utils/index'
 import { PathNoisesBar } from './PathNoisesBar'
 
@@ -37,17 +37,14 @@ const PathPropsRow = styled.div`
   display: flex;
   justify-content: space-around;
   font-size: 12px;
-  width: 100%;
-`
-const PathIdTag = styled.div`
-  color: black;
-  font-size: 12px;
   font-weight: 500;
-  margin-right: -8px;
+  width: 96%;
+  color: ${props => props.color || '#3c3c3c'};
+`
+
+const QuietPathLengthProps = styled.div`
+  margin-left: 4px;
   text-align: center;
-  ${props => props.quiet && css`
-    color: #0b5d21;
-    `}
 `
 
 const PathListPathBox = ({ path, index, selected, pathType, handleClick }) => {
@@ -82,11 +79,13 @@ const QuietPathBox = ({ path, index, selected, handleClick }) => {
   return (
     <StyledPathListPathBox selected={selected} onClick={handleClick}>
       <PathNoisesBar noisePcts={path.properties.noise_pcts} />
-      <PathPropsRow>
-        <PathIdTag quiet>Q{index + 1}</PathIdTag>
-        <div>
-          {utils.getFormattedDistanceString(path.properties.len_diff, true).string}
-        </div>
+      <PathPropsRow color={'#033403'}>
+        <QuietPathLengthProps>
+          {utils.getFormattedDistanceString(path.properties.length, false).string}
+          <sub>
+            {' '}{utils.getFormattedDistanceString(path.properties.len_diff, true).string}
+          </sub>
+        </QuietPathLengthProps>
         <div>
           {Math.round(path.properties.nei_diff_rat) + ' % noise'}
         </div>

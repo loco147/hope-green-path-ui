@@ -8,10 +8,9 @@ class PathShort extends React.Component {
     layerId = 'shortestPath'
     source
     paint = {
-        'line-width': 3,
+        'line-width': 5.0,
         'line-opacity': 1,
-        'line-color': 'red',
-        'line-dasharray': [1.2, 2.5],
+        'line-color': 'black',
     }
     layout = {
         'line-join': 'round',
