@@ -37,8 +37,8 @@ class PathList extends React.Component {
     if (prevProps.scrollToPath !== this.props.scrollToPath) {
       this.state.pathRefs[this.props.scrollToPath].current.scrollIntoView({
         behavior: 'smooth',
-        block: 'center',
-        inline: 'center',
+        block: 'nearest',
+        inline: 'start',
       })
     }
   }
