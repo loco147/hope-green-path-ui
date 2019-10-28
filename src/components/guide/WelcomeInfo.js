@@ -114,7 +114,7 @@ const WelcomeInfo = (props) => {
               <Link
                 href='https://hri.fi/data/en_GB/dataset/helsingin-kaupungin-meluselvitys-2017'
                 target='_blank' rel='noopener noreferrer'>Traffic noise data</Link>{' '} is based on an assessment conducted by the city of Helsinki (CC BY 4.0).
-                It is modelled GIS data for typical daytime traffic noise levels. Thus, the quiet paths are most applicable at times when
+                It is a modelled GIS data for typical daytime traffic noise levels. Thus, the quiet paths are most applicable at times when
                 traffic flows are near average.
             </P>
             <P>

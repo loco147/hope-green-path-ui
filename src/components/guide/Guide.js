@@ -92,7 +92,7 @@ const Guide = (props) => {
             <SubHeading> Noise cost </SubHeading>
             <P>
               Additional noise cost is assigned to edges of the network when optimizing green (clean or quiet) paths.
-              Noise cost is calculated from contaminated distances to different noise levels using higher noise cost coefficients for higher noise levels.
+              Noise cost is calculated from contaminated distances to different noise levels using higher cost coefficients for higher noise levels.
               The cumulative noise cost of a path is calculated in a similar way.
             </P>
             <SubHeading> Noise index (ni) </SubHeading>
@@ -108,7 +108,7 @@ const Guide = (props) => {
               <Link
                 href='https://hri.fi/data/en_GB/dataset/helsingin-kaupungin-meluselvitys-2017'
                 target='_blank' rel='noopener noreferrer'>Traffic noise data</Link>{' '} is based on an assessment conducted by the city of Helsinki (CC BY 4.0).
-              It is modelled GIS data for typical daytime traffic noise levels. Thus, the quiet paths are most applicable at times when
+              It is a modelled GIS data for typical daytime traffic noise levels. Thus, the quiet paths are most applicable at times when
               traffic flows are near average.
             </P>
             <P>
