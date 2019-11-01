@@ -4,15 +4,12 @@ import { connect } from 'react-redux'
 class PathSelected extends React.Component {
     layerId = 'selectedPath'
     source
-    paint = {
-        'line-width': 5,
-        'line-opacity': 1,
-        'line-color': 'black',
-        'line-offset': 1,
-    }
+
     layout = {
-        'line-join': 'round',
-        'line-cap': 'round',
+        'icon-image': 'circle-15',
+        'icon-size': 0.7,
+        'symbol-placement': 'line',
+        'symbol-spacing': 28,
     }
 
     componentDidMount() {
@@ -24,8 +21,7 @@ class PathSelected extends React.Component {
             map.addLayer({
                 id: this.layerId,
                 source: this.layerId,
-                type: 'line',
-                paint: this.paint,
+                type: 'symbol',
                 layout: this.layout,
             })
         })
