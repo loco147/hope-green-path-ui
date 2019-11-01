@@ -16,12 +16,12 @@ export const getTargetCoordsFromFC = (FC) => {
 }
 
 export const getNoiseIndexLabel = (ni) => {
-  if (ni < 0.15) return 'very low'
-  if (ni < 0.3) return 'low'
-  if (ni < 0.5) return 'moderate'
-  if (ni < 0.65) return 'high'
-  if (ni < 0.75) return 'very high'
-  if (ni >= 0.75) return 'extreme'
+  if (ni < 0.15) return 'very quiet'
+  if (ni < 0.3) return 'quiet'
+  if (ni < 0.5) return 'moderate noise'
+  if (ni < 0.65) return 'high noise'
+  if (ni < 0.75) return 'very high noise'
+  if (ni >= 0.75) return 'extreme noise'
 }
 
 const getFormattedKmString = (m, digits) => {
