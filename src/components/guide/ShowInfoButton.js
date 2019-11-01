@@ -6,7 +6,7 @@ import { showInfo } from './../../reducers/menuReducer'
 const StyledShowInfoButton = styled.div`
   position: absolute;
   top: 67px;
-  right: 15px;
+  right: 9px;
   z-index: 2;
   pointer-events: auto;
   cursor: pointer;
@@ -17,7 +17,6 @@ const StyledShowInfoButton = styled.div`
   border: 2px solid black;
   background-color: white;
   color: black;
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.15), 0 6px 20px 0 rgba(0,0,0,0.09);
   transition-duration: 0.2s;
   -webkit-transition-duration: 0.2s; /* Safari */
   &:before {

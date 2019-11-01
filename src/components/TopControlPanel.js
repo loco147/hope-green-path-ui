@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { connect } from 'react-redux'
 import { Button } from './Button'
 import { useUserLocationOrigin } from '../reducers/originTargetReducer'
@@ -16,6 +16,10 @@ const ControlPanel = styled.div`
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.15), 0 6px 20px 0 rgba(0,0,0,0.09);
   justify-content: center;
   pointer-events: auto;
+  ${props => props.hideBackground === true && css`
+    background: none;
+    box-shadow: none;
+    `}
 `
 const ButtonFlex = styled.div`
   display: flex;
@@ -30,7 +34,7 @@ const TopControlPanel = (props) => {
   const showUserLocButton = !useUserLocOrigin && !showingPaths && !waitingPaths
 
   return (
-    <ControlPanel>
+    <ControlPanel hideBackground={showingPaths}>
       <ButtonFlex>
         <LocateButton handleClick={() => props.zoomToUserLocation(userLocation)} />
         {showingPaths
