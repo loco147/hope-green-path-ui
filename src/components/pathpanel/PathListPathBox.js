@@ -64,7 +64,7 @@ const ShortestPathBox = ({ path, selected, handleClick }) => {
           {utils.getFormattedDistanceString(path.properties.length, false).string}
         </div>
         <div>
-          {path.properties.nei_norm} <sub>ni</sub> ({utils.getNoiseIndexLabel(path.properties.nei_norm)})
+          {utils.getNoiseIndexLabel(path.properties.nei_norm)}
         </div>
         <div>
           {Math.round(path.properties.mdB)} dB<sub>mean</sub>
@@ -75,7 +75,6 @@ const ShortestPathBox = ({ path, selected, handleClick }) => {
 }
 
 const QuietPathBox = ({ path, selected, handleClick }) => {
-  const mdB_diff = path.properties.mdB_diff
   return (
     <StyledPathListPathBox selected={selected} onClick={handleClick}>
       <PathNoisesBar noisePcts={path.properties.noise_pcts} />
@@ -90,7 +89,7 @@ const QuietPathBox = ({ path, selected, handleClick }) => {
           {Math.round(path.properties.nei_diff_rat) + ' % noise'}
         </div>
         <div>
-          {Math.abs(mdB_diff) < 1 ? mdB_diff : Math.round(mdB_diff)} dB<sub>mean</sub>
+          {Math.round(path.properties.mdB)} dB<sub>mean</sub>
         </div>
       </PathPropsRow>
     </StyledPathListPathBox>
