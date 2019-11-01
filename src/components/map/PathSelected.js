@@ -5,9 +5,10 @@ class PathSelected extends React.Component {
     layerId = 'selectedPath'
     source
     paint = {
-        'line-width': 9,
-        'line-opacity': 0.7,
-        'line-color': 'yellow',
+        'line-width': 5,
+        'line-opacity': 1,
+        'line-color': 'black',
+        'line-offset': 1,
     }
     layout = {
         'line-join': 'round',
