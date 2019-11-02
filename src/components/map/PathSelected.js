@@ -4,12 +4,13 @@ import { connect } from 'react-redux'
 class PathSelected extends React.Component {
     layerId = 'selectedPath'
     source
-
     layout = {
         'icon-image': 'circle-15',
         'icon-size': 0.7,
         'symbol-placement': 'line',
-        'symbol-spacing': 28,
+        'symbol-spacing': 22,
+        'icon-allow-overlap': true,
+        'icon-ignore-placement': true,
     }
 
     componentDidMount() {
