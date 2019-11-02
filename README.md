@@ -6,7 +6,7 @@ Its goal is to inform people on clean routes for walking and cycling in Helsinki
 
 Currently implemented features include calculation of walkable quiet paths with respect to typical daytime traffic noise levels. The quiet path optimization application and user interface are based on [an MSc thesis](https://github.com/hellej/quiet-paths-msc). 
 
-[Live demo](https://quietpath.web.app/)
+[Live demo](https://green-paths.web.app/)
 
 ## Materials
 * [FMI Enfuser model](https://en.ilmatieteenlaitos.fi/environmental-information-fusion-service)
