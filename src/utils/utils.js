@@ -34,10 +34,15 @@ export const getFormattedDistanceString = (m, withSign) => {
   const distObj = {}
   distObj.m = Math.round(m)
   let distanceString
-  if (Math.abs(m) >= 460) {
+  if (Math.abs(m) >= 950) {
+    // round to nearest 0.1 km
     distanceString = getFormattedKmString(m, 1)
+  } else if (Math.abs(m) > 70) {
+    // round to nearest 10 m
+    distanceString = String(Math.round(m / 10) * 10) + ' m'
   } else {
-    distanceString = String(Math.round(m)) + ' m'
+    // round to nearest m
+    distanceString = String(Math.round(m) + ' m')
   }
   if (withSign && Math.round(m) > 0) {
     distObj.string = '+'.concat(distanceString)
