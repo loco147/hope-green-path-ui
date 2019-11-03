@@ -26,7 +26,7 @@ const menuReducer = (store = initialMenuState, action) => {
 
     case 'SHOW_PATH_LIST': return { ...store, pathPanel: true, pathPanelContent: menu.pathList }
 
-    case 'SHOW_DETOUR_FILTER_SELECTOR': return { ...store, pathPanel: true, pathPanelContent: menu.detourFilterSelector }
+    case 'SHOW_LENGTH_FILTER_SELECTOR': return { ...store, pathPanel: true, pathPanelContent: menu.lengthLimitSelector }
 
     default:
       return store
@@ -50,7 +50,7 @@ export const hideInfo = (showingPaths) => {
   }
 }
 
-export const showMaxDetourFilterSelector = () => ({ type: 'SHOW_DETOUR_FILTER_SELECTOR' })
+export const showMaxLengthFilterSelector = () => ({ type: 'SHOW_LENGTH_FILTER_SELECTOR' })
 
 export const showPathList = () => ({ type: 'SHOW_PATH_LIST' })
 

@@ -81,19 +81,19 @@ export const getBestPath = (qPaths) => {
   return null
 }
 
-const getDetourLimit = (len_diff, rounding) => Math.ceil(len_diff / rounding) * rounding
+const getLengthLimit = (length, rounding) => Math.ceil(length / rounding) * rounding
 
-export const getDetourLimits = (qPaths) => {
-  const pathLenDiffs = qPaths.map(feat => feat.properties.len_diff)
+export const getLengthLimits = (qPaths) => {
+  const pathLengths = qPaths.map(feat => feat.properties.length)
   const pathProps = qPaths.map(feat => feat.properties)
   const limits = pathProps.reduce((acc, props) => {
-    const lenDiff = props.len_diff
-    // get limit as rounded value higher the len diff
-    const limit = lenDiff > 1000 ? getDetourLimit(lenDiff, 100) : getDetourLimit(lenDiff, 50)
-    // add new limit if it's not in the limits list yeet
+    const length = props.length
+    // get limit as rounded value higher than the actual length
+    const limit = length > 1000 ? getLengthLimit(length, 100) : getLengthLimit(length, 50)
+    // add new limit if it's not in the limits list yet
     if (acc.map(limit => limit.limit).indexOf(limit) === -1) {
       // create label for len diff to be shown in options input
-      const pathCount = pathLenDiffs.filter(x => x < limit).length
+      const pathCount = pathLengths.filter(x => x < limit).length
       const limitText = limit < 1000 ? String(limit) + ' m' : String(limit / 1000) + ' km'
       const label = limitText + ' (' + (String(pathCount)) + ')'
       acc.push({ limit, count: pathCount, label, cost_coeff: props.cost_coeff })
@@ -103,21 +103,21 @@ export const getDetourLimits = (qPaths) => {
   return limits
 }
 
-export const getInitialDetourLimit = (detourLimits) => {
-  // return detour limit that filters out paths with cost_coeff higher than 20 as initial detour limit
-  if (detourLimits.length > 0) {
-    if (detourLimits.length > 1) {
-      let prevDl = detourLimits[0]
-      for (let dL of detourLimits) {
+export const getInitialLengthLimit = (lengthLimits) => {
+  // return length limit that filters out paths with cost_coeff higher than 20 as default
+  if (lengthLimits.length > 0) {
+    if (lengthLimits.length > 1) {
+      let prevDl = lengthLimits[0]
+      for (let dL of lengthLimits) {
         if (dL.cost_coeff >= 20) return prevDl
         prevDl = dL
       }
     }
-    return detourLimits[detourLimits.length - 1]
+    return lengthLimits[lengthLimits.length - 1]
   } else return { limit: 0, count: 0, label: '' }
 }
 
-export const originTargetwithinSupportedArea = (originTargetFC) => {
+export const originTargetWithinSupportedArea = (originTargetFC) => {
   const origin = originTargetFC.features.filter(feat => feat.properties.type === 'origin')
   const target = originTargetFC.features.filter(feat => feat.properties.type === 'target')
   const extentFeat = helPoly.features[0]

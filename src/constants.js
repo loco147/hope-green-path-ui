@@ -17,7 +17,7 @@ export const dBColors = {
 }
 
 export const menu = {
-  detourFilterSelector: 'detour_filter_selector',
+  lengthLimitSelector: 'length_limit_selector',
   pathList: 'path_list',
 }
 

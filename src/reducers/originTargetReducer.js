@@ -21,7 +21,7 @@ const pathsReducer = (store = initialOriginTarget, action) => {
       return initialOriginTarget
 
     case 'SET_ORIGIN': {
-      const error = utils.originTargetwithinSupportedArea(action.updateOriginTargetFC)
+      const error = utils.originTargetWithinSupportedArea(action.updateOriginTargetFC)
       return { ...store, originTargetFC: action.updateOriginTargetFC, error: error ? error : null, useUserLocOrigin: false }
     }
 
@@ -38,13 +38,13 @@ const pathsReducer = (store = initialOriginTarget, action) => {
     case 'UPDATE_USER_LOCATION': {
       if (store.useUserLocOrigin && !store.showingPaths) {
         const updateOriginTargetFC = updateOriginToFC(store.originTargetFC, turf.toLngLat(action.coords))
-        const error = utils.originTargetwithinSupportedArea(updateOriginTargetFC)
+        const error = utils.originTargetWithinSupportedArea(updateOriginTargetFC)
         return { ...store, originTargetFC: updateOriginTargetFC, error: error ? error : null }
       } else return store
     }
 
     case 'SET_TARGET': {
-      const error = utils.originTargetwithinSupportedArea(action.updateOriginTargetFC)
+      const error = utils.originTargetWithinSupportedArea(action.updateOriginTargetFC)
       return { ...store, originTargetFC: action.updateOriginTargetFC, error: error ? error : null }
     }
 
@@ -54,7 +54,7 @@ const pathsReducer = (store = initialOriginTarget, action) => {
       if (action.lngLat && store.useUserLocOrigin) {
         console.log('update origin to current user location:', action.lngLat)
         const updateOriginTargetFC = updateOriginToFC(store.originTargetFC, action.lngLat)
-        const error = utils.originTargetwithinSupportedArea(updateOriginTargetFC)
+        const error = utils.originTargetWithinSupportedArea(updateOriginTargetFC)
         return { ...store, showingPaths: false, originTargetFC: updateOriginTargetFC, error: error ? error : null }
       }
       else return { ...store, showingPaths: false }
@@ -87,7 +87,7 @@ export const setTarget = (lngLat, originTargetFC, routingId) => {
     dispatch({ type: 'SET_TARGET', updateOriginTargetFC })
     dispatch(closePopup())
     // start routing after target is set (if at supported area)
-    const error = utils.originTargetwithinSupportedArea(updateOriginTargetFC)
+    const error = utils.originTargetWithinSupportedArea(updateOriginTargetFC)
     if (!error) {
       const originSet = originTargetFC.features.filter(feat => feat.properties.type === 'origin').length > 0
       if (originSet) {
