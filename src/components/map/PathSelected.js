@@ -4,12 +4,13 @@ import { connect } from 'react-redux'
 class PathSelected extends React.Component {
     layerId = 'selectedPath'
     source
-
     layout = {
         'icon-image': 'circle-15',
         'icon-size': 0.7,
         'symbol-placement': 'line',
-        'symbol-spacing': 28,
+        'symbol-spacing': 22,
+        'icon-allow-overlap': true,
+        'icon-ignore-placement': true,
     }
 
     componentDidMount() {
@@ -28,16 +29,16 @@ class PathSelected extends React.Component {
     }
 
     componentDidUpdate = () => {
-        const { map, selPathFC, detourLimit } = this.props
+        const { map, selPathFC, lengthLimit } = this.props
 
         if (this.source !== undefined) {
             this.source.setData(selPathFC)
-            map.setFilter(this.layerId, ['<=', 'len_diff', detourLimit.limit])
+            map.setFilter(this.layerId, ['<=', 'length', lengthLimit.limit])
         } else {
             map.once('sourcedata', () => {
                 this.source.setData(selPathFC)
             })
-            map.setFilter(this.layerId, ['<=', 'len_diff', detourLimit.limit])
+            map.setFilter(this.layerId, ['<=', 'length', lengthLimit.limit])
         }
     }
 
@@ -48,7 +49,7 @@ class PathSelected extends React.Component {
 
 const mapStateToProps = (state) => ({
     selPathFC: state.paths.selPathFC,
-    detourLimit: state.paths.detourLimit,
+    lengthLimit: state.paths.lengthLimit,
 })
 
 const ConnectedPathSelected = connect(mapStateToProps, null)(PathSelected)

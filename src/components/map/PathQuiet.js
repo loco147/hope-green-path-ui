@@ -45,16 +45,16 @@ class PathQuiet extends React.Component {
     }
 
     componentDidUpdate = () => {
-        const { map, qPathFC, detourLimit } = this.props
+        const { map, qPathFC, lengthLimit } = this.props
 
         if (this.source !== undefined) {
             this.source.setData(qPathFC)
-            map.setFilter(this.layerId, ['<=', 'len_diff', detourLimit.limit])
+            map.setFilter(this.layerId, ['<=', 'length', lengthLimit.limit])
         } else {
             map.once('sourcedata', () => {
                 this.source.setData(qPathFC)
             })
-            map.setFilter(this.layerId, ['<=', 'len_diff', detourLimit.limit])
+            map.setFilter(this.layerId, ['<=', 'length', lengthLimit.limit])
         }
     }
 
@@ -65,7 +65,7 @@ class PathQuiet extends React.Component {
 
 const mapStateToProps = (state) => ({
     qPathFC: state.paths.qPathFC,
-    detourLimit: state.paths.detourLimit,
+    lengthLimit: state.paths.lengthLimit,
 })
 
 const ConnectedPathQuiet = connect(mapStateToProps, { setSelectedPath, scrollToPath })(PathQuiet)

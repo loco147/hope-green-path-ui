@@ -9,8 +9,8 @@ const initialPaths = {
   selPathFC: turf.asFeatureCollection([]),
   edgeFC: turf.asFeatureCollection([]),
   openedPath: null,
-  detourLimit: { limit: 0, count: 0, label: '' },
-  detourLimits: [],
+  lengthLimit: { limit: 0, count: 0, label: '' },
+  lengthLimits: [],
   waitingPaths: false,
   showingPaths: false,
   routingId: 0,
@@ -38,13 +38,13 @@ const pathsReducer = (store = initialPaths, action) => {
       }
     }
 
-    case 'SET_DETOUR_LIMITS': {
+    case 'SET_LENGTH_LIMITS': {
       const cancelledRouting = store.routingId !== action.routingId
       if (cancelledRouting) return store
       return {
         ...store,
-        detourLimits: action.detourLimits,
-        detourLimit: action.initialDetourLimit,
+        lengthLimits: action.lengthLimits,
+        lengthLimit: action.initialLengthLimit,
       }
     }
 
@@ -112,10 +112,10 @@ const pathsReducer = (store = initialPaths, action) => {
         openedPath: null
       }
 
-    case 'SET_DETOUR_LIMIT':
+    case 'SET_LENGTH_LIMIT':
       return {
         ...store,
-        detourLimit: action.detourLimit
+        lengthLimit: action.lengthLimit
       }
 
     case 'ERROR_IN_ROUTING':
@@ -171,9 +171,9 @@ export const getQuietPaths = (originCoords, targetCoords, prevRoutingId) => {
       const sPath = pathFeats.filter(feat => feat.properties.type === 'short')
       const qPaths = pathFeats.filter(feat => feat.properties.type === 'quiet' && feat.properties.len_diff !== 0)
       // utils.validateNoiseDiffs(sPath, qPaths)
-      const detourLimits = utils.getDetourLimits(qPaths)
-      const initialDetourLimit = utils.getInitialDetourLimit(detourLimits)
-      dispatch({ type: 'SET_DETOUR_LIMITS', detourLimits, initialDetourLimit, routingId })
+      const lengthLimits = utils.getLengthLimits(pathFeats)
+      const initialLengthLimit = utils.getInitialLengthLimit(lengthLimits)
+      dispatch({ type: 'SET_LENGTH_LIMITS', lengthLimits, initialLengthLimit, routingId })
       dispatch({ type: 'SET_SHORTEST_PATH', sPath, routingId })
       dispatch({ type: 'SET_QUIET_PATH', qPaths: qPaths, routingId })
       dispatch({ type: 'SET_EDGE_FC', edgeFC: pathData.edge_FC, routingId })
@@ -208,8 +208,8 @@ export const unsetOpenedPath = () => {
   return { type: 'UNSET_OPENED_PATH' }
 }
 
-export const setDetourLimit = (detourLimit) => {
-  return { type: 'SET_DETOUR_LIMIT', detourLimit }
+export const setLengthLimit = (lengthLimit) => {
+  return { type: 'SET_LENGTH_LIMIT', lengthLimit }
 }
 
 export const unsetSelectedPath = () => {

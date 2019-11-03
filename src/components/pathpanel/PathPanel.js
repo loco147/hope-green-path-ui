@@ -2,9 +2,9 @@ import React from 'react'
 import styled, { css } from 'styled-components'
 import { connect } from 'react-redux'
 import { menu } from './../../constants'
-import { setSelectedPath, setOpenedPath, unsetOpenedPath, setDetourLimit } from './../../reducers/pathsReducer'
+import { setSelectedPath, setOpenedPath, unsetOpenedPath, setLengthLimit } from './../../reducers/pathsReducer'
 import { showPathList } from './../../reducers/menuReducer'
-import MaxDetourFilterSelector from './MaxDetourFilterSelector'
+import MaxLengthFilterSelector from './MaxLengthFilterSelector'
 import PathList from './PathList'
 import OpenedPathInfo from './OpenedPathInfo'
 
@@ -31,21 +31,21 @@ const PathPanelContainer = styled.div`
 
 const PathPanel = (props) => {
   const { paths, scrollToPath, pathPanelVisible, pathPanelContent } = props
-  const { setSelectedPath, setOpenedPath, unsetOpenedPath, setDetourLimit, showPathList } = props
-  const { showingPaths, sPathFC, openedPath, detourLimit, detourLimits } = paths
+  const { setSelectedPath, setOpenedPath, unsetOpenedPath, setLengthLimit, showPathList } = props
+  const { showingPaths, sPathFC, openedPath, lengthLimit, lengthLimits } = paths
 
   if (!showingPaths || !pathPanelVisible) return null
 
   const showingPathList = pathPanelContent === menu.pathList && !openedPath
-  const showingOpenedPath = openedPath && !(pathPanelContent === menu.detourFilterSelector)
+  const showingOpenedPath = openedPath && !(pathPanelContent === menu.lengthLimitSelector)
 
   return (
     <PathPanelContainer showingOpenedPath={showingOpenedPath}>
-      {pathPanelContent === menu.detourFilterSelector ?
-        <MaxDetourFilterSelector
-          detourLimit={detourLimit}
-          detourLimits={detourLimits}
-          setDetourLimit={setDetourLimit}
+      {pathPanelContent === menu.lengthLimitSelector ?
+        <MaxLengthFilterSelector
+          lengthLimit={lengthLimit}
+          lengthLimits={lengthLimits}
+          setLengthLimit={setLengthLimit}
           showPathList={showPathList} /> : null}
       {showingPathList ?
         <PathList
@@ -73,7 +73,7 @@ const mapDispatchToProps = {
   setSelectedPath,
   setOpenedPath,
   unsetOpenedPath,
-  setDetourLimit,
+  setLengthLimit,
   showPathList,
 }
 

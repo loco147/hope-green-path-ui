@@ -44,16 +44,16 @@ class PathEdges extends React.Component {
     }
 
     componentDidUpdate = () => {
-        const { map, edgeFC, detourLimit } = this.props
+        const { map, edgeFC, lengthLimit } = this.props
 
         if (this.source !== undefined) {
             this.source.setData(edgeFC)
-            map.setFilter(this.layerId, ['<=', 'len_diff', detourLimit.limit])
+            map.setFilter(this.layerId, ['<=', 'p_length', lengthLimit.limit])
         } else {
             map.once('sourcedata', () => {
                 this.source.setData(edgeFC)
             })
-            map.setFilter(this.layerId, ['<=', 'len_diff', detourLimit.limit])
+            map.setFilter(this.layerId, ['<=', 'p_length', lengthLimit.limit])
         }
     }
 
@@ -64,7 +64,7 @@ class PathEdges extends React.Component {
 
 const mapStateToProps = (state) => ({
     edgeFC: state.paths.edgeFC,
-    detourLimit: state.paths.detourLimit,
+    lengthLimit: state.paths.lengthLimit,
 })
 
 const ConnectedPathEdges = connect(mapStateToProps, { setSelectedPath })(PathEdges)

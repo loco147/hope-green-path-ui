@@ -45,13 +45,13 @@ class PathList extends React.Component {
 
   render() {
     const { paths, setSelectedPath, setOpenedPath } = this.props
-    const { sPathFC, qPathFC, selPathFC, detourLimit } = paths
+    const { sPathFC, qPathFC, selPathFC, lengthLimit } = paths
     const selPathId = selPathFC.features.length > 0
       ? selPathFC.features[0].properties.id
       : 'none'
 
     const sPath = sPathFC.features[0]
-    const qPaths = qPathFC.features.filter(path => path.properties.len_diff < detourLimit.limit)
+    const qPaths = qPathFC.features.filter(path => path.properties.length <= lengthLimit.limit)
 
     return (
       <div>
