@@ -12,11 +12,24 @@ export const getConnectionTestResponse = async () => {
     return response
 }
 
-export const getQuietPaths = async (originCoords, targetCoords) => {
+const formCoordinateString = (originCoords, destinationCoords) => {
     const fromC = originCoords.map(coord => String(coord))
-    const toC = targetCoords.map(coord => String(coord))
-    const coordString = fromC[1].concat(',',fromC[0],'/',toC[1],',',toC[0])
+    const toC = destinationCoords.map(coord => String(coord))
+    return fromC[1].concat(',',fromC[0],'/',toC[1],',',toC[0])
+}
+
+export const getQuietPaths = async (originCoords, destinationCoords) => {
+    const coordString = formCoordinateString(originCoords, destinationCoords)
     const queryUrl = baseurl.concat('quietpaths/', coordString)
+    console.log('Querying quiet paths:', queryUrl)
+    const response = await axios.get(queryUrl)
+    if (response.data.error) throw response.data.error
+    return response.data
+}
+
+export const getCleanPaths = async (originCoords, destinationCoords) => {
+    const coordString = formCoordinateString(originCoords, destinationCoords)
+    const queryUrl = baseurl.concat('cleanpaths/', coordString)
     console.log('Querying quiet paths:', queryUrl)
     const response = await axios.get(queryUrl)
     if (response.data.error) throw response.data.error
