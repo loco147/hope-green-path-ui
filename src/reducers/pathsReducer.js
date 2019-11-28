@@ -4,10 +4,10 @@ import { showNotification } from './notificationReducer'
 import { utils } from './../utils/index'
 
 const initialPaths = {
-  qPathFC: turf.asFeatureCollection([]),
-  sPathFC: turf.asFeatureCollection([]),
+  shortPathFC: turf.asFeatureCollection([]),
+  quietPathFC: turf.asFeatureCollection([]),
   selPathFC: turf.asFeatureCollection([]),
-  edgeFC: turf.asFeatureCollection([]),
+  quietEdgeFC: turf.asFeatureCollection([]),
   openedPath: null,
   lengthLimit: { limit: 0, count: 0, label: '' },
   lengthLimits: [],
@@ -34,7 +34,7 @@ const pathsReducer = (store = initialPaths, action) => {
         ...store,
         waitingPaths: false,
         showingPaths: true,
-        sPathFC: turf.asFeatureCollection(action.sPath),
+        shortPathFC: turf.asFeatureCollection(action.shortPath),
       }
     }
 
@@ -53,7 +53,7 @@ const pathsReducer = (store = initialPaths, action) => {
       if (cancelledRouting) return store
       return {
         ...store,
-        qPathFC: turf.asFeatureCollection(action.qPaths)
+        quietPathFC: turf.asFeatureCollection(action.quietPaths)
       }
     }
 
@@ -62,7 +62,7 @@ const pathsReducer = (store = initialPaths, action) => {
       if (cancelledRouting) return store
       return {
         ...store,
-        edgeFC: action.edgeFC
+        quietEdgeFC: action.quietEdgeFC
       }
     }
 
@@ -79,9 +79,9 @@ const pathsReducer = (store = initialPaths, action) => {
         }
       } else {
         // select shortest path if no quiet path id match the selected id
-        let selPath = store.qPathFC.features.filter(feat => feat.properties.id === action.selPathId)
+        let selPath = store.quietPathFC.features.filter(feat => feat.properties.id === action.selPathId)
         if (selPath.length === 0) {
-          selPath = store.sPathFC.features
+          selPath = store.shortPathFC.features
         }
         console.log('selecting path:', selPath[0].properties)
         return {
@@ -168,19 +168,19 @@ export const getQuietPaths = (originCoords, targetCoords, prevRoutingId) => {
     try {
       const pathData = await paths.getQuietPaths(originCoords, targetCoords)
       const pathFeats = pathData.path_FC.features
-      const sPath = pathFeats.filter(feat => feat.properties.type === 'short')
-      const qPaths = pathFeats.filter(feat => feat.properties.type === 'quiet' && feat.properties.len_diff !== 0)
-      // utils.validateNoiseDiffs(sPath, qPaths)
+      const shortPath = pathFeats.filter(feat => feat.properties.type === 'short')
+      const quietPaths = pathFeats.filter(feat => feat.properties.type === 'quiet' && feat.properties.len_diff !== 0)
+      // utils.validateNoiseDiffs(shortPath, quietPaths)
       const lengthLimits = utils.getLengthLimits(pathFeats)
       const initialLengthLimit = utils.getInitialLengthLimit(lengthLimits)
       dispatch({ type: 'SET_LENGTH_LIMITS', lengthLimits, initialLengthLimit, routingId })
-      dispatch({ type: 'SET_SHORTEST_PATH', sPath, routingId })
-      dispatch({ type: 'SET_QUIET_PATH', qPaths: qPaths, routingId })
-      dispatch({ type: 'SET_EDGE_FC', edgeFC: pathData.edge_FC, routingId })
-      const bestPath = utils.getBestPath(qPaths)
+      dispatch({ type: 'SET_SHORTEST_PATH', shortPath, routingId })
+      dispatch({ type: 'SET_QUIET_PATH', quietPaths: quietPaths, routingId })
+      dispatch({ type: 'SET_EDGE_FC', quietEdgeFC: pathData.edge_FC, routingId })
+      const bestPath = utils.getBestPath(quietPaths)
       if (bestPath) {
         dispatch({ type: 'SET_SELECTED_PATH', selPathId: bestPath.properties.id, routingId })
-      } else if (qPaths.length > 0) {
+      } else if (quietPaths.length > 0) {
         dispatch({ type: 'SET_SELECTED_PATH', selPathId: 'short_p', routingId })
       }
     } catch (error) {

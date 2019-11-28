@@ -29,7 +29,7 @@ const ButtonFlex = styled.div`
   width: 100%;
 `
 const BottomControlPanel = (props) => {
-  const { showingPaths, pathPanelVisible, pathPanelContent, qPathCount, lengthLimit, lengthLimits,
+  const { showingPaths, pathPanelVisible, pathPanelContent, quietPathCount, lengthLimit, lengthLimits,
     togglePathPanel, toggleGuide, showPathList, showMaxLengthFilterSelector } = props
 
   if (!showingPaths) return null
@@ -39,7 +39,7 @@ const BottomControlPanel = (props) => {
       <ButtonFlex>
         {pathPanelContent === menu.lengthLimitSelector
           ? <ListButton onClick={showPathList} />
-          : <FilterButton qPathCount={qPathCount} lengthLimit={lengthLimit} lengthLimits={lengthLimits} onClick={showMaxLengthFilterSelector} />}
+          : <FilterButton quietPathCount={quietPathCount} lengthLimit={lengthLimit} lengthLimits={lengthLimits} onClick={showMaxLengthFilterSelector} />}
         {pathPanelVisible
           ? <ArrowDownButton onClick={togglePathPanel}></ArrowDownButton>
           : <ArrowUpButton onClick={togglePathPanel}></ArrowUpButton>}
@@ -53,7 +53,7 @@ const mapStateToProps = (state) => ({
   showingPaths: state.paths.showingPaths,
   pathPanelVisible: state.menu.pathPanel,
   pathPanelContent: state.menu.pathPanelContent,
-  qPathCount: state.paths.qPathFC.features.length,
+  quietPathCount: state.paths.quietPathFC.features.length,
   lengthLimit: state.paths.lengthLimit,
   lengthLimits: state.paths.lengthLimits,
 })

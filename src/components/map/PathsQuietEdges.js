@@ -1,11 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { setSelectedPath } from './../../reducers/pathsReducer'
-import { dBColors } from './../../constants'
+import { setSelectedPath } from '../../reducers/pathsReducer'
+import { dBColors } from '../../constants'
 
-
-class PathEdges extends React.Component {
-    layerId = 'pathEdges'
+class PathsQuietEdges extends React.Component {
+    layerId = 'pathsQuietEdges'
     source
     paint = {
         'line-width': 2.2,
@@ -28,10 +27,10 @@ class PathEdges extends React.Component {
     }
 
     componentDidMount() {
-        const { map, edgeFC } = this.props
+        const { map, quietEdgeFC } = this.props
         map.once('load', () => {
             // Add layer
-            map.addSource(this.layerId, { type: 'geojson', data: edgeFC })
+            map.addSource(this.layerId, { type: 'geojson', data: quietEdgeFC })
             this.source = map.getSource(this.layerId)
             map.addLayer({
                 id: this.layerId,
@@ -44,14 +43,14 @@ class PathEdges extends React.Component {
     }
 
     componentDidUpdate = () => {
-        const { map, edgeFC, lengthLimit } = this.props
+        const { map, quietEdgeFC, lengthLimit } = this.props
 
         if (this.source !== undefined) {
-            this.source.setData(edgeFC)
+            this.source.setData(quietEdgeFC)
             map.setFilter(this.layerId, ['<=', 'p_length', lengthLimit.limit])
         } else {
             map.once('sourcedata', () => {
-                this.source.setData(edgeFC)
+                this.source.setData(quietEdgeFC)
             })
             map.setFilter(this.layerId, ['<=', 'p_length', lengthLimit.limit])
         }
@@ -63,10 +62,10 @@ class PathEdges extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-    edgeFC: state.paths.edgeFC,
+    quietEdgeFC: state.paths.quietEdgeFC,
     lengthLimit: state.paths.lengthLimit,
 })
 
-const ConnectedPathEdges = connect(mapStateToProps, { setSelectedPath })(PathEdges)
+const ConnectedPathsQuietEdges = connect(mapStateToProps, { setSelectedPath })(PathsQuietEdges)
 
-export default ConnectedPathEdges
+export default ConnectedPathsQuietEdges

@@ -32,7 +32,7 @@ const PathPanelContainer = styled.div`
 const PathPanel = (props) => {
   const { paths, scrollToPath, pathPanelVisible, pathPanelContent } = props
   const { setSelectedPath, setOpenedPath, unsetOpenedPath, setLengthLimit, showPathList } = props
-  const { showingPaths, sPathFC, openedPath, lengthLimit, lengthLimits } = paths
+  const { showingPaths, shortPathFC, openedPath, lengthLimit, lengthLimits } = paths
 
   if (!showingPaths || !pathPanelVisible) return null
 
@@ -56,7 +56,7 @@ const PathPanel = (props) => {
       {showingOpenedPath ?
         <OpenedPathInfo
           path={openedPath}
-          sPath={sPathFC.features[0]}
+          shortPath={shortPathFC.features[0]}
           unsetOpenedPath={unsetOpenedPath} /> : null}
     </PathPanelContainer>
   )

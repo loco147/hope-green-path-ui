@@ -1,12 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { setSelectedPath } from './../../reducers/pathsReducer'
-import { scrollToPath } from './../../reducers/pathListReducer'
-import { clickTol } from './../../constants'
-import { utils } from './../../utils/index'
+import { setSelectedPath } from '../../reducers/pathsReducer'
+import { scrollToPath } from '../../reducers/pathListReducer'
+import { clickTol } from '../../constants'
+import { utils } from '../../utils/index'
 
-class PathQuiet extends React.Component {
-    layerId = 'quietPaths'
+class PathsQuiet extends React.Component {
+    layerId = 'pathsQuiet'
     source
     paint = {
         'line-width': 4.3,
@@ -19,10 +19,10 @@ class PathQuiet extends React.Component {
     }
 
     componentDidMount() {
-        const { map, qPathFC, setSelectedPath, scrollToPath } = this.props
+        const { map, quietPathFC, setSelectedPath, scrollToPath } = this.props
         map.once('load', () => {
             // Add layer
-            map.addSource(this.layerId, { type: 'geojson', data: qPathFC })
+            map.addSource(this.layerId, { type: 'geojson', data: quietPathFC })
             this.source = map.getSource(this.layerId)
             map.addLayer({
                 id: this.layerId,
@@ -45,14 +45,14 @@ class PathQuiet extends React.Component {
     }
 
     componentDidUpdate = () => {
-        const { map, qPathFC, lengthLimit } = this.props
+        const { map, quietPathFC, lengthLimit } = this.props
 
         if (this.source !== undefined) {
-            this.source.setData(qPathFC)
+            this.source.setData(quietPathFC)
             map.setFilter(this.layerId, ['<=', 'length', lengthLimit.limit])
         } else {
             map.once('sourcedata', () => {
-                this.source.setData(qPathFC)
+                this.source.setData(quietPathFC)
             })
             map.setFilter(this.layerId, ['<=', 'length', lengthLimit.limit])
         }
@@ -64,10 +64,10 @@ class PathQuiet extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-    qPathFC: state.paths.qPathFC,
+    quietPathFC: state.paths.quietPathFC,
     lengthLimit: state.paths.lengthLimit,
 })
 
-const ConnectedPathQuiet = connect(mapStateToProps, { setSelectedPath, scrollToPath })(PathQuiet)
+const ConnectedPathsQuiet = connect(mapStateToProps, { setSelectedPath, scrollToPath })(PathsQuiet)
 
-export default ConnectedPathQuiet
+export default ConnectedPathsQuiet

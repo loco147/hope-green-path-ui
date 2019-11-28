@@ -10,9 +10,9 @@ import PathPanel from './components/pathpanel/PathPanel'
 import MapControl from './components/map/MapControl'
 import UserLocation from './components/map/UserLocation'
 import PathShort from './components/map/PathShort'
-import PathQuiet from './components/map/PathQuiet'
-import PathEdges from './components/map/PathEdges'
 import PathSelected from './components/map/PathSelected'
+import PathsQuiet from './components/map/PathsQuiet'
+import PathsQuietEdges from './components/map/PathsQuietEdges'
 import OriginTargetPoints from './components/map/OriginTargetPoints'
 import Guide from './components/guide/Guide'
 import WelcomeInfo from './components/guide/WelcomeInfo'
@@ -52,9 +52,9 @@ class App extends Component {
         <Map>
           <MapControl />
           <PathSelected />
-          <PathQuiet />
+          <PathsQuiet />
           <PathShort />
-          <PathEdges />
+          <PathsQuietEdges />
           <OriginTargetPoints />
           <UserLocation />
         </Map>

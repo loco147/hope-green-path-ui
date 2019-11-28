@@ -20,11 +20,11 @@ class PathList extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { qPathFC } = this.props.paths
+    const { quietPathFC } = this.props.paths
     let pathRefs = this.state.pathRefs
     let updateRefs = false
 
-    for (let feat of qPathFC.features) {
+    for (let feat of quietPathFC.features) {
       if (!(feat.properties.id in pathRefs)) {
         pathRefs[feat.properties.id] = createRef()
         updateRefs = true
@@ -45,27 +45,27 @@ class PathList extends React.Component {
 
   render() {
     const { paths, setSelectedPath, setOpenedPath } = this.props
-    const { sPathFC, qPathFC, selPathFC, lengthLimit } = paths
+    const { shortPathFC, quietPathFC, selPathFC, lengthLimit } = paths
     const selPathId = selPathFC.features.length > 0
       ? selPathFC.features[0].properties.id
       : 'none'
 
-    const sPath = sPathFC.features[0]
-    const qPaths = qPathFC.features.filter(path => path.properties.length <= lengthLimit.limit)
+    const shortPath = shortPathFC.features[0]
+    const quietPaths = quietPathFC.features.filter(path => path.properties.length <= lengthLimit.limit)
 
     return (
       <div>
         <DbColorLegendBar />
-        <PathRowFlex ref={this.state.pathRefs[sPath.properties.id]}>
+        <PathRowFlex ref={this.state.pathRefs[shortPath.properties.id]}>
           <PathListPathBox
-            path={sPath}
-            handleClick={() => setSelectedPath(sPath.properties.id)}
+            path={shortPath}
+            handleClick={() => setSelectedPath(shortPath.properties.id)}
             pathType={'short'}
-            selected={sPath.properties.id === selPathId} />
+            selected={shortPath.properties.id === selPathId} />
           <OpenPathBox
-            handleClick={() => setOpenedPath(sPath)} />
+            handleClick={() => setOpenedPath(shortPath)} />
         </PathRowFlex>
-        {qPaths.map((path) => (
+        {quietPaths.map((path) => (
           <PathRowFlex key={path.properties.id} ref={this.state.pathRefs[path.properties.id]}>
             <PathListPathBox
               path={path}
