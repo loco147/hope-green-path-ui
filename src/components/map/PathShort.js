@@ -46,7 +46,7 @@ class PathShort extends React.Component {
 
     componentDidUpdate = () => {
         const { map, shortPathFC } = this.props
-        map.moveLayer('pathsQuiet', this.layerId)
+        map.moveLayer('pathsGreen', this.layerId)
 
         if (this.source !== undefined) {
             this.source.setData(shortPathFC)

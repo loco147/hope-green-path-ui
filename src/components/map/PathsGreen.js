@@ -5,8 +5,8 @@ import { scrollToPath } from '../../reducers/pathListReducer'
 import { clickTol } from '../../constants'
 import { utils } from '../../utils/index'
 
-class PathsQuiet extends React.Component {
-    layerId = 'pathsQuiet'
+class PathsGreen extends React.Component {
+    layerId = 'pathsGreen'
     source
     paint = {
         'line-width': 4.3,
@@ -45,14 +45,20 @@ class PathsQuiet extends React.Component {
     }
 
     componentDidUpdate = () => {
-        const { map, quietPathFC, lengthLimit } = this.props
+        const { map, showingPathsType, quietPathFC, cleanPathFC, lengthLimit } = this.props
+        let greenPathsFC
+        if (showingPathsType === 'clean') {
+            greenPathsFC = cleanPathFC
+        } else {
+            greenPathsFC = quietPathFC
+        }
 
         if (this.source !== undefined) {
-            this.source.setData(quietPathFC)
+            this.source.setData(greenPathsFC)
             map.setFilter(this.layerId, ['<=', 'length', lengthLimit.limit])
         } else {
             map.once('sourcedata', () => {
-                this.source.setData(quietPathFC)
+                this.source.setData(greenPathsFC)
             })
             map.setFilter(this.layerId, ['<=', 'length', lengthLimit.limit])
         }
@@ -64,10 +70,12 @@ class PathsQuiet extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
+    showingPathsType: state.paths.showingPathsType,
     quietPathFC: state.paths.quietPathFC,
+    cleanPathFC: state.paths.cleanPathFC,
     lengthLimit: state.paths.lengthLimit,
 })
 
-const ConnectedPathsQuiet = connect(mapStateToProps, { setSelectedPath, scrollToPath })(PathsQuiet)
+const ConnectedPathsGreen = connect(mapStateToProps, { setSelectedPath, scrollToPath })(PathsGreen)
 
-export default ConnectedPathsQuiet
+export default ConnectedPathsGreen
