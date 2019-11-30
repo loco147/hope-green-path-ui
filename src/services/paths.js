@@ -7,9 +7,15 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 export const getConnectionTestResponse = async () => {
-    console.log('testing connection to qp service at:', baseurl)
+    console.log('testing connection to gp service at:', baseurl)
     const response = await axios.get(baseurl)
     return response
+}
+
+export const getCleanPathServiceStatus = async () => {
+    console.log('testing clean path service status at:', baseurl)
+    const response = await axios.get(baseurl.concat('aqistatus'))
+    return response.data
 }
 
 const formCoordinateString = (originCoords, destinationCoords) => {

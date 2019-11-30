@@ -4,10 +4,14 @@ import { showNotification } from './notificationReducer'
 import { utils } from './../utils/index'
 
 const initialPaths = {
+  cleanPathsAvailable: false,
+  showingPathsType: null,
+  selPathFC: turf.asFeatureCollection([]),
   shortPathFC: turf.asFeatureCollection([]),
   quietPathFC: turf.asFeatureCollection([]),
-  selPathFC: turf.asFeatureCollection([]),
+  cleanPathFC: turf.asFeatureCollection([]),
   quietEdgeFC: turf.asFeatureCollection([]),
+  cleanEdgeFC: turf.asFeatureCollection([]),
   openedPath: null,
   lengthLimit: { limit: 0, count: 0, label: '' },
   lengthLimits: [],
@@ -19,6 +23,12 @@ const initialPaths = {
 const pathsReducer = (store = initialPaths, action) => {
 
   switch (action.type) {
+
+    case 'SET_AQI_STATUS':
+      return {
+        ...store,
+        cleanPathsAvailable: action.b_available
+      }
 
     case 'ROUTING_STARTED':
       return {
@@ -133,13 +143,13 @@ const pathsReducer = (store = initialPaths, action) => {
   }
 }
 
-export const testQuietPathServiceConnection = () => {
+export const testGreenPathServiceConnection = () => {
   return async (dispatch) => {
     const startTime = performance.now()
     try {
       const connTestResponse = await paths.getConnectionTestResponse()
       const tookTime = Math.round(performance.now() - startTime)
-      console.log('connection to qp service ok, response:', connTestResponse, 'took:', tookTime, 'ms')
+      console.log('connection to gp service ok, response:', connTestResponse, 'took:', tookTime, 'ms')
       if (tookTime < 3000) {
         dispatch({ type: 'QP_CONNECTION_OK', tookTime })
       } else {
@@ -155,13 +165,18 @@ export const testQuietPathServiceConnection = () => {
   }
 }
 
-export const getQuietPaths = (originCoords, targetCoords, prevRoutingId) => {
+export const testCleanPathServiceStatus = () => {
   return async (dispatch) => {
-    const distance = turf.getDistance(originCoords, targetCoords)
-    if (distance > 5200) {
-      if (!window.confirm('Long distance routing may take longer than 10 s')) {
-        return
-      }
+    try {
+      const aqiStatus = await paths.getCleanPathServiceStatus()
+      console.log('received clean path service status:', aqiStatus)
+      dispatch({ type: 'SET_AQI_STATUS', b_available: aqiStatus.b_updated })
+    } catch (error) {
+      dispatch({ type: 'SET_AQI_STATUS', b_available: false })
+      console.log('error in retrieving clean path service status:', error)
+    }
+  }
+}
     }
     const routingId = prevRoutingId + 1
     dispatch({ type: 'ROUTING_STARTED', originCoords, targetCoords, routingId })
