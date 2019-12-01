@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import { PathNoisesBar } from './PathNoisesBar'
 import { OpenedPathNoiseStats } from './OpenedPathNoiseStats'
 import { ClosePathBox } from './OpenClosePathBoxes'
-import { utils } from '../../utils/index'
 
 const PathRowFlex = styled.div`
   display: flex;
@@ -21,13 +20,6 @@ const BarsLabel = styled.div`
   font-size: 14px;
   margin: 1px 0px 5px 0px;
 `
-const PathPropsRow = styled.div`
-  display: flex;
-  margin: 8px 0px 8px 0px;
-  justify-content: space-around;
-  font-size: 12px;
-  width: 99%;
-`
 
 const OpenedPathInfo = ({ path, shortPath, unsetOpenedPath }) => {
   if (path.properties.type === 'short') {
@@ -38,7 +30,6 @@ const OpenedPathInfo = ({ path, shortPath, unsetOpenedPath }) => {
 }
 
 export const OpenedQuietPathInfo = ({ path, shortPath, unsetOpenedPath }) => {
-  const mdB_diff = path.properties.mdB_diff
   return (
     <div>
       <PathRowFlex>
@@ -50,20 +41,6 @@ export const OpenedQuietPathInfo = ({ path, shortPath, unsetOpenedPath }) => {
         </NoiseBarsFlex>
       </PathRowFlex >
       <OpenedPathNoiseStats path={path} shortPath={shortPath} pathType='quiet' />
-      <PathPropsRow>
-        <div>
-          {utils.getFormattedDistanceString(path.properties.length, false).string}
-          {' (+'}{utils.getFormattedDistanceString(path.properties.len_diff, false).string}
-          {' / +'}{Math.round(path.properties.len_diff_rat)} %)
-          </div>
-        <div>
-          {Math.round(path.properties.nei_diff_rat) + ' % noise'}
-        </div>
-        <div>
-          {Math.abs(mdB_diff) < 1 ? mdB_diff : Math.round(mdB_diff)} dB<sub>mean</sub>
-          {' '}({Math.round(path.properties.mdB)}dB)
-        </div>
-      </PathPropsRow>
     </div>
   )
 }
@@ -79,17 +56,6 @@ export const OpenedShortPathInfo = ({ path, unsetOpenedPath }) => {
         </NoiseBarsFlex>
       </PathRowFlex>
       <OpenedPathNoiseStats path={path} pathType='short' />
-      <PathPropsRow>
-        <div>
-          {utils.getFormattedDistanceString(path.properties.length, false).string}
-        </div>
-        <div>
-          {path.properties.nei_norm} <sub>ni</sub> ({utils.getNoiseIndexLabel(path.properties.nei_norm)})
-        </div>
-        <div>
-          {Math.round(path.properties.mdB)} dB<sub>mean</sub>
-        </div>
-      </PathPropsRow>
     </div>
   )
 }
