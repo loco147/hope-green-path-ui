@@ -43,9 +43,9 @@ const StyledAqiExposureBox = styled.div`
   padding: 5px 7px;
 `
 const StyledAqiExposureRow = styled.div`
-  display: fled;
-  flex-direction: column;
-
+  display: flex;
+  margin: 2px 0 2px 0px;
+  flex-direction: row;
 `
 
 const AqiClLabelBox = ({ aqiCl }) => {
