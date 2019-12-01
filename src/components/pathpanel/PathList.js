@@ -64,7 +64,10 @@ class PathList extends React.Component {
 
     return (
       <div>
-        <DbColorLegendBar />
+        {showingPathsType === pathTypes.quiet
+         ? <DbColorLegendBar />
+         : null
+        }
         <PathRowFlex ref={this.state.pathRefs[shortPath.properties.id]}>
           <ShortestPathBox
             path={shortPath}
