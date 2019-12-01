@@ -58,14 +58,14 @@ export const OpenedPathNoiseExps = ({ path, pathType }) => {
     <StyledOpenedPathNoiseExps>
       <PathPropsRow>
         <FlexCols >
+          <DBExposureRow path={path} dB={40} />
           <DBExposureRow path={path} dB={50} />
           <DBExposureRow path={path} dB={55} />
-          <DBExposureRow path={path} dB={60} />
         </FlexCols>
         <FlexCols>
+          <DBExposureRow path={path} dB={60} />
           <DBExposureRow path={path} dB={65} />
           <DBExposureRow path={path} dB={70} />
-          <DBExposureRow path={path} dB={75} />
         </FlexCols>
       </PathPropsRow>
     </StyledOpenedPathNoiseExps>
@@ -73,7 +73,7 @@ export const OpenedPathNoiseExps = ({ path, pathType }) => {
 }
 
 const DBExposureRow = ({ dB, path }) => {
-  const dist = path.properties.noises[dB]
+  const dist = path.properties.noise_range_exps[dB]
   return (
     <KeyValueFlex>
       <DBKeyBox color={dBColors[dB]}>{dB}dB</DBKeyBox>

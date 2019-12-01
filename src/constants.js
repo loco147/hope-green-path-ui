@@ -20,6 +20,7 @@ export const statTypes = {
 
 export const dBColors = {
   40: '#00EC00',
+  45: '#00EC00',
   50: '#56FF3B',
   55: '#C6F519',
   60: '#FFD000',
