@@ -7,6 +7,16 @@ export const BASEMAPS = {
   }
 }
 
+export const pathTypes = {
+  clean: 'clean',
+  quiet: 'quiet',
+}
+
+export const statTypes = {
+  aq: 'air quality',
+  noise: 'noise',
+}
+
 export const dBColors = {
   40: '#00EC00',
   50: '#56FF3B',

@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { setSelectedPath } from '../../reducers/pathsReducer'
 import { scrollToPath } from '../../reducers/pathListReducer'
-import { clickTol } from '../../constants'
+import { clickTol, pathTypes } from '../../constants'
 import { utils } from '../../utils/index'
 
 class PathsGreen extends React.Component {
@@ -47,7 +47,7 @@ class PathsGreen extends React.Component {
     componentDidUpdate = () => {
         const { map, showingPathsType, quietPathFC, cleanPathFC, lengthLimit } = this.props
         let greenPathsFC
-        if (showingPathsType === 'clean') {
+        if (showingPathsType === pathTypes.clean) {
             greenPathsFC = cleanPathFC
         } else {
             greenPathsFC = quietPathFC

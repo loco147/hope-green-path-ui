@@ -1,11 +1,13 @@
 import { turf } from '../utils/index'
 import * as paths from './../services/paths'
 import { showNotification } from './notificationReducer'
+import { pathTypes, statTypes } from './../constants'
 import { utils } from './../utils/index'
 
 const initialPaths = {
   cleanPathsAvailable: false,
   showingPathsType: null,
+  showingStatsType: null,
   selPathFC: turf.asFeatureCollection([]),
   shortPathFC: turf.asFeatureCollection([]),
   quietPathFC: turf.asFeatureCollection([]),
@@ -63,7 +65,8 @@ const pathsReducer = (store = initialPaths, action) => {
       if (cancelledRouting) return store
       return {
         ...store,
-        showingPathsType: 'quiet',
+        showingPathsType: pathTypes.quiet,
+        showingStatsType: statTypes.noise,
         quietPathFC: turf.asFeatureCollection(action.quietPaths),
       }
     }
@@ -73,7 +76,8 @@ const pathsReducer = (store = initialPaths, action) => {
       if (cancelledRouting) return store
       return {
         ...store,
-        showingPathsType: 'clean',
+        showingPathsType: pathTypes.clean,
+        showingStatsType: statTypes.aq,
         cleanPathFC: turf.asFeatureCollection(action.cleanPaths),
       }
     }

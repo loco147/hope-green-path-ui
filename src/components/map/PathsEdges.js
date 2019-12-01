@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { setSelectedPath } from '../../reducers/pathsReducer'
-import { dBColors } from '../../constants'
+import { dBColors, pathTypes } from '../../constants'
 
 const dbLineColors = [
     'match',
@@ -59,7 +59,7 @@ class PathsEdges extends React.Component {
         const { map, showingPathsType, quietEdgeFC, cleanEdgeFC, lengthLimit } = this.props
         let greenEdgeFC
         let lineColor
-        if (showingPathsType === 'clean') {
+        if (showingPathsType === pathTypes.clean) {
             greenEdgeFC = cleanEdgeFC
             lineColor = aqiLineColors
         } else {
