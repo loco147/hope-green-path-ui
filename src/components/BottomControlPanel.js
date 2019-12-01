@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { menu } from './../constants'
+import { menu, pathTypes } from './../constants'
 import { togglePathPanel, toggleGuide, showPathList, showMaxLengthFilterSelector } from './../reducers/menuReducer'
 import ToggleGuideButton from './guide/ToggleGuideButton'
 import { ListButton, ArrowUpButton, ArrowDownButton } from './Icons'
@@ -29,17 +29,25 @@ const ButtonFlex = styled.div`
   width: 100%;
 `
 const BottomControlPanel = (props) => {
-  const { showingPaths, pathPanelVisible, pathPanelContent, qPathCount, lengthLimit, lengthLimits,
-    togglePathPanel, toggleGuide, showPathList, showMaxLengthFilterSelector } = props
+  const { showingPaths, showingPathsType, pathPanelVisible, pathPanelContent, quietPathCount, cleanPathCount,
+    lengthLimit, lengthLimits, togglePathPanel, toggleGuide, showPathList, showMaxLengthFilterSelector } = props
 
   if (!showingPaths) return null
+
+  const greenPathCount = showingPathsType === pathTypes.clean
+    ? cleanPathCount
+    : quietPathCount
 
   return (
     <ControlPanel pathPanelVisible={pathPanelVisible}>
       <ButtonFlex>
         {pathPanelContent === menu.lengthLimitSelector
           ? <ListButton onClick={showPathList} />
-          : <FilterButton qPathCount={qPathCount} lengthLimit={lengthLimit} lengthLimits={lengthLimits} onClick={showMaxLengthFilterSelector} />}
+          : <FilterButton
+            greenPathCount={greenPathCount}
+            lengthLimit={lengthLimit}
+            lengthLimits={lengthLimits}
+            onClick={showMaxLengthFilterSelector} />}
         {pathPanelVisible
           ? <ArrowDownButton onClick={togglePathPanel}></ArrowDownButton>
           : <ArrowUpButton onClick={togglePathPanel}></ArrowUpButton>}
@@ -51,9 +59,11 @@ const BottomControlPanel = (props) => {
 
 const mapStateToProps = (state) => ({
   showingPaths: state.paths.showingPaths,
+  showingPathsType: state.paths.showingPathsType,
   pathPanelVisible: state.menu.pathPanel,
   pathPanelContent: state.menu.pathPanelContent,
-  qPathCount: state.paths.qPathFC.features.length,
+  quietPathCount: state.paths.quietPathFC.features.length,
+  cleanPathCount: state.paths.cleanPathFC.features.length,
   lengthLimit: state.paths.lengthLimit,
   lengthLimits: state.paths.lengthLimits,
 })

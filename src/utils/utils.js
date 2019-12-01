@@ -1,5 +1,12 @@
 import { turf } from './index'
 import helPoly from './../helPoly.json'
+import { aqiLabels, walkSpeed } from './../constants'
+
+export const getWalkTimeFromDist = (dist) => {
+  const timeS = dist / walkSpeed
+  const timeMin = timeS / 60
+  return Math.round(timeMin)
+}
 
 export const getOriginCoordsFromFC = (FC) => {
   const origin = FC.features.filter(feat => feat.properties.type === 'origin')
@@ -22,6 +29,15 @@ export const getNoiseIndexLabel = (ni) => {
   if (ni < 0.65) return 'high noise'
   if (ni < 0.75) return 'very high noise'
   if (ni >= 0.75) return 'extreme noise'
+}
+
+export const getAqiLabel = (aqi) => {
+  if (aqi < 2.0) return aqiLabels[1]
+  if (aqi < 3.0) return aqiLabels[2]
+  if (aqi < 4.0) return aqiLabels[3]
+  if (aqi < 5.0) return aqiLabels[4]
+  if (aqi >= 5.0) return aqiLabels[5]
+  return ''
 }
 
 const getFormattedKmString = (m, digits) => {
@@ -68,13 +84,13 @@ export const getLayersFeaturesAroundClickE = (layers, e, tolerance, map) => {
   return features
 }
 
-export const getBestPath = (qPaths) => {
+export const getBestPath = (quietPaths) => {
   // if the greatest quiet path score among the paths is greater than 2 -> select the path
-  if (qPaths.length > 0) {
-    const goodPaths = qPaths.filter(feat => feat.properties.path_score > 0.8 && feat.properties.cost_coeff <= 10)
+  if (quietPaths.length > 0) {
+    const goodPaths = quietPaths.filter(feat => feat.properties.path_score > 0.8 && feat.properties.cost_coeff <= 10)
     if (goodPaths.length > 0) {
-      const maxQpathScore = Math.max(...goodPaths.map(path => path.properties.path_score))
-      const bestPath = goodPaths.filter(feat => feat.properties.path_score === maxQpathScore)[0]
+      const maxquietPathscore = Math.max(...goodPaths.map(path => path.properties.path_score))
+      const bestPath = goodPaths.filter(feat => feat.properties.path_score === maxquietPathscore)[0]
       return bestPath
     }
   }
@@ -83,9 +99,9 @@ export const getBestPath = (qPaths) => {
 
 const getLengthLimit = (length, rounding) => Math.ceil(length / rounding) * rounding
 
-export const getLengthLimits = (qPaths) => {
-  const pathLengths = qPaths.map(feat => feat.properties.length)
-  const pathProps = qPaths.map(feat => feat.properties)
+export const getLengthLimits = (quietPaths) => {
+  const pathLengths = quietPaths.map(feat => feat.properties.length)
+  const pathProps = quietPaths.map(feat => feat.properties)
   const limits = pathProps.reduce((acc, props) => {
     const length = props.length
     // get limit as rounded value higher than the actual length
@@ -130,20 +146,20 @@ export const originTargetWithinSupportedArea = (originTargetFC) => {
   return null
 }
 
-export const validateNoiseDiffs = (sPaths, qPaths) => {
+export const validateNoiseDiffs = (shortPaths, quietPaths) => {
   if (process.env.NODE_ENV !== 'production') {
     let distancesOk = true
-    const sPath = sPaths[0]
-    for (let qPath of qPaths) {
+    const shortPath = shortPaths[0]
+    for (let quietPath of quietPaths) {
       for (let dB of [40, 45, 50, 55, 60, 65, 70, 75]) {
-        const qDist = qPath.properties.noises[dB] ? qPath.properties.noises[dB] : 0
-        const qDistDiff = qPath.properties.noises_diff[dB] ? qPath.properties.noises_diff[dB] : 0
-        const sDist = sPath.properties.noises[dB] ? sPath.properties.noises[dB] : 0
+        const qDist = quietPath.properties.noises[dB] ? quietPath.properties.noises[dB] : 0
+        const qDistDiff = quietPath.properties.noises_diff[dB] ? quietPath.properties.noises_diff[dB] : 0
+        const sDist = shortPath.properties.noises[dB] ? shortPath.properties.noises[dB] : 0
         const sDistCheck = qDist - qDistDiff
         const distCheckDiff = sDistCheck - sDist
         if (Math.abs(distCheckDiff) > 1) {
           distancesOk = false
-          console.log('Error in qPath dB distance diff vs sPath dB distance:')
+          console.log('Error in quietPath dB distance diff vs shortPath dB distance:')
           console.log('dB:', dB)
           console.log('qDist:', qDist)
           console.log('qDistDiff:', qDistDiff)

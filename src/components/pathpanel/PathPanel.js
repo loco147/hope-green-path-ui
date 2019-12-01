@@ -2,11 +2,10 @@ import React from 'react'
 import styled, { css } from 'styled-components'
 import { connect } from 'react-redux'
 import { menu } from './../../constants'
-import { setSelectedPath, setOpenedPath, unsetOpenedPath, setLengthLimit } from './../../reducers/pathsReducer'
+import { setLengthLimit } from './../../reducers/pathsReducer'
 import { showPathList } from './../../reducers/menuReducer'
 import MaxLengthFilterSelector from './MaxLengthFilterSelector'
-import PathList from './PathList'
-import OpenedPathInfo from './OpenedPathInfo'
+import PathInfoPanel from './PathInfoPanel'
 
 const PathPanelContainer = styled.div`
   margin: 0px;
@@ -30,13 +29,12 @@ const PathPanelContainer = styled.div`
 `
 
 const PathPanel = (props) => {
-  const { paths, scrollToPath, pathPanelVisible, pathPanelContent } = props
-  const { setSelectedPath, setOpenedPath, unsetOpenedPath, setLengthLimit, showPathList } = props
-  const { showingPaths, sPathFC, openedPath, lengthLimit, lengthLimits } = paths
+  const { paths, pathPanelVisible, pathPanelContent } = props
+  const { setLengthLimit, showPathList } = props
+  const { showingPaths, openedPath, lengthLimit, lengthLimits } = paths
 
   if (!showingPaths || !pathPanelVisible) return null
 
-  const showingPathList = pathPanelContent === menu.pathList && !openedPath
   const showingOpenedPath = openedPath && !(pathPanelContent === menu.lengthLimitSelector)
 
   return (
@@ -47,17 +45,7 @@ const PathPanel = (props) => {
           lengthLimits={lengthLimits}
           setLengthLimit={setLengthLimit}
           showPathList={showPathList} /> : null}
-      {showingPathList ?
-        <PathList
-          paths={paths}
-          scrollToPath={scrollToPath}
-          setSelectedPath={setSelectedPath}
-          setOpenedPath={setOpenedPath} /> : null}
-      {showingOpenedPath ?
-        <OpenedPathInfo
-          path={openedPath}
-          sPath={sPathFC.features[0]}
-          unsetOpenedPath={unsetOpenedPath} /> : null}
+      <PathInfoPanel />
     </PathPanelContainer>
   )
 }
@@ -70,9 +58,6 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-  setSelectedPath,
-  setOpenedPath,
-  unsetOpenedPath,
   setLengthLimit,
   showPathList,
 }

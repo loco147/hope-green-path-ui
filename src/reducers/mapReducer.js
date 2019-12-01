@@ -16,7 +16,7 @@ const mapReducer = (store = initialMapState, action) => {
       return { ...store, initialized: true }
 
     case 'ROUTING_STARTED': {
-      const FC = turf.asFeatureCollection([turf.asPoint(action.originCoords), turf.asPoint(action.targetCoords)])
+      const FC = turf.asFeatureCollection([turf.asPoint(action.origCoords), turf.asPoint(action.destCoords)])
       return { ...store, zoomToBbox: turf.getBbox(FC) }
     }
 
