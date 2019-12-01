@@ -1,6 +1,12 @@
 import { turf } from './index'
 import helPoly from './../helPoly.json'
-import { aqiLabels } from './../constants'
+import { aqiLabels, walkSpeed } from './../constants'
+
+export const getWalkTimeFromDist = (dist) => {
+  const timeS = dist / walkSpeed
+  const timeMin = timeS / 60
+  return Math.round(timeMin)
+}
 
 export const getOriginCoordsFromFC = (FC) => {
   const origin = FC.features.filter(feat => feat.properties.type === 'origin')

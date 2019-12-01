@@ -3,8 +3,9 @@ import styled from 'styled-components'
 import { PathNoisesBar } from './PathNoisesBar'
 import { PathAqiBar } from './PathAqiBar'
 import { OpenedPathNoiseExps } from './OpenedPathNoiseExps'
+import { OpenedPathAqExps } from './OpenedPathAqExps'
 import { ClosePathBox } from './OpenClosePathBoxes'
-import { statTypes } from './../../constants'
+import { pathTypes, statTypes } from './../../constants'
 
 const PathRowFlex = styled.div`
   display: flex;
@@ -23,21 +24,21 @@ const BarsLabel = styled.div`
   margin: 1px 0px 5px 0px;
 `
 
-const OpenedPathInfo = ({ path, shortPath, unsetOpenedPath, showingStatsType }) => {
-  if (path.properties.type === 'short') {
+const OpenedPathInfo = ({ path, shortPath, unsetOpenedPath, showingStatsType, showingPathsType }) => {
+  if (path.properties.type === pathTypes.short) {
     if (showingStatsType === statTypes.aq) {
       return <ShortPathAqiExposures path={path} unsetOpenedPath={unsetOpenedPath} />
     } else {
       return <ShortPathNoiseExposures path={path} unsetOpenedPath={unsetOpenedPath} />
     }
   } else if (showingStatsType === statTypes.aq) {
-    return <PathAqiExposures path={path} shortPath={shortPath} unsetOpenedPath={unsetOpenedPath} />
+    return <PathAqiExposures path={path} shortPath={shortPath} unsetOpenedPath={unsetOpenedPath} showingPathsType={showingPathsType} />
   } else {
-    return <PathNoiseExposures path={path} shortPath={shortPath} unsetOpenedPath={unsetOpenedPath} />
+    return <PathNoiseExposures path={path} shortPath={shortPath} unsetOpenedPath={unsetOpenedPath} showingPathsType={showingPathsType} />
   }
 }
 
-const PathAqiExposures = ({ path, shortPath, unsetOpenedPath }) => {
+const PathAqiExposures = ({ path, shortPath, unsetOpenedPath, showingPathsType }) => {
   return (
     <div>
       <PathRowFlex>
@@ -48,11 +49,12 @@ const PathAqiExposures = ({ path, shortPath, unsetOpenedPath }) => {
           <PathAqiBar withMargins={true} aqiPcts={shortPath.properties.aqi_pcts} />
         </ExposureBarsFlex>
       </PathRowFlex >
+      <OpenedPathAqExps path={path} pathType={showingPathsType} />
     </div>
   )
 }
 
-const PathNoiseExposures = ({ path, shortPath, unsetOpenedPath }) => {
+const PathNoiseExposures = ({ path, shortPath, unsetOpenedPath, showingPathsType }) => {
   return (
     <div>
       <PathRowFlex>
@@ -63,7 +65,7 @@ const PathNoiseExposures = ({ path, shortPath, unsetOpenedPath }) => {
           <PathNoisesBar withMargins={true} noisePcts={shortPath.properties.noise_pcts} />
         </ExposureBarsFlex>
       </PathRowFlex >
-      <OpenedPathNoiseExps path={path} shortPath={shortPath} pathType='quiet' />
+      <OpenedPathNoiseExps path={path} shortPath={shortPath} pathType={showingPathsType} />
     </div>
   )
 }
@@ -78,6 +80,7 @@ const ShortPathAqiExposures = ({ path, unsetOpenedPath }) => {
           <PathAqiBar withMargins={true} aqiPcts={path.properties.aqi_pcts} />
         </ExposureBarsFlex>
       </PathRowFlex>
+      <OpenedPathAqExps path={path} pathType={pathTypes.short} />
     </div>
   )
 }
@@ -92,7 +95,7 @@ const ShortPathNoiseExposures = ({ path, unsetOpenedPath }) => {
           <PathNoisesBar withMargins={true} noisePcts={path.properties.noise_pcts} />
         </ExposureBarsFlex>
       </PathRowFlex>
-      <OpenedPathNoiseExps path={path} pathType='short' />
+      <OpenedPathNoiseExps path={path} pathType={pathTypes.short} />
     </div>
   )
 }

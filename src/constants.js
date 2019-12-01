@@ -48,6 +48,8 @@ export const menu = {
   pathList: 'path_list',
 }
 
+export const walkSpeed = 1.33
+
 export const clickTol = 12
 
 export const initialMapCenter = { lng: 24.9664, lat: 60.2110 }
