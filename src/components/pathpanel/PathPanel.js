@@ -5,7 +5,7 @@ import { menu } from './../../constants'
 import { setLengthLimit } from './../../reducers/pathsReducer'
 import { showPathList } from './../../reducers/menuReducer'
 import MaxLengthFilterSelector from './MaxLengthFilterSelector'
-import QuietPathPanel from './quietPathList/QuietPathPanel'
+import PathInfoPanel from './PathInfoPanel'
 
 const PathPanelContainer = styled.div`
   margin: 0px;
@@ -45,7 +45,7 @@ const PathPanel = (props) => {
           lengthLimits={lengthLimits}
           setLengthLimit={setLengthLimit}
           showPathList={showPathList} /> : null}
-      <QuietPathPanel />
+      <PathInfoPanel />
     </PathPanelContainer>
   )
 }

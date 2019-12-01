@@ -1,11 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { menu } from './../../../constants'
-import { setSelectedPath, setOpenedPath, unsetOpenedPath } from './../../../reducers/pathsReducer'
+import { menu } from '../../constants'
+import { setSelectedPath, setOpenedPath, unsetOpenedPath } from '../../reducers/pathsReducer'
 import PathList from './PathList'
 import OpenedPathInfo from './OpenedPathInfo'
 
-const QuietPathPanel = (props) => {
+const PathInfoPanel = (props) => {
   const { paths, scrollToPath, pathPanelContent } = props
   const { setSelectedPath, setOpenedPath, unsetOpenedPath } = props
   const { shortPathFC, openedPath, showingPathsType, showingStatsType } = paths
@@ -44,5 +44,5 @@ const mapDispatchToProps = {
   unsetOpenedPath,
 }
 
-const ConnectedQuietPathPanel = connect(mapStateToProps, mapDispatchToProps)(QuietPathPanel)
-export default ConnectedQuietPathPanel
+const ConnectedPathInfoPanel = connect(mapStateToProps, mapDispatchToProps)(PathInfoPanel)
+export default ConnectedPathInfoPanel

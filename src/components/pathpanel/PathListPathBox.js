@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
-import { utils } from '../../../utils/index'
+import { utils } from '../../utils/index'
 import { PathNoisesBar } from './PathNoisesBar'
 import { PathAqiBar } from './PathAqiBar'
-import { pathTypes, statTypes } from './../../../constants'
+import { pathTypes, statTypes } from '../../constants'
 
 const StyledPathListPathBox = styled.div.attrs(props => ({
   style:

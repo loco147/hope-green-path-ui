@@ -2,8 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import { PathNoisesBar } from './PathNoisesBar'
 import { OpenedPathNoiseStats } from './OpenedPathNoiseStats'
-import { ClosePathBox } from '../OpenClosePathBoxes'
-import { utils } from '../../../utils/index'
+import { ClosePathBox } from './OpenClosePathBoxes'
+import { utils } from '../../utils/index'
 
 const PathRowFlex = styled.div`
   display: flex;

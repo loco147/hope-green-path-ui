@@ -1,6 +1,6 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
-import { utils } from '../../../utils/index'
+import { utils } from '../../utils/index'
 
 const StyledOpenedPathNoiseStats = styled.div`
   display: flex;
