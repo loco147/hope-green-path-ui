@@ -1,7 +1,8 @@
 import React, { createRef } from 'react'
 import styled from 'styled-components'
-import PathListPathBox from './PathListPathBox'
+import { pathTypes } from './../../../constants'
 import { OpenPathBox } from '../OpenClosePathBoxes'
+import PathListPathBox, { ShortestPathBox } from './PathListPathBox'
 import DbColorLegendBar from '../../guide/DbColorLegendBar'
 
 const PathRowFlex = styled.div`
@@ -20,11 +21,15 @@ class PathList extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { quietPathFC } = this.props.paths
+    const { quietPathFC, cleanPathFC, showingPathsType } = this.props.paths
     let pathRefs = this.state.pathRefs
     let updateRefs = false
 
-    for (let feat of quietPathFC.features) {
+    const greenPathFC = showingPathsType === pathTypes.clean
+      ? cleanPathFC
+      : quietPathFC
+
+    for (let feat of greenPathFC.features) {
       if (!(feat.properties.id in pathRefs)) {
         pathRefs[feat.properties.id] = createRef()
         updateRefs = true
@@ -45,32 +50,38 @@ class PathList extends React.Component {
 
   render() {
     const { paths, setSelectedPath, setOpenedPath } = this.props
-    const { shortPathFC, quietPathFC, selPathFC, lengthLimit } = paths
+    const { showingPathsType, showingStatsType, shortPathFC, cleanPathFC, quietPathFC, selPathFC, lengthLimit } = paths
     const selPathId = selPathFC.features.length > 0
       ? selPathFC.features[0].properties.id
       : 'none'
 
+    const greenPathFC = showingPathsType === pathTypes.clean
+      ? cleanPathFC
+      : quietPathFC
+
     const shortPath = shortPathFC.features[0]
-    const quietPaths = quietPathFC.features.filter(path => path.properties.length <= lengthLimit.limit)
+    const greenPaths = greenPathFC.features.filter(path => path.properties.length <= lengthLimit.limit)
 
     return (
       <div>
         <DbColorLegendBar />
         <PathRowFlex ref={this.state.pathRefs[shortPath.properties.id]}>
-          <PathListPathBox
+          <ShortestPathBox
             path={shortPath}
             handleClick={() => setSelectedPath(shortPath.properties.id)}
-            pathType={'short'}
+            showingPathsType={showingPathsType}
+            showingStatsType={showingStatsType}
             selected={shortPath.properties.id === selPathId} />
           <OpenPathBox
             handleClick={() => setOpenedPath(shortPath)} />
         </PathRowFlex>
-        {quietPaths.map((path) => (
+        {greenPaths.map((path) => (
           <PathRowFlex key={path.properties.id} ref={this.state.pathRefs[path.properties.id]}>
             <PathListPathBox
               path={path}
+              showingPathsType={showingPathsType}
+              showingStatsType={showingStatsType}
               handleClick={() => setSelectedPath(path.properties.id)}
-              pathType={'quiet'}
               selected={path.properties.id === selPathId} />
             <OpenPathBox
               handleClick={() => setOpenedPath(path)} />

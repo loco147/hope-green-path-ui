@@ -8,7 +8,7 @@ import OpenedPathInfo from './OpenedPathInfo'
 const QuietPathPanel = (props) => {
   const { paths, scrollToPath, pathPanelContent } = props
   const { setSelectedPath, setOpenedPath, unsetOpenedPath } = props
-  const { shortPathFC, openedPath } = paths
+  const { shortPathFC, openedPath, showingPathsType, showingStatsType } = paths
 
   const showingPathList = pathPanelContent === menu.pathList && !openedPath
   const showingOpenedPath = openedPath && !(pathPanelContent === menu.lengthLimitSelector)
@@ -24,6 +24,8 @@ const QuietPathPanel = (props) => {
       {showingOpenedPath ?
         <OpenedPathInfo
           path={openedPath}
+          showingPathsType={showingPathsType}
+          showingStatsType={showingStatsType}
           shortPath={shortPathFC.features[0]}
           unsetOpenedPath={unsetOpenedPath} /> : null}
     </div>

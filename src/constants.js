@@ -26,6 +26,14 @@ export const dBColors = {
   70: '#FF270E',
 }
 
+export const aqiLabels = {
+  1: 'very good',
+  2: 'satisfactory',
+  3: 'fair',
+  4: 'poor',
+  5: 'very poor'
+}
+
 export const aqiColors = {
   1: '#00EC00',
   2: '#C6F519',
