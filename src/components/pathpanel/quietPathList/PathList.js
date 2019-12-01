@@ -1,8 +1,8 @@
 import React, { createRef } from 'react'
 import styled from 'styled-components'
 import PathListPathBox from './PathListPathBox'
-import { OpenPathBox } from './OpenClosePathBoxes'
-import DbColorLegendBar from '../guide/DbColorLegendBar'
+import { OpenPathBox } from '../OpenClosePathBoxes'
+import DbColorLegendBar from '../../guide/DbColorLegendBar'
 
 const PathRowFlex = styled.div`
   display: flex;

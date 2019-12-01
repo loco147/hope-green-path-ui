@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { utils } from '../../utils/index'
+import { utils } from '../../../utils/index'
 import { PathNoisesBar } from './PathNoisesBar'
 
 const StyledPathListPathBox = styled.div.attrs(props => ({

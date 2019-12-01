@@ -1,6 +1,6 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
-import { dBColors } from './../../constants'
+import { dBColors } from '../../../constants'
 
 const StyledNoiseBar = styled.div`
   display: flex;
