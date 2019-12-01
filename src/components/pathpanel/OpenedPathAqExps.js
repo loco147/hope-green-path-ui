@@ -69,7 +69,6 @@ const AqExposureRow = ({ aqiCl, aqiClExp }) => {
 
 export const OpenedPathAqExps = ({ path, pathType }) => {
   const aqiClExps = path.properties.aqi_cl_exps
-  console.log('aqiClExps', aqiClExps)
   const aqiKeys = Object.keys(aqiClExps)
   const aqiCls = aqiKeys.map(aqi => Number(aqi)).sort()
   return (
