@@ -231,7 +231,7 @@ export const getQuietPaths = (origCoords, destCoords, prevRoutingId) => {
       if (bestPath) {
         dispatch({ type: 'SET_SELECTED_PATH', selPathId: bestPath.properties.id, routingId })
       } else if (quietPaths.length > 0) {
-        dispatch({ type: 'SET_SELECTED_PATH', selPathId: 'short_p', routingId })
+        dispatch({ type: 'SET_SELECTED_PATH', selPathId: 'short', routingId })
       }
     } catch (error) {
       console.log('caught error:', error)
@@ -268,7 +268,7 @@ export const getCleanPaths = (origCoords, destCoords, prevRoutingId) => {
       if (bestPath) {
         dispatch({ type: 'SET_SELECTED_PATH', selPathId: bestPath.properties.id, routingId })
       } else if (cleanPaths.length > 0) {
-        dispatch({ type: 'SET_SELECTED_PATH', selPathId: 'short_p', routingId })
+        dispatch({ type: 'SET_SELECTED_PATH', selPathId: 'short', routingId })
       }
     } catch (error) {
       console.log('caught error:', error)

@@ -16,7 +16,7 @@ class PathList extends React.Component {
     super(props)
     this.state = {
       linkVisible: true,
-      pathRefs: { 'short_p': createRef() },
+      pathRefs: { 'short': createRef() },
     }
   }
 
