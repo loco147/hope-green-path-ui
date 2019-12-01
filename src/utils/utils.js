@@ -1,5 +1,6 @@
 import { turf } from './index'
 import helPoly from './../helPoly.json'
+import { aqiLabels } from './../constants'
 
 export const getOriginCoordsFromFC = (FC) => {
   const origin = FC.features.filter(feat => feat.properties.type === 'origin')
@@ -22,6 +23,15 @@ export const getNoiseIndexLabel = (ni) => {
   if (ni < 0.65) return 'high noise'
   if (ni < 0.75) return 'very high noise'
   if (ni >= 0.75) return 'extreme noise'
+}
+
+export const getAqiLabel = (aqi) => {
+  if (aqi < 2.0) return aqiLabels[1]
+  if (aqi < 3.0) return aqiLabels[2]
+  if (aqi < 4.0) return aqiLabels[3]
+  if (aqi < 5.0) return aqiLabels[4]
+  if (aqi >= 5.0) return aqiLabels[5]
+  return ''
 }
 
 const getFormattedKmString = (m, digits) => {

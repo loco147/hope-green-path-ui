@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { setSelectedPath } from '../../reducers/pathsReducer'
-import { dBColors, pathTypes } from '../../constants'
+import { dBColors, aqiColors, pathTypes } from '../../constants'
 
 const dbLineColors = [
     'match',
@@ -18,11 +18,11 @@ const dbLineColors = [
 const aqiLineColors = [
     'match',
     ['get', 'value'],
-    1, dBColors[40],
-    2, dBColors[55],
-    3, dBColors[60],
-    4, dBColors[65],
-    5, dBColors[70],
+    1, aqiColors[1],
+    2, aqiColors[2],
+    3, aqiColors[3],
+    4, aqiColors[4],
+    5, aqiColors[5],
     /* other */ 'white'
 ]
 

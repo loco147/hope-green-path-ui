@@ -26,6 +26,14 @@ export const dBColors = {
   70: '#FF270E',
 }
 
+export const aqiColors = {
+  1: '#00EC00',
+  2: '#C6F519',
+  3: '#FFD000',
+  4: '#FF6E1B',
+  5: '#FF270E',
+}
+
 export const menu = {
   lengthLimitSelector: 'length_limit_selector',
   pathList: 'path_list',
