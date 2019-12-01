@@ -1,14 +1,16 @@
 import React from 'react'
 import styled from 'styled-components'
 import { PathNoisesBar } from './PathNoisesBar'
-import { OpenedPathNoiseStats } from './OpenedPathNoiseStats'
+import { PathAqiBar } from './PathAqiBar'
+import { OpenedPathNoiseExps } from './OpenedPathNoiseExps'
 import { ClosePathBox } from './OpenClosePathBoxes'
+import { statTypes } from './../../constants'
 
 const PathRowFlex = styled.div`
   display: flex;
   justify-content: space-around;
 `
-const NoiseBarsFlex = styled.div`
+const ExposureBarsFlex = styled.div`
   display: flex;
   width: calc(90% - 21px);
   min-height: 56px;
@@ -21,41 +23,76 @@ const BarsLabel = styled.div`
   margin: 1px 0px 5px 0px;
 `
 
-const OpenedPathInfo = ({ path, shortPath, unsetOpenedPath }) => {
+const OpenedPathInfo = ({ path, shortPath, unsetOpenedPath, showingStatsType }) => {
   if (path.properties.type === 'short') {
-    return <OpenedShortPathInfo path={path} unsetOpenedPath={unsetOpenedPath} />
+    if (showingStatsType === statTypes.aq) {
+      return <ShortPathAqiExposures path={path} unsetOpenedPath={unsetOpenedPath} />
+    } else {
+      return <ShortPathNoiseExposures path={path} unsetOpenedPath={unsetOpenedPath} />
+    }
+  } else if (showingStatsType === statTypes.aq) {
+    return <PathAqiExposures path={path} shortPath={shortPath} unsetOpenedPath={unsetOpenedPath} />
   } else {
-    return <OpenedQuietPathInfo path={path} shortPath={shortPath} unsetOpenedPath={unsetOpenedPath} />
+    return <PathNoiseExposures path={path} shortPath={shortPath} unsetOpenedPath={unsetOpenedPath} />
   }
 }
 
-export const OpenedQuietPathInfo = ({ path, shortPath, unsetOpenedPath }) => {
+const PathAqiExposures = ({ path, shortPath, unsetOpenedPath }) => {
   return (
     <div>
       <PathRowFlex>
         <ClosePathBox handleClick={unsetOpenedPath} />
-        <NoiseBarsFlex>
-          <BarsLabel>Exposure to different traffic noise levels on the selected and the shortest path: </BarsLabel>
-          <PathNoisesBar withMargins={true} noisePcts={path.properties.noise_pcts} />
-          <PathNoisesBar withMargins={true} noisePcts={shortPath.properties.noise_pcts} />
-        </NoiseBarsFlex>
+        <ExposureBarsFlex>
+          <BarsLabel>Exposure to different air quality classes on the selected and the shortest path: </BarsLabel>
+          <PathAqiBar withMargins={true} aqiPcts={path.properties.aqi_pcts} />
+          <PathAqiBar withMargins={true} aqiPcts={shortPath.properties.aqi_pcts} />
+        </ExposureBarsFlex>
       </PathRowFlex >
-      <OpenedPathNoiseStats path={path} shortPath={shortPath} pathType='quiet' />
     </div>
   )
 }
 
-export const OpenedShortPathInfo = ({ path, unsetOpenedPath }) => {
+const PathNoiseExposures = ({ path, shortPath, unsetOpenedPath }) => {
   return (
     <div>
       <PathRowFlex>
         <ClosePathBox handleClick={unsetOpenedPath} />
-        <NoiseBarsFlex>
+        <ExposureBarsFlex>
+          <BarsLabel>Exposure to different traffic noise levels on the selected and the shortest path: </BarsLabel>
+          <PathNoisesBar withMargins={true} noisePcts={path.properties.noise_pcts} />
+          <PathNoisesBar withMargins={true} noisePcts={shortPath.properties.noise_pcts} />
+        </ExposureBarsFlex>
+      </PathRowFlex >
+      <OpenedPathNoiseExps path={path} shortPath={shortPath} pathType='quiet' />
+    </div>
+  )
+}
+
+const ShortPathAqiExposures = ({ path, unsetOpenedPath }) => {
+  return (
+    <div>
+      <PathRowFlex>
+        <ClosePathBox handleClick={unsetOpenedPath} />
+        <ExposureBarsFlex>
+          <BarsLabel>Exposure to different air quality classes on the selected (shortest) path: </BarsLabel>
+          <PathAqiBar withMargins={true} aqiPcts={path.properties.aqi_pcts} />
+        </ExposureBarsFlex>
+      </PathRowFlex>
+    </div>
+  )
+}
+
+const ShortPathNoiseExposures = ({ path, unsetOpenedPath }) => {
+  return (
+    <div>
+      <PathRowFlex>
+        <ClosePathBox handleClick={unsetOpenedPath} />
+        <ExposureBarsFlex>
           <BarsLabel>Exposure to different traffic noise levels on the selected (shortest) path: </BarsLabel>
           <PathNoisesBar withMargins={true} noisePcts={path.properties.noise_pcts} />
-        </NoiseBarsFlex>
+        </ExposureBarsFlex>
       </PathRowFlex>
-      <OpenedPathNoiseStats path={path} pathType='short' />
+      <OpenedPathNoiseExps path={path} pathType='short' />
     </div>
   )
 }

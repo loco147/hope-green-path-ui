@@ -2,7 +2,7 @@ import React from 'react'
 import styled, { css } from 'styled-components'
 import { utils } from '../../utils/index'
 
-const StyledOpenedPathNoiseStats = styled.div`
+const StyledOpenedPathNoiseExps = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -64,11 +64,11 @@ const DistBox = styled.div`
   color: black;
 `
 
-export const OpenedPathNoiseStats = ({ path, pathType }) => {
+export const OpenedPathNoiseExps = ({ path, pathType }) => {
   if (pathType === 'short') {
-    return <OpenedShortPathNoiseStats path={path} />
+    return <OpenedShortPathNoiseExps path={path} />
   } else
-    return <OpenedQuietPathNoiseStats path={path} />
+    return <OpenedQuietPathNoiseExps path={path} />
 }
 
 const DBLenKeyValue = ({ dB, path }) => {
@@ -82,9 +82,9 @@ const DBLenKeyValue = ({ dB, path }) => {
   )
 }
 
-const OpenedShortPathNoiseStats = ({ path }) => {
+const OpenedShortPathNoiseExps = ({ path }) => {
   return (
-    <StyledOpenedPathNoiseStats>
+    <StyledOpenedPathNoiseExps>
       <PathPropsRow>
         <FlexCols >
           <DBLenKeyValue path={path} dB={50} />
@@ -97,7 +97,7 @@ const OpenedShortPathNoiseStats = ({ path }) => {
           <DBLenKeyValue path={path} dB={75} />
         </FlexCols>
       </PathPropsRow>
-    </StyledOpenedPathNoiseStats>
+    </StyledOpenedPathNoiseExps>
   )
 }
 
@@ -114,9 +114,9 @@ const DBLenDiffKeyValue = ({ dB, path }) => {
   )
 }
 
-const OpenedQuietPathNoiseStats = ({ path }) => {
+const OpenedQuietPathNoiseExps = ({ path }) => {
   return (
-    <StyledOpenedPathNoiseStats>
+    <StyledOpenedPathNoiseExps>
       <PathPropsRow>
         <FlexCols >
           <DBLenDiffKeyValue path={path} dB={50} />
@@ -129,6 +129,6 @@ const OpenedQuietPathNoiseStats = ({ path }) => {
           <DBLenDiffKeyValue path={path} dB={75} />
         </FlexCols>
       </PathPropsRow>
-    </StyledOpenedPathNoiseStats>
+    </StyledOpenedPathNoiseExps>
   )
 }
