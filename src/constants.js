@@ -8,6 +8,7 @@ export const BASEMAPS = {
 }
 
 export const pathTypes = {
+  short: 'short_p',
   clean: 'clean',
   quiet: 'quiet',
 }
