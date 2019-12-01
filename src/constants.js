@@ -25,6 +25,7 @@ export const dBColors = {
   60: '#FFD000',
   65: '#FF6E1B',
   70: '#FF270E',
+  75: '#FF270E',
 }
 
 export const aqiLabels = {

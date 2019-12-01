@@ -1,6 +1,7 @@
 import React from 'react'
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 import { utils } from '../../utils/index'
+import { dBColors } from './../../constants'
 
 const StyledOpenedPathNoiseExps = styled.div`
   display: flex;
@@ -36,27 +37,15 @@ const KeyValueFlex = styled.div`
   margin: 0px;
   white-space: nowrap;
 `
-const DBKey = styled.div`
+const DBKeyBox = styled.div`
   border-radius: 4px;
   margin: 2px 1px 2px 3px;
-  color: white;
-  font-size: 12px;
-  background-color: black;
-  padding: 2px 5px;
-`
-const DistDiffBox = styled(DBKey)`
-  background-color: transparent;
-  padding: 2px 3px;
   color: black;
-  padding: 2px 2px;
-  ${props => props.value < 0 && css`
-    background-color: green;
-    margin: 2px 3px 2px 3px;
-    padding: 2px 5px;
-    color: white;
-  `}
+  font-size: 12px;
+  padding: 2px 5px;
+  background-color: ${props => props.color || 'black'};
 `
-const DistBox = styled.div`
+const ExposureBox = styled.div`
   font-size: 12px;
   padding: 2px 2px;
   margin: 2px 2px 2px 1px;
@@ -65,70 +54,30 @@ const DistBox = styled.div`
 `
 
 export const OpenedPathNoiseExps = ({ path, pathType }) => {
-  if (pathType === 'short') {
-    return <OpenedShortPathNoiseExps path={path} />
-  } else
-    return <OpenedQuietPathNoiseExps path={path} />
-}
-
-const DBLenKeyValue = ({ dB, path }) => {
-  const dist = path.properties.noises[dB]
-  const distObj = dist ? utils.getFormattedDistanceString(dist, false) : { m: 0, string: '0 m' }
-  return (
-    <KeyValueFlex>
-      <DBKey>{dB}dB</DBKey>
-      <DistBox>{distObj.string}</DistBox>
-    </KeyValueFlex>
-  )
-}
-
-const OpenedShortPathNoiseExps = ({ path }) => {
   return (
     <StyledOpenedPathNoiseExps>
       <PathPropsRow>
         <FlexCols >
-          <DBLenKeyValue path={path} dB={50} />
-          <DBLenKeyValue path={path} dB={55} />
-          <DBLenKeyValue path={path} dB={60} />
+          <DBExposureRow path={path} dB={50} />
+          <DBExposureRow path={path} dB={55} />
+          <DBExposureRow path={path} dB={60} />
         </FlexCols>
         <FlexCols>
-          <DBLenKeyValue path={path} dB={65} />
-          <DBLenKeyValue path={path} dB={70} />
-          <DBLenKeyValue path={path} dB={75} />
+          <DBExposureRow path={path} dB={65} />
+          <DBExposureRow path={path} dB={70} />
+          <DBExposureRow path={path} dB={75} />
         </FlexCols>
       </PathPropsRow>
     </StyledOpenedPathNoiseExps>
   )
 }
 
-const DBLenDiffKeyValue = ({ dB, path }) => {
+const DBExposureRow = ({ dB, path }) => {
   const dist = path.properties.noises[dB]
-  const distObj = dist ? utils.getFormattedDistanceString(dist, false) : { m: 0, string: '0 m' }
-  const distDiffObj = utils.getFormattedDistanceString(path.properties.noises_diff[dB], true)
   return (
     <KeyValueFlex>
-      <DBKey>{dB}dB</DBKey>
-      {distDiffObj.m === 0 && distObj.m  === 0 ? null : <DistDiffBox value={distDiffObj.m}> {distDiffObj.string}</DistDiffBox>}
-      <DistBox> {' ('}{distObj.string}{')'}</DistBox>
+      <DBKeyBox color={dBColors[dB]}>{dB}dB</DBKeyBox>
+      <ExposureBox>{utils.getWalkTimeFromDist(dist ? dist : 0)} min </ExposureBox>
     </KeyValueFlex>
-  )
-}
-
-const OpenedQuietPathNoiseExps = ({ path }) => {
-  return (
-    <StyledOpenedPathNoiseExps>
-      <PathPropsRow>
-        <FlexCols >
-          <DBLenDiffKeyValue path={path} dB={50} />
-          <DBLenDiffKeyValue path={path} dB={55} />
-          <DBLenDiffKeyValue path={path} dB={60} />
-        </FlexCols>
-        <FlexCols>
-          <DBLenDiffKeyValue path={path} dB={65} />
-          <DBLenDiffKeyValue path={path} dB={70} />
-          <DBLenDiffKeyValue path={path} dB={75} />
-        </FlexCols>
-      </PathPropsRow>
-    </StyledOpenedPathNoiseExps>
   )
 }
