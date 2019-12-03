@@ -116,7 +116,7 @@ const CleanPathBox = ({ path, selected, handleClick }) => {
           </sub>
         </QuietPathLengthProps>
         <div>
-          {Math.round(path.properties.aqc_diff_rat) + ' % air pollution'}
+          {utils.getFormattedAqiExpDiffRatio(path.properties.aqc_diff_rat) + ' % air pollution'}
         </div>
       </PathPropsRow>
     </StyledPathListPathBox>

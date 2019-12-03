@@ -46,6 +46,14 @@ const getFormattedKmString = (m, digits) => {
   return String(roundedKm) + ' km'
 }
 
+export const getFormattedAqiExpDiffRatio = (aqc_diff_rat) => {
+  if (Math.round(aqc_diff_rat) === 0) {
+    return '-' + String(Math.round(aqc_diff_rat))
+  } else {
+    return String(Math.round(aqc_diff_rat))
+  }
+}
+
 export const getFormattedDistanceString = (m, withSign) => {
   const distObj = {}
   distObj.m = Math.round(m)
