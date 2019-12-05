@@ -2,26 +2,6 @@ import { turf } from './index'
 import helPoly from './../helPoly.json'
 import { aqiLabels, walkSpeed } from './../constants'
 
-export const getWalkTimeFromDist = (dist) => {
-  const timeS = dist / walkSpeed
-  const timeMin = timeS / 60
-  return Math.round(timeMin)
-}
-
-export const getOriginCoordsFromFC = (FC) => {
-  const origin = FC.features.filter(feat => feat.properties.type === 'origin')
-  if (origin.length === 0) return null
-  const coords = origin[0].geometry.coordinates
-  return coords.map(coord => Math.round(coord * 100000) / 100000)
-}
-
-export const getTargetCoordsFromFC = (FC) => {
-  const target = FC.features.filter(feat => feat.properties.type === 'target')
-  if (target.length === 0) return null
-  const coords = target[0].geometry.coordinates
-  return coords.map(coord => Math.round(coord * 100000) / 100000)
-}
-
 export const getNoiseIndexLabel = (ni) => {
   if (ni < 0.15) return 'very quiet'
   if (ni < 0.3) return 'quiet'
@@ -40,10 +20,41 @@ export const getAqiLabel = (aqi) => {
   return ''
 }
 
-const getFormattedKmString = (m, digits) => {
-  const km = m / 1000
-  const roundedKm = Math.round(km * (10 * digits)) / (10 * digits)
-  return String(roundedKm) + ' km'
+export const getWalkTimeFromDist = (m, withSign = false) => {
+  const timeS = m / walkSpeed
+  const timeMin = timeS / 60
+  const roundedTime = Math.round(timeMin) === 0 ? Math.round(timeMin * 10) / 10 : Math.round(timeMin)
+  return withSign === true ? concatSign(roundedTime) : String(roundedTime)
+}
+
+const concatSign = (number) => {
+  if (number < 0) {
+    return '-' + String(number)
+  } else if (number > 0) {
+    return '+' + String(number)
+  } else return String(number)
+}
+
+const roundTo = (number, digits) => {
+  return Math.round(number * (10 * digits)) / (10 * digits)
+}
+
+export const getFormattedDistanceString = (m, withSign = false) => {
+  let distance
+  let unit
+  if (Math.abs(m) >= 950) {
+    const km = m / 1000
+    distance = roundTo(km, 1)
+    unit = ' km'
+  } else if (Math.abs(m) > 60) {
+    distance = Math.round(m / 10) * 10
+    unit = ' m'
+  } else {
+    distance = Math.round(m)
+    unit = ' m'
+  }
+  const distanceString = withSign === true ? concatSign(distance) : String(distance)
+  return distanceString + unit
 }
 
 export const getFormattedAqiExpDiffRatio = (aqc_diff_rat) => {
@@ -54,35 +65,18 @@ export const getFormattedAqiExpDiffRatio = (aqc_diff_rat) => {
   }
 }
 
-export const getFormattedDistanceString = (m, withSign) => {
-  const distObj = {}
-  distObj.m = Math.round(m)
-  let distanceString
-  if (Math.abs(m) >= 950) {
-    // round to nearest 0.1 km
-    distanceString = getFormattedKmString(m, 1)
-  } else if (Math.abs(m) > 70) {
-    // round to nearest 10 m
-    distanceString = String(Math.round(m / 10) * 10) + ' m'
-  } else {
-    // round to nearest m
-    distanceString = String(Math.round(m) + ' m')
-  }
-  if (withSign && Math.round(m) > 0) {
-    distObj.string = '+'.concat(distanceString)
-  } else {
-    distObj.string = distanceString
-  }
-  return distObj
+export const getOriginCoordsFromFC = (FC) => {
+  const origin = FC.features.filter(feat => feat.properties.type === 'origin')
+  if (origin.length === 0) return null
+  const coords = origin[0].geometry.coordinates
+  return coords.map(coord => Math.round(coord * 100000) / 100000)
 }
 
-export const getMString = (num, signs) => {
-  if (!num) return 0
-  const round = Math.round(num)
-  if (signs) {
-    if (round > 0) return '+'.concat(String(round))
-  }
-  return String(round)
+export const getTargetCoordsFromFC = (FC) => {
+  const target = FC.features.filter(feat => feat.properties.type === 'target')
+  if (target.length === 0) return null
+  const coords = target[0].geometry.coordinates
+  return coords.map(coord => Math.round(coord * 100000) / 100000)
 }
 
 export const getLayersFeaturesAroundClickE = (layers, e, tolerance, map) => {

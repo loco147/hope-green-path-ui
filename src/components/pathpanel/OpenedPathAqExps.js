@@ -12,7 +12,7 @@ const StyledOpenedPathExposures = styled.div`
   border-radius: 5px;
   margin: 4px 0px 4px 0px
   border: 2px solid transparent;
-  padding: 3px 4px;
+  padding: 1px 0px 2px 4px;
   color: black;
   cursor: default;
   transition-duration: 0.12s;
@@ -44,7 +44,7 @@ const StyledAqiExposureBox = styled.div`
 `
 const StyledAqiExposureRow = styled.div`
   display: flex;
-  margin: 2px 0 2px 0px;
+  margin: 2px 0 4px 0px;
   flex-direction: row;
 `
 

@@ -13,7 +13,7 @@ const StyledOpenedPathNoiseExps = styled.div`
   margin: 4px 0px 4px 0px
   background-color: white;
   border: 2px solid transparent;
-  padding: 3px 4px;
+  padding: 3px 0px 5px 4px;
   color: black;
   cursor: default;
   transition-duration: 0.12s;

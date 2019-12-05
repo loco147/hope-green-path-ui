@@ -72,7 +72,7 @@ const ShortestPathAqBox = ({ path, selected, handleClick }) => {
           {utils.getWalkTimeFromDist(path.properties.length)} min
         </div>
         <div>
-          {utils.getFormattedDistanceString(path.properties.length, false).string}
+          {utils.getFormattedDistanceString(path.properties.length, false)}
         </div>
         <div>
           {utils.getAqiLabel(path.properties.aqi_m)} air quality
@@ -91,7 +91,7 @@ const ShortestPathNoiseBox = ({ path, selected, handleClick }) => {
           {utils.getWalkTimeFromDist(path.properties.length)} min
         </div>
         <div>
-          {utils.getFormattedDistanceString(path.properties.length, false).string}
+          {utils.getFormattedDistanceString(path.properties.length, false)}
         </div>
         <div>
           {utils.getNoiseIndexLabel(path.properties.nei_norm)}
@@ -108,12 +108,12 @@ const CleanPathBox = ({ path, selected, handleClick }) => {
       <PathPropsRow>
         <div>
           {utils.getWalkTimeFromDist(path.properties.length)} min
+          <sub>
+            {' '}{utils.getWalkTimeFromDist(path.properties.len_diff, true)} min
+          </sub>
         </div>
         <QuietPathLengthProps>
-          {utils.getFormattedDistanceString(path.properties.length, false).string}
-          <sub>
-            {' '}{utils.getFormattedDistanceString(path.properties.len_diff, true).string}
-          </sub>
+          {utils.getFormattedDistanceString(path.properties.length, false)}
         </QuietPathLengthProps>
         <div>
           {utils.getFormattedAqiExpDiffRatio(path.properties.aqc_diff_rat) + ' % air pollution'}
@@ -130,12 +130,12 @@ const QuietPathBox = ({ path, selected, handleClick }) => {
       <PathPropsRow>
         <div>
           {utils.getWalkTimeFromDist(path.properties.length)} min
+          <sub>
+            {' '}{utils.getWalkTimeFromDist(path.properties.len_diff, true)} min
+          </sub>
         </div>
         <QuietPathLengthProps>
-          {utils.getFormattedDistanceString(path.properties.length, false).string}
-          <sub>
-            {' '}{utils.getFormattedDistanceString(path.properties.len_diff, true).string}
-          </sub>
+          {utils.getFormattedDistanceString(path.properties.length, false)}
         </QuietPathLengthProps>
         <div>
           {Math.round(path.properties.nei_diff_rat) + ' % noise'}
