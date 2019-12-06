@@ -7,19 +7,50 @@ export const BASEMAPS = {
   }
 }
 
+export const pathTypes = {
+  short: 'short',
+  clean: 'clean',
+  quiet: 'quiet',
+}
+
+export const statTypes = {
+  aq: 'air quality',
+  noise: 'noise',
+}
+
 export const dBColors = {
   40: '#00EC00',
+  45: '#00EC00',
   50: '#56FF3B',
   55: '#C6F519',
   60: '#FFD000',
   65: '#FF6E1B',
   70: '#FF270E',
+  75: '#FF270E',
+}
+
+export const aqiLabels = {
+  1: 'very good',
+  2: 'satisfactory',
+  3: 'fair',
+  4: 'poor',
+  5: 'very poor'
+}
+
+export const aqiColors = {
+  1: '#00EC00',
+  2: '#C6F519',
+  3: '#FFD000',
+  4: '#FF6E1B',
+  5: '#FF270E',
 }
 
 export const menu = {
   lengthLimitSelector: 'length_limit_selector',
   pathList: 'path_list',
 }
+
+export const walkSpeed = 1.33
 
 export const clickTol = 12
 

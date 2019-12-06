@@ -3,21 +3,21 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import Map from './components/map/Map'
 import Notification from './components/Notification'
-import GetRoutesButton from './components/GetRoutesButton'
+import FindPathsButtons from './components/FindPathsButtons'
 import TopControlPanel from './components/TopControlPanel'
 import BottomControlPanel from './components/BottomControlPanel'
 import PathPanel from './components/pathpanel/PathPanel'
 import MapControl from './components/map/MapControl'
 import UserLocation from './components/map/UserLocation'
 import PathShort from './components/map/PathShort'
-import PathQuiet from './components/map/PathQuiet'
-import PathEdges from './components/map/PathEdges'
 import PathSelected from './components/map/PathSelected'
+import PathsGreen from './components/map/PathsGreen'
+import PathsEdges from './components/map/PathsEdges'
 import OriginTargetPoints from './components/map/OriginTargetPoints'
 import Guide from './components/guide/Guide'
 import WelcomeInfo from './components/guide/WelcomeInfo'
 import DimLayer from './components/DimLayer'
-import { testQuietPathServiceConnection } from './reducers/pathsReducer'
+import { testGreenPathServiceConnection, testCleanPathServiceStatus } from './reducers/pathsReducer'
 import { showWelcomeIfFirstVisit } from './reducers/visitorReducer'
 import ShowInfoButton from './components/guide/ShowInfoButton'
 
@@ -42,7 +42,8 @@ class App extends Component {
 
   componentDidMount() {
     this.props.showWelcomeIfFirstVisit()
-    this.props.testQuietPathServiceConnection()
+    this.props.testGreenPathServiceConnection()
+    this.props.testCleanPathServiceStatus()
   }
 
   render() {
@@ -52,9 +53,9 @@ class App extends Component {
         <Map>
           <MapControl />
           <PathSelected />
-          <PathQuiet />
+          <PathsGreen />
           <PathShort />
-          <PathEdges />
+          <PathsEdges />
           <OriginTargetPoints />
           <UserLocation />
         </Map>
@@ -66,7 +67,7 @@ class App extends Component {
         </TopPanel>
         <BottomPanel>
           <Notification />
-          <GetRoutesButton />
+          <FindPathsButtons />
           <PathPanel />
           <BottomControlPanel />
         </BottomPanel>
@@ -75,5 +76,11 @@ class App extends Component {
   }
 }
 
-const ConnectedApp = connect(null, { showWelcomeIfFirstVisit, testQuietPathServiceConnection })(App)
+const mapDispatchToProps = {
+  showWelcomeIfFirstVisit,
+  testGreenPathServiceConnection,
+  testCleanPathServiceStatus,
+}
+
+const ConnectedApp = connect(null, mapDispatchToProps)(App)
 export default ConnectedApp

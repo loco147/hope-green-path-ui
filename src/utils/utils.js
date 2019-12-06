@@ -1,5 +1,69 @@
 import { turf } from './index'
 import helPoly from './../helPoly.json'
+import { aqiLabels, walkSpeed } from './../constants'
+
+export const getNoiseIndexLabel = (ni) => {
+  if (ni < 0.15) return 'very quiet'
+  if (ni < 0.3) return 'quiet'
+  if (ni < 0.5) return 'moderate noise'
+  if (ni < 0.65) return 'high noise'
+  if (ni < 0.75) return 'very high noise'
+  if (ni >= 0.75) return 'extreme noise'
+}
+
+export const getAqiLabel = (aqi) => {
+  if (aqi < 2.0) return aqiLabels[1]
+  if (aqi < 3.0) return aqiLabels[2]
+  if (aqi < 4.0) return aqiLabels[3]
+  if (aqi < 5.0) return aqiLabels[4]
+  if (aqi >= 5.0) return aqiLabels[5]
+  return ''
+}
+
+export const getWalkTimeFromDist = (m, withSign = false) => {
+  const timeS = m / walkSpeed
+  const timeMin = timeS / 60
+  const roundedTime = Math.round(timeMin) === 0 ? Math.round(timeMin * 10) / 10 : Math.round(timeMin)
+  return withSign === true ? concatSign(roundedTime) : String(roundedTime)
+}
+
+const concatSign = (number) => {
+  if (number < 0) {
+    return '-' + String(number)
+  } else if (number > 0) {
+    return '+' + String(number)
+  } else return String(number)
+}
+
+const roundTo = (number, digits) => {
+  return Math.round(number * (10 * digits)) / (10 * digits)
+}
+
+export const getFormattedDistanceString = (m, withSign = false) => {
+  let distance
+  let unit
+  if (Math.abs(m) >= 950) {
+    const km = m / 1000
+    distance = roundTo(km, 1)
+    unit = ' km'
+  } else if (Math.abs(m) > 60) {
+    distance = Math.round(m / 10) * 10
+    unit = ' m'
+  } else {
+    distance = Math.round(m)
+    unit = ' m'
+  }
+  const distanceString = withSign === true ? concatSign(distance) : String(distance)
+  return distanceString + unit
+}
+
+export const getFormattedAqiExpDiffRatio = (aqc_diff_rat) => {
+  if (Math.round(aqc_diff_rat) === 0) {
+    return '-' + String(Math.round(aqc_diff_rat))
+  } else {
+    return String(Math.round(aqc_diff_rat))
+  }
+}
 
 export const getOriginCoordsFromFC = (FC) => {
   const origin = FC.features.filter(feat => feat.properties.type === 'origin')
@@ -15,52 +79,6 @@ export const getTargetCoordsFromFC = (FC) => {
   return coords.map(coord => Math.round(coord * 100000) / 100000)
 }
 
-export const getNoiseIndexLabel = (ni) => {
-  if (ni < 0.15) return 'very quiet'
-  if (ni < 0.3) return 'quiet'
-  if (ni < 0.5) return 'moderate noise'
-  if (ni < 0.65) return 'high noise'
-  if (ni < 0.75) return 'very high noise'
-  if (ni >= 0.75) return 'extreme noise'
-}
-
-const getFormattedKmString = (m, digits) => {
-  const km = m / 1000
-  const roundedKm = Math.round(km * (10 * digits)) / (10 * digits)
-  return String(roundedKm) + ' km'
-}
-
-export const getFormattedDistanceString = (m, withSign) => {
-  const distObj = {}
-  distObj.m = Math.round(m)
-  let distanceString
-  if (Math.abs(m) >= 950) {
-    // round to nearest 0.1 km
-    distanceString = getFormattedKmString(m, 1)
-  } else if (Math.abs(m) > 70) {
-    // round to nearest 10 m
-    distanceString = String(Math.round(m / 10) * 10) + ' m'
-  } else {
-    // round to nearest m
-    distanceString = String(Math.round(m) + ' m')
-  }
-  if (withSign && Math.round(m) > 0) {
-    distObj.string = '+'.concat(distanceString)
-  } else {
-    distObj.string = distanceString
-  }
-  return distObj
-}
-
-export const getMString = (num, signs) => {
-  if (!num) return 0
-  const round = Math.round(num)
-  if (signs) {
-    if (round > 0) return '+'.concat(String(round))
-  }
-  return String(round)
-}
-
 export const getLayersFeaturesAroundClickE = (layers, e, tolerance, map) => {
   // tolerance: pixels around point
   const bbox = [[e.point.x - tolerance, e.point.y - tolerance], [e.point.x + tolerance, e.point.y + tolerance]]
@@ -68,13 +86,13 @@ export const getLayersFeaturesAroundClickE = (layers, e, tolerance, map) => {
   return features
 }
 
-export const getBestPath = (qPaths) => {
+export const getBestPath = (greenPathFeatures) => {
   // if the greatest quiet path score among the paths is greater than 2 -> select the path
-  if (qPaths.length > 0) {
-    const goodPaths = qPaths.filter(feat => feat.properties.path_score > 0.8 && feat.properties.cost_coeff <= 10)
+  if (greenPathFeatures.length > 0) {
+    const goodPaths = greenPathFeatures.filter(feat => feat.properties.path_score > 0.8 && feat.properties.cost_coeff <= 10)
     if (goodPaths.length > 0) {
-      const maxQpathScore = Math.max(...goodPaths.map(path => path.properties.path_score))
-      const bestPath = goodPaths.filter(feat => feat.properties.path_score === maxQpathScore)[0]
+      const maxquietPathscore = Math.max(...goodPaths.map(path => path.properties.path_score))
+      const bestPath = goodPaths.filter(feat => feat.properties.path_score === maxquietPathscore)[0]
       return bestPath
     }
   }
@@ -83,9 +101,9 @@ export const getBestPath = (qPaths) => {
 
 const getLengthLimit = (length, rounding) => Math.ceil(length / rounding) * rounding
 
-export const getLengthLimits = (qPaths) => {
-  const pathLengths = qPaths.map(feat => feat.properties.length)
-  const pathProps = qPaths.map(feat => feat.properties)
+export const getLengthLimits = (greenPathFeatures) => {
+  const pathLengths = greenPathFeatures.map(feat => feat.properties.length)
+  const pathProps = greenPathFeatures.map(feat => feat.properties)
   const limits = pathProps.reduce((acc, props) => {
     const length = props.length
     // get limit as rounded value higher than the actual length
@@ -130,20 +148,20 @@ export const originTargetWithinSupportedArea = (originTargetFC) => {
   return null
 }
 
-export const validateNoiseDiffs = (sPaths, qPaths) => {
+export const validateNoiseDiffs = (shortPaths, quietPaths) => {
   if (process.env.NODE_ENV !== 'production') {
     let distancesOk = true
-    const sPath = sPaths[0]
-    for (let qPath of qPaths) {
+    const shortPath = shortPaths[0]
+    for (let quietPath of quietPaths) {
       for (let dB of [40, 45, 50, 55, 60, 65, 70, 75]) {
-        const qDist = qPath.properties.noises[dB] ? qPath.properties.noises[dB] : 0
-        const qDistDiff = qPath.properties.noises_diff[dB] ? qPath.properties.noises_diff[dB] : 0
-        const sDist = sPath.properties.noises[dB] ? sPath.properties.noises[dB] : 0
+        const qDist = quietPath.properties.noises[dB] ? quietPath.properties.noises[dB] : 0
+        const qDistDiff = quietPath.properties.noises_diff[dB] ? quietPath.properties.noises_diff[dB] : 0
+        const sDist = shortPath.properties.noises[dB] ? shortPath.properties.noises[dB] : 0
         const sDistCheck = qDist - qDistDiff
         const distCheckDiff = sDistCheck - sDist
         if (Math.abs(distCheckDiff) > 1) {
           distancesOk = false
-          console.log('Error in qPath dB distance diff vs sPath dB distance:')
+          console.log('Error in quietPath dB distance diff vs shortPath dB distance:')
           console.log('dB:', dB)
           console.log('qDist:', qDist)
           console.log('qDistDiff:', qDistDiff)

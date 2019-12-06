@@ -2,6 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import { utils } from '../../utils/index'
 import { PathNoisesBar } from './PathNoisesBar'
+import { PathAqiBar } from './PathAqiBar'
+import { pathTypes, statTypes } from '../../constants'
 
 const StyledPathListPathBox = styled.div.attrs(props => ({
   style:
@@ -47,27 +49,74 @@ const QuietPathLengthProps = styled.div`
   text-align: center;
 `
 
-const PathListPathBox = ({ path, selected, pathType, handleClick }) => {
-  if (pathType === 'short') {
-    return <ShortestPathBox path={path} selected={selected} handleClick={handleClick} />
+const PathListPathBox = ({ path, selected, showingPathsType, handleClick }) => {
+  if (showingPathsType === pathTypes.clean) {
+    return <CleanPathBox path={path} selected={selected} handleClick={handleClick} />
   } else {
     return <QuietPathBox path={path} selected={selected} handleClick={handleClick} />
   }
 }
 
-const ShortestPathBox = ({ path, selected, handleClick }) => {
+export const ShortestPathBox = ({ path, selected, showingStatsType, handleClick }) => {
+  if (showingStatsType === statTypes.aq) {
+    return <ShortestPathAqBox path={path} selected={selected} handleClick={handleClick} />
+  } else { return <ShortestPathNoiseBox path={path} selected={selected} handleClick={handleClick} /> }
+}
+
+const ShortestPathAqBox = ({ path, selected, handleClick }) => {
+  return (
+    <StyledPathListPathBox selected={selected} onClick={handleClick}>
+      <PathAqiBar aqiPcts={path.properties.aqi_pcts} />
+      <PathPropsRow>
+        <div>
+          {utils.getWalkTimeFromDist(path.properties.length)} min
+        </div>
+        <div>
+          {utils.getFormattedDistanceString(path.properties.length, false)}
+        </div>
+        <div>
+          {utils.getAqiLabel(path.properties.aqi_m)} air quality
+        </div>
+      </PathPropsRow>
+    </StyledPathListPathBox>
+  )
+}
+
+const ShortestPathNoiseBox = ({ path, selected, handleClick }) => {
   return (
     <StyledPathListPathBox selected={selected} onClick={handleClick}>
       <PathNoisesBar noisePcts={path.properties.noise_pcts} />
       <PathPropsRow>
         <div>
-          {utils.getFormattedDistanceString(path.properties.length, false).string}
+          {utils.getWalkTimeFromDist(path.properties.length)} min
+        </div>
+        <div>
+          {utils.getFormattedDistanceString(path.properties.length, false)}
         </div>
         <div>
           {utils.getNoiseIndexLabel(path.properties.nei_norm)}
         </div>
+      </PathPropsRow>
+    </StyledPathListPathBox>
+  )
+}
+
+const CleanPathBox = ({ path, selected, handleClick }) => {
+  return (
+    <StyledPathListPathBox selected={selected} onClick={handleClick}>
+      <PathAqiBar aqiPcts={path.properties.aqi_pcts} />
+      <PathPropsRow>
         <div>
-          {Math.round(path.properties.mdB)} dB<sub>mean</sub>
+          {utils.getWalkTimeFromDist(path.properties.length)} min
+          <sub>
+            {' '}{utils.getWalkTimeFromDist(path.properties.len_diff, true)} min
+          </sub>
+        </div>
+        <QuietPathLengthProps>
+          {utils.getFormattedDistanceString(path.properties.length, false)}
+        </QuietPathLengthProps>
+        <div>
+          {utils.getFormattedAqiExpDiffRatio(path.properties.aqc_diff_rat) + ' % air pollution'}
         </div>
       </PathPropsRow>
     </StyledPathListPathBox>
@@ -79,17 +128,17 @@ const QuietPathBox = ({ path, selected, handleClick }) => {
     <StyledPathListPathBox selected={selected} onClick={handleClick}>
       <PathNoisesBar noisePcts={path.properties.noise_pcts} />
       <PathPropsRow>
-        <QuietPathLengthProps>
-          {utils.getFormattedDistanceString(path.properties.length, false).string}
+        <div>
+          {utils.getWalkTimeFromDist(path.properties.length)} min
           <sub>
-            {' '}{utils.getFormattedDistanceString(path.properties.len_diff, true).string}
+            {' '}{utils.getWalkTimeFromDist(path.properties.len_diff, true)} min
           </sub>
+        </div>
+        <QuietPathLengthProps>
+          {utils.getFormattedDistanceString(path.properties.length, false)}
         </QuietPathLengthProps>
         <div>
           {Math.round(path.properties.nei_diff_rat) + ' % noise'}
-        </div>
-        <div>
-          {Math.round(path.properties.mdB)} dB<sub>mean</sub>
         </div>
       </PathPropsRow>
     </StyledPathListPathBox>

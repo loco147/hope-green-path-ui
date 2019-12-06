@@ -58,7 +58,7 @@ class Map extends React.Component {
     })
 
     this.map.on('click', (e) => {
-      const features = utils.getLayersFeaturesAroundClickE(['quietPaths', 'shortestPath'], e, clickTol, this.map)
+      const features = utils.getLayersFeaturesAroundClickE(['pathsGreen', 'shortestPath'], e, clickTol, this.map)
       if (features.length === 0) {
         this.props.unsetSelectedPath()
       }
@@ -99,7 +99,7 @@ class Map extends React.Component {
   }
 
   render() {
-    const mapstyle = {
+    const mapStyle = {
       position: 'relative',
       top: 0,
       bottom: 0,
@@ -116,7 +116,7 @@ class Map extends React.Component {
       React.cloneElement(child, { map: this.map }))
 
     return (
-      <div style={mapstyle} ref={el => { this.mapContainer = el }}>
+      <div style={mapStyle} ref={el => { this.mapContainer = el }}>
         {this.state.isReady && this.map !== null && children}
       </div>
     )

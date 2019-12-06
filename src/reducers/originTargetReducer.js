@@ -2,7 +2,6 @@ import { turf } from '../utils/index'
 import { initialOriginTargetFeatures } from './../constants'
 import { closePopup } from './mapPopupReducer'
 import { startTrackingUserLocation } from './userLocationReducer'
-import { getQuietPaths } from './pathsReducer'
 import { showNotification } from './notificationReducer'
 import { utils } from './../utils/index'
 
@@ -86,16 +85,6 @@ export const setTarget = (lngLat, originTargetFC, routingId) => {
     dispatch({ type: 'RESET_PATHS' })
     dispatch({ type: 'SET_TARGET', updateOriginTargetFC })
     dispatch(closePopup())
-    // start routing after target is set (if at supported area)
-    const error = utils.originTargetWithinSupportedArea(updateOriginTargetFC)
-    if (!error) {
-      const originSet = originTargetFC.features.filter(feat => feat.properties.type === 'origin').length > 0
-      if (originSet) {
-        const originCoords = utils.getOriginCoordsFromFC(updateOriginTargetFC)
-        const targetCoords = utils.getTargetCoordsFromFC(updateOriginTargetFC)
-        dispatch(getQuietPaths(originCoords, targetCoords, routingId))
-      }
-    }
   }
 }
 

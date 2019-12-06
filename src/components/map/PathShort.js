@@ -9,9 +9,9 @@ class PathShort extends React.Component {
     layerId = 'shortestPath'
     source
     paint = {
-        'line-width': 5.0,
+        'line-width': 4.3,
         'line-opacity': 1,
-        'line-color': 'black',
+        'line-color': '#252525',
     }
     layout = {
         'line-join': 'round',
@@ -19,10 +19,10 @@ class PathShort extends React.Component {
     }
 
     componentDidMount() {
-        const { map, sPathFC, setSelectedPath, scrollToPath } = this.props
+        const { map, shortPathFC, setSelectedPath, scrollToPath } = this.props
         map.once('load', () => {
             // Add layer
-            map.addSource(this.layerId, { type: 'geojson', data: sPathFC })
+            map.addSource(this.layerId, { type: 'geojson', data: shortPathFC })
             this.source = map.getSource(this.layerId)
             map.addLayer({
                 id: this.layerId,
@@ -45,14 +45,14 @@ class PathShort extends React.Component {
     }
 
     componentDidUpdate = () => {
-        const { map, sPathFC } = this.props
-        map.moveLayer('quietPaths', this.layerId)
+        const { map, shortPathFC } = this.props
+        map.moveLayer('pathsGreen', this.layerId)
 
         if (this.source !== undefined) {
-            this.source.setData(sPathFC)
+            this.source.setData(shortPathFC)
         } else {
             map.once('sourcedata', () => {
-                this.source.setData(sPathFC)
+                this.source.setData(shortPathFC)
             })
         }
     }
@@ -63,7 +63,7 @@ class PathShort extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-    sPathFC: state.paths.sPathFC,
+    shortPathFC: state.paths.shortPathFC,
 })
 
 const ConnectedPathShort = connect(mapStateToProps, { setSelectedPath, scrollToPath })(PathShort)

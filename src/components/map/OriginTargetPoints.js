@@ -11,8 +11,8 @@ class OriginTarget extends React.Component {
         'circle-color': [
             'match',
             ['get', 'type'],
-            'origin', '#00ff4c',
-            'target', '#00fffa',
+            'origin', '#00fffa',
+            'target', '#00ff4c',
             /* other */ '#51ff7c'
         ],
         'circle-stroke-color': 'black',
@@ -36,7 +36,7 @@ class OriginTarget extends React.Component {
             setMapReferenceForPopups(map)
             map.on('click', (e) => {
                 // show popup only if path was not clicked
-                const features = utils.getLayersFeaturesAroundClickE(['quietPaths', 'shortestPath'], e, clickTol, map)
+                const features = utils.getLayersFeaturesAroundClickE(['pathsGreen', 'shortestPath'], e, clickTol, map)
                 if (features.length === 0) {
                     setSelectLocationsPopup(e.lngLat)
                 }

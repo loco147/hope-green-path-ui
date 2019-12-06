@@ -26,14 +26,14 @@ const FilterCount = styled.div`
   margin-left: 1px;
 `
 
-const FilterButton = ({ onClick, qPathCount, lengthLimit, lengthLimits }) => {
+const FilterButton = ({ onClick, greenPathCount, lengthLimit, lengthLimits }) => {
   const disabled = lengthLimits.length <= 1
   return (
     <StyledButton
       disabled={disabled}
       onClick={onClick}>
       <Filter />
-      <FilterCount>{lengthLimit.count}/{qPathCount + 1}</FilterCount>
+      <FilterCount>{lengthLimit.count}/{greenPathCount + 1}</FilterCount>
     </StyledButton>
   )
 }
