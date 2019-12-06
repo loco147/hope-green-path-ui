@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { getCleanPaths, getQuietPaths } from '../reducers/pathsReducer'
+import { getSetCleanPaths, getSetQuietPaths } from '../reducers/pathsReducer'
 import { utils } from '../utils'
 
 const OuterFlex = styled.div`
@@ -33,7 +33,7 @@ const Button = styled.div`
   -webkit-transition-duration: 0.2s; /* Safari */
   border: 1px solid white;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.22), 0 6px 20px 0 rgba(0,0,0,0.14);
-  background-color: #17af40e8;
+  background-color: #17af40f0;
   color: white;
   &:hover { 
     background-color: #128a32e8;
@@ -46,7 +46,7 @@ const Tooltip = styled.div`
 
 const FindPathsButtons = (props) => {
   const { cleanPathsAvailable, originTargetFC, originTargetError, routingId,
-    waitingPaths, showingPaths, getCleanPaths, getQuietPaths } = props
+    waitingPaths, showingPaths, getSetCleanPaths, getSetQuietPaths } = props
   const originCoords = utils.getOriginCoordsFromFC(originTargetFC)
   const targetCoords = utils.getTargetCoordsFromFC(originTargetFC)
   const originOrTargetMissing = originCoords === null || targetCoords === null
@@ -59,12 +59,12 @@ const FindPathsButtons = (props) => {
     <OuterFlex>
       {cleanPathsAvailable
         ? <Button
-          onClick={() => getCleanPaths(originCoords, targetCoords, routingId)}> Find clean paths
+          onClick={() => getSetCleanPaths(originCoords, targetCoords, routingId)}> Find clean paths
           <Tooltip>by real-time air quality</Tooltip>
         </Button>
         : null
       }
-      <Button onClick={() => getQuietPaths(originCoords, targetCoords, routingId)}> Find quiet paths
+      <Button onClick={() => getSetQuietPaths(originCoords, targetCoords, routingId)}> Find quiet paths
         <Tooltip>by typical traffic noise</Tooltip>
       </Button>
     </OuterFlex>
@@ -80,6 +80,6 @@ const mapStateToProps = (state) => ({
   cleanPathsAvailable: state.paths.cleanPathsAvailable,
 })
 
-const ConnectedFindPathsButtons = connect(mapStateToProps, { getCleanPaths, getQuietPaths })(FindPathsButtons)
+const ConnectedFindPathsButtons = connect(mapStateToProps, { getSetCleanPaths, getSetQuietPaths })(FindPathsButtons)
 
 export default ConnectedFindPathsButtons
