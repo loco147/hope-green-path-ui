@@ -8,6 +8,8 @@ const initialPaths = {
   cleanPathsAvailable: false,
   showingPathsType: null,
   showingStatsType: null,
+  quietPathData: { od: null, data: null },
+  cleanPathData: { od: null, data: null },
   selPathFC: turf.asFeatureCollection([]),
   shortPathFC: turf.asFeatureCollection([]),
   quietPathFC: turf.asFeatureCollection([]),
@@ -60,6 +62,18 @@ const pathsReducer = (store = initialPaths, action) => {
       }
     }
 
+    case 'SET_QUIET_PATH_DATA': {
+      const cancelledRouting = store.routingId !== action.routingId
+      if (cancelledRouting) return store
+      return {
+        ...store,
+        quietPathData: {
+          od: [action.origCoords, action.destCoords],
+          data: action.pathData
+        },
+      }
+    }
+
     case 'SET_QUIET_PATHS': {
       const cancelledRouting = store.routingId !== action.routingId
       if (cancelledRouting) return store
@@ -68,6 +82,18 @@ const pathsReducer = (store = initialPaths, action) => {
         showingPathsType: pathTypes.quiet,
         showingStatsType: statTypes.noise,
         quietPathFC: turf.asFeatureCollection(action.quietPaths),
+      }
+    }
+
+    case 'SET_CLEAN_PATH_DATA': {
+      const cancelledRouting = store.routingId !== action.routingId
+      if (cancelledRouting) return store
+      return {
+        ...store,
+        cleanPathData: {
+          od: [action.origCoords, action.destCoords],
+          data: action.pathData
+        },
       }
     }
 
@@ -150,6 +176,14 @@ const pathsReducer = (store = initialPaths, action) => {
     case 'ERROR_IN_ROUTING':
       return { ...store, waitingPaths: false }
 
+    case 'CLOSE_PATHS': {
+      return {
+        ...store,
+        selPathFC: turf.asFeatureCollection([]),
+        openedPath: null,
+      }
+    }
+
     case 'RESET_PATHS':
       return {
         ...initialPaths,
@@ -209,30 +243,17 @@ const confirmLongDistance = (origCoords, destCoords) => {
   return true
 }
 
-export const getQuietPaths = (origCoords, destCoords, prevRoutingId) => {
+export const getSetQuietPaths = (origCoords, destCoords, prevRoutingId) => {
   return async (dispatch) => {
     if (!confirmLongDistance(origCoords, destCoords)) {
       return
     }
     const routingId = prevRoutingId + 1
+    dispatch({ type: 'CLOSE_PATHS' })
     dispatch({ type: 'ROUTING_STARTED', origCoords, destCoords, routingId })
     try {
       const pathData = await paths.getQuietPaths(origCoords, destCoords)
-      const pathFeats = pathData.path_FC.features
-      const shortPath = pathFeats.filter(feat => feat.properties.type === 'short')
-      const quietPaths = pathFeats.filter(feat => feat.properties.type === 'quiet' && feat.properties.len_diff !== 0)
-      const lengthLimits = utils.getLengthLimits(pathFeats)
-      const initialLengthLimit = utils.getInitialLengthLimit(lengthLimits)
-      dispatch({ type: 'SET_LENGTH_LIMITS', lengthLimits, initialLengthLimit, routingId })
-      dispatch({ type: 'SET_SHORTEST_PATH', shortPath, routingId })
-      dispatch({ type: 'SET_QUIET_PATHS', quietPaths: quietPaths, routingId })
-      dispatch({ type: 'SET_EDGE_FC', quietEdgeFC: pathData.edge_FC, routingId })
-      const bestPath = utils.getBestPath(quietPaths)
-      if (bestPath) {
-        dispatch({ type: 'SET_SELECTED_PATH', selPathId: bestPath.properties.id, routingId })
-      } else if (quietPaths.length > 0) {
-        dispatch({ type: 'SET_SELECTED_PATH', selPathId: 'short', routingId })
-      }
+      dispatch(setQuietPaths(origCoords, destCoords, routingId, pathData))
     } catch (error) {
       console.log('caught error:', error)
       dispatch({ type: 'ERROR_IN_ROUTING' })
@@ -246,30 +267,39 @@ export const getQuietPaths = (origCoords, destCoords, prevRoutingId) => {
   }
 }
 
-export const getCleanPaths = (origCoords, destCoords, prevRoutingId) => {
+export const setQuietPaths = (origCoords, destCoords, routingId, pathData) => {
+  return async (dispatch) => {
+    dispatch({ type: 'CLOSE_PATHS' })
+    dispatch({ type: 'SET_QUIET_PATH_DATA', routingId, origCoords, destCoords, pathData })
+    const pathFeats = pathData.path_FC.features
+    const shortPath = pathFeats.filter(feat => feat.properties.type === 'short')
+    const quietPaths = pathFeats.filter(feat => feat.properties.type === 'quiet' && feat.properties.len_diff !== 0)
+    const lengthLimits = utils.getLengthLimits(pathFeats)
+    const initialLengthLimit = utils.getInitialLengthLimit(lengthLimits)
+    dispatch({ type: 'SET_LENGTH_LIMITS', lengthLimits, initialLengthLimit, routingId })
+    dispatch({ type: 'SET_SHORTEST_PATH', shortPath, routingId })
+    dispatch({ type: 'SET_QUIET_PATHS', quietPaths: quietPaths, routingId })
+    dispatch({ type: 'SET_EDGE_FC', quietEdgeFC: pathData.edge_FC, routingId })
+    const bestPath = utils.getBestPath(quietPaths)
+    if (bestPath) {
+      dispatch({ type: 'SET_SELECTED_PATH', selPathId: bestPath.properties.id, routingId })
+    } else if (quietPaths.length > 0) {
+      dispatch({ type: 'SET_SELECTED_PATH', selPathId: 'short', routingId })
+    }
+  }
+}
+
+export const getSetCleanPaths = (origCoords, destCoords, prevRoutingId) => {
   return async (dispatch) => {
     if (!confirmLongDistance(origCoords, destCoords)) {
       return
     }
     const routingId = prevRoutingId + 1
+    dispatch({ type: 'CLOSE_PATHS' })
     dispatch({ type: 'ROUTING_STARTED', origCoords, destCoords, routingId })
     try {
       const pathData = await paths.getCleanPaths(origCoords, destCoords)
-      const pathFeats = pathData.path_FC.features
-      const shortPath = pathFeats.filter(feat => feat.properties.type === 'short')
-      const cleanPaths = pathFeats.filter(feat => feat.properties.type === 'clean' && feat.properties.len_diff !== 0)
-      const lengthLimits = utils.getLengthLimits(pathFeats)
-      const initialLengthLimit = utils.getInitialLengthLimit(lengthLimits)
-      dispatch({ type: 'SET_LENGTH_LIMITS', lengthLimits, initialLengthLimit, routingId })
-      dispatch({ type: 'SET_SHORTEST_PATH', shortPath, routingId })
-      dispatch({ type: 'SET_CLEAN_PATHS', cleanPaths: cleanPaths, routingId })
-      dispatch({ type: 'SET_EDGE_FC', cleanEdgeFC: pathData.edge_FC, routingId })
-      const bestPath = utils.getBestPath(cleanPaths)
-      if (bestPath) {
-        dispatch({ type: 'SET_SELECTED_PATH', selPathId: bestPath.properties.id, routingId })
-      } else if (cleanPaths.length > 0) {
-        dispatch({ type: 'SET_SELECTED_PATH', selPathId: 'short', routingId })
-      }
+      dispatch(setCleanPaths(origCoords, destCoords, routingId, pathData))
     } catch (error) {
       console.log('caught error:', error)
       dispatch({ type: 'ERROR_IN_ROUTING' })
@@ -279,6 +309,28 @@ export const getCleanPaths = (origCoords, destCoords, prevRoutingId) => {
         dispatch(showNotification('Error in routing', 'error', 8))
       }
       return
+    }
+  }
+}
+
+export const setCleanPaths = (origCoords, destCoords, routingId, pathData) => {
+  return async (dispatch) => {
+    dispatch({ type: 'CLOSE_PATHS' })
+    dispatch({ type: 'SET_CLEAN_PATH_DATA', routingId, origCoords, destCoords, pathData })
+    const pathFeats = pathData.path_FC.features
+    const shortPath = pathFeats.filter(feat => feat.properties.type === 'short')
+    const cleanPaths = pathFeats.filter(feat => feat.properties.type === 'clean' && feat.properties.len_diff !== 0)
+    const lengthLimits = utils.getLengthLimits(pathFeats)
+    const initialLengthLimit = utils.getInitialLengthLimit(lengthLimits)
+    dispatch({ type: 'SET_LENGTH_LIMITS', lengthLimits, initialLengthLimit, routingId })
+    dispatch({ type: 'SET_SHORTEST_PATH', shortPath, routingId })
+    dispatch({ type: 'SET_CLEAN_PATHS', cleanPaths: cleanPaths, routingId })
+    dispatch({ type: 'SET_EDGE_FC', cleanEdgeFC: pathData.edge_FC, routingId })
+    const bestPath = utils.getBestPath(cleanPaths)
+    if (bestPath) {
+      dispatch({ type: 'SET_SELECTED_PATH', selPathId: bestPath.properties.id, routingId })
+    } else if (cleanPaths.length > 0) {
+      dispatch({ type: 'SET_SELECTED_PATH', selPathId: 'short', routingId })
     }
   }
 }

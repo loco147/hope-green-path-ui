@@ -86,10 +86,10 @@ export const getLayersFeaturesAroundClickE = (layers, e, tolerance, map) => {
   return features
 }
 
-export const getBestPath = (quietPaths) => {
+export const getBestPath = (greenPathFeatures) => {
   // if the greatest quiet path score among the paths is greater than 2 -> select the path
-  if (quietPaths.length > 0) {
-    const goodPaths = quietPaths.filter(feat => feat.properties.path_score > 0.8 && feat.properties.cost_coeff <= 10)
+  if (greenPathFeatures.length > 0) {
+    const goodPaths = greenPathFeatures.filter(feat => feat.properties.path_score > 0.8 && feat.properties.cost_coeff <= 10)
     if (goodPaths.length > 0) {
       const maxquietPathscore = Math.max(...goodPaths.map(path => path.properties.path_score))
       const bestPath = goodPaths.filter(feat => feat.properties.path_score === maxquietPathscore)[0]
@@ -101,9 +101,9 @@ export const getBestPath = (quietPaths) => {
 
 const getLengthLimit = (length, rounding) => Math.ceil(length / rounding) * rounding
 
-export const getLengthLimits = (quietPaths) => {
-  const pathLengths = quietPaths.map(feat => feat.properties.length)
-  const pathProps = quietPaths.map(feat => feat.properties)
+export const getLengthLimits = (greenPathFeatures) => {
+  const pathLengths = greenPathFeatures.map(feat => feat.properties.length)
+  const pathProps = greenPathFeatures.map(feat => feat.properties)
   const limits = pathProps.reduce((acc, props) => {
     const length = props.length
     // get limit as rounded value higher than the actual length

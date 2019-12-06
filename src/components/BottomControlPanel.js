@@ -2,8 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { menu, pathTypes } from './../constants'
+import TogglePathsButton from './TogglePathsButton'
 import { togglePathPanel, toggleGuide, showPathList, showMaxLengthFilterSelector } from './../reducers/menuReducer'
-import ToggleGuideButton from './guide/ToggleGuideButton'
 import { ListButton, ArrowUpButton, ArrowDownButton } from './Icons'
 import FilterButton from './FilterButton'
 
@@ -28,9 +28,13 @@ const ButtonFlex = styled.div`
   align-items: center;
   width: 100%;
 `
+const Margin = styled.div`
+  margin: 0 0 0 14px;
+`
+
 const BottomControlPanel = (props) => {
   const { showingPaths, showingPathsType, pathPanelVisible, pathPanelContent, quietPathCount, cleanPathCount,
-    lengthLimit, lengthLimits, togglePathPanel, toggleGuide, showPathList, showMaxLengthFilterSelector } = props
+    lengthLimit, lengthLimits, togglePathPanel, showPathList, showMaxLengthFilterSelector } = props
 
   if (!showingPaths) return null
 
@@ -41,17 +45,21 @@ const BottomControlPanel = (props) => {
   return (
     <ControlPanel pathPanelVisible={pathPanelVisible}>
       <ButtonFlex>
-        {pathPanelContent === menu.lengthLimitSelector
-          ? <ListButton onClick={showPathList} />
-          : <FilterButton
-            greenPathCount={greenPathCount}
-            lengthLimit={lengthLimit}
-            lengthLimits={lengthLimits}
-            onClick={showMaxLengthFilterSelector} />}
-        {pathPanelVisible
-          ? <ArrowDownButton onClick={togglePathPanel}></ArrowDownButton>
-          : <ArrowUpButton onClick={togglePathPanel}></ArrowUpButton>}
-        <ToggleGuideButton onClick={toggleGuide} />
+        <Margin>
+          {pathPanelContent === menu.lengthLimitSelector
+            ? <ListButton onClick={showPathList} />
+            : <FilterButton
+              greenPathCount={greenPathCount}
+              lengthLimit={lengthLimit}
+              lengthLimits={lengthLimits}
+              onClick={showMaxLengthFilterSelector} />}
+        </Margin>
+        <Margin>
+          {pathPanelVisible
+            ? <ArrowDownButton onClick={togglePathPanel}></ArrowDownButton>
+            : <ArrowUpButton onClick={togglePathPanel}></ArrowUpButton>}
+        </Margin>
+        <TogglePathsButton />
       </ButtonFlex>
     </ControlPanel >
   )

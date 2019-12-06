@@ -25,8 +25,10 @@ const DBColorBox = styled.div`
   box-shadow: 0 -4px 8px 0 rgba(0,0,0,0.06), 0 -6px 20px 0 rgba(0,0,0,0.03);
   background-color: ${props => props.color || 'black'};
   ${props => props.index && css`
-    background-color: black;
-    color: white;
+    font-weight: 450;
+    box-shadow: none;
+    background-color: white;
+    color: black;
   `}
 `
 const DbRow = styled.div`
