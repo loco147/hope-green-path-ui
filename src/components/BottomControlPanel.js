@@ -29,7 +29,7 @@ const ButtonFlex = styled.div`
   width: 100%;
 `
 const Margin = styled.div`
-  margin: 0 0 0 14px;
+  margin-left: ${props => props.left ? props.left : '0'}px;
 `
 
 const BottomControlPanel = (props) => {
@@ -54,7 +54,7 @@ const BottomControlPanel = (props) => {
               lengthLimits={lengthLimits}
               onClick={showMaxLengthFilterSelector} />}
         </Margin>
-        <Margin>
+        <Margin left={15}>
           {pathPanelVisible
             ? <ArrowDownButton onClick={togglePathPanel}></ArrowDownButton>
             : <ArrowUpButton onClick={togglePathPanel}></ArrowUpButton>}

@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { connect } from 'react-redux'
 import { getSetQuietPaths, getSetCleanPaths, setQuietPaths, setCleanPaths } from '../reducers/pathsReducer'
 import { pathTypes } from '../constants'
@@ -29,6 +29,12 @@ const Button = styled.div`
       color: white;
     }
   }
+  ${props => props.disabled === true && css`
+    cursor: default;
+    pointer-events: none;
+    border-color: grey;
+    color: grey;
+  `}
 `
 
 const odsMatch = (quietPathOd, cleanPathOd) => {
@@ -70,7 +76,7 @@ const getPathToggleFunc = (props) => {
 const TogglePathsButton = (props) => {
 
   return (
-    <Button
+    <Button disabled={!props.cleanPathsAvailable && props.showingPathsType === pathTypes.quiet}
       onClick={() => getPathToggleFunc(props)}>
       {getTogglePathsButtonText(props)}
     </Button>
@@ -78,6 +84,7 @@ const TogglePathsButton = (props) => {
 }
 
 const mapStateToProps = (state) => ({
+  cleanPathsAvailable: state.paths.cleanPathsAvailable,
   routingId: state.paths.routingId,
   showingPathsType: state.paths.showingPathsType,
   quietPathData: state.paths.quietPathData,
