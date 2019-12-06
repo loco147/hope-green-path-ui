@@ -8,6 +8,8 @@ const initialPaths = {
   cleanPathsAvailable: false,
   showingPathsType: null,
   showingStatsType: null,
+  quietPathData: { od: null, data: null },
+  cleanPathData: { od: null, data: null },
   selPathFC: turf.asFeatureCollection([]),
   shortPathFC: turf.asFeatureCollection([]),
   quietPathFC: turf.asFeatureCollection([]),
@@ -60,6 +62,18 @@ const pathsReducer = (store = initialPaths, action) => {
       }
     }
 
+    case 'SET_QUIET_PATH_DATA': {
+      const cancelledRouting = store.routingId !== action.routingId
+      if (cancelledRouting) return store
+      return {
+        ...store,
+        quietPathData: {
+          od: [action.origCoords, action.destCoords],
+          data: action.pathData
+        },
+      }
+    }
+
     case 'SET_QUIET_PATHS': {
       const cancelledRouting = store.routingId !== action.routingId
       if (cancelledRouting) return store
@@ -68,6 +82,18 @@ const pathsReducer = (store = initialPaths, action) => {
         showingPathsType: pathTypes.quiet,
         showingStatsType: statTypes.noise,
         quietPathFC: turf.asFeatureCollection(action.quietPaths),
+      }
+    }
+
+    case 'SET_CLEAN_PATH_DATA': {
+      const cancelledRouting = store.routingId !== action.routingId
+      if (cancelledRouting) return store
+      return {
+        ...store,
+        cleanPathData: {
+          od: [action.origCoords, action.destCoords],
+          data: action.pathData
+        },
       }
     }
 
@@ -149,6 +175,14 @@ const pathsReducer = (store = initialPaths, action) => {
 
     case 'ERROR_IN_ROUTING':
       return { ...store, waitingPaths: false }
+
+    case 'CLOSE_PATHS': {
+      return {
+        ...store,
+        selPathFC: turf.asFeatureCollection([]),
+        openedPath: null,
+      }
+    }
 
     case 'RESET_PATHS':
       return {
