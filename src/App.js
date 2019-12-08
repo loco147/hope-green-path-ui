@@ -18,7 +18,7 @@ import WelcomeInfo from './scenes/WelcomeInfo/WelcomeInfo'
 import DimLayer from './scenes/Home/DimLayer'
 import { testGreenPathServiceConnection, testCleanPathServiceStatus } from './reducers/pathsReducer'
 import { showWelcomeIfFirstVisit } from './reducers/visitorReducer'
-import ShowInfoButton from './scenes/Home/ShowInfoButton'
+import HomeControls from './scenes/Home/HomeControls'
 
 const AbsoluteContainer = styled.div`
   position: absolute;
@@ -58,7 +58,7 @@ class App extends Component {
           <OriginTargetPoints />
           <UserLocation />
         </Map>
-        <ShowInfoButton />
+        <HomeControls />
         <WelcomeInfo />
         <TopPanel>
           <TopControlPanel />

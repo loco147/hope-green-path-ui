@@ -7,7 +7,6 @@ import { IoIosArrowForward } from 'react-icons/io'
 import { IoIosArrowBack } from 'react-icons/io'
 import { IoIosClose } from 'react-icons/io'
 import { IoMdMenu } from 'react-icons/io'
-import { MdNearMe } from 'react-icons/md'
 
 const iconStyle = `
   vertical-align: middle;
@@ -42,10 +41,6 @@ const List = styled(IoMdMenu)`
   ${iconStyle}
   font-size: 36px;
 `
-const Locate = styled(MdNearMe)`
-  ${iconStyle}
-  font-size: 33px;
-`
 
 const IconButton = styled.div`
   cursor: pointer;
@@ -76,5 +71,3 @@ export const ArrowBackButton = ({ onClick }) => <IconButton onClick={onClick} le
 export const CloseButton = ({ onClick, size }) => <IconButton onClick={onClick}> <Close size={size} /></IconButton>
 
 export const ListButton = ({ onClick }) => <IconButton hoverJump onClick={onClick}> <List /></IconButton>
-
-export const LocateButton = ({ handleClick }) => <IconButton hoverJump onClick={handleClick}> <Locate /></IconButton>
