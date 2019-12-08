@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import { utils } from '../../utils/index'
-import { aqiLabels, aqiColors } from './../../constants'
+import { utils } from '../../../utils/index'
+import { aqiLabels, aqiColors } from './../../../constants'
 
 const StyledOpenedPathExposures = styled.div`
   display: flex;

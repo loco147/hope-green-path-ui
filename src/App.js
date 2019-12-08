@@ -1,25 +1,24 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import Map from './components/map/Map'
 import Notification from './components/Notification'
 import FindPathsButtons from './components/FindPathsButtons'
 import TopControlPanel from './components/TopControlPanel'
-import BottomControlPanel from './components/BottomControlPanel'
-import PathPanel from './components/pathpanel/PathPanel'
-import MapControl from './components/map/MapControl'
-import UserLocation from './components/map/UserLocation'
-import PathShort from './components/map/PathShort'
-import PathSelected from './components/map/PathSelected'
-import PathsGreen from './components/map/PathsGreen'
-import PathsEdges from './components/map/PathsEdges'
-import OriginTargetPoints from './components/map/OriginTargetPoints'
-import Guide from './components/guide/Guide'
-import WelcomeInfo from './components/guide/WelcomeInfo'
-import DimLayer from './components/DimLayer'
+import BottomControlPanel from './components/BottomControlPanel/BottomControlPanel'
+import PathPanel from './components/PathPanel/PathPanel'
+import Map from './components/Map/Map'
+import MapControl from './components/Map/MapControl'
+import UserLocation from './components/Map/UserLocation'
+import PathShort from './components/Map/PathShort'
+import PathSelected from './components/Map/PathSelected'
+import PathsGreen from './components/Map/PathsGreen'
+import PathsEdges from './components/Map/PathsEdges'
+import OriginTargetPoints from './components/Map/OriginTargetPoints'
+import WelcomeInfo from './scenes/WelcomeInfo/WelcomeInfo'
+import DimLayer from './scenes/Home/DimLayer'
 import { testGreenPathServiceConnection, testCleanPathServiceStatus } from './reducers/pathsReducer'
 import { showWelcomeIfFirstVisit } from './reducers/visitorReducer'
-import ShowInfoButton from './components/guide/ShowInfoButton'
+import ShowInfoButton from './scenes/Home/ShowInfoButton'
 
 const AbsoluteContainer = styled.div`
   position: absolute;
@@ -59,7 +58,6 @@ class App extends Component {
           <OriginTargetPoints />
           <UserLocation />
         </Map>
-        <Guide />
         <ShowInfoButton />
         <WelcomeInfo />
         <TopPanel>

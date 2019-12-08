@@ -4,7 +4,6 @@ import { showSetDestinationTooltip } from './originTargetReducer'
 import { testGreenPathServiceConnection } from './pathsReducer'
 
 const initialMenuState = {
-  guide: false,
   info: false,
   pathPanel: false,
   pathPanelContent: null,
@@ -13,8 +12,6 @@ const initialMenuState = {
 const menuReducer = (store = initialMenuState, action) => {
 
   switch (action.type) {
-
-    case 'TOGGLE_GUIDE': return { ...store, guide: !store.guide }
 
     case 'SHOW_INFO': return { ...store, info: true }
 
@@ -32,8 +29,6 @@ const menuReducer = (store = initialMenuState, action) => {
       return store
   }
 }
-
-export const toggleGuide = () => ({ type: 'TOGGLE_GUIDE' })
 
 export const showInfo = () => ({ type: 'SHOW_INFO' })
 

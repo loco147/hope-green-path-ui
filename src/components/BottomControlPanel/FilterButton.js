@@ -1,6 +1,6 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
-import { Filter } from './Icons'
+import { Filter } from './../Icons'
 
 const StyledButton = styled.div`
   display: flex;

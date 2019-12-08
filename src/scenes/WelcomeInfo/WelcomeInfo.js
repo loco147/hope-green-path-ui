@@ -1,7 +1,7 @@
 import React from 'react'
-import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { Button } from '../Button'
+import styled from 'styled-components'
+import { Button } from '../../components/Button'
 import { showInfo, hideInfo } from './../../reducers/menuReducer'
 
 const InfoContainer = styled.div`

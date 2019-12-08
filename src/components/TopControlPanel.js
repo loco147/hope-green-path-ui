@@ -4,10 +4,8 @@ import { connect } from 'react-redux'
 import { Button } from './Button'
 import { useUserLocationOrigin } from '../reducers/originTargetReducer'
 import { zoomToUserLocation } from '../reducers/userLocationReducer'
-import { toggleGuide } from '../reducers/menuReducer'
 import { resetPaths } from './../reducers/pathsReducer'
 import { LocateButton } from './Icons'
-import ToggleGuideButton from './guide/ToggleGuideButton'
 
 const ControlPanel = styled.div`
   margin: 0px;
@@ -30,7 +28,7 @@ const ButtonFlex = styled.div`
 `
 
 const TopControlPanel = (props) => {
-  const { showingPaths, waitingPaths, resetPaths, userLocation, useUserLocOrigin, toggleGuide } = props
+  const { showingPaths, waitingPaths, resetPaths, userLocation, useUserLocOrigin } = props
   const showUserLocButton = !useUserLocOrigin && !showingPaths && !waitingPaths
 
   return (
@@ -38,8 +36,7 @@ const TopControlPanel = (props) => {
       <ButtonFlex>
         <LocateButton handleClick={() => props.zoomToUserLocation(userLocation)} />
         {showingPaths
-          ? <Button smaller bold white onClick={() => resetPaths(userLocation.lngLat)}> Reset</Button>
-          : !showUserLocButton ? <ToggleGuideButton small onClick={toggleGuide} /> : null}
+          ? <Button smaller bold white onClick={() => resetPaths(userLocation.lngLat)}> Reset</Button> : null}
         {showUserLocButton
           ? <Button small bold green onClick={() => props.useUserLocationOrigin(userLocation)}> Use current location</Button> : null}
       </ButtonFlex>
@@ -54,6 +51,6 @@ const mapStateToProps = (state) => ({
   waitingPaths: state.paths.waitingPaths,
 })
 
-const ConnectedTopControlPanel = connect(mapStateToProps, { useUserLocationOrigin, zoomToUserLocation, resetPaths, toggleGuide })(TopControlPanel)
+const ConnectedTopControlPanel = connect(mapStateToProps, { useUserLocationOrigin, zoomToUserLocation, resetPaths })(TopControlPanel)
 
 export default ConnectedTopControlPanel

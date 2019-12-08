@@ -4,7 +4,7 @@ import './index.css'
 import App from './App'
 import { Provider } from 'react-redux'
 import store from './store'
-import SelectLocationsPopup from './components/map/SelectLocationsPopup'
+import SelectLocationsPopup from './components/Map/SelectLocationsPopup'
 
 const render = () => {
   ReactDOM.render(

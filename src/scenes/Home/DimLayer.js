@@ -24,7 +24,7 @@ const DimDiv = styled.div`
 const DimLayer = (props) => {
 
   return (
-    <DimDiv visible={props.menu.guide || props.menu.info} />
+    <DimDiv visible={props.menu.info} />
   )
 }
 

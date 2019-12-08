@@ -1,11 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
-import { PathNoisesBar } from './PathNoisesBar'
-import { PathAqiBar } from './PathAqiBar'
+import { PathNoisesBar } from './../PathNoisesBar'
+import { PathAqiBar } from './../PathAqiBar'
 import { OpenedPathNoiseExps } from './OpenedPathNoiseExps'
 import { OpenedPathAqExps } from './OpenedPathAqExps'
-import { ClosePathBox } from './OpenClosePathBoxes'
-import { pathTypes, statTypes } from './../../constants'
+import { ClosePathBox } from './../OpenClosePathBoxes'
+import { pathTypes, statTypes } from './../../../constants'
 
 const PathRowFlex = styled.div`
   display: flex;

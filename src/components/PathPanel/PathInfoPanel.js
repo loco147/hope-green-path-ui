@@ -2,8 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { menu } from '../../constants'
 import { setSelectedPath, setOpenedPath, unsetOpenedPath } from '../../reducers/pathsReducer'
-import PathList from './PathList'
-import OpenedPathInfo from './OpenedPathInfo'
+import PathList from './PathList/PathList'
+import OpenedPathInfo from './OpenedPathInfo/OpenedPathInfo'
 
 const PathInfoPanel = (props) => {
   const { paths, scrollToPath, pathPanelContent } = props
