@@ -45,13 +45,13 @@ const Tooltip = styled.div`
 `
 
 const FindPathsButtons = (props) => {
-  const { cleanPathsAvailable, originTargetFC, originTargetError, routingId,
+  const { cleanPathsAvailable, origDestFC, origDestError, routingId,
     waitingPaths, showingPaths, getSetCleanPaths, getSetQuietPaths } = props
-  const originCoords = utils.getOriginCoordsFromFC(originTargetFC)
-  const targetCoords = utils.getTargetCoordsFromFC(originTargetFC)
-  const originOrTargetMissing = originCoords === null || targetCoords === null
+  const originCoords = utils.getOriginCoordsFromFC(origDestFC)
+  const destCoords = utils.getDestCoordsFromFC(origDestFC)
+  const originOrTargetMissing = originCoords === null || destCoords === null
 
-  if (originOrTargetMissing || showingPaths || waitingPaths || originTargetError) {
+  if (originOrTargetMissing || showingPaths || waitingPaths || origDestError) {
     return null
   }
 
@@ -59,12 +59,12 @@ const FindPathsButtons = (props) => {
     <OuterFlex>
       {cleanPathsAvailable
         ? <Button
-          onClick={() => getSetCleanPaths(originCoords, targetCoords, routingId)}> Find clean paths
+          onClick={() => getSetCleanPaths(originCoords, destCoords, routingId)}> Find clean paths
           <Tooltip>by real-time air quality</Tooltip>
         </Button>
         : null
       }
-      <Button onClick={() => getSetQuietPaths(originCoords, targetCoords, routingId)}> Find quiet paths
+      <Button onClick={() => getSetQuietPaths(originCoords, destCoords, routingId)}> Find quiet paths
         <Tooltip>by typical traffic noise</Tooltip>
       </Button>
     </OuterFlex>
@@ -72,8 +72,8 @@ const FindPathsButtons = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-  originTargetFC: state.originTarget.originTargetFC,
-  originTargetError: state.originTarget.error,
+  origDestFC: state.origDest.origDestFC,
+  origDestError: state.origDest.error,
   waitingPaths: state.paths.waitingPaths,
   showingPaths: state.paths.showingPaths,
   routingId: state.paths.routingId,

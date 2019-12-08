@@ -359,7 +359,7 @@ export const resetPaths = (lngLat) => {
   return async (dispatch) => {
     dispatch({ type: 'RESET_PATHS', lngLat })
     if (process.env.NODE_ENV === 'production') {
-      dispatch({ type: 'RESET_ORIGIN_TARGET' })
+      dispatch({ type: 'RESET_ORIGIN_DEST' })
     }
     dispatch(showNotification('Click on the map to set the origin / destination', 'info', 6))
   }

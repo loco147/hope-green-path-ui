@@ -13,7 +13,7 @@ import PathShort from './components/Map/PathShort'
 import PathSelected from './components/Map/PathSelected'
 import PathsGreen from './components/Map/PathsGreen'
 import PathsEdges from './components/Map/PathsEdges'
-import OriginTargetPoints from './components/Map/OriginTargetPoints'
+import OrigDestPoints from './components/Map/OrigDestPoints'
 import WelcomeInfo from './scenes/WelcomeInfo/WelcomeInfo'
 import DimLayer from './scenes/Home/DimLayer'
 import HopeLink from './scenes/Home/HopeLink'
@@ -57,7 +57,7 @@ class App extends Component {
           <PathsGreen />
           <PathShort />
           <PathsEdges />
-          <OriginTargetPoints />
+          <OrigDestPoints />
           <UserLocation />
         </Map>
         <HomeControls />

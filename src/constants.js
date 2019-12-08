@@ -58,11 +58,11 @@ export const initialMapCenter = { lng: 24.9664, lat: 60.2110 }
 
 export const initialMapCenterProd = { lng: 24.937886, lat: 60.180808 }
 
-export const initialOriginTargetFeatures = [
+export const initialOrigDestFeatures = [
   {
     type: 'Feature',
     properties: {
-      type: 'origin'
+      type: 'orig'
     },
     geometry: {
       type: 'Point',
@@ -75,7 +75,7 @@ export const initialOriginTargetFeatures = [
   {
     type: 'Feature',
     properties: {
-      type: 'target'
+      type: 'dest'
     },
     geometry: {
       type: 'Point',

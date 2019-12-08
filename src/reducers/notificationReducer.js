@@ -26,7 +26,7 @@ const notificationReducer = (store = initialNotification, action) => {
             if (store.text && store.text.includes('Click on the map')) return initialNotification
             return store
         }
-        // cancel ongoing routing if new origin or target is set
+        // cancel ongoing routing if new origin or destination is set
         case 'SET_ORIGIN':
         case 'SET_TARGET': {
             if (store.text === 'Calculating routes...') return initialNotification

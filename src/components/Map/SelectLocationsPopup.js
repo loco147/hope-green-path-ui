@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import store from '../../store'
-import { setOrigin, setTarget } from '../../reducers/originTargetReducer'
+import { setOrigin, setDest } from '../../reducers/origDestReducer'
 import { Button } from '../Button'
 
 const StyledPopupDiv = styled.div`
@@ -12,13 +12,13 @@ const StyledPopupDiv = styled.div`
 class SelectLocationsPopup extends React.Component {
 
   render() {
-    const { visible, lngLat, originTargetFC, routingId } = this.props
+    const { visible, lngLat, origDestFC, routingId } = this.props
     if (!visible) return null
 
     return (
       <StyledPopupDiv>
-        <Button smallest border green disabled={false} submit onClick={() => store.dispatch(setOrigin(lngLat, originTargetFC))}>Route from here</Button>
-        <Button smallest border green disabled={false} submit onClick={() => store.dispatch(setTarget(lngLat, originTargetFC, routingId))}>Route here</Button>
+        <Button smallest border green disabled={false} submit onClick={() => store.dispatch(setOrigin(lngLat, origDestFC))}>Route from here</Button>
+        <Button smallest border green disabled={false} submit onClick={() => store.dispatch(setDest(lngLat, origDestFC, routingId))}>Route here</Button>
       </StyledPopupDiv >
     )
   }
@@ -28,7 +28,7 @@ const mapStateToProps = (state) => ({
   visible: state.mapPopup.visible,
   lngLat: state.mapPopup.lngLat,
   routingId: state.paths.routingId,
-  originTargetFC: state.originTarget.originTargetFC,
+  origDestFC: state.origDest.origDestFC,
 })
 
 const ConnectedSelectLocationsPopup = connect(mapStateToProps, null)(SelectLocationsPopup)

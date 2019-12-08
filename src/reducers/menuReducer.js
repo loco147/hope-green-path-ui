@@ -1,6 +1,6 @@
 import { menu } from './../constants'
 import { setVisitedStatusVisited, getVisitedStatus } from './visitorReducer'
-import { showSetDestinationTooltip } from './originTargetReducer'
+import { showSetDestinationTooltip } from './origDestReducer'
 import { testGreenPathServiceConnection } from './pathsReducer'
 
 const initialMenuState = {
