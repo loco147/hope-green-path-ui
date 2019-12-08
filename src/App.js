@@ -16,6 +16,7 @@ import PathsEdges from './components/Map/PathsEdges'
 import OriginTargetPoints from './components/Map/OriginTargetPoints'
 import WelcomeInfo from './scenes/WelcomeInfo/WelcomeInfo'
 import DimLayer from './scenes/Home/DimLayer'
+import HopeLink from './scenes/Home/HopeLink'
 import { testGreenPathServiceConnection, testCleanPathServiceStatus } from './reducers/pathsReducer'
 import { showWelcomeIfFirstVisit } from './reducers/visitorReducer'
 import HomeControls from './scenes/Home/HomeControls'
@@ -49,6 +50,7 @@ class App extends Component {
     return (
       <div>
         <DimLayer />
+        <HopeLink />
         <Map>
           <MapControl />
           <PathSelected />
