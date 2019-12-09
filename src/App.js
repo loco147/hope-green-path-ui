@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import Notification from './components/Notification'
 import FindPathsButtons from './components/FindPathsButtons'
-import TopControlPanel from './components/TopControlPanel'
+import OrigDestPanel from './components/OrigDestPanel/OrigDestPanel'
 import BottomControlPanel from './components/BottomControlPanel/BottomControlPanel'
 import PathPanel from './components/PathPanel/PathPanel'
 import Map from './components/Map/Map'
@@ -13,7 +13,7 @@ import PathShort from './components/Map/PathShort'
 import PathSelected from './components/Map/PathSelected'
 import PathsGreen from './components/Map/PathsGreen'
 import PathsEdges from './components/Map/PathsEdges'
-import OriginTargetPoints from './components/Map/OriginTargetPoints'
+import OrigDestPoints from './components/Map/OrigDestPoints'
 import WelcomeInfo from './scenes/WelcomeInfo/WelcomeInfo'
 import DimLayer from './scenes/Home/DimLayer'
 import HopeLink from './scenes/Home/HopeLink'
@@ -57,13 +57,13 @@ class App extends Component {
           <PathsGreen />
           <PathShort />
           <PathsEdges />
-          <OriginTargetPoints />
+          <OrigDestPoints />
           <UserLocation />
         </Map>
         <HomeControls />
         <WelcomeInfo />
         <TopPanel>
-          <TopControlPanel />
+          <OrigDestPanel />
         </TopPanel>
         <BottomPanel>
           <Notification />

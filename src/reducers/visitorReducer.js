@@ -1,6 +1,6 @@
 import Cookies from 'cookies-js'
 import { showInfo } from './menuReducer'
-import { showSetDestinationTooltip } from './originTargetReducer'
+import { showSetDestinationTooltip } from './origDestReducer'
 
 const initialVisitorState = {
   visitedBefore: false,

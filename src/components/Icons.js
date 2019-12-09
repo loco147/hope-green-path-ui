@@ -36,7 +36,7 @@ const ArrowBack = styled(IoIosArrowBack)`
 const Close = styled(IoIosClose)`
   ${iconStyle}
   font-size:  ${props => props.size || '10'}px;
-  `
+`
 const List = styled(IoMdMenu)`
   ${iconStyle}
   font-size: 36px;

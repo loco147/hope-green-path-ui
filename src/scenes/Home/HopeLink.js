@@ -15,10 +15,16 @@ const StyledHopeLink = styled.a`
   border-radius: 5px;
   padding: 2px 6px;
   font-size: 18px;
+  font-weight: 500;
   letter-spacing: 1px;
   cursor: pointer;
   text-decoration: none;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+  @media (min-width: 600px) {
+    &:hover { 
+        margin-bottom: 2px;
+    }
+  }
 `
 
 const HopeLink = () => {

@@ -30,8 +30,8 @@ const StyledNotificationDiv = styled.div`
 `
 
 const Notification = (props) => {
-  if (!props.notification.text && !props.originTargetError) return null
-  const look = props.originTargetError ? 'error' : props.notification.look
+  if (!props.notification.text && !props.origDestError) return null
+  const look = props.origDestError ? 'error' : props.notification.look
 
   return (
     <OuterFlex>
@@ -40,7 +40,7 @@ const Notification = (props) => {
           {props.notification.text}
         </div>
         <div>
-          {props.originTargetError}
+          {props.origDestError}
         </div>
       </StyledNotificationDiv>
     </OuterFlex>
@@ -49,7 +49,7 @@ const Notification = (props) => {
 
 const mapStateToProps = (state) => ({
   notification: state.notification,
-  originTargetError: state.originTarget.error,
+  origDestError: state.origDest.error,
 })
 
 const ConnectedNotification = connect(mapStateToProps, null)(Notification)

@@ -66,16 +66,16 @@ export const getFormattedAqiExpDiffRatio = (aqc_diff_rat) => {
 }
 
 export const getOriginCoordsFromFC = (FC) => {
-  const origin = FC.features.filter(feat => feat.properties.type === 'origin')
+  const origin = FC.features.filter(feat => feat.properties.type === 'orig')
   if (origin.length === 0) return null
   const coords = origin[0].geometry.coordinates
   return coords.map(coord => Math.round(coord * 100000) / 100000)
 }
 
-export const getTargetCoordsFromFC = (FC) => {
-  const target = FC.features.filter(feat => feat.properties.type === 'target')
-  if (target.length === 0) return null
-  const coords = target[0].geometry.coordinates
+export const getDestCoordsFromFC = (FC) => {
+  const dest = FC.features.filter(feat => feat.properties.type === 'dest')
+  if (dest.length === 0) return null
+  const coords = dest[0].geometry.coordinates
   return coords.map(coord => Math.round(coord * 100000) / 100000)
 }
 
@@ -135,14 +135,14 @@ export const getInitialLengthLimit = (lengthLimits) => {
   } else return { limit: 0, count: 0, label: '' }
 }
 
-export const originTargetWithinSupportedArea = (originTargetFC) => {
-  const origin = originTargetFC.features.filter(feat => feat.properties.type === 'origin')
-  const target = originTargetFC.features.filter(feat => feat.properties.type === 'target')
+export const origDestWithinSupportedArea = (origDestFC) => {
+  const origin = origDestFC.features.filter(feat => feat.properties.type === 'orig')
+  const dest = origDestFC.features.filter(feat => feat.properties.type === 'dest')
   const extentFeat = helPoly.features[0]
   if (origin.length > 0 && !turf.within(origin[0], extentFeat)) {
     return 'Origin is outside the supported area'
   }
-  if (target.length > 0 && !turf.within(target[0], extentFeat)) {
+  if (dest.length > 0 && !turf.within(dest[0], extentFeat)) {
     return 'Destination is outside the supported area'
   }
   return null

@@ -4,15 +4,15 @@ import { setMapReferenceForPopups, setSelectLocationsPopup } from './../../reduc
 import { clickTol } from './../../constants'
 import { utils } from './../../utils/index'
 
-class OriginTarget extends React.Component {
-    layerId = 'OriginTarget'
+class OrigDest extends React.Component {
+    layerId = 'OrigDest'
     source
     circleStyle = {
         'circle-color': [
             'match',
             ['get', 'type'],
-            'origin', '#00fffa',
-            'target', '#00ff4c',
+            'orig', '#00fffa',
+            'dest', '#00ff4c',
             /* other */ '#51ff7c'
         ],
         'circle-stroke-color': 'black',
@@ -21,11 +21,11 @@ class OriginTarget extends React.Component {
     }
 
     componentDidMount() {
-        const { map, originTargetFC, setSelectLocationsPopup } = this.props
+        const { map, origDestFC, setSelectLocationsPopup } = this.props
 
         map.once('load', () => {
             // Add layer
-            map.addSource(this.layerId, { type: 'geojson', data: originTargetFC })
+            map.addSource(this.layerId, { type: 'geojson', data: origDestFC })
             this.source = map.getSource(this.layerId)
             map.addLayer({
                 id: this.layerId,
@@ -45,13 +45,13 @@ class OriginTarget extends React.Component {
     }
 
     componentDidUpdate = () => {
-        const { map, originTargetFC } = this.props
+        const { map, origDestFC } = this.props
 
         if (this.source !== undefined) {
-            this.source.setData(originTargetFC)
+            this.source.setData(origDestFC)
         } else {
             map.once('sourcedata', () => {
-                this.source.setData(originTargetFC)
+                this.source.setData(origDestFC)
             })
         }
     }
@@ -62,9 +62,9 @@ class OriginTarget extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-    originTargetFC: state.originTarget.originTargetFC,
+    origDestFC: state.origDest.origDestFC,
 })
 
-const ConnectedOriginTarget = connect(mapStateToProps, { setSelectLocationsPopup })(OriginTarget)
+const ConnectedOrigDest = connect(mapStateToProps, { setSelectLocationsPopup })(OrigDest)
 
-export default ConnectedOriginTarget
+export default ConnectedOrigDest

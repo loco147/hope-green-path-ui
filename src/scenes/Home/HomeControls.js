@@ -1,18 +1,23 @@
 import React from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { connect } from 'react-redux'
 import { showInfo } from './../../reducers/menuReducer'
 import { zoomToUserLocation } from '../../reducers/userLocationReducer'
+import { resetPaths } from '../../reducers/pathsReducer'
 import { LocateButton } from './LocateButton'
+import ResetPathsButton from './ResetPathsButton'
 
 const Container = styled.div`
   position: absolute;
-  top: 67px;
+  top: 9px;
   right: 9px;
   z-index: 2;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;;
+  align-items: flex-end;
+  ${props => props.topOffset === true && css`
+    top: 102px;
+  `}
 `
 const ShowInfoButton = styled.div`
   margin: 5px 0px;
@@ -26,22 +31,20 @@ const ShowInfoButton = styled.div`
   background-color: white;
   color: black;
   width: min-content;
-  transition-duration: 0.2s;
-  -webkit-transition-duration: 0.2s; /* Safari */
   &:before {
     content: 'i';
   }
   @media (min-width: 600px) {
     &:hover { 
-      background-color: black;
-      color: white;
+      margin-right: 2px;
     }
   }
 `
 
-const HomeControls = ({ menu, absolute, showInfo, userLocation, zoomToUserLocation }) => {
+const HomeControls = ({ menu, showInfo, userLocation, showingPaths, waitingPaths, zoomToUserLocation, resetPaths }) => {
   return (
-    <Container>
+    <Container topOffset={!showingPaths && !waitingPaths}>
+      {showingPaths || waitingPaths ? <ResetPathsButton handleClick={() => resetPaths(userLocation.lngLat)} /> : null}
       {!menu.info ? <ShowInfoButton onClick={showInfo} /> : null}
       <LocateButton handleClick={() => zoomToUserLocation(userLocation)} />
     </Container>
@@ -51,7 +54,9 @@ const HomeControls = ({ menu, absolute, showInfo, userLocation, zoomToUserLocati
 const mapStateToProps = (state) => ({
   menu: state.menu,
   userLocation: state.userLocation,
+  showingPaths: state.paths.showingPaths,
+  waitingPaths: state.paths.waitingPaths,
 })
 
-const ConnectedHomeControls = connect(mapStateToProps, { showInfo, zoomToUserLocation })(HomeControls)
+const ConnectedHomeControls = connect(mapStateToProps, { showInfo, zoomToUserLocation, resetPaths })(HomeControls)
 export default ConnectedHomeControls
