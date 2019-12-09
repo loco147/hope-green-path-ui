@@ -21,11 +21,12 @@ const DBColorBox = styled.div`
   margin: 0px 3px 0px 3px;
   padding: 5px 7px;
   font-size: 11px;
-  font-weight: 400;
+  font-weight: 450;
   box-shadow: 0 -4px 8px 0 rgba(0,0,0,0.06), 0 -6px 20px 0 rgba(0,0,0,0.03);
   background-color: ${props => props.color || 'black'};
   ${props => props.index && css`
     font-weight: 450;
+    font-size: 13px;
     box-shadow: none;
     background-color: white;
     color: black;
