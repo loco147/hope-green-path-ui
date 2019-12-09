@@ -19,6 +19,16 @@ const pathsReducer = (store = initialOrigDest, action) => {
     case 'RESET_ORIGIN_DEST':
       return initialOrigDest
 
+    case 'RESET_ORIGIN': {
+      const featsNoOrig = store.origDestFC.features.filter(feat => feat.properties.type !== 'orig')
+      return { ...store, useUserLocOrigin: false, origDestFC: turf.asFeatureCollection(featsNoOrig) }
+    }
+
+    case 'RESET_DEST': {
+      const featsNoDest = store.origDestFC.features.filter(feat => feat.properties.type !== 'dest')
+      return { ...store, origDestFC: turf.asFeatureCollection(featsNoDest) }
+    }
+
     case 'SET_ORIGIN': {
       const error = utils.origDestWithinSupportedArea(action.updateOrigDestFC)
       return { ...store, origDestFC: action.updateOrigDestFC, error: error ? error : null, useUserLocOrigin: false }
@@ -64,6 +74,14 @@ const pathsReducer = (store = initialOrigDest, action) => {
   }
 }
 
+export const resetOrig = () => {
+  return { type: 'RESET_ORIGIN' }
+}
+
+export const resetDest = () => {
+  return { type: 'RESET_DEST' }
+}
+
 export const showSetDestinationTooltip = () => {
   return async (dispatch) => {
     dispatch(showNotification('Click on the map to set the origin / destination', 'info', 8))
@@ -106,16 +124,16 @@ const updateOriginToFC = (FC, lngLat) => {
   const features = FC.features
   const dest = features.filter(feat => feat.properties.type === 'dest')
   const coords = [lngLat.lng, lngLat.lat]
-  const origin = [turf.asPoint(coords, { type: 'orig' })]
-  return turf.asFeatureCollection(origin.concat(dest))
+  const orig = [turf.asPoint(coords, { type: 'orig' })]
+  return turf.asFeatureCollection(orig.concat(dest))
 }
 
 const updateDestToFC = (FC, lngLat) => {
   const features = FC.features
-  const origin = features.filter(feat => feat.properties.type === 'orig')
+  const orig = features.filter(feat => feat.properties.type === 'orig')
   const coords = [lngLat.lng, lngLat.lat]
   const dest = [turf.asPoint(coords, { type: 'dest' })]
-  return turf.asFeatureCollection(dest.concat(origin))
+  return turf.asFeatureCollection(dest.concat(orig))
 }
 
 export default pathsReducer

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import Notification from './components/Notification'
 import FindPathsButtons from './components/FindPathsButtons'
-import TopControlPanel from './components/TopControlPanel'
+import OrigDestPanel from './components/OrigDestPanel/OrigDestPanel'
 import BottomControlPanel from './components/BottomControlPanel/BottomControlPanel'
 import PathPanel from './components/PathPanel/PathPanel'
 import Map from './components/Map/Map'
@@ -63,7 +63,7 @@ class App extends Component {
         <HomeControls />
         <WelcomeInfo />
         <TopPanel>
-          <TopControlPanel />
+          <OrigDestPanel />
         </TopPanel>
         <BottomPanel>
           <Notification />
