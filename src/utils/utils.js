@@ -12,11 +12,12 @@ export const getNoiseIndexLabel = (ni) => {
 }
 
 export const getAqiLabel = (aqi) => {
-  if (aqi < 2.0) return aqiLabels[1]
-  if (aqi < 3.0) return aqiLabels[2]
-  if (aqi < 4.0) return aqiLabels[3]
-  if (aqi < 5.0) return aqiLabels[4]
-  if (aqi >= 5.0) return aqiLabels[5]
+  if (aqi <= 0) return ''
+  if (aqi <= 2.0) return aqiLabels[1]
+  if (aqi <= 3.0) return aqiLabels[2]
+  if (aqi <= 4.0) return aqiLabels[3]
+  if (aqi <= 5.0) return aqiLabels[4]
+  if (aqi > 5.0) return aqiLabels[5]
   return ''
 }
 
