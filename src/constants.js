@@ -30,7 +30,7 @@ export const dBColors = {
 }
 
 export const aqiLabels = {
-  1: 'very good',
+  1: 'good',
   2: 'satisfactory',
   3: 'fair',
   4: 'poor',
