@@ -8,7 +8,7 @@ const Locate = styled(MdNearMe)`
   text-align: center;
   font-size: 33px;
 `
-  const StyledIcon = styled.div`
+const StyledIcon = styled.div`
   cursor: pointer;
   pointer-events: auto;
   margin: 13px 0px;
@@ -22,9 +22,9 @@ const Locate = styled(MdNearMe)`
   }
 `
 
-export const LocateButton = () => {
+export const LocateButton = ({ handleClick }) => {
   return (
-    <StyledIcon>
+    <StyledIcon onClick={handleClick}>
       <Locate />
     </StyledIcon>
   )
