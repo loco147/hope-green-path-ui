@@ -6,7 +6,7 @@ import { pathTypes } from '../../constants'
 
 const Button = styled.div`
   cursor: pointer;
-  padding: 5px 10px;
+  padding: 5px 11px;
   color: white;
   border-radius: 30px;
   margin: 0px;
@@ -21,31 +21,34 @@ const Button = styled.div`
   pointer-events: auto;
   transition-duration: 0.2s;
   -webkit-transition-duration: 0.2s; /* Safari */
-  background-color: black;
+  background-color: #2d2d2d;
   @media (min-width: 600px) {
-    &:hover { 
+    &:hover {
       margin-bottom: 3px;
     }
   }
   ${props => props.disabled === true && css`
     cursor: default;
     pointer-events: none;
-    color: grey;
+    background-color: #d2d2d2;
   `}
 `
 
 const StyledPathTypeLabel = styled.span`
   color: green;
   ${props => props.toggleToPathType === 'quiet' && css`
+    color: #6ff7ff;
     &:before {
       content: 'quiet';
-      color: #6ff7ff;
     }`}
   ${props => props.toggleToPathType === 'clean' && css`
+    color: #74ff74;
     &:before {
       content: 'clean';
-      color: #74ff74;
     }`}
+  ${props => props.disabled === true && css`
+    color: white;
+  `}
 `
 
 const odsMatch = (quietPathOd, cleanPathOd) => {
@@ -78,11 +81,11 @@ const TogglePathsButton = (props) => {
   const { cleanPathsAvailable, showingPathsType, quietPathData, cleanPathData } = props
   const actionType = odsMatch(quietPathData.od, cleanPathData.od) ? 'Show' : 'Find'
   const toggleToPathType = showingPathsType === pathTypes.clean ? 'quiet' : 'clean'
-
+  const disabled = !cleanPathsAvailable && showingPathsType === pathTypes.quiet
   return (
-    <Button disabled={!cleanPathsAvailable && showingPathsType === pathTypes.quiet}
+    <Button disabled={disabled}
       onClick={() => getPathToggleFunc(props)}>
-      {actionType} <StyledPathTypeLabel toggleToPathType={toggleToPathType} /> paths
+      {actionType} <StyledPathTypeLabel disabled={disabled} toggleToPathType={toggleToPathType} /> paths
     </Button>
   )
 }
