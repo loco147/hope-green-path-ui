@@ -21,12 +21,22 @@ export const getAqiLabel = (aqi) => {
   return ''
 }
 
-export const getWalkTimeFromDist = (m, withSign = false) => {
-  const timeS = m / walkSpeed
-  const timeMin = timeS / 60
-  const roundedTime = Math.round(timeMin) === 0 ? Math.round(timeMin * 10) / 10 : Math.round(timeMin)
-  if (roundedTime === 0) return ''
-  return withSign === true ? concatSign(roundedTime) : String(roundedTime)
+export const getWalkTimeFromDist = (m, showSeconds = false, withSign = false) => {
+  const timeSecs = m / walkSpeed
+  const roundedSecs = Math.round(timeSecs)
+  const timeMin = timeSecs / 60
+  const roundedMins = Math.round(timeMin)
+  let formattedDuration = ''
+  let unit = 'min'
+  if (roundedMins === 0) {
+    if (showSeconds === true) {
+      unit = 's'
+      formattedDuration = withSign === true ? concatSign(roundedSecs) : String(roundedSecs)
+    } else return ''
+  } else {
+    formattedDuration = withSign === true ? concatSign(roundedMins) : String(roundedMins)
+  }
+  return formattedDuration + ' ' + unit
 }
 
 const concatSign = (number) => {

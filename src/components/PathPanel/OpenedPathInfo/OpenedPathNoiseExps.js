@@ -53,7 +53,7 @@ const ExposureBox = styled.div`
   color: black;
 `
 
-export const OpenedPathNoiseExps = ({ path, pathType }) => {
+export const OpenedPathNoiseExps = ({ path }) => {
   return (
     <StyledOpenedPathNoiseExps>
       <PathPropsRow>
@@ -77,7 +77,7 @@ const DBExposureRow = ({ dB, path }) => {
   return (
     <KeyValueFlex>
       <DBKeyBox color={dBColors[dB]}>{dB}dB</DBKeyBox>
-      <ExposureBox>{utils.getWalkTimeFromDist(dist ? dist : 0)} min </ExposureBox>
+      <ExposureBox>{utils.getWalkTimeFromDist(dist ? dist : 0, true)} </ExposureBox>
     </KeyValueFlex>
   )
 }

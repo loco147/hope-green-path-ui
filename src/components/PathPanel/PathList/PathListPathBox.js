@@ -43,10 +43,12 @@ const PathPropsRow = styled.div`
   width: 96%;
   color: ${props => props.color || '#3c3c3c'};
 `
-
 const QuietPathLengthProps = styled.div`
   margin-left: 2px;
   text-align: center;
+`
+const Sub = styled.sub`
+  font-size: 9px;
 `
 
 const PathListPathBox = ({ path, selected, showingPathsType, handleClick }) => {
@@ -69,7 +71,7 @@ const ShortestPathAqBox = ({ path, selected, handleClick }) => {
       <PathAqiBar aqiPcts={path.properties.aqi_pcts} />
       <PathPropsRow>
         <div>
-          {utils.getWalkTimeFromDist(path.properties.length)} min
+          {utils.getWalkTimeFromDist(path.properties.length)}
         </div>
         <div>
           {utils.getFormattedDistanceString(path.properties.length, false)}
@@ -88,7 +90,7 @@ const ShortestPathNoiseBox = ({ path, selected, handleClick }) => {
       <PathNoisesBar noisePcts={path.properties.noise_pcts} />
       <PathPropsRow>
         <div>
-          {utils.getWalkTimeFromDist(path.properties.length)} min
+          {utils.getWalkTimeFromDist(path.properties.length)}
         </div>
         <div>
           {utils.getFormattedDistanceString(path.properties.length, false)}
@@ -107,10 +109,10 @@ const CleanPathBox = ({ path, selected, handleClick }) => {
       <PathAqiBar aqiPcts={path.properties.aqi_pcts} />
       <PathPropsRow>
         <div>
-          {utils.getWalkTimeFromDist(path.properties.length)} min
-          <sub>
-            {' '}{utils.getWalkTimeFromDist(path.properties.len_diff, true)} min
-          </sub>
+          {utils.getWalkTimeFromDist(path.properties.length)}
+          <Sub>
+            {' '}{utils.getWalkTimeFromDist(path.properties.len_diff, true, true)}
+          </Sub>
         </div>
         <QuietPathLengthProps>
           {utils.getFormattedDistanceString(path.properties.length, false)}
@@ -129,10 +131,10 @@ const QuietPathBox = ({ path, selected, handleClick }) => {
       <PathNoisesBar noisePcts={path.properties.noise_pcts} />
       <PathPropsRow>
         <div>
-          {utils.getWalkTimeFromDist(path.properties.length)} min
-          <sub>
-            {' '}{utils.getWalkTimeFromDist(path.properties.len_diff, true)} min
-          </sub>
+          {utils.getWalkTimeFromDist(path.properties.length)}
+          <Sub>
+            {' '}{utils.getWalkTimeFromDist(path.properties.len_diff, true, true)}
+          </Sub>
         </div>
         <QuietPathLengthProps>
           {utils.getFormattedDistanceString(path.properties.length, false)}

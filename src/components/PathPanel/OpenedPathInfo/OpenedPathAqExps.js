@@ -61,13 +61,13 @@ const AqExposureRow = ({ aqiCl, aqiClExp }) => {
     <StyledAqiExposureRow>
       <AqiClLabelBox aqiCl={aqiCl} />
       <StyledAqiExposureBox>
-        {utils.getWalkTimeFromDist(aqiClExp)} min
+        {utils.getWalkTimeFromDist(aqiClExp, true)}
       </StyledAqiExposureBox>
     </StyledAqiExposureRow>
   )
 }
 
-export const OpenedPathAqExps = ({ path, pathType }) => {
+export const OpenedPathAqExps = ({ path }) => {
   const aqiClExps = path.properties.aqi_cl_exps
   const aqiKeys = Object.keys(aqiClExps)
   const aqiCls = aqiKeys.map(aqi => Number(aqi)).sort()
