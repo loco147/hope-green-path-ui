@@ -123,18 +123,16 @@ export const getLengthLimits = (greenPathFeatures) => {
   return limits
 }
 
-export const getInitialLengthLimit = (lengthLimits) => {
+export const getInitialLengthLimit = (lengthLimits, costCoeffLimit = 20) => {
   // return length limit that filters out paths with cost_coeff higher than 20 as default
-  if (lengthLimits.length > 0) {
-    if (lengthLimits.length > 1) {
-      let prevDl = lengthLimits[0]
-      for (let dL of lengthLimits) {
-        if (dL.cost_coeff >= 20) return prevDl
-        prevDl = dL
-      }
+  if (lengthLimits.length > 1) {
+    let prevDl = lengthLimits[0]
+    for (let dL of lengthLimits) {
+      if (dL.cost_coeff >= costCoeffLimit) return prevDl
+      prevDl = dL
     }
-    return lengthLimits[lengthLimits.length - 1]
-  } else return { limit: 0, count: 0, label: '' }
+  }
+  return lengthLimits[lengthLimits.length - 1]
 }
 
 export const origDestWithinSupportedArea = (origDestFC) => {
