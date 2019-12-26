@@ -25,6 +25,7 @@ export const getWalkTimeFromDist = (m, withSign = false) => {
   const timeS = m / walkSpeed
   const timeMin = timeS / 60
   const roundedTime = Math.round(timeMin) === 0 ? Math.round(timeMin * 10) / 10 : Math.round(timeMin)
+  if (roundedTime === 0) return ''
   return withSign === true ? concatSign(roundedTime) : String(roundedTime)
 }
 
