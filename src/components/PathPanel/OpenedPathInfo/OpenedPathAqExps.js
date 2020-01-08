@@ -61,7 +61,7 @@ const AqExposureRow = ({ aqiCl, aqiClExp }) => {
     <StyledAqiExposureRow>
       <AqiClLabelBox aqiCl={aqiCl} />
       <StyledAqiExposureBox>
-        {utils.getWalkTimeFromDist(aqiClExp, true)}
+        {utils.getDurationStringFromDist(aqiClExp, true)}
       </StyledAqiExposureBox>
     </StyledAqiExposureRow>
   )

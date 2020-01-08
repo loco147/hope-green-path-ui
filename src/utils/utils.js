@@ -21,7 +21,7 @@ export const getAqiLabel = (aqi) => {
   return ''
 }
 
-export const getWalkTimeFromDist = (m, showSeconds = false, withSign = false) => {
+export const getDurationStringFromDist = (m, showSeconds = false, withSign = false) => {
   const timeSecs = m / walkSpeed
   const roundedSecs = Math.round(timeSecs)
   const timeMin = timeSecs / 60

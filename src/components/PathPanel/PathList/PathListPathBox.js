@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { utils } from '../../../utils/index'
 import { PathNoisesBar } from './../PathNoisesBar'
 import { PathAqiBar } from './../PathAqiBar'
-import { pathTypes, statTypes } from '../../../constants'
+import { pathTypes, statTypes, walkSpeed } from '../../../constants'
 
 const StyledPathListPathBox = styled.div.attrs(props => ({
   style:
@@ -71,7 +71,7 @@ const ShortestPathAqBox = ({ path, selected, handleClick }) => {
       <PathAqiBar aqiPcts={path.properties.aqi_pcts} />
       <PathPropsRow>
         <div>
-          {utils.getWalkTimeFromDist(path.properties.length)}
+          {utils.getDurationStringFromDist(path.properties.length)}
         </div>
         <div>
           {utils.getFormattedDistanceString(path.properties.length, false)}
@@ -90,7 +90,7 @@ const ShortestPathNoiseBox = ({ path, selected, handleClick }) => {
       <PathNoisesBar noisePcts={path.properties.noise_pcts} />
       <PathPropsRow>
         <div>
-          {utils.getWalkTimeFromDist(path.properties.length)}
+          {utils.getDurationStringFromDist(path.properties.length)}
         </div>
         <div>
           {utils.getFormattedDistanceString(path.properties.length, false)}
@@ -109,9 +109,9 @@ const CleanPathBox = ({ path, selected, handleClick }) => {
       <PathAqiBar aqiPcts={path.properties.aqi_pcts} />
       <PathPropsRow>
         <div>
-          {utils.getWalkTimeFromDist(path.properties.length)}
+          {utils.getDurationStringFromDist(path.properties.length)}
           <Sub>
-            {' '}{utils.getWalkTimeFromDist(path.properties.len_diff, true, true)}
+            {' '}{getFormattedDurationDiff(path.properties)}
           </Sub>
         </div>
         <QuietPathLengthProps>
@@ -131,9 +131,9 @@ const QuietPathBox = ({ path, selected, handleClick }) => {
       <PathNoisesBar noisePcts={path.properties.noise_pcts} />
       <PathPropsRow>
         <div>
-          {utils.getWalkTimeFromDist(path.properties.length)}
+          {utils.getDurationStringFromDist(path.properties.length)}
           <Sub>
-            {' '}{utils.getWalkTimeFromDist(path.properties.len_diff, true, true)}
+            {' '}{getFormattedDurationDiff(path.properties)}
           </Sub>
         </div>
         <QuietPathLengthProps>
@@ -145,6 +145,19 @@ const QuietPathBox = ({ path, selected, handleClick }) => {
       </PathPropsRow>
     </StyledPathListPathBox>
   )
+}
+
+const getFormattedDurationDiff = (pathProps) => {
+  const sPathLength = pathProps.length - pathProps.len_diff
+  const sPathDurationMins = Math.round((sPathLength / walkSpeed) / 60)
+  const cleanPathDurationMins = Math.round((pathProps.length / walkSpeed) / 60)
+  const durationDiffMins = cleanPathDurationMins - sPathDurationMins
+  if (durationDiffMins === 0) { return '' }
+  else if (durationDiffMins > 0) {
+    return '+' + String(durationDiffMins) + ' min'
+  } else {
+    return String(durationDiffMins) + ' min'
+  }
 }
 
 export default PathListPathBox
