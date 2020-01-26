@@ -68,7 +68,7 @@ export const ShortestPathBox = ({ path, selected, showingStatsType, handleClick 
 const ShortestPathAqBox = ({ path, selected, handleClick }) => {
   return (
     <StyledPathListPathBox selected={selected} onClick={handleClick}>
-      <PathAqiBar aqiPcts={path.properties.aqi_pcts} />
+      {!path.properties.missing_aqi && <PathAqiBar aqiPcts={path.properties.aqi_pcts} />}
       <PathPropsRow>
         <div>
           {utils.getDurationStringFromDist(path.properties.length)}
@@ -76,9 +76,11 @@ const ShortestPathAqBox = ({ path, selected, handleClick }) => {
         <div>
           {utils.getFormattedDistanceString(path.properties.length, false)}
         </div>
-        <div>
-          {utils.getAqiLabel(path.properties.aqi_m)} air quality
-        </div>
+        {!path.properties.missing_aqi &&
+          <div>
+            {utils.getAqiLabel(path.properties.aqi_m)} air quality
+          </div>}
+        {path.properties.missing_aqi && <div>No AQ data available</div>}
       </PathPropsRow>
     </StyledPathListPathBox>
   )
@@ -106,7 +108,7 @@ const ShortestPathNoiseBox = ({ path, selected, handleClick }) => {
 const CleanPathBox = ({ path, selected, handleClick }) => {
   return (
     <StyledPathListPathBox selected={selected} onClick={handleClick}>
-      <PathAqiBar aqiPcts={path.properties.aqi_pcts} />
+      {!path.properties.missing_aqi && <PathAqiBar aqiPcts={path.properties.aqi_pcts} />}
       <PathPropsRow>
         <div>
           {utils.getDurationStringFromDist(path.properties.length)}
@@ -117,9 +119,10 @@ const CleanPathBox = ({ path, selected, handleClick }) => {
         <QuietPathLengthProps>
           {utils.getFormattedDistanceString(path.properties.length, false)}
         </QuietPathLengthProps>
-        <div>
-          {utils.getFormattedAqiExpDiffRatio(path.properties.aqc_diff_rat) + ' % air pollution'}
-        </div>
+        {!path.properties.missing_aqi &&
+          <div>
+            {utils.getFormattedAqiExpDiffRatio(path.properties.aqc_diff_rat) + ' % air pollution'}
+          </div>}
       </PathPropsRow>
     </StyledPathListPathBox>
   )

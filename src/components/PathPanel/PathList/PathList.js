@@ -48,6 +48,15 @@ class PathList extends React.Component {
     }
   }
 
+  openPathDisabled = (showingPathsType, pathProps) => {
+    if (showingPathsType === pathTypes.clean) {
+      return pathProps.missing_aqi
+    }
+    if (showingPathsType === pathTypes.quiet) {
+      return pathProps.missing_noises
+    }
+  }
+
   render() {
     const { paths, setSelectedPath, setOpenedPath } = this.props
     const { showingPathsType, showingStatsType, shortPathFC, cleanPathFC, quietPathFC, selPathFC, lengthLimit } = paths
@@ -65,8 +74,8 @@ class PathList extends React.Component {
     return (
       <div>
         {showingPathsType === pathTypes.quiet
-         ? <DbColorLegendBar />
-         : null
+          ? <DbColorLegendBar />
+          : null
         }
         <PathRowFlex ref={this.state.pathRefs[shortPath.properties.id]}>
           <ShortestPathBox
@@ -76,6 +85,7 @@ class PathList extends React.Component {
             showingStatsType={showingStatsType}
             selected={shortPath.properties.id === selPathId} />
           <OpenPathBox
+            disabled={this.openPathDisabled(showingPathsType, shortPath.properties)}
             handleClick={() => setOpenedPath(shortPath)} />
         </PathRowFlex>
         {greenPaths.map((path) => (
@@ -87,6 +97,7 @@ class PathList extends React.Component {
               handleClick={() => setSelectedPath(path.properties.id)}
               selected={path.properties.id === selPathId} />
             <OpenPathBox
+              disabled={this.openPathDisabled(showingPathsType, shortPath.properties)}
               handleClick={() => setOpenedPath(path)} />
           </PathRowFlex>
         ))}

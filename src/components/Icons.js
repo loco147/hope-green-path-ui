@@ -3,8 +3,6 @@ import styled, { css } from 'styled-components'
 import { FiFilter } from 'react-icons/fi'
 import { IoIosArrowUp } from 'react-icons/io'
 import { IoIosArrowDown } from 'react-icons/io'
-import { IoIosArrowForward } from 'react-icons/io'
-import { IoIosArrowBack } from 'react-icons/io'
 import { IoIosClose } from 'react-icons/io'
 import { IoMdMenu } from 'react-icons/io'
 
@@ -24,14 +22,6 @@ const ArrowUp = styled(IoIosArrowUp)`
 const ArrowDown = styled(IoIosArrowDown)`
   ${iconStyle}
   font-size: 43px;
-`
-const ArrowForward = styled(IoIosArrowForward)`
-  ${iconStyle}
-  font-size: 31px;
-`
-const ArrowBack = styled(IoIosArrowBack)`
-  ${iconStyle}
-  font-size: 31px;
 `
 const Close = styled(IoIosClose)`
   ${iconStyle}
@@ -63,10 +53,6 @@ export const FilterButton = ({ onClick }) => <IconButton padding='5px' onClick={
 export const ArrowUpButton = ({ onClick }) => <IconButton hoverJump onClick={onClick}> <ArrowUp /></IconButton>
 
 export const ArrowDownButton = ({ onClick }) => <IconButton hoverJump onClick={onClick}> <ArrowDown /></IconButton>
-
-export const ArrowForwardButton = ({ onClick }) => <IconButton onClick={onClick} leftMargin={'-3px'}> <ArrowForward /> </IconButton>
-
-export const ArrowBackButton = ({ onClick }) => <IconButton onClick={onClick} leftMargin={'-6px'}> <ArrowBack /></IconButton>
 
 export const CloseButton = ({ onClick, size }) => <IconButton onClick={onClick}> <Close size={size} /></IconButton>
 
