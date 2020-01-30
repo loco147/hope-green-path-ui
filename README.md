@@ -1,6 +1,6 @@
 # Green path UI
 
-A user interface for [a green path route optimization application](https://github.com/DigitalGeographyLab/hope-green-path-server/) being developed for [Urban Innovative Action](https://www.uia-initiative.eu/en), [HOPE](https://www.uia-initiative.eu/en/uia-cities/helsinki) – Healthy Outdoor Premises for Everyone.
+A user interface for [a green path route optimization application](https://github.com/DigitalGeographyLab/hope-green-path-server/) being developed for [HOPE](https://ilmanlaatu.eu/) – Healthy Outdoor Premises for Everyone.
 
 Its goal is to inform people on clean routes for walking and cycling in Helsinki region. It utilizes Air Quality Index (AQI) from the Enfuser model (by the Finnish Meteorological Institute) and modelled traffic noise data. AQI is based on hourly updated and combined information on NO2, PM2.5, PM10 and O3.
 

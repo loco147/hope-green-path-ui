@@ -30,7 +30,7 @@ const StyledHopeLink = styled.a`
 const HopeLink = () => {
   return (
     <Container>
-      <StyledHopeLink href='https://www.uia-initiative.eu/en/uia-cities/helsinki'
+      <StyledHopeLink href='https://ilmanlaatu.eu/'
         target='_blank' rel='noopener noreferrer'>
         HOPE/UIA</StyledHopeLink>
     </Container>
