@@ -40,7 +40,7 @@ const WhiteBox = styled.div`
   pointer-events: auto;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.22), 0 6px 20px 0 rgba(0,0,0,0.14);
 `
-const Instructions = styled.div`
+const InfoWrapper = styled.div`
   max-height: 68vh;
   overflow: auto;
 `
@@ -71,8 +71,7 @@ const Link = styled.a`
   color: black;
 `
 
-const AcceptCookieText = ({ visitedBefore }) => {
-  if (visitedBefore) return null
+const AcceptCookieText = () => {
   return (
     <div>
       <P>
@@ -93,41 +92,46 @@ const WelcomeInfo = (props) => {
     <InfoContainer>
       <FlexDiv>
         <WhiteBox>
-          <Instructions>
+          <InfoWrapper>
             <Title>Welcome to green paths!</Title>
-            <AcceptCookieText visitedBefore={props.visitedBefore} />
-            <SubHeading> Why quiet paths? </SubHeading>
+            {!props.visitedBefore && <AcceptCookieText />}
+            <SubHeading>Why?</SubHeading>
             <P>
-              If they are just slightly longer, why not? Numerous studies have shown that exposure to traffic noise is likely to cause
-              negative health effects such as increased stress levels and blood pressure.
+              While clean air, quietness and greenery bring health benefits, then air pollution and excess noise may cause physical and mental health problems such as respiratory infections, cardiovascular disease or stress.
+              Fortunately, a cleaner, quieter and greener (= healthier) route may be just slightly longer than the shortest one.
+            </P>
+            <SubHeading>How?</SubHeading>
+            <P>
+              This tool guides you to take pleasant walks to your destinations in Helsinki.
+              You may compare routes from the shortest to the cleanest or quietest and find your own optimal way.
+              The more you value clean and pleasant urban environment, the longer routes you may be ready to take.
+            </P>
+            <SubHeading>What?</SubHeading>
+            <P>
+              Hourly air quality index (AQI) is derived from the <Link href='https://en.ilmatieteenlaitos.fi/environmental-information-fusion-service' target='_blank' rel='noopener noreferrer'>
+                FMI-ENFUSER high-resolution modelling system</Link>.
+            </P>
+            <P>
+              <Link href='https://hri.fi/data/en_GB/dataset/helsingin-kaupungin-meluselvitys-2017' target='_blank' rel='noopener noreferrer'>
+                Traffic noise data</Link>{' '} is based on an assessment conducted by the city of Helsinki (CC BY 4.0). It is a modelled GIS data representing typical daytime traffic noise levels.
+            </P>
+            <P>
+              Street network data is downloaded from <Link href='https://www.openstreetmap.org/copyright' target='_blank' rel='noopener noreferrer'>
+                OpenStreetMap</Link>{' '}(CC-BY-SA).
+            </P>
+            <SubHeading>Who?</SubHeading>
+            <P>
+              Green path routing tool is developed by the <Link href='https://www.helsinki.fi/en/researchgroups/digital-geography-lab' target='_blank' rel='noopener noreferrer'>
+                Digital Geography Lab</Link>, University of Helsinki, within the <Link href='https://ilmanlaatu.eu/briefly-in-english/' target='_blank' rel='noopener noreferrer'>
+                Urban Innovative Action: HOPE</Link>{' '} – Healthy Outdoor Premises for Everyone.
               </P>
-            <P>
-              Moreover, traffic noise usually works as a
-              proxy for other negative effects of traffic, including air pollution and unpleasant infrastructures.
-            </P>
-            <SubHeading> How? </SubHeading>
-            <P>
-              The app utilizes a green path optimization method developed as part of a{' '}
-              <Link href='https://github.com/hellej/quiet-paths-msc' target='_blank' rel='noopener noreferrer'>master's thesis</Link>. <span role="img" aria-label='surfer'>&#129299;</span>
-            </P>
-            <P>
-              <Link
-                href='https://hri.fi/data/en_GB/dataset/helsingin-kaupungin-meluselvitys-2017'
-                target='_blank' rel='noopener noreferrer'>Traffic noise data</Link>{' '} is based on an assessment conducted by the city of Helsinki (CC BY 4.0).
-                It is a modelled GIS data for typical daytime traffic noise levels. Thus, the quiet paths are most applicable at times when
-                traffic flows are near average.
-            </P>
-            <P>
-              Street network data is downloaded from <Link href='https://www.openstreetmap.org/copyright' target='_blank' rel='noopener noreferrer'>OpenStreetMap</Link>{' '}
-              (CC BY-SA).
-            </P>
             <SubHeading> Code </SubHeading>
             <P>
               <Link href='https://github.com/DigitalGeographyLab/hope-green-path-ui' target='_blank' rel='noopener noreferrer'>DigitalGeographyLab/hope-green-path-ui</Link>{' '}
-              <br></br>
+              <br />
               <Link href='https://github.com/DigitalGeographyLab/hope-green-path-server' target='_blank' rel='noopener noreferrer'>DigitalGeographyLab/hope-green-path-server</Link>{' '}
             </P>
-          </Instructions>
+          </InfoWrapper>
           <ButtonDiv>
             <Button small green onClick={() => props.hideInfo(props.showingPaths)}>OK</Button>
           </ButtonDiv>
