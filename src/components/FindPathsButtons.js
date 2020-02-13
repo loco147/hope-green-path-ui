@@ -59,7 +59,7 @@ const FindPathsButtons = (props) => {
     <OuterFlex>
       {cleanPathsAvailable
         ? <Button
-          onClick={() => getSetCleanPaths(originCoords, destCoords, routingId)}> Find clean paths
+          onClick={() => getSetCleanPaths(originCoords, destCoords, routingId)}> Find fresh air paths
           <Tooltip>by real-time air quality</Tooltip>
         </Button>
         : null

@@ -97,14 +97,14 @@ const WelcomeInfo = (props) => {
             {!props.visitedBefore && <AcceptCookieText />}
             <SubHeading>Why?</SubHeading>
             <P>
-              While clean air, quietness and greenery bring health benefits, then air pollution and excess noise may cause physical and mental health problems such as respiratory infections, cardiovascular disease or stress.
-              Fortunately, a cleaner, quieter and greener (= healthier) route may be just slightly longer than the shortest one.
+              While fresh air, quietness and greenery bring health benefits, then air pollution and excess noise may cause physical and mental health problems such as respiratory infections, cardiovascular disease or stress.
+              Fortunately, a more peaceful, less polluted and greener (= healthier) route may be just slightly longer than the shortest one.
             </P>
             <SubHeading>How?</SubHeading>
             <P>
               This tool guides you to take pleasant walks to your destinations in Helsinki.
-              You may compare routes from the shortest to the cleanest or quietest and find your own optimal way.
-              The more you value clean and pleasant urban environment, the longer routes you may be ready to take.
+              You may compare routes from the shortest to the least polluted or quietest and find your own optimal way.
+              The more you value peaceful and pleasant urban environment, the longer routes you may be ready to take.
             </P>
             <SubHeading>What?</SubHeading>
             <P>

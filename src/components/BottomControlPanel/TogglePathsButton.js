@@ -36,15 +36,15 @@ const Button = styled.div`
 
 const StyledPathTypeLabel = styled.span`
   color: green;
-  ${props => props.toggleToPathType === 'quiet' && css`
+  ${props => props.toggleToPathType === pathTypes.quiet && css`
     color: #6ff7ff;
     &:before {
       content: 'quiet';
     }`}
-  ${props => props.toggleToPathType === 'clean' && css`
+  ${props => props.toggleToPathType === pathTypes.clean && css`
     color: #74ff74;
     &:before {
-      content: 'clean';
+      content: 'fresh air';
     }`}
   ${props => props.disabled === true && css`
     color: white;
@@ -80,7 +80,7 @@ const getPathToggleFunc = (props) => {
 const TogglePathsButton = (props) => {
   const { cleanPathsAvailable, showingPathsType, quietPathData, cleanPathData } = props
   const actionType = odsMatch(quietPathData.od, cleanPathData.od) ? 'Show' : 'Find'
-  const toggleToPathType = showingPathsType === pathTypes.clean ? 'quiet' : 'clean'
+  const toggleToPathType = showingPathsType === pathTypes.clean ? pathTypes.quiet : pathTypes.clean
   const disabled = !cleanPathsAvailable && showingPathsType === pathTypes.quiet
   return (
     <Button disabled={disabled}
