@@ -62,6 +62,16 @@ const ResetLocButton = styled.div`
   border-radius: 7px;
   margin: -10px -9px -10px -1px;
 `
+const StyledDisclaimer = styled.div`
+  color: black;
+  padding: 2px 6px;
+  font-size: 13px;
+  font-weight: 500;
+  text-align: center;
+  @media (min-width: 550px) {
+    font-size: 12px;
+  }
+`
 
 const roundCoords = (coord) => {
   return Math.round(coord * 10000) / 10000
@@ -85,6 +95,7 @@ const OrigDestPanel = (props) => {
   const destFeats = origDestFC.features.filter(feat => feat.properties.type === 'dest')
   const orig = origFeats.length > 0 ? origFeats[0] : null
   const dest = destFeats.length > 0 ? destFeats[0] : null
+  const showDisclaimer = !orig && !dest
 
   return (
     <Container hide={waitingPaths || showingPaths}>
@@ -116,6 +127,9 @@ const OrigDestPanel = (props) => {
               : null}
           </LocationInfo>
         </FlexRow>
+        {showDisclaimer && <StyledDisclaimer>
+          The app and its real-time AQ data source are still under active development and hence not guaranteed to work at all times.
+          </StyledDisclaimer>}
       </Wrapper>
     </Container>
   )

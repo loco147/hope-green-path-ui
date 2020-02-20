@@ -16,7 +16,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: flex-end;
   ${props => props.topOffset === true && css`
-    top: 102px;
+    top: 162px;
   `}
 `
 const ShowInfoButton = styled.div`
