@@ -67,6 +67,9 @@ const ButtonDiv = styled.div`
   justify-content: center;
   padding: 9px 0 5px 0px;
 `
+const Green = styled.span`
+  color: #00d000;
+`
 const Link = styled.a`
   color: black;
 `
@@ -93,8 +96,11 @@ const WelcomeInfo = (props) => {
       <FlexDiv>
         <WhiteBox>
           <InfoWrapper>
-            <Title>Welcome to green paths!</Title>
+            <Title>Welcome to green paths <Green>beta</Green>!</Title>
             {!props.visitedBefore && <AcceptCookieText />}
+            <P>
+              The app is still under active development and hence not guaranteed to work at all times.
+            </P>
             <SubHeading>Why?</SubHeading>
             <P>
               While fresh air, quietness and greenery bring health benefits, then air pollution and excess noise may cause physical and mental health problems such as respiratory infections, cardiovascular disease or stress.
