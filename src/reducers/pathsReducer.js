@@ -286,6 +286,9 @@ export const setQuietPaths = (origCoords, destCoords, routingId, pathData) => {
     } else if (quietPaths.length > 0) {
       dispatch({ type: 'SET_SELECTED_PATH', selPathId: 'short', routingId })
     }
+    if (quietPaths.length === 0) {
+      dispatch(showNotification('No alternative quiet paths found', 'info', 5))
+    }
   }
 }
 
@@ -331,6 +334,9 @@ export const setCleanPaths = (origCoords, destCoords, routingId, pathData) => {
       dispatch({ type: 'SET_SELECTED_PATH', selPathId: bestPath.properties.id, routingId })
     } else if (cleanPaths.length > 0) {
       dispatch({ type: 'SET_SELECTED_PATH', selPathId: 'short', routingId })
+    }
+    if (cleanPaths.length === 0) {
+      dispatch(showNotification('No alternative fresh air paths found due to little or no variation in the real-time air quality data', 'info', 10))
     }
   }
 }
