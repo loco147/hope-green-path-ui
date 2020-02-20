@@ -3,6 +3,9 @@ import { connect } from 'react-redux'
 import styled from 'styled-components'
 import { Button } from '../../components/Button'
 import { showInfo, hideInfo } from './../../reducers/menuReducer'
+import HopeLogo from '../Images/Hope_black_url.png'
+import ERDF from '../Images/ERDF.png'
+import HYLogo from '../Images/Helsingin_yliopisto.png'
 
 const InfoContainer = styled.div`
   position: absolute;
@@ -73,6 +76,23 @@ const Green = styled.span`
 const Link = styled.a`
   color: black;
 `
+const LogoFlex = styled.div`
+  display: flex;
+  margin: 12px 0px 4px 0px;
+  align-items: center;
+  justify-content: start;
+`
+const LogoWrapper = styled.div`
+  margin: 0 5px 0 5px;
+`
+const SmallText = styled.div`
+  font-size: 12px;
+`
+const StyledLogoLink = styled.a`
+  margin: 0 5px 0 5px;
+  pointer-events: auto;
+  cursor: pointer;
+`
 
 const AcceptCookieText = () => {
   return (
@@ -136,6 +156,20 @@ const WelcomeInfo = (props) => {
               <Link href='https://github.com/DigitalGeographyLab/hope-green-path-ui' target='_blank' rel='noopener noreferrer'>DigitalGeographyLab/hope-green-path-ui</Link>{' '}
               <br />
               <Link href='https://github.com/DigitalGeographyLab/hope-green-path-server' target='_blank' rel='noopener noreferrer'>DigitalGeographyLab/hope-green-path-server</Link>{' '}
+            </P>
+            <P>
+              <LogoFlex>
+                <LogoWrapper><img src={ERDF} width="65" height='60' alt='EULogo' /></LogoWrapper>
+                <StyledLogoLink href='https://ilmanlaatu.eu/' target='_blank' rel='noopener noreferrer'>
+                  <img src={HopeLogo} width="116" height="30" alt='HopeLogo' />
+                </StyledLogoLink>
+                <StyledLogoLink href='https://www.helsinki.fi/en/researchgroups/digital-geography-lab' target='_blank' rel='noopener noreferrer'>
+                  <img src={HYLogo} width='54' height='58' alt='HYLogo' />
+                </StyledLogoLink>
+              </LogoFlex>
+              <SmallText>
+                HOPE project is co-financed by the European Regional Development Fund through the Urban Innovative Actions Initiative.
+              </SmallText>
             </P>
           </InfoWrapper>
           <ButtonDiv>
