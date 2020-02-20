@@ -64,12 +64,18 @@ const ResetLocButton = styled.div`
 `
 const StyledDisclaimer = styled.div`
   color: black;
-  padding: 2px 6px;
-  font-size: 13px;
+  padding: 3px 6px;
+  margin 0 5px 0 5px;
+  font-size: 12px;
   font-weight: 500;
   text-align: center;
-  @media (min-width: 550px) {
-    font-size: 12px;
+  @media (max-width: 550px) {
+    font-size: 11px;
+    font-weight: 450;
+  }
+  @media (min-width: 980px) {
+    width 345px;
+    border: none;
   }
 `
 
@@ -100,6 +106,9 @@ const OrigDestPanel = (props) => {
   return (
     <Container hide={waitingPaths || showingPaths}>
       <Wrapper>
+        {showDisclaimer && <StyledDisclaimer>
+          The app and its real-time air quality data source are still under active development and hence not guaranteed to work at all times.
+          </StyledDisclaimer>}
         <FlexRow>
           <LocationType>From:</LocationType>
           {orig
@@ -127,9 +136,6 @@ const OrigDestPanel = (props) => {
               : null}
           </LocationInfo>
         </FlexRow>
-        {showDisclaimer && <StyledDisclaimer>
-          The app and its real-time AQ data source are still under active development and hence not guaranteed to work at all times.
-          </StyledDisclaimer>}
       </Wrapper>
     </Container>
   )

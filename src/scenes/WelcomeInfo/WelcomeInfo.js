@@ -119,7 +119,7 @@ const WelcomeInfo = (props) => {
             <Title>Welcome to green paths <Green>beta</Green>!</Title>
             {!props.visitedBefore && <AcceptCookieText />}
             <P>
-              The app and its real-time AQ data source are still under active development and hence not guaranteed to work at all times.            </P>
+              The app and its real-time air quality data source are still under active development and hence not guaranteed to work at all times.            </P>
             <SubHeading>Why?</SubHeading>
             <P>
               While fresh air, quietness and greenery bring health benefits, then air pollution and excess noise may cause physical and mental health problems such as respiratory infections, cardiovascular disease or stress.
