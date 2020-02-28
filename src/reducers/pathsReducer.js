@@ -225,7 +225,11 @@ export const testCleanPathServiceStatus = () => {
     try {
       const aqiStatus = await paths.getCleanPathServiceStatus()
       console.log('received clean path service status:', aqiStatus)
+      console.log('real-time aqi available?', aqiStatus.b_updated)
       dispatch({ type: 'SET_AQI_STATUS', b_available: aqiStatus.b_updated })
+      if (aqiStatus.b_updated === false) {
+        dispatch(showNotification('Unfortunately, no real-time air quality data is available at the moment', 'error', 10))
+      }
     } catch (error) {
       dispatch({ type: 'SET_AQI_STATUS', b_available: false })
       console.log('error in retrieving clean path service status:', error)

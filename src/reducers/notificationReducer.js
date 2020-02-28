@@ -3,7 +3,7 @@ const initialNotification = {
     text: null,
     look: null,
 }
-let notifTimeout
+let rmNotifTimeout
 
 const notificationReducer = (store = initialNotification, action) => {
 
@@ -41,19 +41,41 @@ const notificationReducer = (store = initialNotification, action) => {
     }
 }
 
-export const showNotification = (text, look, notiftime) => {
+export const showNotification = (text, look, notifTime) => {
     return async (dispatch) => {
-        dispatch(rmNotification())
-        await new Promise(resolve => notifTimeout = setTimeout(resolve, 120))
+        if (rmNotifTimeout) {
+            // wait for the current notification to get removed before showing the new one
+            clearTimeout(rmNotifTimeout)
+            rmNotifTimeout = null
+            await new Promise(resolve => {
+                rmNotifTimeout = setTimeout(() => {
+                    dispatch(rmNotification())
+                    resolve()
+                }, 4000)
+            })
+            await new Promise(resolve => {
+                setTimeout(() => {
+                    dispatch(rmNotification())
+                    resolve()
+                }, 100)
+            })
+        }
+
+        // show new notification after removing the old one
         dispatch({ type: 'SHOWNOTIF', text, look })
-        clearTimeout(notifTimeout)
-        await new Promise(resolve => notifTimeout = setTimeout(resolve, notiftime * 1000))
-        dispatch(rmNotification())
+
+        await new Promise(resolve => {
+            rmNotifTimeout = setTimeout(() => {
+                dispatch(rmNotification())
+                resolve()
+            }, notifTime * 1000)
+        })
     }
 }
 
 export const rmNotification = () => {
-    clearTimeout(notifTimeout)
+    clearTimeout(rmNotifTimeout)
+    rmNotifTimeout = null
     return ({ type: 'RMNOTIF' })
 }
 
