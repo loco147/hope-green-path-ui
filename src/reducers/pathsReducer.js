@@ -328,7 +328,7 @@ export const setCleanPaths = (origCoords, destCoords, routingId, pathData) => {
     const shortPath = pathFeats.filter(feat => feat.properties.type === 'short')
     const cleanPaths = pathFeats.filter(feat => feat.properties.type === 'clean' && feat.properties.len_diff !== 0)
     const lengthLimits = utils.getLengthLimits(pathFeats)
-    const initialLengthLimit = utils.getInitialLengthLimit(lengthLimits, 30)
+    const initialLengthLimit = lengthLimits[lengthLimits.length - 1]
     dispatch({ type: 'SET_LENGTH_LIMITS', lengthLimits, initialLengthLimit, routingId })
     dispatch({ type: 'SET_SHORTEST_PATH', shortPath, routingId })
     dispatch({ type: 'SET_CLEAN_PATHS', cleanPaths: cleanPaths, routingId })
