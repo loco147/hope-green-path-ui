@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { analytics } from './../firebase/firebase'
 
 let baseurl = process.env.REACT_APP_QP_URL
 
@@ -29,7 +30,11 @@ export const getQuietPaths = async (originCoords, destinationCoords) => {
     const queryUrl = baseurl.concat('quietpaths/', coordString)
     console.log('Querying quiet paths:', queryUrl)
     const response = await axios.get(queryUrl)
-    if (response.data.error) throw response.data.error
+    if (response.data.error) {
+        analytics.logEvent('routing_error_quiet_paths')
+        throw response.data.error
+    }
+    analytics.logEvent('routed_quiet_paths')
     return response.data
 }
 
@@ -38,6 +43,10 @@ export const getCleanPaths = async (originCoords, destinationCoords) => {
     const queryUrl = baseurl.concat('cleanpaths/', coordString)
     console.log('Querying quiet paths:', queryUrl)
     const response = await axios.get(queryUrl)
-    if (response.data.error) throw response.data.error
+    if (response.data.error) {
+        analytics.logEvent('routing_error_clean_paths')
+        throw response.data.error
+    }
+    analytics.logEvent('routed_clean_paths')
     return response.data
 }
