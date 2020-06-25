@@ -1,5 +1,5 @@
 import { turf } from './index'
-import helPoly from './../helPoly.json'
+import hmaPoly from './../HMA.json'
 import { aqiLabels, walkSpeed } from './../constants'
 
 export const getNoiseIndexLabel = (ni) => {
@@ -148,7 +148,7 @@ export const getInitialLengthLimit = (lengthLimits, costCoeffLimit = 20) => {
 export const origDestWithinSupportedArea = (origDestFC) => {
   const origin = origDestFC.features.filter(feat => feat.properties.type === 'orig')
   const dest = origDestFC.features.filter(feat => feat.properties.type === 'dest')
-  const extentFeat = helPoly.features[0]
+  const extentFeat = hmaPoly.features[0]
   if (origin.length > 0 && !turf.within(origin[0], extentFeat)) {
     return 'Origin is outside the supported area'
   }
