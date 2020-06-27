@@ -11,9 +11,6 @@ const notificationReducer = (store = initialNotification, action) => {
         case 'SHOWNOTIF':
             return { text: action.text, look: action.look }
 
-        case 'ROUTING_STARTED':
-            return { text: 'Calculating routes...' }
-
         case 'WAIT_FOR_USER_LOC_ORIGIN':
             return { text: 'Locating...' }
 
@@ -25,12 +22,6 @@ const notificationReducer = (store = initialNotification, action) => {
         case 'SET_POPUP': {
             if (store.text && store.text.includes('Click on the map')) return initialNotification
             return store
-        }
-        // cancel ongoing routing if new origin or destination is set
-        case 'SET_ORIGIN':
-        case 'SET_TARGET': {
-            if (store.text === 'Calculating routes...') return initialNotification
-            else return store
         }
         case 'SET_SHORTEST_PATH':
         case 'RMNOTIF':

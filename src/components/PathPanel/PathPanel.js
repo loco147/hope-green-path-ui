@@ -6,6 +6,7 @@ import { setLengthLimit } from './../../reducers/pathsReducer'
 import { showPathList } from './../../reducers/menuReducer'
 import MaxLengthFilterSelector from './MaxLengthFilterSelector'
 import PathInfoPanel from './PathInfoPanel'
+import LoadAnimation from './LoadAnimation/LoadAnimation'
 
 const PathPanelContainer = styled.div`
   margin: 0px;
@@ -31,7 +32,15 @@ const PathPanelContainer = styled.div`
 const PathPanel = (props) => {
   const { paths, pathPanelVisible, pathPanelContent } = props
   const { setLengthLimit, showPathList } = props
-  const { showingPaths, openedPath, lengthLimit, lengthLimits } = paths
+  const { waitingPaths, showingPaths, openedPath, lengthLimit, lengthLimits } = paths
+
+  if (waitingPaths) {
+    return (
+      <PathPanelContainer>
+        <LoadAnimation />
+      </PathPanelContainer>
+    )
+  }
 
   if (!showingPaths || !pathPanelVisible) return null
 
