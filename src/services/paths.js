@@ -50,3 +50,10 @@ export const getCleanPaths = async (originCoords, destinationCoords) => {
     analytics.logEvent('routed_clean_paths')
     return response.data
 }
+
+export const debugNearestEdgeAttrs = async (lngLat) => {
+    const coordString = String(lngLat.lat).concat(',',String(lngLat.lng))
+    const queryUrl = baseurl.concat('edge-attrs-near-point/', coordString)
+    const response = await axios.get(queryUrl)
+    console.log('nearest edge at', lngLat, response.data)
+}

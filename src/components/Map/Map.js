@@ -2,6 +2,7 @@ import React from 'react'
 import MapboxGL from 'mapbox-gl/dist/mapbox-gl.js'
 import { connect } from 'react-redux'
 import { initializeMap, updateCamera } from './../../reducers/mapReducer'
+import { debugNearestEdgeAttrs } from '../../services/paths'
 import { unsetSelectedPath } from './../../reducers/pathsReducer'
 import { initialMapCenter, initialMapCenterProd, BASEMAPS } from './../../constants'
 import { utils } from './../../utils/index'
@@ -60,6 +61,9 @@ class Map extends React.Component {
     })
 
     this.map.on('click', (e) => {
+      if (process.env.NODE_ENV !== 'production') {
+        debugNearestEdgeAttrs(e.lngLat)
+      }
       const features = utils.getLayersFeaturesAroundClickE(['pathsGreen', 'shortestPath'], e, clickTol, this.map)
       if (features.length === 0) {
         this.props.unsetSelectedPath()
