@@ -15,12 +15,18 @@ const notificationReducer = (store = initialNotification, action) => {
             return { text: 'Locating...' }
 
         case 'UPDATE_USER_LOCATION': {
-            if (store.text === 'Locating...') return initialNotification
+            if (store.text === 'Locating...') {
+                rmNotification()
+                return initialNotification
+            }
             else return store
         }
-        // hide initial tooltip / notification (on how to set the destination) if popup is opened
+        // hide tooltip on how to set the destination when popup is opened
         case 'SET_POPUP': {
-            if (store.text && store.text.includes('Click on the map')) return initialNotification
+            if (store.text && store.text.includes('Click on the map')) {
+                rmNotification()
+                return initialNotification
+            }
             return store
         }
         case 'SET_SHORTEST_PATH':
@@ -42,13 +48,7 @@ export const showNotification = (text, look, notifTime) => {
                 rmNotifTimeout = setTimeout(() => {
                     dispatch(rmNotification())
                     resolve()
-                }, 4000)
-            })
-            await new Promise(resolve => {
-                setTimeout(() => {
-                    dispatch(rmNotification())
-                    resolve()
-                }, 100)
+                }, 1500)
             })
         }
 
@@ -64,7 +64,7 @@ export const showNotification = (text, look, notifTime) => {
     }
 }
 
-export const rmNotification = () => {
+const rmNotification = () => {
     clearTimeout(rmNotifTimeout)
     rmNotifTimeout = null
     return ({ type: 'RMNOTIF' })

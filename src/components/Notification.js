@@ -9,23 +9,25 @@ const OuterFlex = styled.div`
   align-items: center;
 `
 const StyledNotificationDiv = styled.div`
-  margin: 5px 6px;
-  padding: 4px 9px;
+  padding: 7px 13px;
   border-radius: 5px;
-  width: max-content;
+  margin: 0;
+  max-width: 80%;
   color: white;
-  background: rgba(0, 0, 0, 0.74);
-  display: inline-block;
-  line-height: 1.5;
-  font-size: 23px;
-  font-weight: 300;
-  letter-spacing: 1.3px;
-  max-width: 93%;
+  overflow-wrap: break-word;
+  background: rgba(0, 0, 0, 0.75);
+  display: inline;
+  white-space: pre-wrap;
+  line-height: 1.3;
+  font-size: 17px;
+  font-weight: 350;
+  letter-spacing: 1.2px;
+  word-break: break-word;
   text-align: center;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.22), 0 6px 20px 0 rgba(0,0,0,0.14);
   ${props => props.look === 'error' && css`
     color: white;
-    background-color: #380000bd;
+    background-color: rgba(70, 10, 10, 0.87);
   `}
 `
 
