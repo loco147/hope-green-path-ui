@@ -6,7 +6,7 @@ import { setLengthLimit } from './../../reducers/pathsReducer'
 import { showPathList } from './../../reducers/menuReducer'
 import MaxLengthFilterSelector from './MaxLengthFilterSelector'
 import PathInfoPanel from './PathInfoPanel'
-import LoadAnimation from './LoadAnimation/LoadAnimation'
+import LoadAnimation from './../LoadAnimation/LoadAnimation'
 
 const PathPanelContainer = styled.div`
   margin: 0px;
@@ -28,6 +28,11 @@ const PathPanelContainer = styled.div`
     height: min-content;
   `}
 `
+const LoadAnimationContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  padding: 12px 0px 20px 0px;
+`
 
 const PathPanel = (props) => {
   const { paths, pathPanelVisible, pathPanelContent } = props
@@ -37,7 +42,9 @@ const PathPanel = (props) => {
   if (waitingPaths) {
     return (
       <PathPanelContainer>
-        <LoadAnimation />
+        <LoadAnimationContainer>
+          <LoadAnimation size={57} />
+        </LoadAnimationContainer>
       </PathPanelContainer>
     )
   }

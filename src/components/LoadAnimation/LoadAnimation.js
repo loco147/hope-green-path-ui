@@ -1,5 +1,5 @@
 import React from 'react'
-import styled, { keyframes } from 'styled-components'
+import styled, { keyframes, css } from 'styled-components'
 import { LoadingIcon } from './LoadingIcon'
 
 const spin = keyframes`
@@ -18,19 +18,19 @@ const Spinner = styled.div`
   }
 `
 
-const LoadingContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  padding: 14px 0px 20px 0px;
+const StyledLoadingIcon = styled(LoadingIcon)`   
+  ${props => props.size && css`
+    height: ${props => props.size || '50'}px;
+    width: auto;
+    `}
 `
 
-const LoadAnimation = () => {
+const LoadAnimation = ({ size }) => {
+
   return (
-    <LoadingContainer>
-      <Spinner>
-        <LoadingIcon />
-      </Spinner>
-    </LoadingContainer>
+    <Spinner>
+      <StyledLoadingIcon size={size} />
+    </Spinner>
   )
 }
 

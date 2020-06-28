@@ -8,6 +8,7 @@ import { utils } from './../utils/index'
 const initialOrigDest = {
   origDestFC: turf.asFeatureCollection(process.env.NODE_ENV !== 'production' ? initialOrigDestFeatures : []),
   useUserLocOrigin: false,
+  waitUserLocOrigin: false,
   error: null,
   showingPaths: false,
 }
@@ -21,7 +22,12 @@ const pathsReducer = (store = initialOrigDest, action) => {
 
     case 'RESET_ORIGIN': {
       const featsNoOrig = store.origDestFC.features.filter(feat => feat.properties.type !== 'orig')
-      return { ...store, useUserLocOrigin: false, origDestFC: turf.asFeatureCollection(featsNoOrig) }
+      return {
+        ...store,
+        useUserLocOrigin: false,
+        waitUserLocOrigin: false,
+        origDestFC: turf.asFeatureCollection(featsNoOrig)
+      }
     }
 
     case 'RESET_DEST': {
@@ -31,24 +37,45 @@ const pathsReducer = (store = initialOrigDest, action) => {
 
     case 'SET_ORIGIN': {
       const error = utils.origDestWithinSupportedArea(action.updateOrigDestFC)
-      return { ...store, origDestFC: action.updateOrigDestFC, error: error ? error : null, useUserLocOrigin: false }
+      return {
+        ...store,
+        origDestFC: action.updateOrigDestFC,
+        error: error ? error : null,
+        useUserLocOrigin: false,
+        waitUserLocOrigin: false
+      }
     }
 
     case 'SET_ORIGIN_TO_USER_LOC': {
       const origDestFC = updateOriginToFC(store.origDestFC, action.userLngLat)
-      return { ...store, origDestFC, useUserLocOrigin: true }
+      return {
+        ...store,
+        origDestFC,
+        useUserLocOrigin: true,
+        waitUserLocOrigin: false
+      }
     }
 
     case 'WAIT_FOR_USER_LOC_ORIGIN': {
       const onlyDestFeat = store.origDestFC.features.filter(feat => feat.properties.type === 'dest')
-      return { ...store, useUserLocOrigin: true, origDestFC: turf.asFeatureCollection(onlyDestFeat) }
+      return {
+        ...store,
+        useUserLocOrigin: true,
+        waitUserLocOrigin: true,
+        origDestFC: turf.asFeatureCollection(onlyDestFeat)
+      }
     }
 
     case 'UPDATE_USER_LOCATION': {
-      if (store.useUserLocOrigin && !store.showingPaths) {
+      if (store.useUserLocOrigin && store.waitUserLocOrigin) {
         const updateOrigDestFC = updateOriginToFC(store.origDestFC, turf.toLngLat(action.coords))
         const error = utils.origDestWithinSupportedArea(updateOrigDestFC)
-        return { ...store, origDestFC: updateOrigDestFC, error: error ? error : null }
+        return {
+          ...store,
+          origDestFC: updateOrigDestFC,
+          error: error ? error : null,
+          waitUserLocOrigin: false
+        }
       } else return store
     }
 

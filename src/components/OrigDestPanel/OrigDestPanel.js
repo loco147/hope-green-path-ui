@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { IoIosClose } from 'react-icons/io'
 import UseCurrLocButton from './UseCurrLocButton'
 import { useUserLocationOrigin, resetOrig, resetDest } from '../../reducers/origDestReducer'
+import LoadAnimation from './../LoadAnimation/LoadAnimation'
 
 const Container = styled.div`
   display: flex;
@@ -94,7 +95,7 @@ const FormattedCoords = ({ feat }) => {
 }
 
 const OrigDestPanel = (props) => {
-  const { origDestFC, userLocation, useUserLocOrigin, showingPaths, waitingPaths } = props
+  const { origDestFC, userLocation, useUserLocOrigin, waitUserLocOrigin, showingPaths, waitingPaths } = props
   const { resetOrig, resetDest } = props
 
   const origFeats = origDestFC.features.filter(feat => feat.properties.type === 'orig')
@@ -119,7 +120,11 @@ const OrigDestPanel = (props) => {
                 : null}
             </LocationInfo>
             : <Flex>
-              <LocationInfo>undefined</LocationInfo>
+              <LocationInfo>
+                {waitUserLocOrigin
+                  ? <LoadAnimation size={18} />
+                  : 'unset'}
+              </LocationInfo>
               {useUserLocOrigin
                 ? null
                 : <UseCurrLocButton handleClick={() => props.useUserLocationOrigin(userLocation)} />}
@@ -130,7 +135,7 @@ const OrigDestPanel = (props) => {
           <LocationInfo>
             {dest
               ? <FormattedCoords feat={dest} />
-              : 'undefined'}
+              : 'unset'}
             {dest && !(showingPaths || waitingPaths)
               ? <ResetLocButton onClick={resetDest}><Close /></ResetLocButton>
               : null}
@@ -147,6 +152,7 @@ const mapStateToProps = (state) => ({
   waitingPaths: state.paths.waitingPaths,
   origDestFC: state.origDest.origDestFC,
   useUserLocOrigin: state.origDest.useUserLocOrigin,
+  waitUserLocOrigin: state.origDest.waitUserLocOrigin,
 })
 
 const mapDispatchToProps = {
