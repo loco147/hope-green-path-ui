@@ -11,16 +11,6 @@ const notificationReducer = (store = initialNotification, action) => {
         case 'SHOWNOTIF':
             return { text: action.text, look: action.look }
 
-        case 'WAIT_FOR_USER_LOC_ORIGIN':
-            return { text: 'Locating...' }
-
-        case 'UPDATE_USER_LOCATION': {
-            if (store.text === 'Locating...') {
-                rmNotification()
-                return initialNotification
-            }
-            else return store
-        }
         // hide tooltip on how to set the destination when popup is opened
         case 'SET_POPUP': {
             if (store.text && store.text.includes('Click on the map')) {
@@ -42,8 +32,7 @@ export const showNotification = (text, look, notifTime) => {
     return async (dispatch) => {
         if (rmNotifTimeout) {
             // wait for the current notification to get removed before showing the new one
-            clearTimeout(rmNotifTimeout)
-            rmNotifTimeout = null
+            rmNotification()
             await new Promise(resolve => {
                 rmNotifTimeout = setTimeout(() => {
                     dispatch(rmNotification())

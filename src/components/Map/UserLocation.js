@@ -7,10 +7,10 @@ class UserLocation extends React.Component {
     layerId = 'UserLocation'
     source
     circleStyle = {
-        'circle-stroke-color': '#00d4ff',
+        'circle-stroke-color': '#ff38ff',
         'circle-color': 'transparent',
-        'circle-radius': 9,
-        'circle-stroke-width': 2
+        'circle-radius': 10,
+        'circle-stroke-width': 2.5
     }
 
     componentDidMount() {

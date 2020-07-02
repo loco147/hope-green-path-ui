@@ -133,9 +133,9 @@ export const getLengthLimits = (greenPathFeatures) => {
   return limits
 }
 
-export const getInitialLengthLimit = (lengthLimits, costCoeffLimit = 20) => {
-  // return length limit that filters out paths with cost_coeff higher than 20 as default
-  if (lengthLimits.length > 1) {
+export const getInitialLengthLimit = (lengthLimits, costCoeffLimit = 20, pathCount) => {
+  // return length limit that filters out paths with cost_coeff higher than 20
+  if (lengthLimits.length > 1 && pathCount > 3) {
     let prevDl = lengthLimits[0]
     for (let dL of lengthLimits) {
       if (dL.cost_coeff >= costCoeffLimit) return prevDl
