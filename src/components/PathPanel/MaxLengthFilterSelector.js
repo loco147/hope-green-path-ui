@@ -30,7 +30,7 @@ const StyledMaxLengthOption = styled.div`
   margin: 3px 3px 3px 3px;
   background-color: white;
   border: 1px solid black;
-  color: black
+  color: black;
   ${props => props.selected === true && css`
     background-color: #0b5d21;
     border-color: #0b5d21;
