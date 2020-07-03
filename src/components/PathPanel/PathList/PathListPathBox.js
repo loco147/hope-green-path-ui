@@ -19,7 +19,7 @@ const StyledPathListPathBox = styled.div.attrs(props => ({
   pointer-events: auto;
   height: 48px;
   border-radius: 5px;
-  margin: 4px 0px 4px 0px
+  margin: 4px 0px 4px 0px;
   background-color: white;
   border: 2px solid transparent;
   padding: 3px 4px;
