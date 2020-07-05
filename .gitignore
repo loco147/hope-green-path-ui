@@ -36,3 +36,4 @@ firestore.rules
 storage.rules
 firebase-debug.log
 src/firebase/config.js
+src/react-app-env.d.ts
