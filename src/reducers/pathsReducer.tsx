@@ -1,5 +1,6 @@
 import { turf } from '../utils/index'
 import * as paths from './../services/paths'
+import { TravelMode } from './../services/paths'
 import { showNotification } from './notificationReducer'
 import { pathTypes, statTypes } from './../constants'
 import { utils } from './../utils/index'
@@ -24,7 +25,7 @@ const initialPaths = {
   routingId: 0,
 }
 
-const pathsReducer = (store = initialPaths, action) => {
+const pathsReducer = (store = initialPaths, action: Action) => {
 
   switch (action.type) {
 
@@ -134,15 +135,15 @@ const pathsReducer = (store = initialPaths, action) => {
         if (action.selPathId === pathTypes.short) {
           selPath = store.shortPathFC.features
         } else if (store.showingPathsType === pathTypes.quiet) {
-          selPath = store.quietPathFC.features.filter(feat => feat.properties.id === action.selPathId)
+          selPath = store.quietPathFC.features.filter(feat => feat.properties!.id === action.selPathId)
         } else if (store.showingPathsType === pathTypes.clean) {
-          selPath = store.cleanPathFC.features.filter(feat => feat.properties.id === action.selPathId)
+          selPath = store.cleanPathFC.features.filter(feat => feat.properties!.id === action.selPathId)
         }
-        console.log('selecting path:', selPath[0].properties)
+        console.log('selecting path:', selPath ? selPath[0].properties : 'no selection')
         return {
           ...store,
           // if openedPath is set, change it to the selected path
-          openedPath: store.openedPath ? selPath[0] : null,
+          openedPath: store.openedPath ? (selPath ? selPath[0] : null) : null,
           selPathFC: turf.asFeatureCollection(selPath),
         }
       }
@@ -199,7 +200,7 @@ const pathsReducer = (store = initialPaths, action) => {
 }
 
 export const testGreenPathServiceConnection = () => {
-  return async (dispatch) => {
+  return async (dispatch: any) => {
     const startTime = performance.now()
     try {
       const connTestResponse = await paths.getConnectionTestResponse()
@@ -221,7 +222,7 @@ export const testGreenPathServiceConnection = () => {
 }
 
 export const testCleanPathServiceStatus = () => {
-  return async (dispatch) => {
+  return async (dispatch: any) => {
     try {
       const aqiStatus = await paths.getCleanPathServiceStatus()
       console.log('received clean path service status:', aqiStatus)
@@ -237,7 +238,7 @@ export const testCleanPathServiceStatus = () => {
   }
 }
 
-const confirmLongDistance = (origCoords, destCoords) => {
+const confirmLongDistance = (origCoords: number[], destCoords: number[]) => {
   const distance = turf.getDistance(origCoords, destCoords)
   if (distance > 5200) {
     if (!window.confirm('Long distance routing may take longer than 10 s')) {
@@ -247,8 +248,8 @@ const confirmLongDistance = (origCoords, destCoords) => {
   return true
 }
 
-export const getSetQuietPaths = (origCoords, destCoords, prevRoutingId) => {
-  return async (dispatch) => {
+export const getSetQuietPaths = (origCoords: number[], destCoords: number[], prevRoutingId: number) => {
+  return async (dispatch: any) => {
     if (!confirmLongDistance(origCoords, destCoords)) {
       return
     }
@@ -256,7 +257,7 @@ export const getSetQuietPaths = (origCoords, destCoords, prevRoutingId) => {
     dispatch({ type: 'CLOSE_PATHS' })
     dispatch({ type: 'ROUTING_STARTED', origCoords, destCoords, routingId })
     try {
-      const pathData = await paths.getQuietPaths(origCoords, destCoords)
+      const pathData = await paths.getQuietPaths(TravelMode.WALK, origCoords, destCoords)
       dispatch(setQuietPaths(origCoords, destCoords, routingId, pathData))
     } catch (error) {
       console.log('caught error:', error)
@@ -271,11 +272,11 @@ export const getSetQuietPaths = (origCoords, destCoords, prevRoutingId) => {
   }
 }
 
-export const setQuietPaths = (origCoords, destCoords, routingId, pathData) => {
-  return async (dispatch) => {
+export const setQuietPaths = (origCoords: number[], destCoords: number[], routingId: number, pathData: any) => {
+  return async (dispatch: any) => {
     dispatch({ type: 'CLOSE_PATHS' })
     dispatch({ type: 'SET_QUIET_PATH_DATA', routingId, origCoords, destCoords, pathData })
-    const pathFeats = pathData.path_FC.features
+    const pathFeats: any[] = pathData.path_FC.features
     const shortPath = pathFeats.filter(feat => feat.properties.type === 'short')
     const quietPaths = pathFeats.filter(feat => feat.properties.type === 'quiet' && feat.properties.len_diff !== 0)
     const lengthLimits = utils.getLengthLimits(pathFeats)
@@ -296,8 +297,8 @@ export const setQuietPaths = (origCoords, destCoords, routingId, pathData) => {
   }
 }
 
-export const getSetCleanPaths = (origCoords, destCoords, prevRoutingId) => {
-  return async (dispatch) => {
+export const getSetCleanPaths = (origCoords: number[], destCoords: number[], prevRoutingId: number) => {
+  return async (dispatch: any) => {
     if (!confirmLongDistance(origCoords, destCoords)) {
       return
     }
@@ -305,7 +306,7 @@ export const getSetCleanPaths = (origCoords, destCoords, prevRoutingId) => {
     dispatch({ type: 'CLOSE_PATHS' })
     dispatch({ type: 'ROUTING_STARTED', origCoords, destCoords, routingId })
     try {
-      const pathData = await paths.getCleanPaths(origCoords, destCoords)
+      const pathData = await paths.getCleanPaths(TravelMode.WALK, origCoords, destCoords)
       dispatch(setCleanPaths(origCoords, destCoords, routingId, pathData))
     } catch (error) {
       console.log('caught error:', error)
@@ -320,11 +321,11 @@ export const getSetCleanPaths = (origCoords, destCoords, prevRoutingId) => {
   }
 }
 
-export const setCleanPaths = (origCoords, destCoords, routingId, pathData) => {
-  return async (dispatch) => {
+export const setCleanPaths = (origCoords: number[], destCoords: number[], routingId: number, pathData: any) => {
+  return async (dispatch: any) => {
     dispatch({ type: 'CLOSE_PATHS' })
     dispatch({ type: 'SET_CLEAN_PATH_DATA', routingId, origCoords, destCoords, pathData })
-    const pathFeats = pathData.path_FC.features
+    const pathFeats: any[] = pathData.path_FC.features
     const shortPath = pathFeats.filter(feat => feat.properties.type === 'short')
     const cleanPaths = pathFeats.filter(feat => feat.properties.type === 'clean' && feat.properties.len_diff !== 0)
     const lengthLimits = utils.getLengthLimits(pathFeats)
@@ -345,11 +346,11 @@ export const setCleanPaths = (origCoords, destCoords, routingId, pathData) => {
   }
 }
 
-export const setSelectedPath = (selPathId) => {
+export const setSelectedPath = (selPathId: number) => {
   return { type: 'SET_SELECTED_PATH', selPathId }
 }
 
-export const setOpenedPath = (path) => {
+export const setOpenedPath = (path: any) => {
   return { type: 'SET_OPENED_PATH', path }
 }
 
@@ -357,7 +358,7 @@ export const unsetOpenedPath = () => {
   return { type: 'UNSET_OPENED_PATH' }
 }
 
-export const setLengthLimit = (lengthLimit) => {
+export const setLengthLimit = (lengthLimit: number) => {
   return { type: 'SET_LENGTH_LIMIT', lengthLimit }
 }
 
@@ -365,8 +366,8 @@ export const unsetSelectedPath = () => {
   return { type: 'UNSET_SELECTED_PATH' }
 }
 
-export const resetPaths = (lngLat) => {
-  return async (dispatch) => {
+export const resetPaths = (lngLat: LngLat) => {
+  return async (dispatch: any) => {
     dispatch({ type: 'RESET_PATHS', lngLat })
     if (process.env.NODE_ENV === 'production') {
       dispatch({ type: 'RESET_ORIGIN_DEST' })
@@ -375,7 +376,7 @@ export const resetPaths = (lngLat) => {
   }
 }
 
-const clickedPathAgain = (storeSelPathFC, clickedPathId) => {
+const clickedPathAgain = (storeSelPathFC: any, clickedPathId: number) => {
   return storeSelPathFC.features[0] && clickedPathId === storeSelPathFC.features[0].properties.id
 }
 
