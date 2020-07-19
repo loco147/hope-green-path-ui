@@ -16,7 +16,7 @@ const DBColorLabelPair = styled.div`
   margin: 0px;
   white-space: nowrap;
 `
-const DBColorBox = styled.div`
+const DBColorBox = styled.div<{ index?: any, color?: string, children: string }>`
   border-radius: 10px;
   margin: 0px 3px 0px 3px;
   padding: 5px 7px;
@@ -37,7 +37,7 @@ const DbRow = styled.div`
   margin-bottom: 6px;
 `
 
-const DBColorLabel = ({ dB, label }) => {
+const DBColorLabel = ({ dB, label }: { dB: DbClass, label: string }) => {
   return (
     <DBColorLabelPair>
       <DBColorBox color={dBColors[dB]}>{label}</DBColorBox>

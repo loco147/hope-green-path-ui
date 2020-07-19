@@ -1,6 +1,6 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
-import { connect } from 'react-redux'
+import { connect, ConnectedProps } from 'react-redux'
 import { menu } from './../../constants'
 import { setLengthLimit } from './../../reducers/pathsReducer'
 import { showPathList } from './../../reducers/menuReducer'
@@ -8,7 +8,7 @@ import MaxLengthFilterSelector from './MaxLengthFilterSelector'
 import PathInfoPanel from './PathInfoPanel'
 import LoadAnimation from './../LoadAnimation/LoadAnimation'
 
-const PathPanelContainer = styled.div`
+const PathPanelContainer = styled.div<{ showingOpenedPath?: boolean }>`
   margin: 0px;
   background: rgba(255,255,255,0.95);
   overflow: auto;
@@ -34,7 +34,7 @@ const LoadAnimationContainer = styled.div`
   padding: 12px 0px 20px 0px;
 `
 
-const PathPanel = (props) => {
+const PathPanel = (props: PropsFromRedux) => {
   const { paths, pathPanelVisible, pathPanelContent } = props
   const { setLengthLimit, showPathList } = props
   const { waitingPaths, showingPaths, openedPath, lengthLimit, lengthLimits } = paths
@@ -66,7 +66,7 @@ const PathPanel = (props) => {
   )
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: ReduxState) => ({
   paths: state.paths,
   scrollToPath: state.pathList.scrollToPath,
   pathPanelVisible: state.menu.pathPanel,
@@ -78,5 +78,6 @@ const mapDispatchToProps = {
   showPathList,
 }
 
-const ConnectedPathPanel = connect(mapStateToProps, mapDispatchToProps)(PathPanel)
-export default ConnectedPathPanel
+const connector = connect(mapStateToProps, mapDispatchToProps)
+type PropsFromRedux = ConnectedProps<typeof connector>
+export default connector(PathPanel)

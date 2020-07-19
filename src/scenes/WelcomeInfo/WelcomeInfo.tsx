@@ -1,5 +1,5 @@
 import React from 'react'
-import { connect } from 'react-redux'
+import { connect, ConnectedProps } from 'react-redux'
 import styled from 'styled-components'
 import { Button } from '../../components/Button'
 import { showInfo, hideInfo } from './../../reducers/menuReducer'
@@ -108,7 +108,7 @@ const AcceptCookieText = () => {
   )
 }
 
-const WelcomeInfo = (props) => {
+const WelcomeInfo = (props: PropsFromRedux) => {
   if (!props.menu.info) return null
 
   return (
@@ -180,11 +180,12 @@ const WelcomeInfo = (props) => {
   )
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: ReduxState) => ({
   menu: state.menu,
   visitedBefore: state.visitor.visitedBefore,
   showingPaths: state.paths.showingPaths,
 })
 
-const ConnectedWelcomeInfo = connect(mapStateToProps, { showInfo, hideInfo })(WelcomeInfo)
-export default ConnectedWelcomeInfo
+const connector = connect(mapStateToProps, { showInfo, hideInfo })
+type PropsFromRedux = ConnectedProps<typeof connector>
+export default connector(WelcomeInfo)

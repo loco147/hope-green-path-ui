@@ -35,7 +35,7 @@ const formCoordinateString = (originCoords: number[], destinationCoords: number[
   return fromC[1].concat(',', fromC[0], '/', toC[1], ',', toC[0])
 }
 
-export const getQuietPaths = async (travelMode: TravelMode, originCoords: number[], destinationCoords: number[]) => {
+export const getQuietPaths = async (travelMode: TravelMode, originCoords: number[], destinationCoords: number[]): Promise<PathDataResponse> => {
   const coordString = formCoordinateString(originCoords, destinationCoords)
   const queryUrl = baseurl.concat('paths/', travelMode, '/', RoutingMode.QUIET, '/', coordString)
   console.log('Querying quiet paths:', queryUrl)
@@ -48,7 +48,7 @@ export const getQuietPaths = async (travelMode: TravelMode, originCoords: number
   return response.data
 }
 
-export const getCleanPaths = async (travelMode: TravelMode, originCoords: number[], destinationCoords: number[]) => {
+export const getCleanPaths = async (travelMode: TravelMode, originCoords: number[], destinationCoords: number[]): Promise<PathDataResponse> => {
   const coordString = formCoordinateString(originCoords, destinationCoords)
   const queryUrl = baseurl.concat('paths/', travelMode, '/', RoutingMode.CLEAN, '/', coordString)
   console.log('Querying quiet paths:', queryUrl)

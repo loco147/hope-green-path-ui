@@ -26,6 +26,10 @@ const Button = styled.div`
   }
 `
 
-const UseCurrLocButton = ({ handleClick }) => <Button onClick={handleClick}>Use current location</Button>
+type Props = {
+  handleClick: React.MouseEventHandler<HTMLElement>
+}
+
+const UseCurrLocButton = ({ handleClick }: Props) => <Button onClick={handleClick}>Use current location</Button>
 
 export default UseCurrLocButton

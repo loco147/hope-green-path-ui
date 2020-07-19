@@ -1,11 +1,17 @@
+import { Action } from "redux"
 
 const initialNotification = {
     text: null,
     look: null,
 }
-let rmNotifTimeout
+let rmNotifTimeout: any
 
-const notificationReducer = (store = initialNotification, action) => {
+interface NotificationAction extends Action {
+    text: string,
+    look: string
+}
+
+const notificationReducer = (store: NotificationReducer = initialNotification, action: NotificationAction) => {
 
     switch (action.type) {
         case 'SHOWNOTIF':
@@ -13,7 +19,7 @@ const notificationReducer = (store = initialNotification, action) => {
 
         // hide tooltip on how to set the destination when popup is opened
         case 'SET_POPUP': {
-            if (store.text && store.text.includes('Click on the map')) {
+            if (store.text != null && store.text.includes('Click on the map')) {
                 rmNotification()
                 return initialNotification
             }
@@ -28,8 +34,8 @@ const notificationReducer = (store = initialNotification, action) => {
     }
 }
 
-export const showNotification = (text, look, notifTime) => {
-    return async (dispatch) => {
+export const showNotification = (text: string, look: string, notifTime: number) => {
+    return async (dispatch: any) => {
         if (rmNotifTimeout) {
             // wait for the current notification to get removed before showing the new one
             rmNotification()

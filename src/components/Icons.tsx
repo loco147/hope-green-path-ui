@@ -32,7 +32,15 @@ const List = styled(IoMdMenu)`
   font-size: 36px;
 `
 
-const IconButton = styled.div`
+type IconButtonProps = {
+  onClick: React.MouseEventHandler<HTMLElement>,
+  children: any,
+  padding?: string,
+  leftMargin?: string,
+  hoverJump?: any
+}
+
+const IconButton = styled.div<IconButtonProps>`
   cursor: pointer;
   pointer-events: auto;
   padding: ${props => props.padding || '0px'};
@@ -48,12 +56,17 @@ const IconButton = styled.div`
   }`}
 `
 
-export const FilterButton = ({ onClick }) => <IconButton padding='5px' onClick={onClick}> <Filter /> </IconButton>
+type IconProps = {
+  onClick: React.MouseEventHandler<HTMLElement>,
+  size?: number
+}
 
-export const ArrowUpButton = ({ onClick }) => <IconButton hoverJump onClick={onClick}> <ArrowUp /></IconButton>
+export const FilterButton = ({ onClick }: IconProps) => <IconButton padding='5px' onClick={onClick}> <Filter /> </IconButton>
 
-export const ArrowDownButton = ({ onClick }) => <IconButton hoverJump onClick={onClick}> <ArrowDown /></IconButton>
+export const ArrowUpButton = ({ onClick }: IconProps) => <IconButton hoverJump onClick={onClick}> <ArrowUp /></IconButton>
 
-export const CloseButton = ({ onClick, size }) => <IconButton onClick={onClick}> <Close size={size} /></IconButton>
+export const ArrowDownButton = ({ onClick }: IconProps) => <IconButton hoverJump onClick={onClick}> <ArrowDown /></IconButton>
 
-export const ListButton = ({ onClick }) => <IconButton hoverJump onClick={onClick}> <List /></IconButton>
+export const CloseButton = ({ onClick, size }: IconProps) => <IconButton onClick={onClick}> <Close size={size} /></IconButton>
+
+export const ListButton = ({ onClick }: IconProps) => <IconButton hoverJump onClick={onClick}> <List /></IconButton>

@@ -21,7 +21,7 @@ const TooltipStyle = styled.div`
   text-align: center;
   margin: 2px 0px 7px 0px;
 `
-const StyledMaxLengthOption = styled.div`
+const StyledMaxLengthOption = styled.div<{ selected?: boolean }>`
   pointer-events: auto;
   cursor: pointer;
   padding: 5px 10px;
@@ -43,7 +43,13 @@ const StyledMaxLengthOption = styled.div`
   }
 `
 
-const MaxLengthOption = ({ ll, selected, setLengthLimit }) => {
+interface MaxLengthOption {
+  ll: LengthLimit,
+  selected: boolean,
+  setLengthLimit: Function
+}
+
+const MaxLengthOption = ({ ll, selected, setLengthLimit }: MaxLengthOption) => {
   return (
     <StyledMaxLengthOption selected={selected} onClick={() => setLengthLimit(ll)}>
       {ll.label}
@@ -51,7 +57,14 @@ const MaxLengthOption = ({ ll, selected, setLengthLimit }) => {
   )
 }
 
-const MaxLengthFilterSelector = ({ lengthLimit, lengthLimits, setLengthLimit, showPathList }) => {
+interface MaxLengthFilterSelectorProps {
+  lengthLimit: LengthLimit,
+  lengthLimits: LengthLimit[],
+  setLengthLimit: Function,
+  showPathList: React.MouseEventHandler<HTMLElement>,
+}
+
+const MaxLengthFilterSelector = ({ lengthLimit, lengthLimits, setLengthLimit, showPathList }: MaxLengthFilterSelectorProps) => {
   return (
     <OuterDiv>
       <FlexRow>

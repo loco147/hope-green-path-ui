@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
-import { connect } from 'react-redux'
+import { connect, ConnectedProps } from 'react-redux'
 import Notification from './components/Notification'
 import FindPathsButtons from './components/FindPathsButtons'
 import OrigDestPanel from './components/OrigDestPanel/OrigDestPanel'
@@ -38,7 +38,7 @@ const BottomPanel = styled(AbsoluteContainer)`
   z-index: 3;
 `
 
-class App extends Component {
+class App extends Component<PropsFromRedux> {
 
   componentDidMount() {
     this.props.showWelcomeIfFirstVisit()
@@ -82,5 +82,6 @@ const mapDispatchToProps = {
   testCleanPathServiceStatus,
 }
 
-const ConnectedApp = connect(null, mapDispatchToProps)(App)
-export default ConnectedApp
+const connector = connect(null, mapDispatchToProps)
+type PropsFromRedux = ConnectedProps<typeof connector>
+export default connector(App)

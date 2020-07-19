@@ -1,4 +1,5 @@
 import { turf } from '../utils/index'
+import { Action } from 'redux'
 
 const geoOptions = {
   enableHighAccuracy: true,
@@ -10,11 +11,18 @@ const initialUserLocation = {
   expireTime: '',
   error: null,
   lngLat: null,
-  userLocFC: turf.asFeatureCollection([]),
+  userLocFC: turf.asPointFeatureCollection([]),
   userLocHistory: [],
 }
 
-const userLocationReducer = (store = initialUserLocation, action) => {
+interface UserLocationAction extends Action {
+  coords: [number, number],
+  lngLat: LngLat,
+  userLocFC: PointFeatureCollection,
+  watchId: number
+}
+
+const userLocationReducer = (store: UserLocationReducer = initialUserLocation, action: UserLocationAction) => {
 
   switch (action.type) {
     case 'START_TRACKING_USER_LOCATION':
@@ -50,7 +58,7 @@ const userLocationReducer = (store = initialUserLocation, action) => {
 }
 
 export const mockUserLocation = () => {
-  return async (dispatch) => {
+  return async (dispatch: any) => {
     await new Promise(resolve => setTimeout(resolve, 2000))
     const lng = 24.93312835
     const lat = 60.16910312
@@ -64,18 +72,18 @@ export const mockUserLocation = () => {
 }
 
 export const startTrackingUserLocation = () => {
-  return (dispatch) => {
+  return (dispatch: any) => {
     dispatch({ type: 'START_TRACKING_USER_LOCATION' })
     dispatch(updateUserLocation())
   }
 }
 
 export const updateUserLocation = () => {
-  return (dispatch) => {
+  return (dispatch: any) => {
     const geoError = () => {
       dispatch({ type: 'ERROR_IN_POSITIONING' })
     }
-    const watchPosition = (pos) => {
+    const watchPosition = (pos: Position) => {
       const lng = pos.coords.longitude
       const lat = pos.coords.latitude
       const userLocFC = turf.asFeatureCollection([turf.asPoint([lng, lat])])
@@ -92,10 +100,10 @@ export const updateUserLocation = () => {
   }
 }
 
-export const zoomToUserLocation = (userLocation) => {
+export const zoomToUserLocation = (userLocation: UserLocationReducer) => {
   console.log('userLocation in zoom to user location', userLocation)
-  return (dispatch) => {
-    const handleNaviUserLocationZoom = (pos) => {
+  return (dispatch: any) => {
+    const handleNaviUserLocationZoom = (pos: Position) => {
       const lng = pos.coords.longitude
       const lat = pos.coords.latitude
       const userLocFC = turf.asFeatureCollection([turf.asPoint([lng, lat])])

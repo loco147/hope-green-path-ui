@@ -7,7 +7,7 @@ import { togglePathPanel, showPathList, showMaxLengthFilterSelector } from './..
 import { ListButton, ArrowUpButton, ArrowDownButton } from './../Icons'
 import FilterButton from './FilterButton'
 
-const ControlPanel = styled.div`
+const ControlPanel = styled.div<{ pathPanelVisible: boolean }>`
   background: rgba(255,255,255,0.98);
   height: 53px;
   margin-left: 0px;
@@ -28,11 +28,11 @@ const ButtonFlex = styled.div`
   align-items: center;
   width: 100%;
 `
-const Margin = styled.div`
+const Margin = styled.div<{ left?: number }>`
   margin-left: ${props => props.left ? props.left : '0'}px;
 `
 
-const BottomControlPanel = (props) => {
+const BottomControlPanel = (props: any) => {
   const { showingPaths, showingPathsType, pathPanelVisible, pathPanelContent, quietPathCount, cleanPathCount,
     lengthLimit, lengthLimits, togglePathPanel, showPathList, showMaxLengthFilterSelector } = props
 
@@ -65,7 +65,7 @@ const BottomControlPanel = (props) => {
   )
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: ReduxState) => ({
   showingPaths: state.paths.showingPaths,
   showingPathsType: state.paths.showingPathsType,
   pathPanelVisible: state.menu.pathPanel,

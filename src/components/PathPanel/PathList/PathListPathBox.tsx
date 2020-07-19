@@ -5,13 +5,18 @@ import { PathNoisesBar } from './../PathNoisesBar'
 import { PathAqiBar } from './../PathAqiBar'
 import { pathTypes, statTypes, walkSpeed } from '../../../constants'
 
-const StyledPathListPathBox = styled.div.attrs(props => ({
+type Props = {
+  selected: boolean,
+  children: any
+}
+
+const StyledPathListPathBox = styled.div.attrs((props: Props) => ({
   style:
     ({
       border: props.selected ? '2px solid black' : '',
       boxShadow: props.selected ? '0 -1px 7px 0 rgba(0, 0, 0, 0.15), 0 4px 7px 0 rgba(0, 0, 0, 0.25)' : ''
     })
-}))`
+}))<Props>`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -35,7 +40,7 @@ const StyledPathListPathBox = styled.div.attrs(props => ({
     }
   }
 `
-const PathPropsRow = styled.div`
+const PathPropsRow = styled.div<{ color?: string }>`
   display: flex;
   justify-content: space-around;
   font-size: 12px;
@@ -51,7 +56,15 @@ const Sub = styled.sub`
   font-size: 9px;
 `
 
-const PathListPathBox = ({ path, selected, showingPathsType, handleClick }) => {
+interface PathBoxProperties {
+  path: PathFeature,
+  selected: boolean,
+  handleClick: React.MouseEventHandler<HTMLElement>,
+  showingPathsType?: ShowingPathsType,
+  showingStatsType?: StatsType
+}
+
+const PathListPathBox = ({ path, selected, showingPathsType, handleClick }: PathBoxProperties) => {
   if (showingPathsType === pathTypes.clean) {
     return <CleanPathBox path={path} selected={selected} handleClick={handleClick} />
   } else {
@@ -59,13 +72,13 @@ const PathListPathBox = ({ path, selected, showingPathsType, handleClick }) => {
   }
 }
 
-export const ShortestPathBox = ({ path, selected, showingStatsType, handleClick }) => {
+export const ShortestPathBox = ({ path, selected, showingStatsType, handleClick }: PathBoxProperties) => {
   if (showingStatsType === statTypes.aq) {
     return <ShortestPathAqBox path={path} selected={selected} handleClick={handleClick} />
   } else { return <ShortestPathNoiseBox path={path} selected={selected} handleClick={handleClick} /> }
 }
 
-const ShortestPathAqBox = ({ path, selected, handleClick }) => {
+const ShortestPathAqBox = ({ path, selected, handleClick }: PathBoxProperties) => {
   return (
     <StyledPathListPathBox selected={selected} onClick={handleClick}>
       {!path.properties.missing_aqi && <PathAqiBar aqiPcts={path.properties.aqi_pcts} />}
@@ -86,7 +99,7 @@ const ShortestPathAqBox = ({ path, selected, handleClick }) => {
   )
 }
 
-const ShortestPathNoiseBox = ({ path, selected, handleClick }) => {
+const ShortestPathNoiseBox = ({ path, selected, handleClick }: PathBoxProperties) => {
   return (
     <StyledPathListPathBox selected={selected} onClick={handleClick}>
       <PathNoisesBar noisePcts={path.properties.noise_pcts} />
@@ -105,7 +118,7 @@ const ShortestPathNoiseBox = ({ path, selected, handleClick }) => {
   )
 }
 
-const CleanPathBox = ({ path, selected, handleClick }) => {
+const CleanPathBox = ({ path, selected, handleClick }: PathBoxProperties) => {
   return (
     <StyledPathListPathBox selected={selected} onClick={handleClick}>
       {!path.properties.missing_aqi && <PathAqiBar aqiPcts={path.properties.aqi_pcts} />}
@@ -128,7 +141,7 @@ const CleanPathBox = ({ path, selected, handleClick }) => {
   )
 }
 
-const QuietPathBox = ({ path, selected, handleClick }) => {
+const QuietPathBox = ({ path, selected, handleClick }: PathBoxProperties) => {
   return (
     <StyledPathListPathBox selected={selected} onClick={handleClick}>
       <PathNoisesBar noisePcts={path.properties.noise_pcts} />
@@ -150,7 +163,7 @@ const QuietPathBox = ({ path, selected, handleClick }) => {
   )
 }
 
-const getFormattedDurationDiff = (pathProps) => {
+const getFormattedDurationDiff = (pathProps: PathProperties) => {
   const sPathLength = pathProps.length - pathProps.len_diff
   const sPathDurationMins = Math.round((sPathLength / walkSpeed) / 60)
   const cleanPathDurationMins = Math.round((pathProps.length / walkSpeed) / 60)

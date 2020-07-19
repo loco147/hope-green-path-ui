@@ -1,8 +1,9 @@
 import { turf } from './index'
 import hmaPoly from './../HMA.json'
 import { aqiLabels, walkSpeed } from './../constants'
+import { MapMouseEvent, Map, PointLike } from 'mapbox-gl'
 
-export const getNoiseIndexLabel = (ni) => {
+export const getNoiseIndexLabel = (ni: number): string | undefined => {
   if (ni < 0.15) return 'very quiet'
   if (ni < 0.3) return 'quiet'
   if (ni < 0.5) return 'moderate noise'
@@ -11,7 +12,7 @@ export const getNoiseIndexLabel = (ni) => {
   if (ni >= 0.75) return 'extreme noise'
 }
 
-export const getAqiLabel = (aqi) => {
+export const getAqiLabel = (aqi: number): string => {
   if (aqi <= 0) return ''
   if (aqi <= 2.0) return aqiLabels[1]
   if (aqi <= 3.0) return aqiLabels[2]
@@ -21,7 +22,7 @@ export const getAqiLabel = (aqi) => {
   return ''
 }
 
-export const getDurationStringFromDist = (m, showSeconds = false, withSign = false) => {
+export const getDurationStringFromDist = (m: number, showSeconds: boolean = false, withSign: boolean = false): string => {
   const timeSecs = m / walkSpeed
   const roundedSecs = Math.round(timeSecs)
   const timeMin = timeSecs / 60
@@ -39,7 +40,7 @@ export const getDurationStringFromDist = (m, showSeconds = false, withSign = fal
   return formattedDuration + ' ' + unit
 }
 
-const concatSign = (number) => {
+const concatSign = (number: number): string => {
   if (number < 0) {
     return '-' + String(number)
   } else if (number > 0) {
@@ -47,11 +48,11 @@ const concatSign = (number) => {
   } else return String(number)
 }
 
-const roundTo = (number, digits) => {
+const roundTo = (number: number, digits: number): number => {
   return Math.round(number * (10 * digits)) / (10 * digits)
 }
 
-export const getFormattedDistanceString = (m, withSign = false) => {
+export const getFormattedDistanceString = (m: number, withSign: boolean = false): string => {
   let distance
   let unit
   if (Math.abs(m) >= 950) {
@@ -69,7 +70,7 @@ export const getFormattedDistanceString = (m, withSign = false) => {
   return distanceString + unit
 }
 
-export const getFormattedAqiExpDiffRatio = (aqc_diff_rat) => {
+export const getFormattedAqiExpDiffRatio = (aqc_diff_rat: number): string => {
   if (Math.round(aqc_diff_rat) === 0) {
     return '-' + String(Math.round(aqc_diff_rat))
   } else {
@@ -77,28 +78,30 @@ export const getFormattedAqiExpDiffRatio = (aqc_diff_rat) => {
   }
 }
 
-export const getOriginCoordsFromFC = (FC) => {
+export const getOriginCoordsFromFC = (FC: PointFeatureCollection): [number, number] | null => {
   const origin = FC.features.filter(feat => feat.properties.type === 'orig')
   if (origin.length === 0) return null
   const coords = origin[0].geometry.coordinates
+  // @ts-ignore
   return coords.map(coord => Math.round(coord * 100000) / 100000)
 }
 
-export const getDestCoordsFromFC = (FC) => {
+export const getDestCoordsFromFC = (FC: PointFeatureCollection): [number, number] | null => {
   const dest = FC.features.filter(feat => feat.properties.type === 'dest')
   if (dest.length === 0) return null
   const coords = dest[0].geometry.coordinates
+  // @ts-ignore
   return coords.map(coord => Math.round(coord * 100000) / 100000)
 }
 
-export const getLayersFeaturesAroundClickE = (layers, e, tolerance, map) => {
+export const getLayersFeaturesAroundClickE = (layers: string[], e: MapMouseEvent, tolerance: number, map: Map) => {
   // tolerance: pixels around point
-  const bbox = [[e.point.x - tolerance, e.point.y - tolerance], [e.point.x + tolerance, e.point.y + tolerance]]
+  const bbox: [PointLike, PointLike] = [[e.point.x - tolerance, e.point.y - tolerance], [e.point.x + tolerance, e.point.y + tolerance]]
   const features = map.queryRenderedFeatures(bbox, { layers })
   return features
 }
 
-export const getBestPath = (greenPathFeatures) => {
+export const getBestPath = (greenPathFeatures: PathFeature[]) => {
   // if the greatest quiet path score among the paths is greater than 2 -> select the path
   if (greenPathFeatures.length > 0) {
     const goodPaths = greenPathFeatures.filter(feat => feat.properties.path_score > 0.8 && feat.properties.cost_coeff <= 10)
@@ -111,12 +114,12 @@ export const getBestPath = (greenPathFeatures) => {
   return null
 }
 
-const getLengthLimit = (length, rounding) => Math.ceil(length / rounding) * rounding
+const getLengthLimit = (length: number, rounding: number) => Math.ceil(length / rounding) * rounding
 
-export const getLengthLimits = (greenPathFeatures) => {
+export const getLengthLimits = (greenPathFeatures: any[]) => {
   const pathLengths = greenPathFeatures.map(feat => feat.properties.length)
   const pathProps = greenPathFeatures.map(feat => feat.properties)
-  const limits = pathProps.reduce((acc, props) => {
+  const limits = pathProps.reduce((acc: LengthLimit[], props) => {
     const length = props.length
     // get limit as rounded value higher than the actual length
     const limit = length > 1000 ? getLengthLimit(length, 100) : getLengthLimit(length, 50)
@@ -133,7 +136,7 @@ export const getLengthLimits = (greenPathFeatures) => {
   return limits
 }
 
-export const getInitialLengthLimit = (lengthLimits, costCoeffLimit = 20, pathCount) => {
+export const getInitialLengthLimit = (lengthLimits: LengthLimit[], pathCount: number, costCoeffLimit: number = 20) => {
   // return length limit that filters out paths with cost_coeff higher than 20
   if (lengthLimits.length > 1 && pathCount > 3) {
     let prevDl = lengthLimits[0]
@@ -145,10 +148,11 @@ export const getInitialLengthLimit = (lengthLimits, costCoeffLimit = 20, pathCou
   return lengthLimits[lengthLimits.length - 1]
 }
 
-export const origDestWithinSupportedArea = (origDestFC) => {
+export const origDestWithinSupportedArea = (origDestFC: PointFeatureCollection) => {
   const origin = origDestFC.features.filter(feat => feat.properties.type === 'orig')
   const dest = origDestFC.features.filter(feat => feat.properties.type === 'dest')
-  const extentFeat = hmaPoly.features[0]
+  // @ts-ignore
+  const extentFeat: PolygonFeature = hmaPoly.features[0]
   if (origin.length > 0 && !turf.within(origin[0], extentFeat)) {
     return 'Origin is outside the supported area'
   }

@@ -7,41 +7,38 @@ const iconStyle = `
   vertical-align: middle;
   display: table-cell;
   text-align: center;
+  font-size: 31px;
 `
 const ArrowForward = styled(IoIosArrowForward)`
   ${iconStyle}
-  font-size: 31px;
 `
 const ArrowBack = styled(IoIosArrowBack)`
   ${iconStyle}
-  font-size: 31px;
 `
-const IconButton = styled.div`
+const IconButton = styled.div<{ padding?: string, leftMargin: string }>`
   padding: ${props => props.padding || '0px'};
   margin-left: ${props => props.leftMargin || '0px'};
   display: table;
   border-radius: 7px;
 `
-const ArrowForwardButton = ({ onClick }) => {
+const ArrowForwardButton = () => {
   return (
     <IconButton
-      onClick={onClick}
       leftMargin={'-3px'}> <ArrowForward />
     </IconButton>
   )
 }
 
-const ArrowBackButton = ({ onClick }) => {
+const ArrowBackButton = () => {
   return (
     <IconButton
-      onClick={onClick}
       leftMargin={'-6px'}>
       <ArrowBack />
     </IconButton>
   )
 }
 
-const StyledOpenClosePathBox = styled.div`
+const StyledOpenClosePathBox = styled.div<{ close?: any, disabled?: boolean }>`
   display: flex;
   align-items: center;
   pointer-events: auto;
@@ -74,7 +71,7 @@ const StyledOpenClosePathBox = styled.div`
   `}
 `
 
-export const OpenPathBox = ({ disabled, handleClick }) => {
+export const OpenPathBox = ({ disabled, handleClick }: { disabled: boolean, handleClick: React.MouseEventHandler<HTMLElement> }) => {
   return (
     <StyledOpenClosePathBox disabled={disabled} onClick={handleClick}>
       <ArrowForwardButton />
@@ -82,7 +79,7 @@ export const OpenPathBox = ({ disabled, handleClick }) => {
   )
 }
 
-export const ClosePathBox = ({ handleClick }) => {
+export const ClosePathBox = ({ handleClick }: { handleClick: React.MouseEventHandler<HTMLElement> }) => {
   return (
     <StyledOpenClosePathBox close onClick={handleClick}>
       <ArrowBackButton />

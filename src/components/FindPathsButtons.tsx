@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { connect } from 'react-redux'
+import { connect, ConnectedProps } from 'react-redux'
 import { getSetCleanPaths, getSetQuietPaths } from '../reducers/pathsReducer'
 import { utils } from '../utils'
 
@@ -44,7 +44,7 @@ const Tooltip = styled.div`
   color: rgba(255,255,255,0.9);
 `
 
-const FindPathsButtons = (props) => {
+const FindPathsButtons = (props: PropsFromRedux) => {
   const { cleanPathsAvailable, origDestFC, origDestError, routingId,
     waitingPaths, showingPaths, getSetCleanPaths, getSetQuietPaths } = props
   const originCoords = utils.getOriginCoordsFromFC(origDestFC)
@@ -59,19 +59,19 @@ const FindPathsButtons = (props) => {
     <OuterFlex>
       {cleanPathsAvailable
         ? <Button
-          onClick={() => getSetCleanPaths(originCoords, destCoords, routingId)}> Find fresh air paths
+          onClick={() => getSetCleanPaths(originCoords!, destCoords!, routingId)}> Find fresh air paths
           <Tooltip>by real-time air quality</Tooltip>
         </Button>
         : null
       }
-      <Button onClick={() => getSetQuietPaths(originCoords, destCoords, routingId)}> Find quiet paths
+      <Button onClick={() => getSetQuietPaths(originCoords!, destCoords!, routingId)}> Find quiet paths
         <Tooltip>by typical traffic noise</Tooltip>
       </Button>
     </OuterFlex>
   )
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: ReduxState) => ({
   origDestFC: state.origDest.origDestFC,
   origDestError: state.origDest.error,
   waitingPaths: state.paths.waitingPaths,
@@ -80,6 +80,6 @@ const mapStateToProps = (state) => ({
   cleanPathsAvailable: state.paths.cleanPathsAvailable,
 })
 
-const ConnectedFindPathsButtons = connect(mapStateToProps, { getSetCleanPaths, getSetQuietPaths })(FindPathsButtons)
-
-export default ConnectedFindPathsButtons
+const connector = connect(mapStateToProps, { getSetCleanPaths, getSetQuietPaths })
+type PropsFromRedux = ConnectedProps<typeof connector>
+export default connector(FindPathsButtons)

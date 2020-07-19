@@ -1,13 +1,13 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
-import { connect } from 'react-redux'
+import { connect, ConnectedProps } from 'react-redux'
 import { showInfo } from './../../reducers/menuReducer'
 import { zoomToUserLocation } from '../../reducers/userLocationReducer'
 import { resetPaths } from '../../reducers/pathsReducer'
 import { LocateButton } from './LocateButton'
 import ResetPathsButton from './ResetPathsButton'
 
-const Container = styled.div`
+const Container = styled.div<{ topOffset?: boolean }>`
   position: absolute;
   top: 9px;
   right: 9px;
@@ -41,7 +41,8 @@ const ShowInfoButton = styled.div`
   }
 `
 
-const HomeControls = ({ menu, showInfo, userLocation, showingPaths, waitingPaths, zoomToUserLocation, resetPaths }) => {
+const HomeControls = (props: PropsFromRedux) => {
+  const { menu, showInfo, userLocation, showingPaths, waitingPaths, zoomToUserLocation, resetPaths } = props
   return (
     <Container topOffset={!showingPaths && !waitingPaths}>
       {showingPaths || waitingPaths ? <ResetPathsButton handleClick={() => resetPaths(userLocation.lngLat)} /> : null}
@@ -51,12 +52,13 @@ const HomeControls = ({ menu, showInfo, userLocation, showingPaths, waitingPaths
   )
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: ReduxState) => ({
   menu: state.menu,
   userLocation: state.userLocation,
   showingPaths: state.paths.showingPaths,
   waitingPaths: state.paths.waitingPaths,
 })
 
-const ConnectedHomeControls = connect(mapStateToProps, { showInfo, zoomToUserLocation, resetPaths })(HomeControls)
-export default ConnectedHomeControls
+const connector = connect(mapStateToProps, { showInfo, zoomToUserLocation, resetPaths })
+type PropsFromRedux = ConnectedProps<typeof connector>
+export default connector(HomeControls)

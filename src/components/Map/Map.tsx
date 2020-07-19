@@ -1,6 +1,6 @@
-import React from 'react'
-import MapboxGL from 'mapbox-gl/dist/mapbox-gl.js'
-import { connect } from 'react-redux'
+import React, { Component } from 'react'
+import MapboxGL from 'mapbox-gl'
+import { connect, ConnectedProps } from 'react-redux'
 import { initializeMap, updateCamera } from './../../reducers/mapReducer'
 import { debugNearestEdgeAttrs } from '../../services/paths'
 import { unsetSelectedPath } from './../../reducers/pathsReducer'
@@ -13,18 +13,25 @@ MapboxGL.accessToken = process.env.REACT_APP_MB_ACCESS || 'Mapbox token is neede
 const mapCenter = process.env.NODE_ENV !== 'production' ? initialMapCenter : initialMapCenterProd
 const zoom = process.env.NODE_ENV !== 'production' ? 13 : 12
 
-class Map extends React.Component {
+interface PropsType {
+  children: JSX.Element[],
+}
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      isReady: false,
-      loaded: false,
-      flying: false,
-    }
+type State = {
+  loaded: boolean,
+  isReady: boolean,
+  flying: boolean
+}
+
+class Map extends Component<PropsType & PropsFromRedux, State> {
+  map: any = null
+  mapContainer: any
+
+  state: State = {
+    isReady: false,
+    loaded: false,
+    flying: false,
   }
-
-  map = null
 
   componentDidMount() {
 
@@ -54,13 +61,14 @@ class Map extends React.Component {
       this.map.touchZoomRotate.disableRotation()
       this.map.dragRotate.disable()
       this.props.initializeMap()
+      console.log(this.props.userLocation)
     })
 
     this.map.on('moveend', () => {
       this.props.updateCamera(this.map.getCenter(), this.map.getZoom())
     })
 
-    this.map.on('click', (e) => {
+    this.map.on('click', (e: any) => {
       if (process.env.NODE_ENV !== 'production') {
         debugNearestEdgeAttrs(e.lngLat)
       }
@@ -72,7 +80,7 @@ class Map extends React.Component {
 
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps: any, prevState: State) {
     if (!this.map) return
 
     if (!prevState.isReady && this.state.isReady) {
@@ -84,7 +92,7 @@ class Map extends React.Component {
     this.updateWindowDimensions()
     window.addEventListener('resize', this.updateWindowDimensions)
     window.addEventListener('orientationchange', this.updateWindowDimensions)
-    this.mapContainer.addEventListener('touchmove', (e) => { e.preventDefault() }, { passive: false })
+    this.mapContainer.addEventListener('touchmove', (e: any) => { e.preventDefault() }, { passive: false })
   }
 
   updateWindowDimensions = () => {
@@ -105,7 +113,7 @@ class Map extends React.Component {
   }
 
   render() {
-    const mapStyle = {
+    const mapStyle: any = {
       position: 'relative',
       top: 0,
       bottom: 0,
@@ -119,7 +127,7 @@ class Map extends React.Component {
     }
 
     const children = React.Children.map(this.props.children, child =>
-      React.cloneElement(child, { map: this.map }))
+      React.cloneElement(child as React.ReactElement<any>, { map: this.map }))
 
     return (
       <div style={mapStyle} ref={el => { this.mapContainer = el }}>
@@ -129,11 +137,16 @@ class Map extends React.Component {
   }
 }
 
+const mapStateToProps = (state: ReduxState) => ({
+  userLocation: state.userLocation,
+})
+
 const mapDispatchToProps = {
   initializeMap,
   updateCamera,
   unsetSelectedPath,
 }
 
-const ConnectedMap = connect(null, mapDispatchToProps)(Map)
-export default ConnectedMap
+const connector = connect(mapStateToProps, mapDispatchToProps)
+type PropsFromRedux = ConnectedProps<typeof connector>
+export default connector(Map)

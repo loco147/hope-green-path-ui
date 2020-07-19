@@ -14,18 +14,18 @@ const spin = keyframes`
 const Spinner = styled.div`
   svg {
     display: block;
-    animation: ${spin} 1.3s linear infinite;
+    animation: ${spin} 0.9s linear infinite;
   }
 `
 
-const StyledLoadingIcon = styled(LoadingIcon)`   
-  ${props => props.size && css`
+const StyledLoadingIcon = styled(LoadingIcon)<{size?: number}>`
+  ${props => props.size && css<{size?: number}>`
     height: ${props => props.size || '50'}px;
     width: auto;
     `}
 `
 
-const LoadAnimation = ({ size }) => {
+const LoadAnimation = ({ size }: { size: number }) => {
 
   return (
     <Spinner>

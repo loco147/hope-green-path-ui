@@ -1,14 +1,23 @@
 import { turf } from '../utils/index'
+import { Action } from 'redux'
+import { LngLat } from 'mapbox-gl'
 
 const initialMapState = {
   initialized: false,
   zoomToBbox: [],
   center: {},
   zoom: 0,
-  mouseOnFeature: null,
 }
 
-const mapReducer = (store = initialMapState, action) => {
+interface MapAction extends Action {
+  origCoords: [number, number],
+  destCoords: [number, number],
+  userLocFC: PointFeatureCollection,
+  zoom: number,
+  center: LngLat
+}
+
+const mapReducer = (store: MapReducer = initialMapState, action: MapAction) => {
 
   switch (action.type) {
 
@@ -24,7 +33,7 @@ const mapReducer = (store = initialMapState, action) => {
       return { ...store, zoomToBbox: turf.getBbox(turf.getBuffer(action.userLocFC, 250)) }
     }
 
-    case 'SET_ORIGIN_TO_USER_LOC':
+    case 'SET_ORIGIN_TO_USER_LOC':      
       return { ...store, zoomToBbox: turf.getBbox(turf.getBuffer(action.userLocFC, 400)) }
 
     case 'UPDATE_CAMERA':
@@ -39,11 +48,7 @@ export const initializeMap = () => {
   return { type: 'INITIALIZE_MAP' }
 }
 
-export const zoomToFeature = (feature) => {
-  return { type: 'ZOOM_TO_FEATURE', feature }
-}
-
-export const updateCamera = (center, zoom) => {
+export const updateCamera = (center: LngLat, zoom: number) => {
   return { type: 'UPDATE_CAMERA', center, zoom }
 }
 

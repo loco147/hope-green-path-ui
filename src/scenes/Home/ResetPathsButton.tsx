@@ -25,6 +25,6 @@ export const Button = styled.div`
   }
 `
 
-const ResetPathsButton = ({ handleClick }) => <Button onClick={handleClick}>Reset</Button>
+const ResetPathsButton = ({ handleClick }: { handleClick: React.MouseEventHandler<HTMLElement> }) => <Button onClick={handleClick}>Reset</Button>
 
 export default ResetPathsButton

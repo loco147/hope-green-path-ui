@@ -1,12 +1,12 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
-import { connect } from 'react-redux'
+import { connect, ConnectedProps } from 'react-redux'
 import { IoIosClose } from 'react-icons/io'
 import UseCurrLocButton from './UseCurrLocButton'
 import { useUserLocationOrigin, resetOrig, resetDest } from '../../reducers/origDestReducer'
 import LoadAnimation from './../LoadAnimation/LoadAnimation'
 
-const Container = styled.div`
+const Container = styled.div<{ hide?: boolean }>`
   display: flex;
   align-items: center;
   background-color: rgba(255,255,255,0.98);
@@ -80,11 +80,11 @@ const StyledDisclaimer = styled.div`
   }
 `
 
-const roundCoords = (coord) => {
+const roundCoords = (coord: number) => {
   return Math.round(coord * 10000) / 10000
 }
 
-const FormattedCoords = ({ feat }) => {
+const FormattedCoords = ({ feat }: { feat: PointFeature }) => {
   const x = feat.geometry.coordinates[0]
   const y = feat.geometry.coordinates[1]
   return (
@@ -94,12 +94,12 @@ const FormattedCoords = ({ feat }) => {
   )
 }
 
-const OrigDestPanel = (props) => {
+const OrigDestPanel = (props: PropsFromRedux) => {
   const { origDestFC, userLocation, useUserLocOrigin, waitUserLocOrigin, showingPaths, waitingPaths } = props
   const { resetOrig, resetDest } = props
 
-  const origFeats = origDestFC.features.filter(feat => feat.properties.type === 'orig')
-  const destFeats = origDestFC.features.filter(feat => feat.properties.type === 'dest')
+  const origFeats = origDestFC.features.filter((feat: PointFeature) => feat.properties.type === 'orig')
+  const destFeats = origDestFC.features.filter((feat: PointFeature) => feat.properties.type === 'dest')
   const orig = origFeats.length > 0 ? origFeats[0] : null
   const dest = destFeats.length > 0 ? destFeats[0] : null
   const showDisclaimer = !orig && !dest
@@ -146,7 +146,7 @@ const OrigDestPanel = (props) => {
   )
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: ReduxState) => ({
   userLocation: state.userLocation,
   showingPaths: state.paths.showingPaths,
   waitingPaths: state.paths.waitingPaths,
@@ -161,6 +161,6 @@ const mapDispatchToProps = {
   resetDest,
 }
 
-const ConnectedOrigDestPanel = connect(mapStateToProps, mapDispatchToProps)(OrigDestPanel)
-
-export default ConnectedOrigDestPanel
+const connector = connect(mapStateToProps, mapDispatchToProps)
+type PropsFromRedux = ConnectedProps<typeof connector>
+export default connector(OrigDestPanel)

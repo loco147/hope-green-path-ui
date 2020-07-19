@@ -1,9 +1,21 @@
 import styled, { css } from 'styled-components'
-import { bool } from 'prop-types'
 
-export const Button = styled.div.attrs(props => ({
+interface Props {
+  visible?: boolean,
+  border?: any,
+  small?: any,
+  smaller?: any,
+  smallest?: any,
+  green?: any,
+  white?: any,
+  bold?: any,
+  shadow?: any,
+  disabled?: boolean
+}
+
+export const Button = styled.div.attrs((props: Props) => ({
   style: ({ display: props.visible ? '' : 'none', })
-}))`
+}))<Props>`
   cursor: pointer;
   padding: 6px 13px;
   color: white;
@@ -59,10 +71,6 @@ export const Button = styled.div.attrs(props => ({
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.22), 0 6px 20px 0 rgba(0,0,0,0.14);
   `}
 `
-
-Button.propTypes = {
-  visible: bool
-}
 
 Button.defaultProps = {
   visible: true

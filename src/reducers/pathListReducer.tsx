@@ -1,9 +1,15 @@
+import { Action } from "redux"
+
 const initialPathList = {
   scrollToPath: '',
   routingId: 0,
 }
 
-const pathListReducer = (store = initialPathList, action) => {
+interface PathListAction extends Action {
+  pathId: string
+} 
+
+const pathListReducer = (store: PathListReducer = initialPathList, action: PathListAction) => {
 
   switch (action.type) {
 
@@ -14,7 +20,7 @@ const pathListReducer = (store = initialPathList, action) => {
   }
 }
 
-export const scrollToPath = (pathId) => {
+export const scrollToPath = (pathId: string) => {
   return { type: 'SCROLL_TO_PATH', pathId }
 }
 

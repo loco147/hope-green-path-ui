@@ -1,12 +1,13 @@
 import Cookies from 'cookies-js'
 import { showInfo } from './menuReducer'
 import { showSetDestinationTooltip } from './origDestReducer'
+import { Action } from 'redux'
 
 const initialVisitorState = {
   visitedBefore: false,
 }
 
-const visitorReducer = (store = initialVisitorState, action) => {
+const visitorReducer = (store: VisitorReducer = initialVisitorState, action: Action) => {
 
   switch (action.type) {
 
@@ -18,7 +19,7 @@ const visitorReducer = (store = initialVisitorState, action) => {
 }
 
 export const setVisitedStatusVisited = () => {
-  return async (dispatch) => {
+  return async (dispatch: any) => {
     Cookies.set('visited', 'yes', { expires: 365 })
     localStorage.setItem('visited', 'yes')
     console.log("set visited before cookie to 'yes'")
@@ -36,7 +37,7 @@ export const getVisitedStatus = () => {
 }
 
 export const showWelcomeIfFirstVisit = () => {
-  return async (dispatch) => {
+  return async (dispatch: any) => {
     const visited = getVisitedStatus()
     if (visited) {
       dispatch(showSetDestinationTooltip())

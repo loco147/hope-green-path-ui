@@ -22,7 +22,7 @@ const StyledIcon = styled.div`
   }
 `
 
-export const LocateButton = ({ handleClick }) => {
+export const LocateButton = ({ handleClick }: { handleClick: React.MouseEventHandler<HTMLElement> }) => {
   return (
     <StyledIcon onClick={handleClick}>
       <Locate />

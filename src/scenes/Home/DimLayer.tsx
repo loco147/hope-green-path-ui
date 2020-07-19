@@ -1,8 +1,8 @@
 import React from 'react'
-import { connect } from 'react-redux'
+import { connect, ConnectedProps } from 'react-redux'
 import styled from 'styled-components'
 
-const DimDiv = styled.div`
+const DimDiv = styled.div<{ visible?: boolean }>`
   visibility: ${props => props.visible ? 'visible' : 'hidden'};
   pointer-events: ${props => props.visible ? 'auto' : 'none'};
   opacity ${props => props.visible ? 1 : 0};
@@ -21,15 +21,15 @@ const DimDiv = styled.div`
   background: rgba(5,5,5,0.5);
 `
 
-const DimLayer = (props) => {
+const DimLayer = (props: PropsFromRedux) => {
 
   return (
     <DimDiv visible={props.menu.info} />
   )
 }
 
-const mapStateToProps = (state) => ({ menu: state.menu })
+const mapStateToProps = (state: ReduxState) => ({ menu: state.menu })
 
-const ConnectedDimLayer = connect(mapStateToProps, null)(DimLayer)
-
-export default ConnectedDimLayer
+const connector = connect(mapStateToProps, {})
+type PropsFromRedux = ConnectedProps<typeof connector>
+export default connector(DimLayer)

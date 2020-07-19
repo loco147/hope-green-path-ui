@@ -2,6 +2,7 @@ import { menu } from './../constants'
 import { setVisitedStatusVisited, getVisitedStatus } from './visitorReducer'
 import { showSetDestinationTooltip } from './origDestReducer'
 import { testGreenPathServiceConnection } from './pathsReducer'
+import { Action } from 'redux'
 
 const initialMenuState = {
   info: false,
@@ -9,7 +10,7 @@ const initialMenuState = {
   pathPanelContent: null,
 }
 
-const menuReducer = (store = initialMenuState, action) => {
+const menuReducer = (store: MenuReducer = initialMenuState, action: Action) => {
 
   switch (action.type) {
 
@@ -32,8 +33,8 @@ const menuReducer = (store = initialMenuState, action) => {
 
 export const showInfo = () => ({ type: 'SHOW_INFO' })
 
-export const hideInfo = (showingPaths) => {
-  return (dispatch) => {
+export const hideInfo = (showingPaths: boolean) => {
+  return (dispatch: any) => {
     const visited = getVisitedStatus()
     // if first visit, set visited cookie to yes and check connection to qp service
     if (!visited) {

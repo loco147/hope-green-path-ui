@@ -4,16 +4,25 @@ import { closePopup } from './mapPopupReducer'
 import { startTrackingUserLocation } from './userLocationReducer'
 import { showNotification } from './notificationReducer'
 import { utils } from './../utils/index'
+import { Action } from 'redux'
 
 const initialOrigDest = {
-  origDestFC: turf.asFeatureCollection(process.env.NODE_ENV !== 'production' ? initialOrigDestFeatures : []),
+  // @ts-ignore
+  origDestFC: turf.asPointFeatureCollection(process.env.NODE_ENV !== 'production' ? initialOrigDestFeatures : []),
   useUserLocOrigin: false,
   waitUserLocOrigin: false,
   error: null,
   showingPaths: false,
 }
 
-const pathsReducer = (store = initialOrigDest, action) => {
+interface PathAction extends Action {
+  lngLat: LngLat,
+  userLngLat: LngLat,
+  updateOrigDestFC: PointFeatureCollection,
+  coords: [number, number]
+} 
+
+const pathsReducer = (store: OrigDestReducer = initialOrigDest, action: PathAction) => {
 
   switch (action.type) {
 
@@ -110,34 +119,34 @@ export const resetDest = () => {
 }
 
 export const showSetDestinationTooltip = () => {
-  return async (dispatch) => {
+  return async (dispatch: any) => {
     dispatch(showNotification('Click on the map to set the origin / destination', 'info', 8))
   }
 }
 
-export const setOrigin = (lngLat, origDestFC) => {
-  return async (dispatch) => {
+export const setOrigin = (lngLat: LngLat, origDestFC: PointFeatureCollection) => {
+  return async (dispatch: any) => {
     const updateOrigDestFC = updateOriginToFC(origDestFC, lngLat)
     dispatch({ type: 'RESET_PATHS' })
     dispatch({ type: 'SET_ORIGIN', updateOrigDestFC })
-    dispatch(closePopup())
+    closePopup()
   }
 }
 
-export const setDest = (lngLat, origDestFC, routingId) => {
-  return async (dispatch) => {
+export const setDest = (lngLat: LngLat, origDestFC: PointFeatureCollection) => {
+  return async (dispatch: any) => {
     const updateOrigDestFC = updateDestToFC(origDestFC, lngLat)
     dispatch({ type: 'RESET_PATHS' })
     dispatch({ type: 'SET_TARGET', updateOrigDestFC })
-    dispatch(closePopup())
+    closePopup()
   }
 }
 
-export const useUserLocationOrigin = (userLocation) => {
-  return async (dispatch) => {
+export const useUserLocationOrigin = (userLocation: UserLocationReducer) => {
+  return async (dispatch: any) => {
     const userLngLat = turf.getLngLatFromFC(userLocation.userLocFC)
     dispatch({ type: 'RESET_PATHS' })
-    dispatch(closePopup())
+    closePopup()
     if (userLngLat) {
       dispatch({ type: 'SET_ORIGIN_TO_USER_LOC', userLngLat, userLocFC: userLocation.userLocFC })
     } else {
@@ -147,19 +156,19 @@ export const useUserLocationOrigin = (userLocation) => {
   }
 }
 
-const updateOriginToFC = (FC, lngLat) => {
+const updateOriginToFC = (FC: PointFeatureCollection, lngLat: LngLat) => {
   const features = FC.features
   const dest = features.filter(feat => feat.properties.type === 'dest')
-  const coords = [lngLat.lng, lngLat.lat]
+  const coords: [number, number] = [lngLat.lng, lngLat.lat]
   const orig = [turf.asPoint(coords, { type: 'orig' })]
-  return turf.asFeatureCollection(orig.concat(dest))
+  return turf.asPointFeatureCollection(orig.concat(dest))
 }
 
-const updateDestToFC = (FC, lngLat) => {
-  const features = FC.features
+const updateDestToFC = (FC: PointFeatureCollection, lngLat: LngLat) => {
+  const features: PointFeature[] = FC.features
   const orig = features.filter(feat => feat.properties.type === 'orig')
-  const coords = [lngLat.lng, lngLat.lat]
-  const dest = [turf.asPoint(coords, { type: 'dest' })]
+  const coords: [number, number] = [lngLat.lng, lngLat.lat]
+  const dest: PointFeature[] = [turf.asPoint(coords, { type: 'dest' })]
   return turf.asFeatureCollection(dest.concat(orig))
 }
 

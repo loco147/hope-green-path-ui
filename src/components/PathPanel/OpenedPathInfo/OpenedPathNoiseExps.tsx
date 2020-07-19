@@ -37,7 +37,7 @@ const KeyValueFlex = styled.div`
   margin: 0px;
   white-space: nowrap;
 `
-const DBKeyBox = styled.div`
+const DBKeyBox = styled.div<{ color: string }>`
   border-radius: 4px;
   margin: 2px 1px 2px 3px;
   color: black;
@@ -53,7 +53,17 @@ const ExposureBox = styled.div`
   color: black;
 `
 
-export const OpenedPathNoiseExps = ({ path }) => {
+const DBExposureRow = ({ dB, path }: { dB: DbClass, path: PathFeature }) => {
+  const dist = path.properties.noise_range_exps[dB]
+  return (
+    <KeyValueFlex>
+      <DBKeyBox color={dBColors[dB]}>{dB}dB</DBKeyBox>
+      <ExposureBox>{utils.getDurationStringFromDist(dist ? dist : 0, true)} </ExposureBox>
+    </KeyValueFlex>
+  )
+}
+
+export const OpenedPathNoiseExps = ({ path }: { path: PathFeature }) => {
   return (
     <StyledOpenedPathNoiseExps>
       <PathPropsRow>
@@ -69,15 +79,5 @@ export const OpenedPathNoiseExps = ({ path }) => {
         </FlexCols>
       </PathPropsRow>
     </StyledOpenedPathNoiseExps>
-  )
-}
-
-const DBExposureRow = ({ dB, path }) => {
-  const dist = path.properties.noise_range_exps[dB]
-  return (
-    <KeyValueFlex>
-      <DBKeyBox color={dBColors[dB]}>{dB}dB</DBKeyBox>
-      <ExposureBox>{utils.getDurationStringFromDist(dist ? dist : 0, true)} </ExposureBox>
-    </KeyValueFlex>
   )
 }

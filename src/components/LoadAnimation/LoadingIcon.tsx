@@ -7,7 +7,7 @@ const Svg = styled(Icon)`
   height: 54px;
 `
 
-export const LoadingIcon = ({ className }) => (
+export const LoadingIcon = ({ className }: {className?: any}) => (
   <Svg viewBox="0 0 80 80" className={className}>
     <path
       fill="#17af40f0"

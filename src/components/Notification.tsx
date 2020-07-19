@@ -1,5 +1,5 @@
 import React from 'react'
-import { connect } from 'react-redux'
+import { connect, ConnectedProps } from 'react-redux'
 import styled, { css } from 'styled-components'
 
 const OuterFlex = styled.div`
@@ -8,7 +8,7 @@ const OuterFlex = styled.div`
   margin: 0 10px 13px 10px;
   align-items: center;
 `
-const StyledNotificationDiv = styled.div`
+const StyledNotificationDiv = styled.div<{ look: string | null }>`
   padding: 7px 13px;
   border-radius: 5px;
   margin: 0;
@@ -31,7 +31,7 @@ const StyledNotificationDiv = styled.div`
   `}
 `
 
-const Notification = (props) => {
+const Notification = (props: PropsFromRedux) => {
   if (!props.notification.text && !props.origDestError) return null
   const look = props.origDestError ? 'error' : props.notification.look
 
@@ -49,11 +49,11 @@ const Notification = (props) => {
   )
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: ReduxState) => ({
   notification: state.notification,
   origDestError: state.origDest.error,
 })
 
-const ConnectedNotification = connect(mapStateToProps, null)(Notification)
-
-export default ConnectedNotification
+const connector = connect(mapStateToProps, {})
+type PropsFromRedux = ConnectedProps<typeof connector>
+export default connector(Notification)

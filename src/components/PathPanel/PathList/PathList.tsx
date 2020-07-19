@@ -1,7 +1,9 @@
 import React, { createRef } from 'react'
+import { connect, ConnectedProps } from 'react-redux'
 import styled from 'styled-components'
 import { pathTypes } from '../../../constants'
 import { OpenPathBox } from './../OpenClosePathBoxes'
+import { setSelectedPath, setOpenedPath } from '../../../reducers/pathsReducer'
 import PathListPathBox, { ShortestPathBox } from './PathListPathBox'
 import DbColorLegendBar from './../DbColorLegendBar'
 
@@ -10,9 +12,14 @@ const PathRowFlex = styled.div`
   justify-content: space-around;
 `
 
-class PathList extends React.Component {
+type State = {
+  linkVisible: boolean,
+  pathRefs: { [key: string]: any }
+}
 
-  constructor(props) {
+class PathList extends React.Component<PropsFromRedux, State> {
+
+  constructor(props: PropsFromRedux) {
     super(props)
     this.state = {
       linkVisible: true,
@@ -20,7 +27,7 @@ class PathList extends React.Component {
     }
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: PropsFromRedux) {
     const { quietPathFC, cleanPathFC, showingPathsType } = this.props.paths
     let pathRefs = this.state.pathRefs
     let updateRefs = false
@@ -36,7 +43,6 @@ class PathList extends React.Component {
       }
     }
     if (updateRefs) {
-      console.log('update refs')
       this.setState({ pathRefs })
     }
     if (prevProps.scrollToPath !== this.props.scrollToPath) {
@@ -48,13 +54,14 @@ class PathList extends React.Component {
     }
   }
 
-  openPathDisabled = (showingPathsType, pathProps) => {
+  openPathDisabled = (showingPathsType: ShowingPathsType, pathProps: PathProperties): boolean => {
     if (showingPathsType === pathTypes.clean) {
       return pathProps.missing_aqi
     }
     if (showingPathsType === pathTypes.quiet) {
       return pathProps.missing_noises
     }
+    return false
   }
 
   render() {
@@ -106,4 +113,16 @@ class PathList extends React.Component {
   }
 }
 
-export default PathList
+const mapStateToProps = (state: ReduxState) => ({
+  paths: state.paths,
+  scrollToPath: state.pathList.scrollToPath,
+})
+
+const mapDispatchToProps = {
+  setSelectedPath,
+  setOpenedPath
+}
+
+const connector = connect(mapStateToProps, mapDispatchToProps)
+type PropsFromRedux = ConnectedProps<typeof connector>
+export default connector(PathList)

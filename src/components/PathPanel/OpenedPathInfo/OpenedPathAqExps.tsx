@@ -31,7 +31,7 @@ const FlexCols = styled.div`
   padding: 0px 1px 0px 1px;
   justify-content: space-evenly;
 `
-const StyledAqiLabelBox = styled.div`
+const StyledAqiLabelBox = styled.div<{ aqiCl: AqiClass }>`
   border-radius: 8px;
   margin: 0px 3px 0px 3px;
   padding: 5px 7px;
@@ -48,7 +48,7 @@ const StyledAqiExposureRow = styled.div`
   flex-direction: row;
 `
 
-const AqiClLabelBox = ({ aqiCl }) => {
+const AqiClLabelBox = ({ aqiCl }: { aqiCl: AqiClass }) => {
   return (
     <StyledAqiLabelBox aqiCl={aqiCl}>
       {aqiLabels[aqiCl]}
@@ -56,7 +56,12 @@ const AqiClLabelBox = ({ aqiCl }) => {
   )
 }
 
-const AqExposureRow = ({ aqiCl, aqiClExp }) => {
+interface AqiExposureRowProps {
+  aqiCl: AqiClass,
+  aqiClExp: number
+}
+
+const AqExposureRow = ({ aqiCl, aqiClExp }: AqiExposureRowProps) => {
   return (
     <StyledAqiExposureRow>
       <AqiClLabelBox aqiCl={aqiCl} />
@@ -67,10 +72,10 @@ const AqExposureRow = ({ aqiCl, aqiClExp }) => {
   )
 }
 
-export const OpenedPathAqExps = ({ path }) => {
+export const OpenedPathAqExps = ({ path }: { path: PathFeature }) => {
   const aqiClExps = path.properties.aqi_cl_exps
   const aqiKeys = Object.keys(aqiClExps)
-  const aqiCls = aqiKeys.map(aqi => Number(aqi)).sort()
+  const aqiCls: AqiClass[] = aqiKeys.map(aqi => Number(aqi)).sort()
   return (
     <StyledOpenedPathExposures>
       <StyledOpenedPathExposures>

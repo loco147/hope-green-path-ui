@@ -1,11 +1,21 @@
 
-import MapboxGl from 'mapbox-gl/dist/mapbox-gl.js'
+import MapboxGl from 'mapbox-gl'
+import { Popup, Map } from 'mapbox-gl'
+import { Action } from 'redux'
 
-const initialMapPopups = { visible: false }
-let mbPopup
-let mapRef
+const initialMapPopups = { 
+  visible: false,
+  lngLat: {}
+}
 
-const mapPopupReducer = (store = initialMapPopups, action) => {
+let mbPopup: Popup
+let mapRef: Map
+
+interface PopupAction extends Action {
+  lngLat: LngLat
+}
+
+const mapPopupReducer = (store: MapPopupReducer = initialMapPopups, action: PopupAction) => {
 
   switch (action.type) {
 
@@ -23,15 +33,15 @@ const mapPopupReducer = (store = initialMapPopups, action) => {
   }
 }
 
-export const setSelectLocationsPopup = (lngLat, offset) => {
-  return async (dispatch) => {
+export const setSelectLocationsPopup = (lngLat: LngLat) => {
+  return async (dispatch: any) => {
     if (mbPopup) {
       mbPopup.remove()
       dispatch({ type: 'CLOSE_POPUP' })
     }
     dispatch({ type: 'SET_POPUP_LNGLAT', lngLat })
 
-    mbPopup = new MapboxGl.Popup({ closeOnClick: true, closeButton: true, offset: offset, anchor: 'bottom' })
+    mbPopup = new MapboxGl.Popup({ closeOnClick: true, closeButton: true, anchor: 'bottom' })
 
     mbPopup
       .setLngLat(lngLat)
@@ -43,12 +53,10 @@ export const setSelectLocationsPopup = (lngLat, offset) => {
 }
 
 export const closePopup = () => {
-  return async (dispatch) => {
-    if (mbPopup) mbPopup.remove()
-  }
+  if (mbPopup) mbPopup.remove()
 }
 
-export const setMapReferenceForPopups = (map) => {
+export const setMapReferenceForPopups = (map: Map) => {
   if (!mapRef) mapRef = map
 }
 

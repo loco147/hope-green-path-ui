@@ -1,10 +1,10 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
-import { connect } from 'react-redux'
+import { connect, ConnectedProps } from 'react-redux'
 import { getSetQuietPaths, getSetCleanPaths, setQuietPaths, setCleanPaths } from '../../reducers/pathsReducer'
 import { pathTypes } from '../../constants'
 
-const Button = styled.div`
+const Button = styled.div<{ disabled: boolean }>`
   cursor: pointer;
   padding: 5px 11px;
   color: white;
@@ -34,7 +34,12 @@ const Button = styled.div`
   `}
 `
 
-const StyledPathTypeLabel = styled.span`
+interface LabelProps {
+  disabled: boolean
+  toggleToPathType: string
+}
+
+const StyledPathTypeLabel = styled.span<LabelProps>`
   color: green;
   ${props => props.toggleToPathType === pathTypes.quiet && css`
     color: #6ff7ff;
@@ -51,7 +56,7 @@ const StyledPathTypeLabel = styled.span`
   `}
 `
 
-const odsMatch = (quietPathOd, cleanPathOd) => {
+const odsMatch = (quietPathOd: OdCoords, cleanPathOd: OdCoords) => {
   if (!quietPathOd || !cleanPathOd) {
     return false
   }
@@ -62,7 +67,7 @@ const odsMatch = (quietPathOd, cleanPathOd) => {
   return true
 }
 
-const getPathToggleFunc = (props) => {
+const getPathToggleFunc = (props: PropsFromRedux) => {
   const { showingPathsType, quietPathData, cleanPathData, routingId } = props
   const { getSetQuietPaths, getSetCleanPaths, setQuietPaths, setCleanPaths } = props
 
@@ -77,7 +82,7 @@ const getPathToggleFunc = (props) => {
   }
 }
 
-const TogglePathsButton = (props) => {
+const TogglePathsButton = (props: PropsFromRedux) => {
   const { cleanPathsAvailable, showingPathsType, quietPathData, cleanPathData } = props
   const actionType = odsMatch(quietPathData.od, cleanPathData.od) ? 'Show' : 'Find'
   const toggleToPathType = showingPathsType === pathTypes.clean ? pathTypes.quiet : pathTypes.clean
@@ -90,7 +95,7 @@ const TogglePathsButton = (props) => {
   )
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: ReduxState) => ({
   cleanPathsAvailable: state.paths.cleanPathsAvailable,
   routingId: state.paths.routingId,
   showingPathsType: state.paths.showingPathsType,
@@ -105,5 +110,6 @@ const mapDispatchToProps = {
   setCleanPaths,
 }
 
-const ConnectedTogglePathsButton = connect(mapStateToProps, mapDispatchToProps)(TogglePathsButton)
-export default ConnectedTogglePathsButton
+const connector = connect(mapStateToProps, mapDispatchToProps)
+type PropsFromRedux = ConnectedProps<typeof connector>
+export default connector(TogglePathsButton)
