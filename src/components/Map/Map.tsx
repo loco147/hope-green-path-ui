@@ -24,7 +24,7 @@ type State = {
 }
 
 class Map extends Component<PropsType & PropsFromRedux, State> {
-  map: any = null
+  map: MbMap = null
   mapContainer: any
 
   state: State = {
@@ -58,21 +58,21 @@ class Map extends Component<PropsType & PropsFromRedux, State> {
       console.log('map loaded')
       this.setState({ loaded: true, isReady: true })
       // this.map.addControl(new MapboxGL.NavigationControl({ showZoom: false }), 'top-right')
-      this.map.touchZoomRotate.disableRotation()
-      this.map.dragRotate.disable()
+      this.map!.touchZoomRotate.disableRotation()
+      this.map!.dragRotate.disable()
       this.props.initializeMap()
       console.log(this.props.userLocation)
     })
 
     this.map.on('moveend', () => {
-      this.props.updateCamera(this.map.getCenter(), this.map.getZoom())
+      this.props.updateCamera(this.map!.getCenter(), this.map!.getZoom())
     })
 
     this.map.on('click', (e: any) => {
       if (process.env.NODE_ENV !== 'production') {
         debugNearestEdgeAttrs(e.lngLat)
       }
-      const features = utils.getLayersFeaturesAroundClickE(['pathsGreen', 'shortestPath'], e, clickTol, this.map)
+      const features = utils.getLayersFeaturesAroundClickE(['pathsGreen', 'shortestPath'], e, clickTol, this.map!)
       if (features.length === 0) {
         this.props.unsetSelectedPath()
       }
@@ -80,7 +80,7 @@ class Map extends Component<PropsType & PropsFromRedux, State> {
 
   }
 
-  componentDidUpdate(prevProps: any, prevState: State) {
+  componentDidUpdate(prevProps: PropsFromRedux, prevState: State) {
     if (!this.map) return
 
     if (!prevState.isReady && this.state.isReady) {
@@ -107,7 +107,7 @@ class Map extends Component<PropsType & PropsFromRedux, State> {
   }
 
   componentWillUnmount() {
-    setTimeout(() => this.map.remove(), 300)
+    setTimeout(() => this.map!.remove(), 300)
     window.removeEventListener('resize', this.updateWindowDimensions)
     window.removeEventListener('orientationchange', this.updateWindowDimensions)
   }

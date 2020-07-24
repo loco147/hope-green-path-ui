@@ -6,20 +6,20 @@ import { pathTypes, statTypes } from './../constants'
 import { utils } from './../utils/index'
 import { Action } from 'redux'
 
-const initialPaths = {
+const initialPaths: PathsReducer = {
   cleanPathsAvailable: false,
   showingPathsType: null,
   showingStatsType: null,
   quietPathData: { od: null, data: null },
   cleanPathData: { od: null, data: null },
-  selPathFC: turf.asPathFeatureCollection([]),
-  shortPathFC: turf.asPathFeatureCollection([]),
-  quietPathFC: turf.asPathFeatureCollection([]),
-  cleanPathFC: turf.asPathFeatureCollection([]),
-  quietEdgeFC: turf.asFeatureCollection([]),
-  cleanEdgeFC: turf.asFeatureCollection([]),
+  selPathFC: { type: 'FeatureCollection', features: [] },
+  shortPathFC: { type: 'FeatureCollection', features: [] },
+  quietPathFC: { type: 'FeatureCollection', features: [] },
+  cleanPathFC: { type: 'FeatureCollection', features: [] },
+  quietEdgeFC: { type: 'FeatureCollection', features: [] },
+  cleanEdgeFC: { type: 'FeatureCollection', features: [] },
   openedPath: null,
-  lengthLimit: { limit: 0, count: 0, label: '' },
+  lengthLimit: { limit: 0, count: 0, label: '', cost_coeff: 0 },
   lengthLimits: [],
   waitingPaths: false,
   showingPaths: false,
@@ -35,11 +35,11 @@ interface PathsAction extends Action {
   initialLengthLimit: LengthLimit,
   origCoords: [number, number],
   destCoords: [number, number],
-  pathData: any,
+  pathData: PathDataResponse,
   quietPaths: PathFeature[],
   cleanPaths: PathFeature[],
-  quietEdgeFC: FeatureCollection,
-  cleanEdgeFC: FeatureCollection,
+  quietEdgeFC: EdgeFeatureCollection,
+  cleanEdgeFC: EdgeFeatureCollection,
   selPathId: string,
   selPath: PathFeature,
   path: PathFeature
@@ -370,7 +370,7 @@ export const setSelectedPath = (selPathId: string) => {
   return { type: 'SET_SELECTED_PATH', selPathId }
 }
 
-export const setOpenedPath = (path: any) => {
+export const setOpenedPath = (path: PathFeature) => {
   return { type: 'SET_OPENED_PATH', path }
 }
 
@@ -386,7 +386,7 @@ export const unsetSelectedPath = () => {
   return { type: 'UNSET_SELECTED_PATH' }
 }
 
-export const resetPaths = (lngLat: LngLat | null) => {
+export const resetPaths = (lngLat: LngLat | null) => {
   return async (dispatch: any) => {
     dispatch({ type: 'RESET_PATHS', lngLat })
     if (process.env.NODE_ENV === 'production') {
@@ -396,7 +396,7 @@ export const resetPaths = (lngLat: LngLat | null) => {
   }
 }
 
-const clickedPathAgain = (storeSelPathFC: any, clickedPathId: string) => {
+const clickedPathAgain = (storeSelPathFC: PathFeatureCollection, clickedPathId: string) => {
   return storeSelPathFC.features[0] && clickedPathId === storeSelPathFC.features[0].properties.id
 }
 

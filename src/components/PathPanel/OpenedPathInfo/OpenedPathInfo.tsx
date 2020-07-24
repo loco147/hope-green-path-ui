@@ -30,16 +30,16 @@ const OpenedPathInfo = ({ paths, unsetOpenedPath }: PropsFromRedux) => {
   const { shortPathFC, openedPath, showingStatsType } = paths
   const shortPath = shortPathFC.features[0]
 
-  if (openedPath.properties.type === pathTypes.short) {
+  if (openedPath!.properties.type === pathTypes.short) {
     if (showingStatsType === statTypes.aq) {
-      return <ShortPathAqiExposures path={openedPath} unsetOpenedPath={unsetOpenedPath} />
+      return <ShortPathAqiExposures path={openedPath!} unsetOpenedPath={unsetOpenedPath} />
     } else {
-      return <ShortPathNoiseExposures path={openedPath} unsetOpenedPath={unsetOpenedPath} />
+      return <ShortPathNoiseExposures path={openedPath!} unsetOpenedPath={unsetOpenedPath} />
     }
   } else if (showingStatsType === statTypes.aq) {
-    return <PathAqiExposures path={openedPath} shortPath={shortPath} unsetOpenedPath={unsetOpenedPath} />
+    return <PathAqiExposures path={openedPath!} shortPath={shortPath} unsetOpenedPath={unsetOpenedPath} />
   } else {
-    return <PathNoiseExposures path={openedPath} shortPath={shortPath} unsetOpenedPath={unsetOpenedPath} />
+    return <PathNoiseExposures path={openedPath!} shortPath={shortPath} unsetOpenedPath={unsetOpenedPath} />
   }
 }
 

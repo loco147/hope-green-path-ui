@@ -6,7 +6,7 @@ import { showNotification } from './notificationReducer'
 import { utils } from './../utils/index'
 import { Action } from 'redux'
 
-const initialOrigDest = {
+const initialOrigDest: OrigDestReducer = {
   // @ts-ignore
   origDestFC: turf.asPointFeatureCollection(process.env.NODE_ENV !== 'production' ? initialOrigDestFeatures : []),
   useUserLocOrigin: false,

@@ -6,7 +6,7 @@ const geoOptions = {
   maximumAge: 30000,
   timeout: 8000,
 }
-const initialUserLocation = {
+const initialUserLocation: UserLocationReducer = {
   watchId: 0,
   expireTime: '',
   error: null,

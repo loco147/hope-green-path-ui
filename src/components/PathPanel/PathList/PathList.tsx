@@ -1,4 +1,4 @@
-import React, { createRef } from 'react'
+import React, { createRef, RefObject } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
 import styled from 'styled-components'
 import { pathTypes } from '../../../constants'
@@ -14,7 +14,7 @@ const PathRowFlex = styled.div`
 
 type State = {
   linkVisible: boolean,
-  pathRefs: { [key: string]: any }
+  pathRefs: { [key: string]: RefObject<any> }
 }
 
 class PathList extends React.Component<PropsFromRedux, State> {
@@ -88,23 +88,23 @@ class PathList extends React.Component<PropsFromRedux, State> {
           <ShortestPathBox
             path={shortPath}
             handleClick={() => setSelectedPath(shortPath.properties.id)}
-            showingPathsType={showingPathsType}
-            showingStatsType={showingStatsType}
+            showingPathsType={showingPathsType!}
+            showingStatsType={showingStatsType!}
             selected={shortPath.properties.id === selPathId} />
           <OpenPathBox
-            disabled={this.openPathDisabled(showingPathsType, shortPath.properties)}
+            disabled={this.openPathDisabled(showingPathsType!, shortPath.properties)}
             handleClick={() => setOpenedPath(shortPath)} />
         </PathRowFlex>
         {greenPaths.map((path) => (
           <PathRowFlex key={path.properties.id} ref={this.state.pathRefs[path.properties.id]}>
             <PathListPathBox
               path={path}
-              showingPathsType={showingPathsType}
-              showingStatsType={showingStatsType}
+              showingPathsType={showingPathsType!}
+              showingStatsType={showingStatsType!}
               handleClick={() => setSelectedPath(path.properties.id)}
               selected={path.properties.id === selPathId} />
             <OpenPathBox
-              disabled={this.openPathDisabled(showingPathsType, shortPath.properties)}
+              disabled={this.openPathDisabled(showingPathsType!, shortPath.properties)}
               handleClick={() => setOpenedPath(path)} />
           </PathRowFlex>
         ))}

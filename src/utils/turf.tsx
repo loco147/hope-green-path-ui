@@ -19,10 +19,6 @@ export const asPointFeatureCollection = (features: PointFeature[]) => {
   return featureCollection(features)
 }
 
-export const asPathFeatureCollection = (features: PathFeature[]) => {
-  return featureCollection(features)
-}
-
 export const getBuffer = (geojsonFeature: FeatureCollection, dist: number) => {
   return buffer(geojsonFeature, dist, { units: 'meters' })
 }

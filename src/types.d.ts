@@ -8,6 +8,8 @@ type FeatureCollection = import('@turf/helpers').FeatureCollection
 
 type Feature = import('@turf/helpers').Feature
 
+type MbMap = import('mapbox-gl').Map | null
+
 interface PointFeature extends Feature {
   geometry: import('@turf/helpers').Point
   properties: { type: string }
@@ -100,11 +102,17 @@ interface PathFeatureCollection extends FeatureCollection {
 }
 
 interface EdgeFeature extends Feature {
+  geometry: import('@turf/helpers').Geometry
   properties: { value: number, p_length: number }
 }
 
 interface EdgeFeatureCollection extends FeatureCollection {
   features: EdgeFeature[]
+}
+
+enum TravelMode {
+  WALK = 'walk',
+  BIKE = 'bike'
 }
 
 type ShowingPathsType = 'quiet' | 'clean'
@@ -113,7 +121,7 @@ type StatsType = 'noise' | 'air quality'
 
 interface MapReducer {
   initialized: boolean,
-  zoomToBbox: import('@turf/helpers').BBox | number[],
+  zoomToBbox: [number, number, number, number],
   center: LngLat | {},
   zoom: number
 }
@@ -134,17 +142,17 @@ interface NotificationReducer {
 
 interface PathsReducer {
   cleanPathsAvailable: boolean,
-  showingPathsType: ShowingPathsType,
-  showingStatsType: StatsType,
-  quietPathData: { od: OdCoords, data: PathDataResponse },
-  cleanPathData: { od: OdCoords, data: PathDataResponse },
+  showingPathsType: ShowingPathsType | null,
+  showingStatsType: StatsType | null,
+  quietPathData: { od: OdCoords | null, data: PathDataResponse | null },
+  cleanPathData: { od: OdCoords | null, data: PathDataResponse | null },
   selPathFC: PathFeatureCollection,
   shortPathFC: PathFeatureCollection,
   quietPathFC: PathFeatureCollection,
   cleanPathFC: PathFeatureCollection,
   quietEdgeFC: EdgeFeatureCollection,
   cleanEdgeFC: EdgeFeatureCollection,
-  openedPath: PathFeature,
+  openedPath: PathFeature | null,
   lengthLimit: LengthLimit,
   lengthLimits: LengthLimit[],
   waitingPaths: boolean,

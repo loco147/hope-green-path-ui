@@ -51,7 +51,7 @@ const PathPanel = (props: PropsFromRedux) => {
 
   if (!showingPaths || !pathPanelVisible) return null
 
-  const showingOpenedPath = openedPath && !(pathPanelContent === menu.lengthLimitSelector)
+  const showingOpenedPath = openedPath !== null && !(pathPanelContent === menu.lengthLimitSelector)
 
   return (
     <PathPanelContainer showingOpenedPath={showingOpenedPath}>

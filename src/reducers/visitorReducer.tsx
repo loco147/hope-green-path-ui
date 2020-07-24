@@ -3,8 +3,8 @@ import { showInfo } from './menuReducer'
 import { showSetDestinationTooltip } from './origDestReducer'
 import { Action } from 'redux'
 
-const initialVisitorState = {
-  visitedBefore: false,
+const initialVisitorState: VisitorReducer = {
+  visitedBefore: false
 }
 
 const visitorReducer = (store: VisitorReducer = initialVisitorState, action: Action) => {

@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { connect } from 'react-redux'
+import { connect, ConnectedProps } from 'react-redux'
 import { menu, pathTypes } from './../../constants'
 import TogglePathsButton from './TogglePathsButton'
 import { togglePathPanel, showPathList, showMaxLengthFilterSelector } from './../../reducers/menuReducer'
@@ -32,7 +32,7 @@ const Margin = styled.div<{ left?: number }>`
   margin-left: ${props => props.left ? props.left : '0'}px;
 `
 
-const BottomControlPanel = (props: any) => {
+const BottomControlPanel = (props: propsFromRedux) => {
   const { showingPaths, showingPathsType, pathPanelVisible, pathPanelContent, quietPathCount, cleanPathCount,
     lengthLimit, lengthLimits, togglePathPanel, showPathList, showMaxLengthFilterSelector } = props
 
@@ -76,5 +76,6 @@ const mapStateToProps = (state: ReduxState) => ({
   lengthLimits: state.paths.lengthLimits,
 })
 
-const ConnectedBottomControlPanel = connect(mapStateToProps, { togglePathPanel, showPathList, showMaxLengthFilterSelector })(BottomControlPanel)
-export default ConnectedBottomControlPanel
+const connector = connect(mapStateToProps, { togglePathPanel, showPathList, showMaxLengthFilterSelector })
+type propsFromRedux = ConnectedProps<typeof connector>
+export default connector(BottomControlPanel)

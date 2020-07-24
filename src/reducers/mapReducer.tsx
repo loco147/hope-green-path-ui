@@ -2,9 +2,9 @@ import { turf } from '../utils/index'
 import { Action } from 'redux'
 import { LngLat } from 'mapbox-gl'
 
-const initialMapState = {
+const initialMapState: MapReducer = {
   initialized: false,
-  zoomToBbox: [],
+  zoomToBbox: [0,0,0,0],
   center: {},
   zoom: 0,
 }

@@ -1,6 +1,6 @@
 import { Action } from "redux"
 
-const initialNotification = {
+const initialNotification: NotificationReducer = {
     text: null,
     look: null,
 }

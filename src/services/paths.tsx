@@ -23,7 +23,7 @@ export const getConnectionTestResponse = async (): Promise<string | any> => {
   return response
 }
 
-export const getCleanPathServiceStatus = async () => {
+export const getCleanPathServiceStatus = async (): Promise<string | any> => {
   console.log('testing clean path service status at:', baseurl)
   const response = await axios.get(baseurl.concat('aqistatus'))
   return response.data

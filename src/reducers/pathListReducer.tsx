@@ -1,6 +1,6 @@
 import { Action } from "redux"
 
-const initialPathList = {
+const initialPathList: PathListReducer = {
   scrollToPath: '',
   routingId: 0,
 }

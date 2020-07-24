@@ -4,7 +4,7 @@ import { showSetDestinationTooltip } from './origDestReducer'
 import { testGreenPathServiceConnection } from './pathsReducer'
 import { Action } from 'redux'
 
-const initialMenuState = {
+const initialMenuState: MenuReducer = {
   info: false,
   pathPanel: false,
   pathPanelContent: null,

@@ -116,7 +116,7 @@ export const getBestPath = (greenPathFeatures: PathFeature[]) => {
 
 const getLengthLimit = (length: number, rounding: number) => Math.ceil(length / rounding) * rounding
 
-export const getLengthLimits = (greenPathFeatures: any[]) => {
+export const getLengthLimits = (greenPathFeatures: PathFeature[]) => {
   const pathLengths = greenPathFeatures.map(feat => feat.properties.length)
   const pathProps = greenPathFeatures.map(feat => feat.properties)
   const limits = pathProps.reduce((acc: LengthLimit[], props) => {

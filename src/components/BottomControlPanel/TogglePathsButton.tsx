@@ -56,7 +56,7 @@ const StyledPathTypeLabel = styled.span<LabelProps>`
   `}
 `
 
-const odsMatch = (quietPathOd: OdCoords, cleanPathOd: OdCoords) => {
+const odsMatch = (quietPathOd: OdCoords | null, cleanPathOd: OdCoords | null) => {
   if (!quietPathOd || !cleanPathOd) {
     return false
   }
@@ -71,14 +71,14 @@ const getPathToggleFunc = (props: PropsFromRedux) => {
   const { showingPathsType, quietPathData, cleanPathData, routingId } = props
   const { getSetQuietPaths, getSetCleanPaths, setQuietPaths, setCleanPaths } = props
 
-  if (odsMatch(quietPathData.od, cleanPathData.od) === true) {
+  if (odsMatch(quietPathData.od, cleanPathData.od)) {
     return showingPathsType === pathTypes.quiet
-      ? setCleanPaths(quietPathData.od[0], quietPathData.od[1], routingId, cleanPathData.data)
-      : setQuietPaths(cleanPathData.od[0], cleanPathData.od[1], routingId, quietPathData.data)
+      ? setCleanPaths(quietPathData.od![0], quietPathData.od![1], routingId, cleanPathData.data!)
+      : setQuietPaths(cleanPathData.od![0], cleanPathData.od![1], routingId, quietPathData.data!)
   } else {
     return showingPathsType === pathTypes.quiet
-      ? getSetCleanPaths(quietPathData.od[0], quietPathData.od[1], routingId)
-      : getSetQuietPaths(cleanPathData.od[0], cleanPathData.od[1], routingId)
+      ? getSetCleanPaths(quietPathData.od![0], quietPathData.od![1], routingId)
+      : getSetQuietPaths(cleanPathData.od![0], cleanPathData.od![1], routingId)
   }
 }
 

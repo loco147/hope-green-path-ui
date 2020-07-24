@@ -1,7 +1,7 @@
 import { Component } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
 
-class MapControl extends Component<PropsFromRedux, { map: any }> {
+class MapControl extends Component<PropsFromRedux & { map?: MbMap }> {
 
   getFitBoundsOptions = () => {
     if (window.innerWidth < 544) {
@@ -10,15 +10,14 @@ class MapControl extends Component<PropsFromRedux, { map: any }> {
   }
 
   componentDidUpdate = (prevProps: PropsFromRedux) => {
-    // @ts-ignore - this is given to all children of Map
     const { map } = this.props
     const { zoomToBbox } = this.props.mapState
 
     const { userLocHistory } = this.props.userLocation
     if (userLocHistory.length === 1 && prevProps.userLocation.userLocHistory.length === 0) {
-      map.easeTo({ center: userLocHistory[0], zoom: 13.7 })
+      map!.easeTo({ center: userLocHistory[0], zoom: 13.7 })
     }
-    if (zoomToBbox !== prevProps.mapState.zoomToBbox) map.fitBounds(zoomToBbox, this.getFitBoundsOptions())
+    if (zoomToBbox !== prevProps.mapState.zoomToBbox) map!.fitBounds(zoomToBbox, this.getFitBoundsOptions())
 
   }
   render() { return null }
