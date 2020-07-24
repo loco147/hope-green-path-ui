@@ -35,7 +35,7 @@ const ShowInfoButton = styled.div`
     content: 'i';
   }
   @media (min-width: 600px) {
-    &:hover { 
+    &:hover {
       margin-right: 2px;
     }
   }

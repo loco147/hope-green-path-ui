@@ -142,6 +142,7 @@ interface NotificationReducer {
 
 interface PathsReducer {
   cleanPathsAvailable: boolean,
+  travelMode: TravelMode,
   showingPathsType: ShowingPathsType | null,
   showingStatsType: StatsType | null,
   quietPathData: { od: OdCoords | null, data: PathDataResponse | null },

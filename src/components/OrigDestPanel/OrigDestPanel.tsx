@@ -3,14 +3,17 @@ import styled, { css } from 'styled-components'
 import { connect, ConnectedProps } from 'react-redux'
 import { IoIosClose } from 'react-icons/io'
 import UseCurrLocButton from './UseCurrLocButton'
+import RoutingSettingsRow from './RoutingSettingsRow'
 import { useUserLocationOrigin, resetOrig, resetDest } from '../../reducers/origDestReducer'
 import LoadAnimation from './../LoadAnimation/LoadAnimation'
 
-const Container = styled.div<{ hide?: boolean }>`
+const Container = styled.div`
+  background-color: rgba(255,255,255,0.98);
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.1), 0 6px 20px 0 rgba(0,0,0,0.06);
+`
+const OdContainer = styled.div<{ hide?: boolean }>`
   display: flex;
   align-items: center;
-  background-color: rgba(255,255,255,0.98);
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.15), 0 6px 20px 0 rgba(0,0,0,0.09);
   ${props => props.hide === true && css`
     display: none;
   `}
@@ -66,7 +69,7 @@ const ResetLocButton = styled.div`
 const StyledDisclaimer = styled.div`
   color: black;
   padding: 3px 6px;
-  margin 0 5px 0 5px;
+  margin: 0 5px 0 5px;
   font-size: 12px;
   font-weight: 500;
   text-align: center;
@@ -75,7 +78,7 @@ const StyledDisclaimer = styled.div`
     font-weight: 450;
   }
   @media (min-width: 980px) {
-    width 345px;
+    width: 345px;
     border: none;
   }
 `
@@ -105,43 +108,46 @@ const OrigDestPanel = (props: PropsFromRedux) => {
   const showDisclaimer = !orig && !dest
 
   return (
-    <Container hide={waitingPaths || showingPaths}>
-      <Wrapper>
-        {showDisclaimer && <StyledDisclaimer>
-          The app and its real-time air quality data source are still under active development and hence not guaranteed to work at all times.
+    <Container>
+      <OdContainer hide={waitingPaths || showingPaths}>
+        <Wrapper>
+          {showDisclaimer && <StyledDisclaimer>
+            The app and its real-time air quality data source are still under active development and hence not guaranteed to work at all times.
           </StyledDisclaimer>}
-        <FlexRow>
-          <LocationType>From:</LocationType>
-          {orig
-            ? <LocationInfo>
-              <FormattedCoords feat={orig} />
-              {orig && !(showingPaths || waitingPaths)
-                ? <ResetLocButton onClick={resetOrig}><Close /></ResetLocButton>
+          <FlexRow>
+            <LocationType>From:</LocationType>
+            {orig
+              ? <LocationInfo>
+                <FormattedCoords feat={orig} />
+                {orig && !(showingPaths || waitingPaths)
+                  ? <ResetLocButton onClick={resetOrig}><Close /></ResetLocButton>
+                  : null}
+              </LocationInfo>
+              : <Flex>
+                <LocationInfo>
+                  {waitUserLocOrigin
+                    ? <LoadAnimation size={18} />
+                    : 'unset'}
+                </LocationInfo>
+                {useUserLocOrigin
+                  ? null
+                  : <UseCurrLocButton handleClick={() => props.useUserLocationOrigin(userLocation)} />}
+              </Flex>}
+          </FlexRow>
+          <FlexRow>
+            <LocationType>To:</LocationType>
+            <LocationInfo>
+              {dest
+                ? <FormattedCoords feat={dest} />
+                : 'unset'}
+              {dest && !(showingPaths || waitingPaths)
+                ? <ResetLocButton onClick={resetDest}><Close /></ResetLocButton>
                 : null}
             </LocationInfo>
-            : <Flex>
-              <LocationInfo>
-                {waitUserLocOrigin
-                  ? <LoadAnimation size={18} />
-                  : 'unset'}
-              </LocationInfo>
-              {useUserLocOrigin
-                ? null
-                : <UseCurrLocButton handleClick={() => props.useUserLocationOrigin(userLocation)} />}
-            </Flex>}
-        </FlexRow>
-        <FlexRow>
-          <LocationType>To:</LocationType>
-          <LocationInfo>
-            {dest
-              ? <FormattedCoords feat={dest} />
-              : 'unset'}
-            {dest && !(showingPaths || waitingPaths)
-              ? <ResetLocButton onClick={resetDest}><Close /></ResetLocButton>
-              : null}
-          </LocationInfo>
-        </FlexRow>
-      </Wrapper>
+          </FlexRow>
+        </Wrapper>
+      </OdContainer>
+      <RoutingSettingsRow />
     </Container>
   )
 }

@@ -8,6 +8,7 @@ import { Action } from 'redux'
 
 const initialPaths: PathsReducer = {
   cleanPathsAvailable: false,
+  travelMode: TravelMode.WALK,
   showingPathsType: null,
   showingStatsType: null,
   quietPathData: { od: null, data: null },
