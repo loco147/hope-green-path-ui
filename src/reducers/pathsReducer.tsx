@@ -8,6 +8,7 @@ import { Action } from 'redux'
 const initialPaths: PathsReducer = {
   cleanPathsAvailable: false,
   travelMode: TravelMode.WALK,
+  showingTravelMode: null,
   showingPathsType: null,
   showingStatsType: null,
   quietPathData: null,
@@ -109,6 +110,7 @@ const pathsReducer = (store = initialPaths, action: PathsAction) => {
       if (cancelledRouting) return store
       return {
         ...store,
+        showingTravelMode: action.travelMode,
         showingPathsType: RoutingMode.QUIET,
         showingStatsType: statTypes.noise,
         quietPathFC: turf.asFeatureCollection(action.quietPaths),
@@ -133,6 +135,7 @@ const pathsReducer = (store = initialPaths, action: PathsAction) => {
       if (cancelledRouting) return store
       return {
         ...store,
+        showingTravelMode: action.travelMode,
         showingPathsType: RoutingMode.CLEAN,
         showingStatsType: statTypes.aq,
         cleanPathFC: turf.asFeatureCollection(action.cleanPaths),
@@ -204,13 +207,15 @@ const pathsReducer = (store = initialPaths, action: PathsAction) => {
         lengthLimit: action.lengthLimit
       }
 
-    case 'ERROR_IN_ROUTING':
-      return { ...store, waitingPaths: false }
+    case 'ERROR_IN_ROUTING': {
+      const travelMode = store.showingTravelMode ? store.showingTravelMode : store.travelMode
+      return { ...store, waitingPaths: false, travelMode }
+    }
 
     case 'CLOSE_PATHS': {
       return {
         ...store,
-        selPathFC: turf.asFeatureCollection([]),
+        selPathFC: { type: 'FeatureCollection', features: [] },
         openedPath: null,
       }
     }
@@ -220,8 +225,6 @@ const pathsReducer = (store = initialPaths, action: PathsAction) => {
         ...initialPaths,
         cleanPathsAvailable: store.cleanPathsAvailable,
         travelMode: store.travelMode,
-        showingPathsType: null,
-        showingPaths: false,
         routingId: store.routingId + 1,
       }
 
@@ -298,7 +301,7 @@ export const getSetQuietPaths = (origCoords: [number, number], destCoords: [numb
       dispatch(setQuietPaths(origCoords, destCoords, routingId, pathData, travelMode))
     } catch (error) {
       console.log('caught error:', error)
-      dispatch({ type: 'ERROR_IN_ROUTING' })
+      dispatch({ type: 'ERROR_IN_ROUTING', travelMode })
       if (typeof error === 'string') {
         dispatch(showNotification(error, 'error', 8))
       } else {
@@ -320,7 +323,7 @@ export const setQuietPaths = (origCoords: [number, number], destCoords: [number,
     const initialLengthLimit = utils.getInitialLengthLimit(lengthLimits, quietPaths.length)
     dispatch({ type: 'SET_LENGTH_LIMITS', lengthLimits, initialLengthLimit, routingId })
     dispatch({ type: 'SET_SHORTEST_PATH', shortPath, routingId })
-    dispatch({ type: 'SET_QUIET_PATHS', quietPaths: quietPaths, routingId })
+    dispatch({ type: 'SET_QUIET_PATHS', quietPaths: quietPaths, routingId, travelMode })
     dispatch({ type: 'SET_EDGE_FC', quietEdgeFC: pathData.edge_FC, routingId })
     const bestPath = utils.getBestPath(quietPaths)
     if (bestPath) {
@@ -347,7 +350,7 @@ export const getSetCleanPaths = (origCoords: [number, number], destCoords: [numb
       dispatch(setCleanPaths(origCoords, destCoords, routingId, pathData, travelMode))
     } catch (error) {
       console.log('caught error:', error)
-      dispatch({ type: 'ERROR_IN_ROUTING' })
+      dispatch({ type: 'ERROR_IN_ROUTING', travelMode })
       if (typeof error === 'string') {
         dispatch(showNotification(error, 'error', 8))
       } else {
@@ -369,7 +372,7 @@ export const setCleanPaths = (origCoords: [number, number], destCoords: [number,
     const initialLengthLimit = lengthLimits[lengthLimits.length - 1]
     dispatch({ type: 'SET_LENGTH_LIMITS', lengthLimits, initialLengthLimit, routingId })
     dispatch({ type: 'SET_SHORTEST_PATH', shortPath, routingId })
-    dispatch({ type: 'SET_CLEAN_PATHS', cleanPaths: cleanPaths, routingId })
+    dispatch({ type: 'SET_CLEAN_PATHS', cleanPaths: cleanPaths, routingId, travelMode })
     dispatch({ type: 'SET_EDGE_FC', cleanEdgeFC: pathData.edge_FC, routingId })
     const bestPath = utils.getBestPath(cleanPaths)
     if (bestPath) {

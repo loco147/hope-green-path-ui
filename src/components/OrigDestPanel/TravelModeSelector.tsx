@@ -93,7 +93,6 @@ const TravelModeSelector = (props: PropsFromRedux) => {
 
 const mapStateToProps = (state: ReduxState) => ({
   showingPaths: state.paths.showingPaths,
-  waitingPaths: state.paths.waitingPaths,
   travelMode: state.paths.travelMode,
   showingPathsType: state.paths.showingPathsType,
   quietPathData: state.paths.quietPathData,
