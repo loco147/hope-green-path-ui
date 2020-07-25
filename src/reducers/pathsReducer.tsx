@@ -1,8 +1,7 @@
 import { turf } from '../utils/index'
 import * as paths from './../services/paths'
-import { TravelMode } from './../services/paths'
 import { showNotification } from './notificationReducer'
-import { pathTypes, statTypes } from './../constants'
+import { RoutingMode, PathType, TravelMode, statTypes } from './../constants'
 import { utils } from './../utils/index'
 import { Action } from 'redux'
 
@@ -108,7 +107,7 @@ const pathsReducer = (store = initialPaths, action: PathsAction) => {
       if (cancelledRouting) return store
       return {
         ...store,
-        showingPathsType: pathTypes.quiet,
+        showingPathsType: RoutingMode.QUIET,
         showingStatsType: statTypes.noise,
         quietPathFC: turf.asFeatureCollection(action.quietPaths),
       }
@@ -131,7 +130,7 @@ const pathsReducer = (store = initialPaths, action: PathsAction) => {
       if (cancelledRouting) return store
       return {
         ...store,
-        showingPathsType: pathTypes.clean,
+        showingPathsType: RoutingMode.CLEAN,
         showingStatsType: statTypes.aq,
         cleanPathFC: turf.asFeatureCollection(action.cleanPaths),
       }
@@ -160,11 +159,11 @@ const pathsReducer = (store = initialPaths, action: PathsAction) => {
         }
       } else {
         let selPath: PathFeature[]
-        if (action.selPathId === pathTypes.short) {
+        if (action.selPathId === PathType.SHORT) {
           selPath = store.shortPathFC.features
-        } else if (store.showingPathsType === pathTypes.quiet) {
+        } else if (store.showingPathsType === RoutingMode.QUIET) {
           selPath = store.quietPathFC.features.filter(feat => feat.properties!.id === action.selPathId)
-        } else if (store.showingPathsType === pathTypes.clean) {
+        } else if (store.showingPathsType === RoutingMode.CLEAN) {
           selPath = store.cleanPathFC.features.filter(feat => feat.properties!.id === action.selPathId)
         }
         console.log('selecting path:', selPath! ? selPath![0].properties : 'no selection')

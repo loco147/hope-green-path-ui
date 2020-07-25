@@ -1,20 +1,11 @@
 import axios from 'axios'
 import { analytics } from './../firebase/firebase'
+import { RoutingMode } from '../constants'
 
 let baseurl = process.env.REACT_APP_QP_URL ? process.env.REACT_APP_QP_URL : ''
 
 if (process.env.NODE_ENV !== 'production') {
   baseurl = 'http://localhost:5000/'
-}
-
-export enum TravelMode {
-  WALK = 'walk',
-  BIKE = 'bike'
-}
-
-export enum RoutingMode {
-  CLEAN = 'clean',
-  QUIET = 'quiet'
 }
 
 export const getConnectionTestResponse = async (): Promise<string | any> => {

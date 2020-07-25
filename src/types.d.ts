@@ -8,7 +8,7 @@ type FeatureCollection = import('@turf/helpers').FeatureCollection
 
 type Feature = import('@turf/helpers').Feature
 
-type MbMap = import('mapbox-gl').Map | null
+type MbMap = import('mapbox-gl').Map | null
 
 interface PointFeature extends Feature {
   geometry: import('@turf/helpers').Point
@@ -29,11 +29,23 @@ interface PolygonFeatureCollection extends FeatureCollection {
 
 type Properties = import('@turf/helpers').Properties
 
+enum TravelMode {
+  WALK = 'walk',
+  BIKE = 'bike'
+}
+
+enum RoutingMode {
+  CLEAN = 'clean',
+  QUIET = 'quiet'
+}
+
 enum PathType {
   SHORT = 'short',
   CLEAN = 'clean',
   QUIET = 'quiet'
 }
+
+type StatsType = 'noise' | 'air quality'
 
 interface LengthLimit {
   limit: number,
@@ -42,7 +54,7 @@ interface LengthLimit {
   cost_coeff: number
 }
 
-interface PathDataResponse { 
+interface PathDataResponse {
   edge_FC: FeatureCollection,
   path_FC: PathFeatureCollection
 }
@@ -89,7 +101,7 @@ interface PathProperties extends Properties {
   noise_range_exps: { [key in DbClass]: number }
   noises: { [key: number]: number }
   path_score: number
-  type: string
+  type: PathType
 }
 
 interface PathFeature extends Feature {
@@ -109,15 +121,6 @@ interface EdgeFeature extends Feature {
 interface EdgeFeatureCollection extends FeatureCollection {
   features: EdgeFeature[]
 }
-
-enum TravelMode {
-  WALK = 'walk',
-  BIKE = 'bike'
-}
-
-type ShowingPathsType = 'quiet' | 'clean'
-
-type StatsType = 'noise' | 'air quality'
 
 interface MapReducer {
   initialized: boolean,
@@ -143,10 +146,10 @@ interface NotificationReducer {
 interface PathsReducer {
   cleanPathsAvailable: boolean,
   travelMode: TravelMode,
-  showingPathsType: ShowingPathsType | null,
-  showingStatsType: StatsType | null,
-  quietPathData: { od: OdCoords | null, data: PathDataResponse | null },
-  cleanPathData: { od: OdCoords | null, data: PathDataResponse | null },
+  showingPathsType: RoutingMode | null,
+  showingStatsType: StatsType | null,
+  quietPathData: { od: OdCoords | null, data: PathDataResponse | null },
+  cleanPathData: { od: OdCoords | null, data: PathDataResponse | null },
   selPathFC: PathFeatureCollection,
   shortPathFC: PathFeatureCollection,
   quietPathFC: PathFeatureCollection,
@@ -176,7 +179,7 @@ interface OrigDestReducer {
 
 interface MapPopupReducer {
   visible: boolean,
-  lngLat: LngLat | {}
+  lngLat: LngLat | {}
 }
 
 interface VisitorReducer {

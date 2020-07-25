@@ -7,7 +7,7 @@ import { PathAqiBar } from './../PathAqiBar'
 import { OpenedPathNoiseExps } from './OpenedPathNoiseExps'
 import { OpenedPathAqExps } from './OpenedPathAqExps'
 import { ClosePathBox } from './../OpenClosePathBoxes'
-import { pathTypes, statTypes } from './../../../constants'
+import { PathType, statTypes } from './../../../constants'
 
 const PathRowFlex = styled.div`
   display: flex;
@@ -30,7 +30,7 @@ const OpenedPathInfo = ({ paths, unsetOpenedPath }: PropsFromRedux) => {
   const { shortPathFC, openedPath, showingStatsType } = paths
   const shortPath = shortPathFC.features[0]
 
-  if (openedPath!.properties.type === pathTypes.short) {
+  if (openedPath!.properties.type === PathType.SHORT) {
     if (showingStatsType === statTypes.aq) {
       return <ShortPathAqiExposures path={openedPath!} unsetOpenedPath={unsetOpenedPath} />
     } else {

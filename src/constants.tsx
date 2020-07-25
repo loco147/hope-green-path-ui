@@ -7,10 +7,20 @@ export const BASEMAPS = {
   }
 }
 
-export const pathTypes = {
-  short: 'short',
-  clean: 'clean',
-  quiet: 'quiet',
+export enum TravelMode {
+  WALK = 'walk',
+  BIKE = 'bike'
+}
+
+export enum RoutingMode {
+  CLEAN = 'clean',
+  QUIET = 'quiet'
+}
+
+export enum PathType {
+  SHORT = 'short',
+  CLEAN = 'clean',
+  QUIET = 'quiet',
 }
 
 export const statTypes = {

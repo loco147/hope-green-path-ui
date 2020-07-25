@@ -3,7 +3,7 @@ import { connect, ConnectedProps } from 'react-redux'
 import { GeoJSONSource, MapMouseEvent } from 'mapbox-gl'
 import { setSelectedPath } from '../../reducers/pathsReducer'
 import { scrollToPath } from '../../reducers/pathListReducer'
-import { clickTol, pathTypes } from '../../constants'
+import { clickTol, RoutingMode } from '../../constants'
 import { utils } from '../../utils/index'
 
 class PathsGreen extends React.Component<PropsFromRedux> {
@@ -52,7 +52,7 @@ class PathsGreen extends React.Component<PropsFromRedux> {
     const { map} = this.props
     const { showingPathsType, quietPathFC, cleanPathFC, lengthLimit } = this.props
     let greenPathsFC: PathFeatureCollection
-    if (showingPathsType === pathTypes.clean) {
+    if (showingPathsType === RoutingMode.CLEAN) {
       greenPathsFC = cleanPathFC
     } else {
       greenPathsFC = quietPathFC

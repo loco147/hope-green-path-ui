@@ -1,7 +1,7 @@
 import React, { createRef, RefObject } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
 import styled from 'styled-components'
-import { pathTypes } from '../../../constants'
+import { RoutingMode } from '../../../constants'
 import { OpenPathBox } from './../OpenClosePathBoxes'
 import { setSelectedPath, setOpenedPath } from '../../../reducers/pathsReducer'
 import PathListPathBox, { ShortestPathBox } from './PathListPathBox'
@@ -32,7 +32,7 @@ class PathList extends React.Component<PropsFromRedux, State> {
     let pathRefs = this.state.pathRefs
     let updateRefs = false
 
-    const greenPathFC = showingPathsType === pathTypes.clean
+    const greenPathFC = showingPathsType === RoutingMode.CLEAN
       ? cleanPathFC
       : quietPathFC
 
@@ -54,11 +54,11 @@ class PathList extends React.Component<PropsFromRedux, State> {
     }
   }
 
-  openPathDisabled = (showingPathsType: ShowingPathsType, pathProps: PathProperties): boolean => {
-    if (showingPathsType === pathTypes.clean) {
+  openPathDisabled = (showingPathsType: RoutingMode, pathProps: PathProperties): boolean => {
+    if (showingPathsType === RoutingMode.CLEAN) {
       return pathProps.missing_aqi
     }
-    if (showingPathsType === pathTypes.quiet) {
+    if (showingPathsType === RoutingMode.QUIET) {
       return pathProps.missing_noises
     }
     return false
@@ -71,7 +71,7 @@ class PathList extends React.Component<PropsFromRedux, State> {
       ? selPathFC.features[0].properties.id
       : 'none'
 
-    const greenPathFC = showingPathsType === pathTypes.clean
+    const greenPathFC = showingPathsType === RoutingMode.CLEAN
       ? cleanPathFC
       : quietPathFC
 
@@ -80,7 +80,7 @@ class PathList extends React.Component<PropsFromRedux, State> {
 
     return (
       <div>
-        {showingPathsType === pathTypes.quiet
+        {showingPathsType === RoutingMode.QUIET
           ? <DbColorLegendBar />
           : null
         }

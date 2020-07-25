@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { utils } from '../../../utils/index'
 import { PathNoisesBar } from './../PathNoisesBar'
 import { PathAqiBar } from './../PathAqiBar'
-import { pathTypes, statTypes, walkSpeed } from '../../../constants'
+import { RoutingMode, statTypes, walkSpeed } from '../../../constants'
 
 type Props = {
   selected: boolean,
@@ -60,12 +60,12 @@ interface PathBoxProperties {
   path: PathFeature,
   selected: boolean,
   handleClick: React.MouseEventHandler<HTMLElement>,
-  showingPathsType?: ShowingPathsType,
+  showingPathsType?: RoutingMode,
   showingStatsType?: StatsType
 }
 
 const PathListPathBox = ({ path, selected, showingPathsType, handleClick }: PathBoxProperties) => {
-  if (showingPathsType === pathTypes.clean) {
+  if (showingPathsType === RoutingMode.CLEAN) {
     return <CleanPathBox path={path} selected={selected} handleClick={handleClick} />
   } else {
     return <QuietPathBox path={path} selected={selected} handleClick={handleClick} />

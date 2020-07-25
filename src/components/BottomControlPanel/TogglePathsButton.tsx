@@ -2,7 +2,7 @@ import React from 'react'
 import styled, { css } from 'styled-components'
 import { connect, ConnectedProps } from 'react-redux'
 import { getSetQuietPaths, getSetCleanPaths, setQuietPaths, setCleanPaths } from '../../reducers/pathsReducer'
-import { pathTypes } from '../../constants'
+import { RoutingMode } from '../../constants'
 
 const Button = styled.div<{ disabled: boolean }>`
   cursor: pointer;
@@ -36,17 +36,17 @@ const Button = styled.div<{ disabled: boolean }>`
 
 interface LabelProps {
   disabled: boolean
-  toggleToPathType: string
+  toggleToPathType: RoutingMode
 }
 
 const StyledPathTypeLabel = styled.span<LabelProps>`
   color: green;
-  ${props => props.toggleToPathType === pathTypes.quiet && css`
+  ${props => props.toggleToPathType === RoutingMode.QUIET && css`
     color: #6ff7ff;
     &:before {
       content: 'quiet';
     }`}
-  ${props => props.toggleToPathType === pathTypes.clean && css`
+  ${props => props.toggleToPathType === RoutingMode.CLEAN && css`
     color: #74ff74;
     &:before {
       content: 'fresh air';
@@ -72,11 +72,11 @@ const getPathToggleFunc = (props: PropsFromRedux) => {
   const { getSetQuietPaths, getSetCleanPaths, setQuietPaths, setCleanPaths } = props
 
   if (odsMatch(quietPathData.od, cleanPathData.od)) {
-    return showingPathsType === pathTypes.quiet
+    return showingPathsType === RoutingMode.QUIET
       ? setCleanPaths(quietPathData.od![0], quietPathData.od![1], routingId, cleanPathData.data!)
       : setQuietPaths(cleanPathData.od![0], cleanPathData.od![1], routingId, quietPathData.data!)
   } else {
-    return showingPathsType === pathTypes.quiet
+    return showingPathsType === RoutingMode.QUIET
       ? getSetCleanPaths(quietPathData.od![0], quietPathData.od![1], travelMode, routingId)
       : getSetQuietPaths(cleanPathData.od![0], cleanPathData.od![1], travelMode, routingId)
   }
@@ -85,8 +85,8 @@ const getPathToggleFunc = (props: PropsFromRedux) => {
 const TogglePathsButton = (props: PropsFromRedux) => {
   const { cleanPathsAvailable, showingPathsType, quietPathData, cleanPathData } = props
   const actionType = odsMatch(quietPathData.od, cleanPathData.od) ? 'Show' : 'Find'
-  const toggleToPathType = showingPathsType === pathTypes.clean ? pathTypes.quiet : pathTypes.clean
-  const disabled = !cleanPathsAvailable && showingPathsType === pathTypes.quiet
+  const toggleToPathType = showingPathsType === RoutingMode.CLEAN ? RoutingMode.QUIET : RoutingMode.CLEAN
+  const disabled = !cleanPathsAvailable && showingPathsType === RoutingMode.QUIET
   return (
     <Button disabled={disabled}
       onClick={() => getPathToggleFunc(props)}>

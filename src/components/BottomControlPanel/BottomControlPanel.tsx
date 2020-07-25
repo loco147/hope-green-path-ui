@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { connect, ConnectedProps } from 'react-redux'
-import { menu, pathTypes } from './../../constants'
+import { menu, RoutingMode } from './../../constants'
 import TogglePathsButton from './TogglePathsButton'
 import { togglePathPanel, showPathList, showMaxLengthFilterSelector } from './../../reducers/menuReducer'
 import { ListButton, ArrowUpButton, ArrowDownButton } from './../Icons'
@@ -17,7 +17,7 @@ const ControlPanel = styled.div<{ pathPanelVisible: boolean }>`
   border: 1px solid #d0d0d0;
   border-top-right-radius: ${props => props.pathPanelVisible === true ? '0px' : '6px'};
   @media (min-width: 600px) {
-    width 340px;
+    width: 340px;
     padding: 0px 6px 0px 6px;
     border: none;
   }
@@ -38,7 +38,7 @@ const BottomControlPanel = (props: propsFromRedux) => {
 
   if (!showingPaths) return null
 
-  const greenPathCount = showingPathsType === pathTypes.clean
+  const greenPathCount = showingPathsType === RoutingMode.CLEAN
     ? cleanPathCount
     : quietPathCount
 
