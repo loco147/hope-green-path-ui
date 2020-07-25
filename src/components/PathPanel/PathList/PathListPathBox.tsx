@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { utils } from '../../../utils/index'
 import { PathNoisesBar } from './../PathNoisesBar'
 import { PathAqiBar } from './../PathAqiBar'
-import { RoutingMode, statTypes, walkSpeed } from '../../../constants'
+import { RoutingMode, statTypes, walkSpeed, aqiLabels } from '../../../constants'
 
 type Props = {
   selected: boolean,
@@ -16,7 +16,7 @@ const StyledPathListPathBox = styled.div.attrs((props: Props) => ({
       border: props.selected ? '2px solid black' : '',
       boxShadow: props.selected ? '0 -1px 7px 0 rgba(0, 0, 0, 0.15), 0 4px 7px 0 rgba(0, 0, 0, 0.25)' : ''
     })
-}))<Props>`
+})) <Props>`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -64,6 +64,66 @@ interface PathBoxProperties {
   showingStatsType?: StatsType
 }
 
+const getNoiseIndexLabel = (ni: number): string | undefined => {
+  if (ni < 0.15) return 'very quiet'
+  if (ni < 0.3) return 'quiet'
+  if (ni < 0.5) return 'moderate noise'
+  if (ni < 0.65) return 'high noise'
+  if (ni < 0.75) return 'very high noise'
+  if (ni >= 0.75) return 'extreme noise'
+}
+
+const getAqiLabel = (aqi: number): string => {
+  if (aqi <= 0) return ''
+  if (aqi <= 2.0) return aqiLabels[1]
+  if (aqi <= 3.0) return aqiLabels[2]
+  if (aqi <= 4.0) return aqiLabels[3]
+  if (aqi <= 5.0) return aqiLabels[4]
+  if (aqi > 5.0) return aqiLabels[5]
+  return ''
+}
+
+const roundTo = (number: number, digits: number): number => {
+  return Math.round(number * (10 * digits)) / (10 * digits)
+}
+
+const concatSign = (number: number): string => {
+  if (number < 0) {
+    return '-' + String(number)
+  } else if (number > 0) {
+    return '+' + String(number)
+  } else return String(number)
+}
+
+const getFormattedDistanceString = (m: number, withSign: boolean = false): string => {
+  let distance
+  let unit
+  if (Math.abs(m) >= 950) {
+    const km = m / 1000
+    distance = roundTo(km, 1)
+    unit = ' km'
+  } else if (Math.abs(m) > 60) {
+    distance = Math.round(m / 10) * 10
+    unit = ' m'
+  } else {
+    distance = Math.round(m)
+    unit = ' m'
+  }
+  const distanceString = withSign === true ? concatSign(distance) : String(distance)
+  return distanceString + unit
+}
+
+const getFormattedExpDiffRatio = (aqc_diff_rat: number): string => {
+  const diff = Math.round(aqc_diff_rat)
+  if (diff === 0) {
+    return '-' + String(diff)
+  } else if (diff > 0) {
+    return '+' + String(diff)
+  } else {
+    return String(diff)
+  }
+}
+
 const PathListPathBox = ({ path, selected, showingPathsType, handleClick }: PathBoxProperties) => {
   if (showingPathsType === RoutingMode.CLEAN) {
     return <CleanPathBox path={path} selected={selected} handleClick={handleClick} />
@@ -87,11 +147,11 @@ const ShortestPathAqBox = ({ path, selected, handleClick }: PathBoxProperties) =
           {utils.getDurationStringFromDist(path.properties.length)}
         </div>
         <div>
-          {utils.getFormattedDistanceString(path.properties.length, false)}
+          {getFormattedDistanceString(path.properties.length, false)}
         </div>
         {!path.properties.missing_aqi &&
           <div>
-            {utils.getAqiLabel(path.properties.aqi_m)} air quality
+            {getAqiLabel(path.properties.aqi_m)} air quality
           </div>}
         {path.properties.missing_aqi && <div>No AQ data available</div>}
       </PathPropsRow>
@@ -108,10 +168,10 @@ const ShortestPathNoiseBox = ({ path, selected, handleClick }: PathBoxProperties
           {utils.getDurationStringFromDist(path.properties.length)}
         </div>
         <div>
-          {utils.getFormattedDistanceString(path.properties.length, false)}
+          {getFormattedDistanceString(path.properties.length, false)}
         </div>
         <div>
-          {utils.getNoiseIndexLabel(path.properties.nei_norm)}
+          {getNoiseIndexLabel(path.properties.nei_norm)}
         </div>
       </PathPropsRow>
     </StyledPathListPathBox>
@@ -130,11 +190,11 @@ const CleanPathBox = ({ path, selected, handleClick }: PathBoxProperties) => {
           </Sub>
         </div>
         <QuietPathLengthProps>
-          {utils.getFormattedDistanceString(path.properties.length, false)}
+          {getFormattedDistanceString(path.properties.length, false)}
         </QuietPathLengthProps>
         {!path.properties.missing_aqi &&
           <div>
-            {utils.getFormattedAqiExpDiffRatio(path.properties.aqc_diff_rat) + ' % air pollution'}
+            {getFormattedExpDiffRatio(path.properties.aqc_diff_rat) + ' % air pollution'}
           </div>}
       </PathPropsRow>
     </StyledPathListPathBox>
@@ -153,10 +213,10 @@ const QuietPathBox = ({ path, selected, handleClick }: PathBoxProperties) => {
           </Sub>
         </div>
         <QuietPathLengthProps>
-          {utils.getFormattedDistanceString(path.properties.length, false)}
+          {getFormattedDistanceString(path.properties.length, false)}
         </QuietPathLengthProps>
         <div>
-          {Math.round(path.properties.nei_diff_rat) + ' % noise'}
+          {getFormattedExpDiffRatio(path.properties.nei_diff_rat) + ' % noise'}
         </div>
       </PathPropsRow>
     </StyledPathListPathBox>

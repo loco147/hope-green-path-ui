@@ -2,7 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 import { connect, ConnectedProps } from 'react-redux'
 import { getSetCleanPaths, getSetQuietPaths } from '../reducers/pathsReducer'
-import { utils } from '../utils'
 
 const OuterFlex = styled.div`
   display: flex;
@@ -44,11 +43,27 @@ const Tooltip = styled.div`
   color: rgba(255,255,255,0.9);
 `
 
+const getOriginCoordsFromFC = (FC: PointFeatureCollection): [number, number] | null => {
+  const origin = FC.features.filter(feat => feat.properties.type === 'orig')
+  if (origin.length === 0) return null
+  const coords = origin[0].geometry.coordinates
+  // @ts-ignore
+  return coords.map(coord => Math.round(coord * 100000) / 100000)
+}
+
+const getDestCoordsFromFC = (FC: PointFeatureCollection): [number, number] | null => {
+  const dest = FC.features.filter(feat => feat.properties.type === 'dest')
+  if (dest.length === 0) return null
+  const coords = dest[0].geometry.coordinates
+  // @ts-ignore
+  return coords.map(coord => Math.round(coord * 100000) / 100000)
+}
+
 const FindPathsButtons = (props: PropsFromRedux) => {
   const { cleanPathsAvailable, origDestFC, origDestError, travelMode, routingId,
     waitingPaths, showingPaths, getSetCleanPaths, getSetQuietPaths } = props
-  const originCoords = utils.getOriginCoordsFromFC(origDestFC)
-  const destCoords = utils.getDestCoordsFromFC(origDestFC)
+  const originCoords = getOriginCoordsFromFC(origDestFC)
+  const destCoords = getDestCoordsFromFC(origDestFC)
   const originOrTargetMissing = originCoords === null || destCoords === null
 
   if (originOrTargetMissing || showingPaths || waitingPaths || origDestError) {

@@ -1,10 +1,24 @@
+import hmaPoly from './../HMA.json'
 import { turf } from '../utils/index'
 import { initialOrigDestFeatures } from './../constants'
 import { closePopup } from './mapPopupReducer'
 import { startTrackingUserLocation } from './userLocationReducer'
 import { showNotification } from './notificationReducer'
-import { utils } from './../utils/index'
 import { Action } from 'redux'
+
+const origDestWithinSupportedArea = (origDestFC: PointFeatureCollection) => {
+  const origin = origDestFC.features.filter(feat => feat.properties.type === 'orig')
+  const dest = origDestFC.features.filter(feat => feat.properties.type === 'dest')
+  // @ts-ignore
+  const extentFeat: PolygonFeature = hmaPoly.features[0]
+  if (origin.length > 0 && !turf.within(origin[0], extentFeat)) {
+    return 'Origin is outside the supported area'
+  }
+  if (dest.length > 0 && !turf.within(dest[0], extentFeat)) {
+    return 'Destination is outside the supported area'
+  }
+  return null
+}
 
 const initialOrigDest: OrigDestReducer = {
   // @ts-ignore
@@ -45,7 +59,7 @@ const pathsReducer = (store: OrigDestReducer = initialOrigDest, action: PathActi
     }
 
     case 'SET_ORIGIN': {
-      const error = utils.origDestWithinSupportedArea(action.updateOrigDestFC)
+      const error = origDestWithinSupportedArea(action.updateOrigDestFC)
       return {
         ...store,
         origDestFC: action.updateOrigDestFC,
@@ -78,7 +92,7 @@ const pathsReducer = (store: OrigDestReducer = initialOrigDest, action: PathActi
     case 'UPDATE_USER_LOCATION': {
       if (store.useUserLocOrigin && store.waitUserLocOrigin) {
         const updateOrigDestFC = updateOriginToFC(store.origDestFC, turf.toLngLat(action.coords))
-        const error = utils.origDestWithinSupportedArea(updateOrigDestFC)
+        const error = origDestWithinSupportedArea(updateOrigDestFC)
         return {
           ...store,
           origDestFC: updateOrigDestFC,
@@ -89,7 +103,7 @@ const pathsReducer = (store: OrigDestReducer = initialOrigDest, action: PathActi
     }
 
     case 'SET_TARGET': {
-      const error = utils.origDestWithinSupportedArea(action.updateOrigDestFC)
+      const error = origDestWithinSupportedArea(action.updateOrigDestFC)
       return { ...store, origDestFC: action.updateOrigDestFC, error: error ? error : null }
     }
 
@@ -99,7 +113,7 @@ const pathsReducer = (store: OrigDestReducer = initialOrigDest, action: PathActi
       if (action.lngLat && store.useUserLocOrigin) {
         console.log('update origin to current user location:', action.lngLat)
         const updateOrigDestFC = updateOriginToFC(store.origDestFC, action.lngLat)
-        const error = utils.origDestWithinSupportedArea(updateOrigDestFC)
+        const error = origDestWithinSupportedArea(updateOrigDestFC)
         return { ...store, showingPaths: false, origDestFC: updateOrigDestFC, error: error ? error : null }
       }
       else return { ...store, showingPaths: false }
