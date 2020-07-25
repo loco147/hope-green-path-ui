@@ -28,6 +28,7 @@ const initialPaths: PathsReducer = {
 }
 
 interface PathsAction extends Action {
+  travelMode: TravelMode,
   b_available: boolean,
   routingId: number,
   shortPath: PathFeature[],
@@ -54,6 +55,12 @@ const pathsReducer = (store = initialPaths, action: PathsAction) => {
       return {
         ...store,
         cleanPathsAvailable: action.b_available
+      }
+
+    case 'SET_TRAVEL_MODE':
+      return {
+        ...store,
+        travelMode: action.travelMode
       }
 
     case 'ROUTING_STARTED':
@@ -210,6 +217,7 @@ const pathsReducer = (store = initialPaths, action: PathsAction) => {
       return {
         ...initialPaths,
         cleanPathsAvailable: store.cleanPathsAvailable,
+        travelMode: store.travelMode,
         showingPathsType: null,
         showingPaths: false,
         routingId: store.routingId + 1,
@@ -269,7 +277,13 @@ const confirmLongDistance = (origCoords: [number, number], destCoords: [number, 
   return true
 }
 
-export const getSetQuietPaths = (origCoords: [number, number], destCoords: [number, number], prevRoutingId: number) => {
+export const setTravelMode = (travelMode: TravelMode) => {
+  return async (dispatch: any) => {
+    dispatch({ type: 'SET_TRAVEL_MODE', travelMode })
+  }
+}
+
+export const getSetQuietPaths = (origCoords: [number, number], destCoords: [number, number], travelMode: TravelMode, prevRoutingId: number) => {
   return async (dispatch: any) => {
     if (!confirmLongDistance(origCoords, destCoords)) {
       return
@@ -278,7 +292,7 @@ export const getSetQuietPaths = (origCoords: [number, number], destCoords: [numb
     dispatch({ type: 'CLOSE_PATHS' })
     dispatch({ type: 'ROUTING_STARTED', origCoords, destCoords, routingId })
     try {
-      const pathData = await paths.getQuietPaths(TravelMode.WALK, origCoords, destCoords)
+      const pathData = await paths.getQuietPaths(travelMode, origCoords, destCoords)
       dispatch(setQuietPaths(origCoords, destCoords, routingId, pathData))
     } catch (error) {
       console.log('caught error:', error)
@@ -318,7 +332,7 @@ export const setQuietPaths = (origCoords: [number, number], destCoords: [number,
   }
 }
 
-export const getSetCleanPaths = (origCoords: [number, number], destCoords: [number, number], prevRoutingId: number) => {
+export const getSetCleanPaths = (origCoords: [number, number], destCoords: [number, number], travelMode: TravelMode, prevRoutingId: number) => {
   return async (dispatch: any) => {
     if (!confirmLongDistance(origCoords, destCoords)) {
       return
@@ -327,7 +341,7 @@ export const getSetCleanPaths = (origCoords: [number, number], destCoords: [numb
     dispatch({ type: 'CLOSE_PATHS' })
     dispatch({ type: 'ROUTING_STARTED', origCoords, destCoords, routingId })
     try {
-      const pathData = await paths.getCleanPaths(TravelMode.WALK, origCoords, destCoords)
+      const pathData = await paths.getCleanPaths(travelMode, origCoords, destCoords)
       dispatch(setCleanPaths(origCoords, destCoords, routingId, pathData))
     } catch (error) {
       console.log('caught error:', error)

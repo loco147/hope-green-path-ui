@@ -68,7 +68,7 @@ const odsMatch = (quietPathOd: OdCoords | null, cleanPathOd: OdCoords | null) 
 }
 
 const getPathToggleFunc = (props: PropsFromRedux) => {
-  const { showingPathsType, quietPathData, cleanPathData, routingId } = props
+  const { travelMode, showingPathsType, quietPathData, cleanPathData, routingId } = props
   const { getSetQuietPaths, getSetCleanPaths, setQuietPaths, setCleanPaths } = props
 
   if (odsMatch(quietPathData.od, cleanPathData.od)) {
@@ -77,8 +77,8 @@ const getPathToggleFunc = (props: PropsFromRedux) => {
       : setQuietPaths(cleanPathData.od![0], cleanPathData.od![1], routingId, quietPathData.data!)
   } else {
     return showingPathsType === pathTypes.quiet
-      ? getSetCleanPaths(quietPathData.od![0], quietPathData.od![1], routingId)
-      : getSetQuietPaths(cleanPathData.od![0], cleanPathData.od![1], routingId)
+      ? getSetCleanPaths(quietPathData.od![0], quietPathData.od![1], travelMode, routingId)
+      : getSetQuietPaths(cleanPathData.od![0], cleanPathData.od![1], travelMode, routingId)
   }
 }
 
@@ -98,6 +98,7 @@ const TogglePathsButton = (props: PropsFromRedux) => {
 const mapStateToProps = (state: ReduxState) => ({
   cleanPathsAvailable: state.paths.cleanPathsAvailable,
   routingId: state.paths.routingId,
+  travelMode: state.paths.travelMode,
   showingPathsType: state.paths.showingPathsType,
   quietPathData: state.paths.quietPathData,
   cleanPathData: state.paths.cleanPathData,

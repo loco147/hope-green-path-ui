@@ -45,7 +45,7 @@ const Tooltip = styled.div`
 `
 
 const FindPathsButtons = (props: PropsFromRedux) => {
-  const { cleanPathsAvailable, origDestFC, origDestError, routingId,
+  const { cleanPathsAvailable, origDestFC, origDestError, travelMode, routingId,
     waitingPaths, showingPaths, getSetCleanPaths, getSetQuietPaths } = props
   const originCoords = utils.getOriginCoordsFromFC(origDestFC)
   const destCoords = utils.getDestCoordsFromFC(origDestFC)
@@ -59,12 +59,12 @@ const FindPathsButtons = (props: PropsFromRedux) => {
     <OuterFlex>
       {cleanPathsAvailable
         ? <Button
-          onClick={() => getSetCleanPaths(originCoords!, destCoords!, routingId)}> Find fresh air paths
+          onClick={() => getSetCleanPaths(originCoords!, destCoords!, travelMode, routingId)}> Find fresh air paths
           <Tooltip>by real-time air quality</Tooltip>
         </Button>
         : null
       }
-      <Button onClick={() => getSetQuietPaths(originCoords!, destCoords!, routingId)}> Find quiet paths
+      <Button onClick={() => getSetQuietPaths(originCoords!, destCoords!, travelMode, routingId)}> Find quiet paths
         <Tooltip>by typical traffic noise</Tooltip>
       </Button>
     </OuterFlex>
@@ -74,6 +74,7 @@ const FindPathsButtons = (props: PropsFromRedux) => {
 const mapStateToProps = (state: ReduxState) => ({
   origDestFC: state.origDest.origDestFC,
   origDestError: state.origDest.error,
+  travelMode: state.paths.travelMode,
   waitingPaths: state.paths.waitingPaths,
   showingPaths: state.paths.showingPaths,
   routingId: state.paths.routingId,
