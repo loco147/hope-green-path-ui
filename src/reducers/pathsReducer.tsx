@@ -10,8 +10,8 @@ const initialPaths: PathsReducer = {
   travelMode: TravelMode.WALK,
   showingPathsType: null,
   showingStatsType: null,
-  quietPathData: { od: null, data: null },
-  cleanPathData: { od: null, data: null },
+  quietPathData: null,
+  cleanPathData: null,
   selPathFC: { type: 'FeatureCollection', features: [] },
   shortPathFC: { type: 'FeatureCollection', features: [] },
   quietPathFC: { type: 'FeatureCollection', features: [] },
@@ -67,6 +67,7 @@ const pathsReducer = (store = initialPaths, action: PathsAction) => {
         ...store,
         waitingPaths: true,
         routingId: action.routingId,
+        travelMode: action.travelMode
       }
 
     case 'SET_SHORTEST_PATH': {
@@ -97,7 +98,8 @@ const pathsReducer = (store = initialPaths, action: PathsAction) => {
         ...store,
         quietPathData: {
           od: [action.origCoords, action.destCoords],
-          data: action.pathData
+          data: action.pathData,
+          travelMode: action.travelMode
         },
       }
     }
@@ -120,7 +122,8 @@ const pathsReducer = (store = initialPaths, action: PathsAction) => {
         ...store,
         cleanPathData: {
           od: [action.origCoords, action.destCoords],
-          data: action.pathData
+          data: action.pathData,
+          travelMode: action.travelMode
         },
       }
     }
@@ -289,10 +292,10 @@ export const getSetQuietPaths = (origCoords: [number, number], destCoords: [numb
     }
     const routingId = prevRoutingId + 1
     dispatch({ type: 'CLOSE_PATHS' })
-    dispatch({ type: 'ROUTING_STARTED', origCoords, destCoords, routingId })
+    dispatch({ type: 'ROUTING_STARTED', origCoords, destCoords, routingId, travelMode })
     try {
       const pathData = await paths.getQuietPaths(travelMode, origCoords, destCoords)
-      dispatch(setQuietPaths(origCoords, destCoords, routingId, pathData))
+      dispatch(setQuietPaths(origCoords, destCoords, routingId, pathData, travelMode))
     } catch (error) {
       console.log('caught error:', error)
       dispatch({ type: 'ERROR_IN_ROUTING' })
@@ -306,10 +309,10 @@ export const getSetQuietPaths = (origCoords: [number, number], destCoords: [numb
   }
 }
 
-export const setQuietPaths = (origCoords: [number, number], destCoords: [number, number], routingId: number, pathData: PathDataResponse) => {
+export const setQuietPaths = (origCoords: [number, number], destCoords: [number, number], routingId: number, pathData: PathDataResponse, travelMode: TravelMode) => {
   return async (dispatch: any) => {
     dispatch({ type: 'CLOSE_PATHS' })
-    dispatch({ type: 'SET_QUIET_PATH_DATA', routingId, origCoords, destCoords, pathData })
+    dispatch({ type: 'SET_QUIET_PATH_DATA', routingId, origCoords, destCoords, pathData, travelMode })
     const pathFeats: PathFeature[] = pathData.path_FC.features
     const shortPath = pathFeats.filter(feat => feat.properties.type === 'short')
     const quietPaths = pathFeats.filter(feat => feat.properties.type === 'quiet' && feat.properties.len_diff !== 0)
@@ -338,10 +341,10 @@ export const getSetCleanPaths = (origCoords: [number, number], destCoords: [numb
     }
     const routingId = prevRoutingId + 1
     dispatch({ type: 'CLOSE_PATHS' })
-    dispatch({ type: 'ROUTING_STARTED', origCoords, destCoords, routingId })
+    dispatch({ type: 'ROUTING_STARTED', origCoords, destCoords, routingId, travelMode })
     try {
       const pathData = await paths.getCleanPaths(travelMode, origCoords, destCoords)
-      dispatch(setCleanPaths(origCoords, destCoords, routingId, pathData))
+      dispatch(setCleanPaths(origCoords, destCoords, routingId, pathData, travelMode))
     } catch (error) {
       console.log('caught error:', error)
       dispatch({ type: 'ERROR_IN_ROUTING' })
@@ -355,10 +358,10 @@ export const getSetCleanPaths = (origCoords: [number, number], destCoords: [numb
   }
 }
 
-export const setCleanPaths = (origCoords: [number, number], destCoords: [number, number], routingId: number, pathData: PathDataResponse) => {
+export const setCleanPaths = (origCoords: [number, number], destCoords: [number, number], routingId: number, pathData: PathDataResponse, travelMode: TravelMode) => {
   return async (dispatch: any) => {
     dispatch({ type: 'CLOSE_PATHS' })
-    dispatch({ type: 'SET_CLEAN_PATH_DATA', routingId, origCoords, destCoords, pathData })
+    dispatch({ type: 'SET_CLEAN_PATH_DATA', routingId, origCoords, destCoords, pathData, travelMode })
     const pathFeats: PathFeature[] = pathData.path_FC.features
     const shortPath = pathFeats.filter(feat => feat.properties.type === 'short')
     const cleanPaths = pathFeats.filter(feat => feat.properties.type === 'clean' && feat.properties.len_diff !== 0)

@@ -3,8 +3,8 @@ import styled, { css } from 'styled-components'
 import { connect, ConnectedProps } from 'react-redux'
 import { MdDirectionsBike } from 'react-icons/md'
 import { MdDirectionsWalk } from 'react-icons/md'
-import { setTravelMode } from './../../reducers/pathsReducer'
-import { TravelMode } from '../../services/paths'
+import { setTravelMode, getSetQuietPaths, getSetCleanPaths } from './../../reducers/pathsReducer'
+import { TravelMode, RoutingMode } from '../../constants'
 
 const StyledBikeI = styled(MdDirectionsBike)`
   font-size: 23px;
@@ -57,19 +57,33 @@ const StyledIconContainer = styled.div<{ bike?: any, selected: boolean }>`
   `}
 `
 
+const getSetTravelModeFunction = (props: PropsFromRedux, travelModeOfTheButton: TravelMode) => {
+  if (!props.showingPaths) {
+    return props.setTravelMode(travelModeOfTheButton)
+  } else {
+    let odCoords: OdCoords
+    if (props.showingPathsType === RoutingMode.QUIET) {
+      odCoords = props.quietPathData!.od
+      return props.getSetQuietPaths(odCoords[0], odCoords[1], travelModeOfTheButton, props.routingId)
+    } else {
+      odCoords = props.cleanPathData!.od
+      return props.getSetCleanPaths(odCoords[0], odCoords[1], travelModeOfTheButton, props.routingId)
+    }
+  }
+}
+
 const TravelModeSelector = (props: PropsFromRedux) => {
-  const { travelMode, setTravelMode } = props
 
   return (
     <ButtonRow>
       <StyledIconContainer
-        onClick={() => setTravelMode(TravelMode.WALK)}
-        selected={travelMode === TravelMode.WALK}>
+        onClick={() => getSetTravelModeFunction(props, TravelMode.WALK)}
+        selected={props.travelMode === TravelMode.WALK}>
         <StyledWalkI />
       </StyledIconContainer>
       <StyledIconContainer
-        onClick={() => setTravelMode(TravelMode.BIKE)}
-        selected={travelMode === TravelMode.BIKE}
+        onClick={() => getSetTravelModeFunction(props, TravelMode.BIKE)}
+        selected={props.travelMode === TravelMode.BIKE}
         bike>
         <StyledBikeI />
       </StyledIconContainer>
@@ -81,8 +95,12 @@ const mapStateToProps = (state: ReduxState) => ({
   showingPaths: state.paths.showingPaths,
   waitingPaths: state.paths.waitingPaths,
   travelMode: state.paths.travelMode,
+  showingPathsType: state.paths.showingPathsType,
+  quietPathData: state.paths.quietPathData,
+  cleanPathData: state.paths.cleanPathData,
+  routingId: state.paths.routingId,
 })
 
-const connector = connect(mapStateToProps, { setTravelMode })
+const connector = connect(mapStateToProps, { setTravelMode, getSetQuietPaths, getSetCleanPaths })
 type PropsFromRedux = ConnectedProps<typeof connector>
 export default connector(TravelModeSelector)
