@@ -3,6 +3,7 @@ import { connect, ConnectedProps } from 'react-redux'
 import styled from 'styled-components'
 import TravelModeSelector from './TravelModeSelector'
 import ResetPathsButton from './ResetPathsButton'
+import LocateButton from './LocateButton'
 
 const OuterContainer = styled.div`
   display: flex;
@@ -13,10 +14,10 @@ const ResetContainer = styled.div`
   align-items: center;
 `
 
-const Container = styled.div`
+const RightContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
   border-radius: 15px;
   padding: 4px 5px;
   width: 100%;
@@ -29,9 +30,10 @@ const RoutingSettingsRow = (props: PropsFromRedux) => {
       <ResetContainer>
         {showingPaths || waitingPaths ? <ResetPathsButton /> : null}
       </ResetContainer>
-      <Container>
+      <RightContainer>
         <TravelModeSelector />
-      </Container>
+        <LocateButton />
+      </RightContainer>
     </OuterContainer>
   )
 }

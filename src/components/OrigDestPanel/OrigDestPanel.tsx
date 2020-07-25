@@ -6,10 +6,15 @@ import UseCurrLocButton from './UseCurrLocButton'
 import RoutingSettingsRow from './RoutingSettingsRow'
 import { useUserLocationOrigin, resetOrig, resetDest } from '../../reducers/origDestReducer'
 import LoadAnimation from './../LoadAnimation/LoadAnimation'
+import ShowInfoButton from './ShowInfoButton'
 
 const Container = styled.div`
   background-color: rgba(255,255,255,0.98);
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.1), 0 6px 20px 0 rgba(0,0,0,0.06);
+`
+const LowerTransparentPanel = styled.div`
+  display: flex;
+  justify-content: flex-end;
 `
 const OdContainer = styled.div<{ hide?: boolean }>`
   display: flex;
@@ -108,47 +113,52 @@ const OrigDestPanel = (props: PropsFromRedux) => {
   const showDisclaimer = !orig && !dest
 
   return (
-    <Container>
-      <OdContainer hide={waitingPaths || showingPaths}>
-        <Wrapper>
-          {showDisclaimer && <StyledDisclaimer>
-            The app and its real-time air quality data source are still under active development and hence not guaranteed to work at all times.
+    <div>
+      <Container>
+        <OdContainer hide={waitingPaths || showingPaths}>
+          <Wrapper>
+            {showDisclaimer && <StyledDisclaimer>
+              The app and its real-time air quality data source are still under active development and hence not guaranteed to work at all times.
           </StyledDisclaimer>}
-          <FlexRow>
-            <LocationType>From:</LocationType>
-            {orig
-              ? <LocationInfo>
-                <FormattedCoords feat={orig} />
-                {orig && !(showingPaths || waitingPaths)
-                  ? <ResetLocButton onClick={resetOrig}><Close /></ResetLocButton>
+            <FlexRow>
+              <LocationType>From:</LocationType>
+              {orig
+                ? <LocationInfo>
+                  <FormattedCoords feat={orig} />
+                  {orig && !(showingPaths || waitingPaths)
+                    ? <ResetLocButton onClick={resetOrig}><Close /></ResetLocButton>
+                    : null}
+                </LocationInfo>
+                : <Flex>
+                  <LocationInfo>
+                    {waitUserLocOrigin
+                      ? <LoadAnimation size={18} />
+                      : 'unset'}
+                  </LocationInfo>
+                  {useUserLocOrigin
+                    ? null
+                    : <UseCurrLocButton handleClick={() => props.useUserLocationOrigin(userLocation)} />}
+                </Flex>}
+            </FlexRow>
+            <FlexRow>
+              <LocationType>To:</LocationType>
+              <LocationInfo>
+                {dest
+                  ? <FormattedCoords feat={dest} />
+                  : 'unset'}
+                {dest && !(showingPaths || waitingPaths)
+                  ? <ResetLocButton onClick={resetDest}><Close /></ResetLocButton>
                   : null}
               </LocationInfo>
-              : <Flex>
-                <LocationInfo>
-                  {waitUserLocOrigin
-                    ? <LoadAnimation size={18} />
-                    : 'unset'}
-                </LocationInfo>
-                {useUserLocOrigin
-                  ? null
-                  : <UseCurrLocButton handleClick={() => props.useUserLocationOrigin(userLocation)} />}
-              </Flex>}
-          </FlexRow>
-          <FlexRow>
-            <LocationType>To:</LocationType>
-            <LocationInfo>
-              {dest
-                ? <FormattedCoords feat={dest} />
-                : 'unset'}
-              {dest && !(showingPaths || waitingPaths)
-                ? <ResetLocButton onClick={resetDest}><Close /></ResetLocButton>
-                : null}
-            </LocationInfo>
-          </FlexRow>
-        </Wrapper>
-      </OdContainer>
-      <RoutingSettingsRow />
-    </Container>
+            </FlexRow>
+          </Wrapper>
+        </OdContainer>
+        <RoutingSettingsRow />
+      </Container>
+      <LowerTransparentPanel>
+        <ShowInfoButton />
+      </LowerTransparentPanel>
+    </div>
   )
 }
 

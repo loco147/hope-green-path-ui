@@ -19,18 +19,17 @@ import DimLayer from './scenes/Home/DimLayer'
 import HopeLink from './scenes/Home/HopeLink'
 import { testGreenPathServiceConnection, testCleanPathServiceStatus } from './reducers/pathsReducer'
 import { showWelcomeIfFirstVisit } from './reducers/visitorReducer'
-import HomeControls from './scenes/Home/HomeControls'
 
 const AbsoluteContainer = styled.div`
   position: absolute;
   pointer-events: none;
-  `
+`
 const TopPanel = styled(AbsoluteContainer)`
   top: 0px;
   left: 0px;
   right: 0px;
   z-index: 2;
-  `
+`
 const BottomPanel = styled(AbsoluteContainer)`
   bottom: 0px;
   left: 0px;
@@ -60,7 +59,6 @@ class App extends Component<PropsFromRedux> {
           <OrigDestPoints />
           <UserLocation />
         </Map>
-        <HomeControls />
         <WelcomeInfo />
         <TopPanel>
           <OrigDestPanel />

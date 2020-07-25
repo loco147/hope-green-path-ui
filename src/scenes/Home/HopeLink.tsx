@@ -31,7 +31,7 @@ const HopeLink = () => {
   return (
     <Container>
       <StyledHopeLink href='https://ilmanlaatu.eu/' target='_blank' rel='noopener noreferrer'>
-        <img src={HopeLogo} width="116" height="30" alt="HopeLogo" />
+        <img src={HopeLogo} width="97" height="25" alt="HopeLogo" />
       </StyledHopeLink>
     </Container>
   )
