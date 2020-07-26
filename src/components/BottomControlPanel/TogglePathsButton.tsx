@@ -2,7 +2,7 @@ import React from 'react'
 import styled, { css } from 'styled-components'
 import { connect, ConnectedProps } from 'react-redux'
 import { getSetQuietPaths, getSetCleanPaths, setQuietPaths, setCleanPaths } from '../../reducers/pathsReducer'
-import { RoutingMode } from '../../constants'
+import { ExposureMode } from '../../constants'
 
 const Button = styled.div<{ disabled: boolean }>`
   cursor: pointer;
@@ -41,17 +41,17 @@ enum ToggleType {
 
 interface LabelProps {
   disabled: boolean
-  toggleToPathType: RoutingMode
+  toggleToPathType: ExposureMode
 }
 
 const StyledPathTypeLabel = styled.span<LabelProps>`
   color: green;
-  ${props => props.toggleToPathType === RoutingMode.QUIET && css`
+  ${props => props.toggleToPathType === ExposureMode.QUIET && css`
     color: #6ff7ff;
     &:before {
       content: 'quiet';
     }`}
-  ${props => props.toggleToPathType === RoutingMode.CLEAN && css`
+  ${props => props.toggleToPathType === ExposureMode.CLEAN && css`
     color: #74ff74;
     &:before {
       content: 'fresh air';
@@ -73,17 +73,17 @@ const odsMatch = (quietPathOd: OdCoords | null, cleanPathOd: OdCoords | null) =>
 }
 
 const getPathToggleFunc = (toggleType: ToggleType, props: PropsFromRedux) => {
-  const { travelMode, showingPathsType, quietPathData, cleanPathData, routingId } = props
+  const { selectedTravelMode, showingPathsOfExposureMode, quietPathData, cleanPathData, routingId } = props
   const { getSetQuietPaths, getSetCleanPaths, setQuietPaths, setCleanPaths } = props
 
   if (toggleType === ToggleType.SHOW) {
-    return showingPathsType === RoutingMode.QUIET
-      ? setCleanPaths(quietPathData!.od![0], quietPathData!.od![1], routingId, cleanPathData!.data!, travelMode)
-      : setQuietPaths(cleanPathData!.od![0], cleanPathData!.od![1], routingId, quietPathData!.data!, travelMode)
+    return showingPathsOfExposureMode === ExposureMode.QUIET
+      ? setCleanPaths(quietPathData!.od![0], quietPathData!.od![1], routingId, cleanPathData!.data!, selectedTravelMode)
+      : setQuietPaths(cleanPathData!.od![0], cleanPathData!.od![1], routingId, quietPathData!.data!, selectedTravelMode)
   } else {
-    return showingPathsType === RoutingMode.QUIET
-      ? getSetCleanPaths(quietPathData!.od![0], quietPathData!.od![1], travelMode, routingId)
-      : getSetQuietPaths(cleanPathData!.od![0], cleanPathData!.od![1], travelMode, routingId)
+    return showingPathsOfExposureMode === ExposureMode.QUIET
+      ? getSetCleanPaths(quietPathData!.od![0], quietPathData!.od![1], selectedTravelMode, routingId)
+      : getSetQuietPaths(cleanPathData!.od![0], cleanPathData!.od![1], selectedTravelMode, routingId)
   }
 }
 
@@ -96,11 +96,11 @@ const getToggleType = (props: PropsFromRedux): ToggleType => {
 }
 
 const TogglePathsButton = (props: PropsFromRedux) => {
-  const { cleanPathsAvailable, showingPathsType } = props
+  const { cleanPathsAvailable, showingPathsOfExposureMode } = props
 
   const toggleType = getToggleType(props)
-  const toggleToPathType = showingPathsType === RoutingMode.CLEAN ? RoutingMode.QUIET : RoutingMode.CLEAN
-  const disabled = !cleanPathsAvailable && showingPathsType === RoutingMode.QUIET
+  const toggleToPathType = showingPathsOfExposureMode === ExposureMode.CLEAN ? ExposureMode.QUIET : ExposureMode.CLEAN
+  const disabled = !cleanPathsAvailable && showingPathsOfExposureMode === ExposureMode.QUIET
   return (
     <Button disabled={disabled}
       onClick={() => getPathToggleFunc(toggleType, props)}>
@@ -112,8 +112,8 @@ const TogglePathsButton = (props: PropsFromRedux) => {
 const mapStateToProps = (state: ReduxState) => ({
   cleanPathsAvailable: state.paths.cleanPathsAvailable,
   routingId: state.paths.routingId,
-  travelMode: state.paths.travelMode,
-  showingPathsType: state.paths.showingPathsType,
+  selectedTravelMode: state.paths.selectedTravelMode,
+  showingPathsOfExposureMode: state.paths.showingPathsOfExposureMode,
   quietPathData: state.paths.quietPathData,
   cleanPathData: state.paths.cleanPathData,
 })

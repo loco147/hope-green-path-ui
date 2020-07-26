@@ -1,15 +1,15 @@
 import { turf } from '../utils/index'
 import * as paths from './../services/paths'
 import { showNotification } from './notificationReducer'
-import { RoutingMode, PathType, TravelMode, statTypes } from './../constants'
+import { ExposureMode, PathType, TravelMode, statTypes } from './../constants'
 import { utils } from './../utils/index'
 import { Action } from 'redux'
 
 const initialPaths: PathsReducer = {
   cleanPathsAvailable: false,
-  travelMode: TravelMode.WALK,
-  showingTravelMode: null,
-  showingPathsType: null,
+  selectedTravelMode: TravelMode.WALK,
+  showingPathsOfTravelMode: null,
+  showingPathsOfExposureMode: null,
   showingStatsType: null,
   quietPathData: null,
   cleanPathData: null,
@@ -28,7 +28,7 @@ const initialPaths: PathsReducer = {
 }
 
 interface PathsAction extends Action {
-  travelMode: TravelMode,
+  selectedTravelMode: TravelMode,
   b_available: boolean,
   routingId: number,
   shortPath: PathFeature[],
@@ -60,7 +60,7 @@ const pathsReducer = (store = initialPaths, action: PathsAction) => {
     case 'SET_TRAVEL_MODE':
       return {
         ...store,
-        travelMode: action.travelMode
+        selectedTravelMode: action.selectedTravelMode
       }
 
     case 'ROUTING_STARTED':
@@ -68,7 +68,7 @@ const pathsReducer = (store = initialPaths, action: PathsAction) => {
         ...store,
         waitingPaths: true,
         routingId: action.routingId,
-        travelMode: action.travelMode
+        selectedTravelMode: action.selectedTravelMode
       }
 
     case 'SET_SHORTEST_PATH': {
@@ -100,7 +100,7 @@ const pathsReducer = (store = initialPaths, action: PathsAction) => {
         quietPathData: {
           od: [action.origCoords, action.destCoords],
           data: action.pathData,
-          travelMode: action.travelMode
+          selectedTravelMode: action.selectedTravelMode
         },
       }
     }
@@ -110,8 +110,8 @@ const pathsReducer = (store = initialPaths, action: PathsAction) => {
       if (cancelledRouting) return store
       return {
         ...store,
-        showingTravelMode: action.travelMode,
-        showingPathsType: RoutingMode.QUIET,
+        showingPathsOfTravelMode: action.selectedTravelMode,
+        showingPathsOfExposureMode: ExposureMode.QUIET,
         showingStatsType: statTypes.noise,
         quietPathFC: turf.asFeatureCollection(action.quietPaths),
       }
@@ -125,7 +125,7 @@ const pathsReducer = (store = initialPaths, action: PathsAction) => {
         cleanPathData: {
           od: [action.origCoords, action.destCoords],
           data: action.pathData,
-          travelMode: action.travelMode
+          selectedTravelMode: action.selectedTravelMode
         },
       }
     }
@@ -135,8 +135,8 @@ const pathsReducer = (store = initialPaths, action: PathsAction) => {
       if (cancelledRouting) return store
       return {
         ...store,
-        showingTravelMode: action.travelMode,
-        showingPathsType: RoutingMode.CLEAN,
+        showingPathsOfTravelMode: action.selectedTravelMode,
+        showingPathsOfExposureMode: ExposureMode.CLEAN,
         showingStatsType: statTypes.aq,
         cleanPathFC: turf.asFeatureCollection(action.cleanPaths),
       }
@@ -167,9 +167,9 @@ const pathsReducer = (store = initialPaths, action: PathsAction) => {
         let selPath: PathFeature[]
         if (action.selPathId === PathType.SHORT) {
           selPath = store.shortPathFC.features
-        } else if (store.showingPathsType === RoutingMode.QUIET) {
+        } else if (store.showingPathsOfExposureMode === ExposureMode.QUIET) {
           selPath = store.quietPathFC.features.filter(feat => feat.properties!.id === action.selPathId)
-        } else if (store.showingPathsType === RoutingMode.CLEAN) {
+        } else if (store.showingPathsOfExposureMode === ExposureMode.CLEAN) {
           selPath = store.cleanPathFC.features.filter(feat => feat.properties!.id === action.selPathId)
         }
         console.log('selecting path:', selPath! ? selPath![0].properties : 'no selection')
@@ -208,8 +208,8 @@ const pathsReducer = (store = initialPaths, action: PathsAction) => {
       }
 
     case 'ERROR_IN_ROUTING': {
-      const travelMode = store.showingTravelMode ? store.showingTravelMode : store.travelMode
-      return { ...store, waitingPaths: false, travelMode }
+      const selectedTravelMode = store.showingPathsOfTravelMode ? store.showingPathsOfTravelMode : store.selectedTravelMode
+      return { ...store, waitingPaths: false, selectedTravelMode }
     }
 
     case 'CLOSE_PATHS': {
@@ -224,7 +224,7 @@ const pathsReducer = (store = initialPaths, action: PathsAction) => {
       return {
         ...initialPaths,
         cleanPathsAvailable: store.cleanPathsAvailable,
-        travelMode: store.travelMode,
+        selectedTravelMode: store.selectedTravelMode,
         routingId: store.routingId + 1,
       }
 
@@ -282,26 +282,26 @@ const confirmLongDistance = (origCoords: [number, number], destCoords: [number, 
   return true
 }
 
-export const setTravelMode = (travelMode: TravelMode) => {
+export const setTravelMode = (selectedTravelMode: TravelMode) => {
   return async (dispatch: any) => {
-    dispatch({ type: 'SET_TRAVEL_MODE', travelMode })
+    dispatch({ type: 'SET_TRAVEL_MODE', selectedTravelMode })
   }
 }
 
-export const getSetQuietPaths = (origCoords: [number, number], destCoords: [number, number], travelMode: TravelMode, prevRoutingId: number) => {
+export const getSetQuietPaths = (origCoords: [number, number], destCoords: [number, number], selectedTravelMode: TravelMode, prevRoutingId: number) => {
   return async (dispatch: any) => {
     if (!confirmLongDistance(origCoords, destCoords)) {
       return
     }
     const routingId = prevRoutingId + 1
     dispatch({ type: 'CLOSE_PATHS' })
-    dispatch({ type: 'ROUTING_STARTED', origCoords, destCoords, routingId, travelMode })
+    dispatch({ type: 'ROUTING_STARTED', origCoords, destCoords, routingId, selectedTravelMode })
     try {
-      const pathData = await paths.getQuietPaths(travelMode, origCoords, destCoords)
-      dispatch(setQuietPaths(origCoords, destCoords, routingId, pathData, travelMode))
+      const pathData = await paths.getQuietPaths(selectedTravelMode, origCoords, destCoords)
+      dispatch(setQuietPaths(origCoords, destCoords, routingId, pathData, selectedTravelMode))
     } catch (error) {
       console.log('caught error:', error)
-      dispatch({ type: 'ERROR_IN_ROUTING', travelMode })
+      dispatch({ type: 'ERROR_IN_ROUTING', selectedTravelMode })
       if (typeof error === 'string') {
         dispatch(showNotification(error, 'error', 8))
       } else {
@@ -337,20 +337,20 @@ export const setQuietPaths = (origCoords: [number, number], destCoords: [number,
   }
 }
 
-export const getSetCleanPaths = (origCoords: [number, number], destCoords: [number, number], travelMode: TravelMode, prevRoutingId: number) => {
+export const getSetCleanPaths = (origCoords: [number, number], destCoords: [number, number], selectedTravelMode: TravelMode, prevRoutingId: number) => {
   return async (dispatch: any) => {
     if (!confirmLongDistance(origCoords, destCoords)) {
       return
     }
     const routingId = prevRoutingId + 1
     dispatch({ type: 'CLOSE_PATHS' })
-    dispatch({ type: 'ROUTING_STARTED', origCoords, destCoords, routingId, travelMode })
+    dispatch({ type: 'ROUTING_STARTED', origCoords, destCoords, routingId, selectedTravelMode })
     try {
-      const pathData = await paths.getCleanPaths(travelMode, origCoords, destCoords)
-      dispatch(setCleanPaths(origCoords, destCoords, routingId, pathData, travelMode))
+      const pathData = await paths.getCleanPaths(selectedTravelMode, origCoords, destCoords)
+      dispatch(setCleanPaths(origCoords, destCoords, routingId, pathData, selectedTravelMode))
     } catch (error) {
       console.log('caught error:', error)
-      dispatch({ type: 'ERROR_IN_ROUTING', travelMode })
+      dispatch({ type: 'ERROR_IN_ROUTING', selectedTravelMode })
       if (typeof error === 'string') {
         dispatch(showNotification(error, 'error', 8))
       } else {
@@ -361,10 +361,10 @@ export const getSetCleanPaths = (origCoords: [number, number], destCoords: [numb
   }
 }
 
-export const setCleanPaths = (origCoords: [number, number], destCoords: [number, number], routingId: number, pathData: PathDataResponse, travelMode: TravelMode) => {
+export const setCleanPaths = (origCoords: [number, number], destCoords: [number, number], routingId: number, pathData: PathDataResponse, selectedTravelMode: TravelMode) => {
   return async (dispatch: any) => {
     dispatch({ type: 'CLOSE_PATHS' })
-    dispatch({ type: 'SET_CLEAN_PATH_DATA', routingId, origCoords, destCoords, pathData, travelMode })
+    dispatch({ type: 'SET_CLEAN_PATH_DATA', routingId, origCoords, destCoords, pathData, selectedTravelMode })
     const pathFeats: PathFeature[] = pathData.path_FC.features
     const shortPath = pathFeats.filter(feat => feat.properties.type === 'short')
     const cleanPaths = pathFeats.filter(feat => feat.properties.type === 'clean' && feat.properties.len_diff !== 0)
@@ -372,7 +372,7 @@ export const setCleanPaths = (origCoords: [number, number], destCoords: [number,
     const initialLengthLimit = lengthLimits[lengthLimits.length - 1]
     dispatch({ type: 'SET_LENGTH_LIMITS', lengthLimits, initialLengthLimit, routingId })
     dispatch({ type: 'SET_SHORTEST_PATH', shortPath, routingId })
-    dispatch({ type: 'SET_CLEAN_PATHS', cleanPaths: cleanPaths, routingId, travelMode })
+    dispatch({ type: 'SET_CLEAN_PATHS', cleanPaths: cleanPaths, routingId, selectedTravelMode })
     dispatch({ type: 'SET_EDGE_FC', cleanEdgeFC: pathData.edge_FC, routingId })
     const bestPath = utils.getBestPath(cleanPaths)
     if (bestPath) {

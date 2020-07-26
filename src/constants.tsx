@@ -12,7 +12,7 @@ export enum TravelMode {
   BIKE = 'bike'
 }
 
-export enum RoutingMode {
+export enum ExposureMode {
   CLEAN = 'clean',
   QUIET = 'quiet'
 }

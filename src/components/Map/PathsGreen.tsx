@@ -3,7 +3,7 @@ import { connect, ConnectedProps } from 'react-redux'
 import { GeoJSONSource, MapMouseEvent } from 'mapbox-gl'
 import { setSelectedPath } from '../../reducers/pathsReducer'
 import { scrollToPath } from '../../reducers/pathListReducer'
-import { clickTol, RoutingMode } from '../../constants'
+import { clickTol, ExposureMode } from '../../constants'
 import { utils } from '../../utils/index'
 
 class PathsGreen extends React.Component<PropsFromRedux> {
@@ -50,9 +50,9 @@ class PathsGreen extends React.Component<PropsFromRedux> {
   componentDidUpdate = () => {
     // @ts-ignore - map is given to all children of Map
     const { map} = this.props
-    const { showingPathsType, quietPathFC, cleanPathFC, lengthLimit } = this.props
+    const { showingPathsOfExposureMode, quietPathFC, cleanPathFC, lengthLimit } = this.props
     let greenPathsFC: PathFeatureCollection
-    if (showingPathsType === RoutingMode.CLEAN) {
+    if (showingPathsOfExposureMode === ExposureMode.CLEAN) {
       greenPathsFC = cleanPathFC
     } else {
       greenPathsFC = quietPathFC
@@ -79,7 +79,7 @@ class PathsGreen extends React.Component<PropsFromRedux> {
 }
 
 const mapStateToProps = (state: ReduxState) => ({
-  showingPathsType: state.paths.showingPathsType,
+  showingPathsOfExposureMode: state.paths.showingPathsOfExposureMode,
   quietPathFC: state.paths.quietPathFC,
   cleanPathFC: state.paths.cleanPathFC,
   lengthLimit: state.paths.lengthLimit,

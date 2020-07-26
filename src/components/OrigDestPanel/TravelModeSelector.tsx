@@ -4,7 +4,7 @@ import { connect, ConnectedProps } from 'react-redux'
 import { MdDirectionsBike } from 'react-icons/md'
 import { MdDirectionsWalk } from 'react-icons/md'
 import { setTravelMode, getSetQuietPaths, getSetCleanPaths } from './../../reducers/pathsReducer'
-import { TravelMode, RoutingMode } from '../../constants'
+import { TravelMode, ExposureMode } from '../../constants'
 
 const StyledBikeI = styled(MdDirectionsBike)`
   font-size: 23px;
@@ -62,7 +62,7 @@ const getSetTravelModeFunction = (props: PropsFromRedux, travelModeOfTheButton: 
     return props.setTravelMode(travelModeOfTheButton)
   } else {
     let odCoords: OdCoords
-    if (props.showingPathsType === RoutingMode.QUIET) {
+    if (props.showingPathsOfExposureMode === ExposureMode.QUIET) {
       odCoords = props.quietPathData!.od
       return props.getSetQuietPaths(odCoords[0], odCoords[1], travelModeOfTheButton, props.routingId)
     } else {
@@ -78,12 +78,12 @@ const TravelModeSelector = (props: PropsFromRedux) => {
     <ButtonRow>
       <StyledIconContainer
         onClick={() => getSetTravelModeFunction(props, TravelMode.WALK)}
-        selected={props.travelMode === TravelMode.WALK}>
+        selected={props.selectedTravelMode === TravelMode.WALK}>
         <StyledWalkI />
       </StyledIconContainer>
       <StyledIconContainer
         onClick={() => getSetTravelModeFunction(props, TravelMode.BIKE)}
-        selected={props.travelMode === TravelMode.BIKE}
+        selected={props.selectedTravelMode === TravelMode.BIKE}
         bike>
         <StyledBikeI />
       </StyledIconContainer>
@@ -93,8 +93,8 @@ const TravelModeSelector = (props: PropsFromRedux) => {
 
 const mapStateToProps = (state: ReduxState) => ({
   showingPaths: state.paths.showingPaths,
-  travelMode: state.paths.travelMode,
-  showingPathsType: state.paths.showingPathsType,
+  selectedTravelMode: state.paths.selectedTravelMode,
+  showingPathsOfExposureMode: state.paths.showingPathsOfExposureMode,
   quietPathData: state.paths.quietPathData,
   cleanPathData: state.paths.cleanPathData,
   routingId: state.paths.routingId,

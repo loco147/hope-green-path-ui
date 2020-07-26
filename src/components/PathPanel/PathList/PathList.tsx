@@ -1,7 +1,7 @@
 import React, { createRef, RefObject } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
 import styled from 'styled-components'
-import { RoutingMode } from '../../../constants'
+import { ExposureMode } from '../../../constants'
 import { OpenPathBox } from './../OpenClosePathBoxes'
 import { setSelectedPath, setOpenedPath } from '../../../reducers/pathsReducer'
 import PathListPathBox, { ShortestPathBox } from './PathListPathBox'
@@ -28,11 +28,11 @@ class PathList extends React.Component<PropsFromRedux, State> {
   }
 
   componentDidUpdate(prevProps: PropsFromRedux) {
-    const { quietPathFC, cleanPathFC, showingPathsType } = this.props.paths
+    const { quietPathFC, cleanPathFC, showingPathsOfExposureMode } = this.props.paths
     let pathRefs = this.state.pathRefs
     let updateRefs = false
 
-    const greenPathFC = showingPathsType === RoutingMode.CLEAN
+    const greenPathFC = showingPathsOfExposureMode === ExposureMode.CLEAN
       ? cleanPathFC
       : quietPathFC
 
@@ -54,11 +54,11 @@ class PathList extends React.Component<PropsFromRedux, State> {
     }
   }
 
-  openPathDisabled = (showingPathsType: RoutingMode, pathProps: PathProperties): boolean => {
-    if (showingPathsType === RoutingMode.CLEAN) {
+  openPathDisabled = (showingPathsOfExposureMode: ExposureMode, pathProps: PathProperties): boolean => {
+    if (showingPathsOfExposureMode === ExposureMode.CLEAN) {
       return pathProps.missing_aqi
     }
-    if (showingPathsType === RoutingMode.QUIET) {
+    if (showingPathsOfExposureMode === ExposureMode.QUIET) {
       return pathProps.missing_noises
     }
     return false
@@ -66,12 +66,12 @@ class PathList extends React.Component<PropsFromRedux, State> {
 
   render() {
     const { paths, setSelectedPath, setOpenedPath } = this.props
-    const { showingPathsType, showingStatsType, shortPathFC, cleanPathFC, quietPathFC, selPathFC, lengthLimit } = paths
+    const { showingPathsOfExposureMode, showingStatsType, shortPathFC, cleanPathFC, quietPathFC, selPathFC, lengthLimit } = paths
     const selPathId = selPathFC.features.length > 0
       ? selPathFC.features[0].properties.id
       : 'none'
 
-    const greenPathFC = showingPathsType === RoutingMode.CLEAN
+    const greenPathFC = showingPathsOfExposureMode === ExposureMode.CLEAN
       ? cleanPathFC
       : quietPathFC
 
@@ -80,7 +80,7 @@ class PathList extends React.Component<PropsFromRedux, State> {
 
     return (
       <div>
-        {showingPathsType === RoutingMode.QUIET
+        {showingPathsOfExposureMode === ExposureMode.QUIET
           ? <DbColorLegendBar />
           : null
         }
@@ -88,23 +88,23 @@ class PathList extends React.Component<PropsFromRedux, State> {
           <ShortestPathBox
             path={shortPath}
             handleClick={() => setSelectedPath(shortPath.properties.id)}
-            showingPathsType={showingPathsType!}
+            showingPathsOfExposureMode={showingPathsOfExposureMode!}
             showingStatsType={showingStatsType!}
             selected={shortPath.properties.id === selPathId} />
           <OpenPathBox
-            disabled={this.openPathDisabled(showingPathsType!, shortPath.properties)}
+            disabled={this.openPathDisabled(showingPathsOfExposureMode!, shortPath.properties)}
             handleClick={() => setOpenedPath(shortPath)} />
         </PathRowFlex>
         {greenPaths.map((path) => (
           <PathRowFlex key={path.properties.id} ref={this.state.pathRefs[path.properties.id]}>
             <PathListPathBox
               path={path}
-              showingPathsType={showingPathsType!}
+              showingPathsOfExposureMode={showingPathsOfExposureMode!}
               showingStatsType={showingStatsType!}
               handleClick={() => setSelectedPath(path.properties.id)}
               selected={path.properties.id === selPathId} />
             <OpenPathBox
-              disabled={this.openPathDisabled(showingPathsType!, shortPath.properties)}
+              disabled={this.openPathDisabled(showingPathsOfExposureMode!, shortPath.properties)}
               handleClick={() => setOpenedPath(path)} />
           </PathRowFlex>
         ))}

@@ -2,7 +2,7 @@ import React from 'react'
 import { connect, ConnectedProps } from 'react-redux'
 import { GeoJSONSource } from 'mapbox-gl'
 import { setSelectedPath } from '../../reducers/pathsReducer'
-import { dBColors, aqiColors, RoutingMode } from '../../constants'
+import { dBColors, aqiColors, ExposureMode } from '../../constants'
 
 const dbLineColors = [
   'match',
@@ -60,10 +60,10 @@ class PathsEdges extends React.Component<PropsFromRedux> {
   componentDidUpdate = () => {
     // @ts-ignore - map is given to all children of Map
     const { map } = this.props
-    const { showingPathsType, quietEdgeFC, cleanEdgeFC, lengthLimit } = this.props
+    const { showingPathsOfExposureMode, quietEdgeFC, cleanEdgeFC, lengthLimit } = this.props
     let greenEdgeFC: any
     let lineColor
-    if (showingPathsType === RoutingMode.CLEAN) {
+    if (showingPathsOfExposureMode === ExposureMode.CLEAN) {
       greenEdgeFC = cleanEdgeFC
       lineColor = aqiLineColors
     } else {
@@ -92,7 +92,7 @@ class PathsEdges extends React.Component<PropsFromRedux> {
 }
 
 const mapStateToProps = (state: ReduxState) => ({
-  showingPathsType: state.paths.showingPathsType,
+  showingPathsOfExposureMode: state.paths.showingPathsOfExposureMode,
   quietEdgeFC: state.paths.quietEdgeFC,
   cleanEdgeFC: state.paths.cleanEdgeFC,
   lengthLimit: state.paths.lengthLimit,

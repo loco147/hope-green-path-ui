@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { connect, ConnectedProps } from 'react-redux'
-import { menu, RoutingMode } from './../../constants'
+import { menu, ExposureMode } from './../../constants'
 import TogglePathsButton from './TogglePathsButton'
 import { togglePathPanel, showPathList, showMaxLengthFilterSelector } from './../../reducers/menuReducer'
 import { ListButton, ArrowUpButton, ArrowDownButton } from './../Icons'
@@ -33,12 +33,12 @@ const Margin = styled.div<{ left?: number }>`
 `
 
 const BottomControlPanel = (props: propsFromRedux) => {
-  const { showingPaths, showingPathsType, pathPanelVisible, pathPanelContent, quietPathCount, cleanPathCount,
+  const { showingPaths, showingPathsOfExposureMode, pathPanelVisible, pathPanelContent, quietPathCount, cleanPathCount,
     lengthLimit, lengthLimits, togglePathPanel, showPathList, showMaxLengthFilterSelector } = props
 
   if (!showingPaths) return null
 
-  const greenPathCount = showingPathsType === RoutingMode.CLEAN
+  const greenPathCount = showingPathsOfExposureMode === ExposureMode.CLEAN
     ? cleanPathCount
     : quietPathCount
 
@@ -67,7 +67,7 @@ const BottomControlPanel = (props: propsFromRedux) => {
 
 const mapStateToProps = (state: ReduxState) => ({
   showingPaths: state.paths.showingPaths,
-  showingPathsType: state.paths.showingPathsType,
+  showingPathsOfExposureMode: state.paths.showingPathsOfExposureMode,
   pathPanelVisible: state.menu.pathPanel,
   pathPanelContent: state.menu.pathPanelContent,
   quietPathCount: state.paths.quietPathFC.features.length,

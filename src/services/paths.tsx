@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { analytics } from './../firebase/firebase'
-import { RoutingMode } from '../constants'
+import { ExposureMode } from '../constants'
 
 let baseurl = process.env.REACT_APP_QP_URL ? process.env.REACT_APP_QP_URL : ''
 
@@ -28,7 +28,7 @@ const formCoordinateString = (originCoords: number[], destinationCoords: number[
 
 export const getQuietPaths = async (travelMode: TravelMode, originCoords: number[], destinationCoords: number[]): Promise<PathDataResponse> => {
   const coordString = formCoordinateString(originCoords, destinationCoords)
-  const queryUrl = baseurl.concat('paths/', travelMode, '/', RoutingMode.QUIET, '/', coordString)
+  const queryUrl = baseurl.concat('paths/', travelMode, '/', ExposureMode.QUIET, '/', coordString)
   console.log('Querying quiet paths:', queryUrl)
   const response = await axios.get(queryUrl)
   if (response.data.error) {
@@ -41,7 +41,7 @@ export const getQuietPaths = async (travelMode: TravelMode, originCoords: number
 
 export const getCleanPaths = async (travelMode: TravelMode, originCoords: number[], destinationCoords: number[]): Promise<PathDataResponse> => {
   const coordString = formCoordinateString(originCoords, destinationCoords)
-  const queryUrl = baseurl.concat('paths/', travelMode, '/', RoutingMode.CLEAN, '/', coordString)
+  const queryUrl = baseurl.concat('paths/', travelMode, '/', ExposureMode.CLEAN, '/', coordString)
   console.log('Querying quiet paths:', queryUrl)
   const response = await axios.get(queryUrl)
   if (response.data.error) {

@@ -34,7 +34,7 @@ enum TravelMode {
   BIKE = 'bike'
 }
 
-enum RoutingMode {
+enum ExposureMode {
   CLEAN = 'clean',
   QUIET = 'quiet'
 }
@@ -145,9 +145,9 @@ interface NotificationReducer {
 
 interface PathsReducer {
   cleanPathsAvailable: boolean,
-  travelMode: TravelMode,
-  showingTravelMode: TravelMode | null,
-  showingPathsType: RoutingMode | null,
+  selectedTravelMode: TravelMode,
+  showingPathsOfTravelMode: TravelMode | null,
+  showingPathsOfExposureMode: ExposureMode | null,
   showingStatsType: StatsType | null,
   quietPathData: { od: OdCoords, data: PathDataResponse, travelMode: TravelMode } | null,
   cleanPathData: { od: OdCoords, data: PathDataResponse, travelMode: TravelMode } | null,

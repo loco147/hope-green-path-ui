@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { utils } from '../../../utils/index'
 import { PathNoisesBar } from './../PathNoisesBar'
 import { PathAqiBar } from './../PathAqiBar'
-import { RoutingMode, statTypes, walkSpeed, aqiLabels } from '../../../constants'
+import { ExposureMode, statTypes, walkSpeed, aqiLabels } from '../../../constants'
 
 type Props = {
   selected: boolean,
@@ -60,7 +60,7 @@ interface PathBoxProperties {
   path: PathFeature,
   selected: boolean,
   handleClick: React.MouseEventHandler<HTMLElement>,
-  showingPathsType?: RoutingMode,
+  showingPathsOfExposureMode?: ExposureMode,
   showingStatsType?: StatsType
 }
 
@@ -124,8 +124,8 @@ const getFormattedExpDiffRatio = (aqc_diff_rat: number): string => {
   }
 }
 
-const PathListPathBox = ({ path, selected, showingPathsType, handleClick }: PathBoxProperties) => {
-  if (showingPathsType === RoutingMode.CLEAN) {
+const PathListPathBox = ({ path, selected, showingPathsOfExposureMode, handleClick }: PathBoxProperties) => {
+  if (showingPathsOfExposureMode === ExposureMode.CLEAN) {
     return <CleanPathBox path={path} selected={selected} handleClick={handleClick} />
   } else {
     return <QuietPathBox path={path} selected={selected} handleClick={handleClick} />
