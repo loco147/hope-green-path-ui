@@ -312,10 +312,10 @@ export const getSetQuietPaths = (origCoords: [number, number], destCoords: [numb
   }
 }
 
-export const setQuietPaths = (origCoords: [number, number], destCoords: [number, number], routingId: number, pathData: PathDataResponse, travelMode: TravelMode) => {
+export const setQuietPaths = (origCoords: [number, number], destCoords: [number, number], routingId: number, pathData: PathDataResponse, selectedTravelMode: TravelMode) => {
   return async (dispatch: any) => {
     dispatch({ type: 'CLOSE_PATHS' })
-    dispatch({ type: 'SET_QUIET_PATH_DATA', routingId, origCoords, destCoords, pathData, travelMode })
+    dispatch({ type: 'SET_QUIET_PATH_DATA', routingId, origCoords, destCoords, pathData, selectedTravelMode })
     const pathFeats: PathFeature[] = pathData.path_FC.features
     const shortPath = pathFeats.filter(feat => feat.properties.type === 'short')
     const quietPaths = pathFeats.filter(feat => feat.properties.type === 'quiet' && feat.properties.len_diff !== 0)
@@ -323,7 +323,7 @@ export const setQuietPaths = (origCoords: [number, number], destCoords: [number,
     const initialLengthLimit = utils.getInitialLengthLimit(lengthLimits, quietPaths.length)
     dispatch({ type: 'SET_LENGTH_LIMITS', lengthLimits, initialLengthLimit, routingId })
     dispatch({ type: 'SET_SHORTEST_PATH', shortPath, routingId })
-    dispatch({ type: 'SET_QUIET_PATHS', quietPaths: quietPaths, routingId, travelMode })
+    dispatch({ type: 'SET_QUIET_PATHS', quietPaths: quietPaths, routingId, selectedTravelMode })
     dispatch({ type: 'SET_EDGE_FC', quietEdgeFC: pathData.edge_FC, routingId })
     const bestPath = utils.getBestPath(quietPaths)
     if (bestPath) {

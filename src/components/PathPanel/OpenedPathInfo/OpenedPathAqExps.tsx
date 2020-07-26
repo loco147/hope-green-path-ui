@@ -10,7 +10,7 @@ const StyledOpenedPathExposures = styled.div`
   justify-content: space-evenly;
   pointer-events: auto;
   border-radius: 5px;
-  margin: 4px 0px 4px 0px
+  margin: 4px 0px 4px 0px;
   border: 2px solid transparent;
   padding: 1px 0px 2px 4px;
   color: black;
@@ -58,21 +58,22 @@ const AqiClLabelBox = ({ aqiCl }: { aqiCl: AqiClass }) => {
 
 interface AqiExposureRowProps {
   aqiCl: AqiClass,
-  aqiClExp: number
+  aqiClExp: number,
+  travelMode: TravelMode
 }
 
-const AqExposureRow = ({ aqiCl, aqiClExp }: AqiExposureRowProps) => {
+const AqExposureRow = ({ aqiCl, aqiClExp, travelMode }: AqiExposureRowProps) => {
   return (
     <StyledAqiExposureRow>
       <AqiClLabelBox aqiCl={aqiCl} />
       <StyledAqiExposureBox>
-        {utils.getDurationStringFromDist(aqiClExp, true)}
+        {utils.getDurationStringFromDist(aqiClExp, travelMode, true)}
       </StyledAqiExposureBox>
     </StyledAqiExposureRow>
   )
 }
 
-export const OpenedPathAqExps = ({ path }: { path: PathFeature }) => {
+export const OpenedPathAqExps = ({ path, travelMode }: { path: PathFeature, travelMode: TravelMode }) => {
   const aqiClExps = path.properties.aqi_cl_exps
   const aqiKeys = Object.keys(aqiClExps)
   const aqiCls: AqiClass[] = aqiKeys.map(aqi => Number(aqi)).sort()
@@ -84,7 +85,8 @@ export const OpenedPathAqExps = ({ path }: { path: PathFeature }) => {
             {aqiCls.map(aqiCL => <AqExposureRow
               key={aqiCL}
               aqiCl={aqiCL}
-              aqiClExp={aqiClExps[aqiCL]} />)}
+              aqiClExp={aqiClExps[aqiCL]} 
+              travelMode={travelMode} />)}
           </FlexCols>
         </PathPropsRow>
       </StyledOpenedPathExposures>

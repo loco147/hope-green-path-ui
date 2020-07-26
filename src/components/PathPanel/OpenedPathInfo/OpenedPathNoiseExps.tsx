@@ -53,29 +53,35 @@ const ExposureBox = styled.div`
   color: black;
 `
 
-const DBExposureRow = ({ dB, path }: { dB: DbClass, path: PathFeature }) => {
+interface dBExposureRowProps {
+  path: PathFeature,
+  dB: DbClass,
+  travelMode: TravelMode
+}
+
+const DBExposureRow = ({ path, dB, travelMode }: dBExposureRowProps) => {
   const dist = path.properties.noise_range_exps[dB]
   return (
     <KeyValueFlex>
       <DBKeyBox color={dBColors[dB]}>{dB}dB</DBKeyBox>
-      <ExposureBox>{utils.getDurationStringFromDist(dist ? dist : 0, true)} </ExposureBox>
+      <ExposureBox>{utils.getDurationStringFromDist(dist ? dist : 0, travelMode, true)} </ExposureBox>
     </KeyValueFlex>
   )
 }
 
-export const OpenedPathNoiseExps = ({ path }: { path: PathFeature }) => {
+export const OpenedPathNoiseExps = ({ path, travelMode }: { path: PathFeature, travelMode: TravelMode }) => {
   return (
     <StyledOpenedPathNoiseExps>
       <PathPropsRow>
         <FlexCols >
-          <DBExposureRow path={path} dB={40} />
-          <DBExposureRow path={path} dB={50} />
-          <DBExposureRow path={path} dB={55} />
+          <DBExposureRow path={path} dB={40} travelMode={travelMode} />
+          <DBExposureRow path={path} dB={50} travelMode={travelMode} />
+          <DBExposureRow path={path} dB={55} travelMode={travelMode} />
         </FlexCols>
         <FlexCols>
-          <DBExposureRow path={path} dB={60} />
-          <DBExposureRow path={path} dB={65} />
-          <DBExposureRow path={path} dB={70} />
+          <DBExposureRow path={path} dB={60} travelMode={travelMode} />
+          <DBExposureRow path={path} dB={65} travelMode={travelMode} />
+          <DBExposureRow path={path} dB={70} travelMode={travelMode} />
         </FlexCols>
       </PathPropsRow>
     </StyledOpenedPathNoiseExps>

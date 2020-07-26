@@ -66,7 +66,7 @@ class PathList extends React.Component<PropsFromRedux, State> {
 
   render() {
     const { paths, setSelectedPath, setOpenedPath } = this.props
-    const { showingPathsOfExposureMode, showingStatsType, shortPathFC, cleanPathFC, quietPathFC, selPathFC, lengthLimit } = paths
+    const { showingPathsOfExposureMode, showingPathsOfTravelMode, showingStatsType, shortPathFC, cleanPathFC, quietPathFC, selPathFC, lengthLimit } = paths
     const selPathId = selPathFC.features.length > 0
       ? selPathFC.features[0].properties.id
       : 'none'
@@ -89,6 +89,7 @@ class PathList extends React.Component<PropsFromRedux, State> {
             path={shortPath}
             handleClick={() => setSelectedPath(shortPath.properties.id)}
             showingPathsOfExposureMode={showingPathsOfExposureMode!}
+            travelMode={showingPathsOfTravelMode!}
             showingStatsType={showingStatsType!}
             selected={shortPath.properties.id === selPathId} />
           <OpenPathBox
@@ -100,6 +101,7 @@ class PathList extends React.Component<PropsFromRedux, State> {
             <PathListPathBox
               path={path}
               showingPathsOfExposureMode={showingPathsOfExposureMode!}
+              travelMode={showingPathsOfTravelMode!}
               showingStatsType={showingStatsType!}
               handleClick={() => setSelectedPath(path.properties.id)}
               selected={path.properties.id === selPathId} />

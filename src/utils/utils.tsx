@@ -1,4 +1,4 @@
-import { walkSpeed } from './../constants'
+import { walkSpeed, bikeSpeed, TravelMode } from './../constants'
 import { MapMouseEvent, Map, PointLike } from 'mapbox-gl'
 
 const concatSign = (number: number): string => {
@@ -9,8 +9,9 @@ const concatSign = (number: number): string => {
   } else return String(number)
 }
 
-export const getDurationStringFromDist = (m: number, showSeconds: boolean = false, withSign: boolean = false): string => {
-  const timeSecs = m / walkSpeed
+export const getDurationStringFromDist = (m: number, travelMode: TravelMode, showSeconds: boolean = false, withSign: boolean = false): string => {
+  const speed = travelMode === TravelMode.WALK ? walkSpeed : bikeSpeed
+  const timeSecs = m / speed
   const roundedSecs = Math.round(timeSecs)
   const timeMin = timeSecs / 60
   const roundedMins = Math.round(timeMin)

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { utils } from '../../../utils/index'
 import { PathNoisesBar } from './../PathNoisesBar'
 import { PathAqiBar } from './../PathAqiBar'
-import { ExposureMode, statTypes, walkSpeed, aqiLabels } from '../../../constants'
+import { ExposureMode, TravelMode, statTypes, walkSpeed, bikeSpeed, aqiLabels } from '../../../constants'
 
 type Props = {
   selected: boolean,
@@ -60,6 +60,7 @@ interface PathBoxProperties {
   path: PathFeature,
   selected: boolean,
   handleClick: React.MouseEventHandler<HTMLElement>,
+  travelMode: TravelMode,
   showingPathsOfExposureMode?: ExposureMode,
   showingStatsType?: StatsType
 }
@@ -124,27 +125,27 @@ const getFormattedExpDiffRatio = (aqc_diff_rat: number): string => {
   }
 }
 
-const PathListPathBox = ({ path, selected, showingPathsOfExposureMode, handleClick }: PathBoxProperties) => {
+const PathListPathBox = ({ path, selected, showingPathsOfExposureMode, travelMode, handleClick }: PathBoxProperties) => {
   if (showingPathsOfExposureMode === ExposureMode.CLEAN) {
-    return <CleanPathBox path={path} selected={selected} handleClick={handleClick} />
+    return <CleanPathBox path={path} selected={selected} travelMode={travelMode} handleClick={handleClick} />
   } else {
-    return <QuietPathBox path={path} selected={selected} handleClick={handleClick} />
+    return <QuietPathBox path={path} selected={selected} travelMode={travelMode} handleClick={handleClick} />
   }
 }
 
-export const ShortestPathBox = ({ path, selected, showingStatsType, handleClick }: PathBoxProperties) => {
+export const ShortestPathBox = ({ path, selected, showingStatsType, travelMode, handleClick }: PathBoxProperties) => {
   if (showingStatsType === statTypes.aq) {
-    return <ShortestPathAqBox path={path} selected={selected} handleClick={handleClick} />
-  } else { return <ShortestPathNoiseBox path={path} selected={selected} handleClick={handleClick} /> }
+    return <ShortestPathAqBox path={path} selected={selected} travelMode={travelMode} handleClick={handleClick} />
+  } else { return <ShortestPathNoiseBox path={path} selected={selected} travelMode={travelMode} handleClick={handleClick} /> }
 }
 
-const ShortestPathAqBox = ({ path, selected, handleClick }: PathBoxProperties) => {
+const ShortestPathAqBox = ({ path, selected, travelMode, handleClick }: PathBoxProperties) => {
   return (
     <StyledPathListPathBox selected={selected} onClick={handleClick}>
       {!path.properties.missing_aqi && <PathAqiBar aqiPcts={path.properties.aqi_pcts} />}
       <PathPropsRow>
         <div>
-          {utils.getDurationStringFromDist(path.properties.length)}
+          {utils.getDurationStringFromDist(path.properties.length, travelMode)}
         </div>
         <div>
           {getFormattedDistanceString(path.properties.length, false)}
@@ -159,13 +160,13 @@ const ShortestPathAqBox = ({ path, selected, handleClick }: PathBoxProperties) =
   )
 }
 
-const ShortestPathNoiseBox = ({ path, selected, handleClick }: PathBoxProperties) => {
+const ShortestPathNoiseBox = ({ path, selected, travelMode, handleClick }: PathBoxProperties) => {
   return (
     <StyledPathListPathBox selected={selected} onClick={handleClick}>
       <PathNoisesBar noisePcts={path.properties.noise_pcts} />
       <PathPropsRow>
         <div>
-          {utils.getDurationStringFromDist(path.properties.length)}
+          {utils.getDurationStringFromDist(path.properties.length, travelMode)}
         </div>
         <div>
           {getFormattedDistanceString(path.properties.length, false)}
@@ -178,15 +179,15 @@ const ShortestPathNoiseBox = ({ path, selected, handleClick }: PathBoxProperties
   )
 }
 
-const CleanPathBox = ({ path, selected, handleClick }: PathBoxProperties) => {
+const CleanPathBox = ({ path, selected, travelMode, handleClick }: PathBoxProperties) => {
   return (
     <StyledPathListPathBox selected={selected} onClick={handleClick}>
       {!path.properties.missing_aqi && <PathAqiBar aqiPcts={path.properties.aqi_pcts} />}
       <PathPropsRow>
         <div>
-          {utils.getDurationStringFromDist(path.properties.length)}
+          {utils.getDurationStringFromDist(path.properties.length, travelMode)}
           <Sub>
-            {' '}{getFormattedDurationDiff(path.properties)}
+            {' '}{getFormattedDurationDiff(path.properties, travelMode)}
           </Sub>
         </div>
         <QuietPathLengthProps>
@@ -201,15 +202,15 @@ const CleanPathBox = ({ path, selected, handleClick }: PathBoxProperties) => {
   )
 }
 
-const QuietPathBox = ({ path, selected, handleClick }: PathBoxProperties) => {
+const QuietPathBox = ({ path, selected, travelMode, handleClick }: PathBoxProperties) => {
   return (
     <StyledPathListPathBox selected={selected} onClick={handleClick}>
       <PathNoisesBar noisePcts={path.properties.noise_pcts} />
       <PathPropsRow>
         <div>
-          {utils.getDurationStringFromDist(path.properties.length)}
+          {utils.getDurationStringFromDist(path.properties.length, travelMode)}
           <Sub>
-            {' '}{getFormattedDurationDiff(path.properties)}
+            {' '}{getFormattedDurationDiff(path.properties, travelMode)}
           </Sub>
         </div>
         <QuietPathLengthProps>
@@ -223,10 +224,11 @@ const QuietPathBox = ({ path, selected, handleClick }: PathBoxProperties) => {
   )
 }
 
-const getFormattedDurationDiff = (pathProps: PathProperties) => {
+const getFormattedDurationDiff = (pathProps: PathProperties, travelMode: TravelMode) => {
+  const speed = travelMode === TravelMode.WALK ? walkSpeed : bikeSpeed
   const sPathLength = pathProps.length - pathProps.len_diff
-  const sPathDurationMins = Math.round((sPathLength / walkSpeed) / 60)
-  const cleanPathDurationMins = Math.round((pathProps.length / walkSpeed) / 60)
+  const sPathDurationMins = Math.round((sPathLength / speed) / 60)
+  const cleanPathDurationMins = Math.round((pathProps.length / speed) / 60)
   const durationDiffMins = cleanPathDurationMins - sPathDurationMins
   if (durationDiffMins === 0) { return '' }
   else if (durationDiffMins > 0) {
