@@ -143,14 +143,20 @@ interface NotificationReducer {
   look: string | null
 }
 
+interface PathDataCache {
+  od: OdCoords,
+  data: PathDataResponse,
+  travelMode: TravelMode
+}
+
 interface PathsReducer {
   cleanPathsAvailable: boolean,
   selectedTravelMode: TravelMode,
-  showingPathsOfTravelMode: TravelMode | null,
+  showingPathsOfTravelMode: TravelMode | null,
   showingPathsOfExposureMode: ExposureMode | null,
   showingStatsType: StatsType | null,
-  quietPathData: { od: OdCoords, data: PathDataResponse, travelMode: TravelMode } | null,
-  cleanPathData: { od: OdCoords, data: PathDataResponse, travelMode: TravelMode } | null,
+  quietPathData: PathDataCache | null,
+  cleanPathData: PathDataCache | null,
   selPathFC: PathFeatureCollection,
   shortPathFC: PathFeatureCollection,
   quietPathFC: PathFeatureCollection,

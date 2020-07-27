@@ -47,7 +47,7 @@ interface PathsAction extends Action {
   path: PathFeature
 }
 
-const pathsReducer = (store = initialPaths, action: PathsAction) => {
+const pathsReducer = (store: PathsReducer = initialPaths, action: PathsAction) => {
 
   switch (action.type) {
 
@@ -100,7 +100,7 @@ const pathsReducer = (store = initialPaths, action: PathsAction) => {
         quietPathData: {
           od: [action.origCoords, action.destCoords],
           data: action.pathData,
-          selectedTravelMode: action.selectedTravelMode
+          travelMode: action.selectedTravelMode
         },
       }
     }
@@ -125,7 +125,7 @@ const pathsReducer = (store = initialPaths, action: PathsAction) => {
         cleanPathData: {
           od: [action.origCoords, action.destCoords],
           data: action.pathData,
-          selectedTravelMode: action.selectedTravelMode
+          travelMode: action.selectedTravelMode
         },
       }
     }
