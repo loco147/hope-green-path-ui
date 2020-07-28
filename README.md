@@ -8,6 +8,11 @@ Currently implemented features include calculation of walkable quiet paths with 
 
 Live demo: [green-paths.web.app](https://green-paths.web.app/)
 
+## Related projects
+- [hope-green-path-server](https://github.com/DigitalGeographyLab/hope-green-path-server)
+- [hope-graph-updater](https://github.com/DigitalGeographyLab/hope-graph-updater)
+- [hope-graph-builder](https://github.com/DigitalGeographyLab/hope-graph-builder)
+
 ## Materials
 * [Green Paths project website](https://www.helsinki.fi/en/researchgroups/digital-geography-lab/green-paths)
 * [UIA HOPE project](https://ilmanlaatu.eu/briefly-in-english/)
@@ -19,6 +24,15 @@ Live demo: [green-paths.web.app](https://green-paths.web.app/)
 ## Built With
 * React, Redux & Thunk
 * Mapbox GL JS & Turf.js
+
+## Contributing
+* See also [CONTRIBUTING.md](CONTRIBUTING.md)
+* Please bear in mind that the current objective of the project is to develop a proof-of-concept of a green path route planner rather than a production ready service
+* This objective is used as an (bad) excuse for the lack of tests and many unoptimized chunks of code in this repository
+* You are most welcome to add feature requests or bug reports in the issue tracker
+* When contributing to this repository, please first discuss the change you wish to make via issue,
+email, or any other method with the owners of this repository before making a change (firstname.lastname@helsinki.fi)
+* Simple typo fixes etc. can be sent as PRs directly, but for features or more complex bug fixes please add a corresponding issue first for discussion
 
 ## Installation
 ```
