@@ -50,12 +50,13 @@ class PathShort extends React.Component<PropsFromRedux> {
   componentDidUpdate = () => {
     // @ts-ignore - map is given to all children of Map
     const { map } = this.props
-    const { shortPathFC } = this.props
+    const { shortPathFC, lengthLimit } = this.props
     map.moveLayer('pathsGreen', this.layerId)
 
     if (this.source !== undefined) {
       // @ts-ignore - it's valid geojson
       this.source.setData(shortPathFC)
+      map.setFilter(this.layerId, ['<=', 'length', lengthLimit.limit])
     } else {
       map.once('sourcedata', () => {
         if (this.source) {
@@ -63,6 +64,7 @@ class PathShort extends React.Component<PropsFromRedux> {
           this.source.setData(shortPathFC)
         }
       })
+      map.setFilter(this.layerId, ['<=', 'length', lengthLimit.limit])
     }
   }
 
@@ -73,6 +75,7 @@ class PathShort extends React.Component<PropsFromRedux> {
 
 const mapStateToProps = (state: ReduxState) => ({
   shortPathFC: state.paths.shortPathFC,
+  lengthLimit: state.paths.lengthLimit
 })
 
 const connector = connect(mapStateToProps, { setSelectedPath, scrollToPath })

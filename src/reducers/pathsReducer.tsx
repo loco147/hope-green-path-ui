@@ -321,7 +321,7 @@ export const setQuietPaths = (origCoords: [number, number], destCoords: [number,
     const shortPath = pathFeats.filter(feat => feat.properties.type === 'short')
     const quietPaths = pathFeats.filter(feat => feat.properties.type === 'quiet' && feat.properties.len_diff !== 0)
     const lengthLimits = utils.getLengthLimits(pathFeats)
-    const initialLengthLimit = utils.getInitialLengthLimit(lengthLimits, quietPaths.length)
+    const initialLengthLimit = utils.getInitialLengthLimit(lengthLimits, quietPaths.length, 20)
     dispatch({ type: 'SET_LENGTH_LIMITS', lengthLimits, initialLengthLimit, routingId })
     dispatch({ type: 'SET_SHORTEST_PATH', shortPath, routingId })
     dispatch({ type: 'SET_QUIET_PATHS', quietPaths: quietPaths, routingId, selectedTravelMode })

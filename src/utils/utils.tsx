@@ -52,8 +52,8 @@ const getLengthLimit = (length: number, rounding: number) => Math.ceil(length / 
 
 export const getLengthLimits = (greenPathFeatures: PathFeature[]) => {
   const pathLengths = greenPathFeatures.map(feat => feat.properties.length)
-  const pathProps = greenPathFeatures.map(feat => feat.properties)
-  const limits = pathProps.reduce((acc: LengthLimit[], props) => {
+  const pathProps = greenPathFeatures.map(feat => feat.properties).sort((a, b) => a.length - b.length)
+  return pathProps.reduce((acc: LengthLimit[], props) => {
     const length = props.length
     // get limit as rounded value higher than the actual length
     const limit = length > 1000 ? getLengthLimit(length, 100) : getLengthLimit(length, 50)
@@ -67,10 +67,9 @@ export const getLengthLimits = (greenPathFeatures: PathFeature[]) => {
     }
     return acc
   }, [])
-  return limits
 }
 
-export const getInitialLengthLimit = (lengthLimits: LengthLimit[], pathCount: number, costCoeffLimit: number = 20) => {
+export const getInitialLengthLimit = (lengthLimits: LengthLimit[], pathCount: number, costCoeffLimit: number) => {
   // return length limit that filters out paths with cost_coeff higher than 20
   if (lengthLimits.length > 1 && pathCount > 3) {
     let prevDl = lengthLimits[0]
