@@ -195,7 +195,7 @@ const CleanPathBox = ({ path, selected, travelMode, handleClick }: PathBoxProper
         </QuietPathLengthProps>
         {!path.properties.missing_aqi &&
           <div>
-            {getFormattedExpDiffRatio(path.properties.aqc_diff_rat) + ' % air pollution'}
+            {getAqiLabel(path.properties.aqi_m)} air quality
           </div>}
       </PathPropsRow>
     </StyledPathListPathBox>
