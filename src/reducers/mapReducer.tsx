@@ -4,7 +4,7 @@ import { LngLat } from 'mapbox-gl'
 
 const initialMapState: MapReducer = {
   initialized: false,
-  zoomToBbox: [0,0,0,0],
+  zoomToBbox: [0, 0, 0, 0],
   center: {},
   zoom: 0,
 }
@@ -17,7 +17,7 @@ interface MapAction extends Action {
   center: LngLat
 }
 
-const mapReducer = (store: MapReducer = initialMapState, action: MapAction) => {
+const mapReducer = (store: MapReducer = initialMapState, action: MapAction): MapReducer => {
 
   switch (action.type) {
 
@@ -33,7 +33,7 @@ const mapReducer = (store: MapReducer = initialMapState, action: MapAction) => {
       return { ...store, zoomToBbox: turf.getBbox(turf.getBuffer(action.userLocFC, 250)) }
     }
 
-    case 'SET_ORIGIN_TO_USER_LOC':      
+    case 'SET_ORIGIN_TO_USER_LOC':
       return { ...store, zoomToBbox: turf.getBbox(turf.getBuffer(action.userLocFC, 400)) }
 
     case 'UPDATE_CAMERA':

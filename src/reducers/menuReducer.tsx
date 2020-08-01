@@ -10,7 +10,7 @@ const initialMenuState: MenuReducer = {
   pathPanelContent: null,
 }
 
-const menuReducer = (store: MenuReducer = initialMenuState, action: Action) => {
+const menuReducer = (store: MenuReducer = initialMenuState, action: Action): MenuReducer => {
 
   switch (action.type) {
 

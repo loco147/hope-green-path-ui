@@ -11,7 +11,7 @@ const initialUserLocation: UserLocationReducer = {
   expireTime: '',
   error: null,
   lngLat: null,
-  userLocFC: turf.asPointFeatureCollection([]),
+  userLocFC: turf.asFeatureCollection([] as PointFeature[]),
   userLocHistory: [],
 }
 
@@ -22,7 +22,7 @@ interface UserLocationAction extends Action {
   watchId: number
 }
 
-const userLocationReducer = (store: UserLocationReducer = initialUserLocation, action: UserLocationAction) => {
+const userLocationReducer = (store: UserLocationReducer = initialUserLocation, action: UserLocationAction): UserLocationReducer => {
 
   switch (action.type) {
     case 'START_TRACKING_USER_LOCATION':

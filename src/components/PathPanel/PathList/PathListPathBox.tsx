@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { utils } from '../../../utils/index'
 import { PathNoisesBar } from './../PathNoisesBar'
 import { PathAqiBar } from './../PathAqiBar'
-import { ExposureMode, TravelMode, statTypes, walkSpeed, bikeSpeed, aqiLabels } from '../../../constants'
+import { ExposureMode, TravelMode, StatsType, walkSpeed, bikeSpeed, aqiLabels } from '../../../constants'
 
 type Props = {
   selected: boolean,
@@ -134,7 +134,7 @@ const PathListPathBox = ({ path, selected, showingPathsOfExposureMode, travelMod
 }
 
 export const ShortestPathBox = ({ path, selected, showingStatsType, travelMode, handleClick }: PathBoxProperties) => {
-  if (showingStatsType === statTypes.aq) {
+  if (showingStatsType === StatsType.AQ) {
     return <ShortestPathAqBox path={path} selected={selected} travelMode={travelMode} handleClick={handleClick} />
   } else { return <ShortestPathNoiseBox path={path} selected={selected} travelMode={travelMode} handleClick={handleClick} /> }
 }

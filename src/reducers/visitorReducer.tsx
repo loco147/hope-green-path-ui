@@ -7,7 +7,7 @@ const initialVisitorState: VisitorReducer = {
   visitedBefore: false
 }
 
-const visitorReducer = (store: VisitorReducer = initialVisitorState, action: Action) => {
+const visitorReducer = (store: VisitorReducer = initialVisitorState, action: Action): VisitorReducer => {
 
   switch (action.type) {
 

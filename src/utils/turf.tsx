@@ -4,26 +4,29 @@ import buffer from '@turf/buffer'
 import distance from '@turf/distance'
 // @ts-ignore
 import booleanWithin from '@turf/boolean-within'
-import { featureCollection } from '@turf/helpers'
+import { Feature } from '@turf/helpers'
 import { point } from '@turf/helpers'
 
 export const asPoint = (coords: [number, number], properties?: {}): PointFeature => {
   return point(coords, { type: '', ...properties })
 }
 
-export const asFeatureCollection = (features: Feature[]) => {
-  return featureCollection(features)
+type FeatureCollectionReturnTypes = {
+  (features: PathFeature[]): PathFeatureCollection
+  (features: EdgeFeature[]): EdgeFeatureCollection
+  (features: PointFeature[]): PointFeatureCollection
 }
 
-export const asPointFeatureCollection = (features: PointFeature[]) => {
-  return featureCollection(features)
+export const asFeatureCollection: FeatureCollectionReturnTypes = (features: any) => {
+  return { type: 'FeatureCollection' as any, features }
 }
 
 export const getBuffer = (geojsonFeature: FeatureCollection, dist: number) => {
   return buffer(geojsonFeature, dist, { units: 'meters' })
 }
 
-export const getBbox = (geojsonFeature: any) => {
+export const getBbox = (geojsonFeature: any): [number, number, number, number] => {
+  // @ts-ignore
   return bbox(geojsonFeature)
 }
 
@@ -34,10 +37,6 @@ export const within = (feat: Feature, feat2: Feature) => {
 export const getDistance = (originCoords: [number, number], destCoords: [number, number]) => {
   const dist = distance(asPoint(originCoords), asPoint(destCoords), { units: 'meters' })
   return Math.round(dist)
-}
-
-export const combineFCs = (fc1: FeatureCollection, fc2: FeatureCollection) => {
-  return asFeatureCollection(fc1.features.concat(fc2.features))
 }
 
 export const toLngLat = (coords: number[]) => {

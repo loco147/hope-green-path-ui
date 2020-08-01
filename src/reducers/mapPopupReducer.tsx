@@ -3,7 +3,7 @@ import MapboxGl from 'mapbox-gl'
 import { Popup, Map } from 'mapbox-gl'
 import { Action } from 'redux'
 
-const initialMapPopups: MapPopupReducer = { 
+const initialMapPopups: MapPopupReducer = {
   visible: false,
   lngLat: {}
 }
@@ -15,7 +15,7 @@ interface PopupAction extends Action {
   lngLat: LngLat
 }
 
-const mapPopupReducer = (store: MapPopupReducer = initialMapPopups, action: PopupAction) => {
+const mapPopupReducer = (store: MapPopupReducer = initialMapPopups, action: PopupAction): MapPopupReducer => {
 
   switch (action.type) {
 

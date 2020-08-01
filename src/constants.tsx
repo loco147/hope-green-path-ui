@@ -23,9 +23,9 @@ export enum PathType {
   QUIET = 'quiet',
 }
 
-export const statTypes = {
-  aq: 'air quality',
-  noise: 'noise',
+export enum StatsType {
+  AQ = 'air quality',
+  NOISE = 'noise'
 }
 
 export const dBColors = {
@@ -70,7 +70,7 @@ export const initialMapCenter = { lng: 24.9664, lat: 60.2110 }
 
 export const initialMapCenterProd = { lng: 24.937886, lat: 60.180808 }
 
-export const initialOrigDestFeatures = [
+export const initialOrigDestFeatures: PointFeature[] = [
   {
     type: 'Feature',
     properties: {

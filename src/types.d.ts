@@ -4,9 +4,14 @@ interface LngLat {
   lat: number
 }
 
-type FeatureCollection = import('@turf/helpers').FeatureCollection
-
 type Feature = import('@turf/helpers').Feature
+
+type GeoJSONType = 'FeatureCollection'
+
+interface FeatureCollection {
+  type: GeoJSONType,
+  features: Feature[]
+}
 
 type MbMap = import('mapbox-gl').Map | null
 
@@ -45,18 +50,16 @@ enum PathType {
   QUIET = 'quiet'
 }
 
-type StatsType = 'noise' | 'air quality'
+enum StatsType {
+  AQ = 'air quality',
+  NOISE = 'noise'
+}
 
 interface LengthLimit {
   limit: number,
   count: number,
   label: string,
   cost_coeff: number
-}
-
-interface PathDataResponse {
-  edge_FC: FeatureCollection,
-  path_FC: PathFeatureCollection
 }
 
 type OdCoords = [[number, number], [number, number]]
@@ -120,6 +123,11 @@ interface EdgeFeature extends Feature {
 
 interface EdgeFeatureCollection extends FeatureCollection {
   features: EdgeFeature[]
+}
+
+interface PathDataResponse {
+  edge_FC: FeatureCollection,
+  path_FC: PathFeatureCollection
 }
 
 interface MapReducer {

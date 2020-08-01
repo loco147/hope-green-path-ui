@@ -21,8 +21,7 @@ const origDestWithinSupportedArea = (origDestFC: PointFeatureCollection) => {
 }
 
 const initialOrigDest: OrigDestReducer = {
-  // @ts-ignore
-  origDestFC: turf.asPointFeatureCollection(process.env.NODE_ENV !== 'production' ? initialOrigDestFeatures : []),
+  origDestFC: turf.asFeatureCollection(process.env.NODE_ENV !== 'production' ? initialOrigDestFeatures : [] as PointFeature[]),
   useUserLocOrigin: false,
   waitUserLocOrigin: false,
   error: null,
@@ -34,9 +33,9 @@ interface PathAction extends Action {
   userLngLat: LngLat,
   updateOrigDestFC: PointFeatureCollection,
   coords: [number, number]
-} 
+}
 
-const pathsReducer = (store: OrigDestReducer = initialOrigDest, action: PathAction) => {
+const pathsReducer = (store: OrigDestReducer = initialOrigDest, action: PathAction): OrigDestReducer => {
 
   switch (action.type) {
 
@@ -175,7 +174,7 @@ const updateOriginToFC = (FC: PointFeatureCollection, lngLat: LngLat) => {
   const dest = features.filter(feat => feat.properties.type === 'dest')
   const coords: [number, number] = [lngLat.lng, lngLat.lat]
   const orig = [turf.asPoint(coords, { type: 'orig' })]
-  return turf.asPointFeatureCollection(orig.concat(dest))
+  return turf.asFeatureCollection(orig.concat(dest))
 }
 
 const updateDestToFC = (FC: PointFeatureCollection, lngLat: LngLat) => {

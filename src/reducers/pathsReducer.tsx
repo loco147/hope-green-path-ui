@@ -1,7 +1,7 @@
 import { turf } from '../utils/index'
 import * as paths from './../services/paths'
 import { showNotification } from './notificationReducer'
-import { ExposureMode, PathType, TravelMode, statTypes } from './../constants'
+import { ExposureMode, PathType, TravelMode, StatsType } from './../constants'
 import { utils } from './../utils/index'
 import { Action } from 'redux'
 
@@ -47,7 +47,7 @@ interface PathsAction extends Action {
   path: PathFeature
 }
 
-const pathsReducer = (store: PathsReducer = initialPaths, action: PathsAction) => {
+const pathsReducer = (store: PathsReducer = initialPaths, action: PathsAction): PathsReducer => {
 
   switch (action.type) {
 
@@ -112,7 +112,7 @@ const pathsReducer = (store: PathsReducer = initialPaths, action: PathsAction) =
         ...store,
         showingPathsOfTravelMode: action.selectedTravelMode,
         showingPathsOfExposureMode: ExposureMode.QUIET,
-        showingStatsType: statTypes.noise,
+        showingStatsType: StatsType.NOISE,
         quietPathFC: turf.asFeatureCollection(action.quietPaths),
       }
     }
@@ -137,7 +137,7 @@ const pathsReducer = (store: PathsReducer = initialPaths, action: PathsAction) =
         ...store,
         showingPathsOfTravelMode: action.selectedTravelMode,
         showingPathsOfExposureMode: ExposureMode.CLEAN,
-        showingStatsType: statTypes.aq,
+        showingStatsType: StatsType.AQ,
         cleanPathFC: turf.asFeatureCollection(action.cleanPaths),
       }
     }

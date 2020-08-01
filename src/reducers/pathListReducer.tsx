@@ -7,9 +7,9 @@ const initialPathList: PathListReducer = {
 
 interface PathListAction extends Action {
   pathId: string
-} 
+}
 
-const pathListReducer = (store: PathListReducer = initialPathList, action: PathListAction) => {
+const pathListReducer = (store: PathListReducer = initialPathList, action: PathListAction): PathListReducer => {
 
   switch (action.type) {
 

@@ -11,7 +11,7 @@ interface NotificationAction extends Action {
     look: string
 }
 
-const notificationReducer = (store: NotificationReducer = initialNotification, action: NotificationAction) => {
+const notificationReducer = (store: NotificationReducer = initialNotification, action: NotificationAction): NotificationReducer => {
 
     switch (action.type) {
         case 'SHOWNOTIF':
