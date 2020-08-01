@@ -12,6 +12,7 @@ const initialMapState: MapReducer = {
 interface MapAction extends Action {
   origCoords: [number, number],
   destCoords: [number, number],
+  fc: FeatureCollection,
   userLocFC: PointFeatureCollection,
   zoom: number,
   center: LngLat
@@ -23,6 +24,9 @@ const mapReducer = (store: MapReducer = initialMapState, action: MapAction): Map
 
     case 'INITIALIZE_MAP':
       return { ...store, initialized: true }
+
+    case 'ZOOM_TO_FC':
+      return { ...store, zoomToBbox: turf.getBbox(turf.getBuffer(action.fc, 300)) }
 
     case 'ROUTING_STARTED': {
       const FC = turf.asFeatureCollection([turf.asPoint(action.origCoords), turf.asPoint(action.destCoords)])
@@ -46,6 +50,10 @@ const mapReducer = (store: MapReducer = initialMapState, action: MapAction): Map
 
 export const initializeMap = () => {
   return { type: 'INITIALIZE_MAP' }
+}
+
+export const zoomToFC = (fc: FeatureCollection) => {
+  return { type: 'ZOOM_TO_FC', fc }
 }
 
 export const updateCamera = (center: LngLat, zoom: number) => {

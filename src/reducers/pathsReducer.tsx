@@ -1,5 +1,6 @@
 import { turf } from '../utils/index'
 import * as paths from './../services/paths'
+import { zoomToFC } from './mapReducer'
 import { showNotification } from './notificationReducer'
 import { ExposureMode, PathType, TravelMode, StatsType } from './../constants'
 import { utils } from './../utils/index'
@@ -406,12 +407,10 @@ export const unsetSelectedPath = () => {
   return { type: 'UNSET_SELECTED_PATH' }
 }
 
-export const resetPaths = (lngLat: LngLat | null) => {
+export const resetPaths = (odFc: FeatureCollection) => {
   return async (dispatch: any) => {
-    dispatch({ type: 'RESET_PATHS', lngLat })
-    if (process.env.NODE_ENV === 'production') {
-      dispatch({ type: 'RESET_ORIGIN_DEST' })
-    }
+    dispatch({ type: 'RESET_PATHS' })
+    dispatch(zoomToFC(odFc))
     dispatch(showNotification('Click on the map to set the origin / destination', 'info', 6))
   }
 }

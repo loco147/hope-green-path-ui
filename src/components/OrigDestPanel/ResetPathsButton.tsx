@@ -28,16 +28,17 @@ const ArrowBack = styled(IoIosArrowBack)`
   font-size: 31px;
 `
 
-const ResetPathsButton = ({ resetPaths, userLocation }: PropsFromRedux) => {
+const ResetPathsButton = ({ resetPaths, odFc }: PropsFromRedux) => {
   return (
-    <ButtonContainer onClick={() => resetPaths(userLocation.lngLat)}>
+    <ButtonContainer onClick={() => resetPaths(odFc)}>
       <ArrowBack />
     </ButtonContainer>
   )
 }
 
 const mapStateToProps = (state: ReduxState) => ({
-  userLocation: state.userLocation
+  userLocation: state.userLocation,
+  odFc: state.origDest.origDestFC
 })
 
 const connector = connect(mapStateToProps, { resetPaths })
