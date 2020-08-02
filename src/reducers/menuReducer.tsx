@@ -1,0 +1,55 @@
+import { menu } from './../constants'
+import { setVisitedStatusVisited, getVisitedStatus } from './visitorReducer'
+import { showSetDestinationTooltip } from './origDestReducer'
+import { testGreenPathServiceConnection } from './pathsReducer'
+import { Action } from 'redux'
+
+const initialMenuState: MenuReducer = {
+  info: false,
+  pathPanel: false,
+  pathPanelContent: null,
+}
+
+const menuReducer = (store: MenuReducer = initialMenuState, action: Action): MenuReducer => {
+
+  switch (action.type) {
+
+    case 'SHOW_INFO': return { ...store, info: true }
+
+    case 'HIDE_INFO': return { ...store, info: false }
+
+    case 'SET_SHORTEST_PATH': return { ...store, pathPanel: true, pathPanelContent: menu.pathList }
+
+    case 'TOGGLE_PATH_PANEL': return { ...store, pathPanel: !store.pathPanel }
+
+    case 'SHOW_PATH_LIST': return { ...store, pathPanel: true, pathPanelContent: menu.pathList }
+
+    case 'SHOW_LENGTH_FILTER_SELECTOR': return { ...store, pathPanel: true, pathPanelContent: menu.lengthLimitSelector }
+
+    default:
+      return store
+  }
+}
+
+export const showInfo = () => ({ type: 'SHOW_INFO' })
+
+export const hideInfo = (showingPaths: boolean) => {
+  return (dispatch: any) => {
+    const visited = getVisitedStatus()
+    // if first visit, set visited cookie to yes and check connection to qp service
+    if (!visited) {
+      dispatch(setVisitedStatusVisited())
+      dispatch(testGreenPathServiceConnection())
+    }
+    if (!showingPaths) dispatch(showSetDestinationTooltip())
+    dispatch({ type: 'HIDE_INFO' })
+  }
+}
+
+export const showMaxLengthFilterSelector = () => ({ type: 'SHOW_LENGTH_FILTER_SELECTOR' })
+
+export const showPathList = () => ({ type: 'SHOW_PATH_LIST' })
+
+export const togglePathPanel = () => ({ type: 'TOGGLE_PATH_PANEL' })
+
+export default menuReducer
