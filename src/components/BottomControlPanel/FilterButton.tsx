@@ -2,7 +2,7 @@ import React from 'react'
 import styled, { css } from 'styled-components'
 import { Filter } from './../Icons'
 
-const StyledButton = styled.div<{disabled: boolean}>`
+const StyledButton = styled.div<{ disabled: boolean }>`
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -38,6 +38,7 @@ const FilterButton = (props: FilterButtonProps) => {
   const disabled = lengthLimits.length <= 1
   return (
     <StyledButton
+      id='filter-by-length-button'
       disabled={disabled}
       onClick={onClick}>
       <Filter />
