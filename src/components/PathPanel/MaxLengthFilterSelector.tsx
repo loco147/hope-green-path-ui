@@ -69,7 +69,7 @@ const MaxLengthFilterSelector = ({ lengthLimit, lengthLimits, setLengthLimit, sh
     <OuterDiv>
       <FlexRow>
         <TooltipStyle>Filter paths by distance</TooltipStyle>
-        <CloseButtonBox><CloseButton size={50} onClick={showPathList} /> </CloseButtonBox>
+        <CloseButtonBox id='close-filter-panel'><CloseButton size={50} onClick={showPathList} /> </CloseButtonBox>
       </FlexRow>
       {lengthLimits.map(ll => (
         <MaxLengthOption

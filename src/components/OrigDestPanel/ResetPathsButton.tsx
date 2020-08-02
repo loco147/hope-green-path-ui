@@ -30,7 +30,7 @@ const ArrowBack = styled(IoIosArrowBack)`
 
 const ResetPathsButton = ({ resetPaths, odFc }: PropsFromRedux) => {
   return (
-    <ButtonContainer onClick={() => resetPaths(odFc)}>
+    <ButtonContainer id='reset-paths-container' onClick={() => resetPaths(odFc)}>
       <ArrowBack />
     </ButtonContainer>
   )

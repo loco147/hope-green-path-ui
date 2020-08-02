@@ -171,7 +171,7 @@ const WelcomeInfo = (props: PropsFromRedux) => {
               </SmallText>
             </P>
           </InfoWrapper>
-          <ButtonDiv>
+          <ButtonDiv id='hide-welcome-button'>
             <Button small green onClick={() => props.hideInfo(props.showingPaths)}>OK</Button>
           </ButtonDiv>
         </WhiteBox>

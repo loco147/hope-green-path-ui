@@ -73,7 +73,7 @@ const StyledOpenClosePathBox = styled.div<{ close?: any, disabled?: boolean }>`
 
 export const OpenPathBox = ({ disabled, handleClick }: { disabled: boolean, handleClick: React.MouseEventHandler<HTMLElement> }) => {
   return (
-    <StyledOpenClosePathBox disabled={disabled} onClick={handleClick}>
+    <StyledOpenClosePathBox className="open-path-button" disabled={disabled} onClick={handleClick}>
       <ArrowForwardButton />
     </StyledOpenClosePathBox>
   )
@@ -81,7 +81,7 @@ export const OpenPathBox = ({ disabled, handleClick }: { disabled: boolean, hand
 
 export const ClosePathBox = ({ handleClick }: { handleClick: React.MouseEventHandler<HTMLElement> }) => {
   return (
-    <StyledOpenClosePathBox close onClick={handleClick}>
+    <StyledOpenClosePathBox className="close-path-button" close onClick={handleClick}>
       <ArrowBackButton />
     </StyledOpenClosePathBox>
   )
