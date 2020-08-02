@@ -275,8 +275,8 @@ export const testCleanPathServiceStatus = () => {
 
 const confirmLongDistance = (origCoords: [number, number], destCoords: [number, number]) => {
   const distance = turf.getDistance(origCoords, destCoords)
-  if (distance > 5200) {
-    if (!window.confirm('Long distance routing may take longer than 10 s')) {
+  if (distance > 9000) {
+    if (!window.confirm('Long distance routing may take longer to complete')) {
       return false
     }
   }
@@ -382,7 +382,7 @@ export const setCleanPaths = (origCoords: [number, number], destCoords: [number,
       dispatch({ type: 'SET_SELECTED_PATH', selPathId: 'short', routingId })
     }
     if (cleanPaths.length === 0) {
-      dispatch(showNotification('No alternative fresh air paths found due to little or no variation in the real-time air quality data', 'info', 10))
+      dispatch(showNotification('No alternative fresh air paths found due to little variation in the real-time air quality data', 'info', 10))
     }
   }
 }

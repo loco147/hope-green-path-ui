@@ -35,13 +35,12 @@ export const getLayersFeaturesAroundClickE = (layers: string[], e: MapMouseEvent
   return features
 }
 
-export const getBestPath = (greenPathFeatures: PathFeature[]) => {
-  // if the greatest quiet path score among the paths is greater than 2 -> select the path
+export const getBestPath = (greenPathFeatures: PathFeature[]): PathFeature | null => {
   if (greenPathFeatures.length > 0) {
-    const goodPaths = greenPathFeatures.filter(feat => feat.properties.path_score > 0.8 && feat.properties.cost_coeff <= 10)
+    const goodPaths = greenPathFeatures.filter(feat => feat.properties.path_score > 0.8 && feat.properties.cost_coeff <= 5)
     if (goodPaths.length > 0) {
-      const maxquietPathscore = Math.max(...goodPaths.map(path => path.properties.path_score))
-      const bestPath = goodPaths.filter(feat => feat.properties.path_score === maxquietPathscore)[0]
+      const maxPathScore = Math.max(...goodPaths.map(path => path.properties.path_score))
+      const bestPath = goodPaths.filter(feat => feat.properties.path_score === maxPathScore)[0]
       return bestPath
     }
   }
@@ -50,7 +49,7 @@ export const getBestPath = (greenPathFeatures: PathFeature[]) => {
 
 const getLengthLimit = (length: number, rounding: number) => Math.ceil(length / rounding) * rounding
 
-export const getLengthLimits = (greenPathFeatures: PathFeature[]) => {
+export const getLengthLimits = (greenPathFeatures: PathFeature[]): LengthLimit[] => {
   const pathLengths = greenPathFeatures.map(feat => feat.properties.length)
   const pathProps = greenPathFeatures.map(feat => feat.properties).sort((a, b) => a.length - b.length)
   return pathProps.reduce((acc: LengthLimit[], props) => {
@@ -69,7 +68,7 @@ export const getLengthLimits = (greenPathFeatures: PathFeature[]) => {
   }, [])
 }
 
-export const getInitialLengthLimit = (lengthLimits: LengthLimit[], pathCount: number, costCoeffLimit: number) => {
+export const getInitialLengthLimit = (lengthLimits: LengthLimit[], pathCount: number, costCoeffLimit: number): LengthLimit => {
   // return length limit that filters out paths with cost_coeff higher than 20
   if (lengthLimits.length > 1 && pathCount > 3) {
     let prevDl = lengthLimits[0]
