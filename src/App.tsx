@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { connect, ConnectedProps } from 'react-redux'
 import Notification from './components/Notification'
 import FindPathsButtons from './components/FindPathsButtons'
-import OrigDestPanel from './components/OrigDestPanel/OrigDestPanel'
+import TopPanel from './components/TopPanel/TopPanel'
 import BottomControlPanel from './components/BottomControlPanel/BottomControlPanel'
 import PathPanel from './components/PathPanel/PathPanel'
 import Map from './components/Map/Map'
@@ -24,7 +24,7 @@ const AbsoluteContainer = styled.div`
   position: absolute;
   pointer-events: none;
 `
-const TopPanel = styled(AbsoluteContainer)`
+const TopPanelContainer = styled(AbsoluteContainer)`
   top: 0px;
   left: 0px;
   right: 0px;
@@ -60,9 +60,9 @@ class App extends Component<PropsFromRedux> {
           <UserLocation />
         </Map>
         <WelcomeInfo />
-        <TopPanel>
-          <OrigDestPanel />
-        </TopPanel>
+        <TopPanelContainer>
+          <TopPanel />
+        </TopPanelContainer>
         <BottomPanel>
           <Notification />
           <FindPathsButtons />
