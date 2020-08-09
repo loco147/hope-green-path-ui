@@ -3,8 +3,8 @@ import styled from 'styled-components'
 
 const Button = styled.div`
   cursor: pointer;
-  padding: 6px 10px;
-  margin: -4px 0px -4px 8px;
+  padding: 3px 10px;
+  margin: 2px 0px 2px -1px;  
   color: white;
   border-radius: 25px;
   font-weight: 500;
@@ -13,6 +13,7 @@ const Button = styled.div`
   width: max-content;
   letter-spacing: 1px;
   max-width: 90%;
+  font-size: 15px;
   overflow: auto;
   height: auto;
   pointer-events: auto;

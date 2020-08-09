@@ -192,6 +192,48 @@ interface OrigDestReducer {
   error: string | null
 }
 
+interface GeocodingProps {
+  gid: string,
+  layer: string,
+  source: string,
+  name: string,
+  label: string,
+  neighbourhood: string,
+  confidence: number,
+  distance: number,
+  locality: string,
+  lngLat: LngLat
+}
+
+interface GeocodingResult {
+  geometry: { type: 'Point', coordinates: [number, number] },
+  properties: GeocodingProps
+}
+
+interface OdPlace {
+  geometry: { type: 'Point', coordinates: [number, number] },
+  properties: {
+    label: string,
+    locationType: import('./reducers/originReducer').LocationType,
+    odType: import('./reducers/originReducer').OdType
+  }
+}
+
+interface OriginReducer {
+  origInputText: string,
+  origOptions: GeocodingResult[],
+  origOptionsVisible: boolean,
+  waitingUserLocOrigin: boolean,
+  origObject: OdPlace | null,
+}
+
+interface DestinationReducer {
+  destInputText: string,
+  destOptions: GeocodingResult[],
+  destOptionsVisible: boolean,
+  destObject: OdPlace | null
+}
+
 interface MapPopupReducer {
   visible: boolean,
   lngLat: LngLat | {}
@@ -214,6 +256,7 @@ interface ReduxState {
   paths: PathsReducer,
   pathList: PathListReducer,
   origDest: OrigDestReducer,
+  origin: OriginReducer,
   mapPopup: MapPopupReducer,
   visitor: VisitorReducer,
   menu: MenuReducer
