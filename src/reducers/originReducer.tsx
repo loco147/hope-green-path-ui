@@ -6,7 +6,8 @@ import * as geocoding from './../services/geocoding'
 
 export enum LocationType {
   ADDRESS = 1,
-  USER_LOCATION = 2
+  USER_LOCATION = 2,
+  MAP_LOCATION = 3
 }
 
 export enum OdType {
@@ -14,78 +15,79 @@ export enum OdType {
   DESTINATION = 2
 }
 
-const initialOrig: OriginReducer = {
-  origInputText: '',
-  origObject: null,
-  origOptions: [],
-  origOptionsVisible: false,
+const initialOrigin: OriginReducer = {
+  error: null,
+  originInputText: '',
+  originObject: null,
+  originOptions: [],
+  originOptionsVisible: false,
   waitingUserLocOrigin: false,
 }
 
 interface OdInputAction extends Action {
-  origInputText: string,
-  origOptions: GeocodingResult[],
+  originInputText: string,
+  originOptions: GeocodingResult[],
   place: GeocodingResult,
   coords: [number, number]
 }
 
-const origDestInputReducer = (store: OriginReducer = initialOrig, action: OdInputAction): OriginReducer => {
+const originReducer = (store: OriginReducer = initialOrigin, action: OdInputAction): OriginReducer => {
 
   switch (action.type) {
 
-    case 'UPDATE_ORIG_INPUT_VALUE':
+    case 'UPDATE_ORIGIN_INPUT_VALUE':
       return {
         ...store,
-        origInputText: action.origInputText,
-        origOptionsVisible: true,
+        originInputText: action.originInputText,
+        originOptionsVisible: true,
         waitingUserLocOrigin: false
       }
 
     case 'SET_ORIGIN_OPTIONS':
-      return { ...store, origOptions: action.origOptions }
+      return { ...store, originOptions: action.originOptions }
 
     case 'HIDE_ORIGIN_OPTIONS':
-      return { ...store, origOptionsVisible: false }
+      return { ...store, originOptionsVisible: false }
 
     case 'TOGGLE_ORIGIN_OPTIONS':
-      return { ...store, origOptionsVisible: !store.origOptionsVisible }
+      return { ...store, originOptionsVisible: !store.originOptionsVisible }
 
     case 'WAIT_FOR_USER_LOC_ORIGIN':
-      return { ...store, origInputText: ' ', waitingUserLocOrigin: true }
+      return { ...store, originInputText: ' ', waitingUserLocOrigin: true }
 
     case 'SET_GEOCODED_ORIGIN':
       return {
         ...store,
-        origObject: getOriginFromGeocodingResult(action.place),
-        origInputText: action.place.properties.name,
-        origOptionsVisible: false
+        originObject: getOriginFromGeocodingResult(action.place),
+        originInputText: action.place.properties.name,
+        originOptionsVisible: false
       }
 
     case 'SET_ORIGIN_TO_USER_LOCATION': {
-      const origObject = getOriginFromUserLocation(action.coords)
+      const originObject = getOriginFromUserLocation(action.coords)
       return {
         ...store,
         waitingUserLocOrigin: false,
-        origObject,
-        origInputText: origObject.properties.label
+        originObject,
+        originInputText: originObject.properties.label
       }
     }
 
     case 'UPDATE_USER_LOCATION':
       if (store.waitingUserLocOrigin) {
-        const origObject = getOriginFromUserLocation(action.coords)
+        const originObject = getOriginFromUserLocation(action.coords)
         return {
           ...store,
           waitingUserLocOrigin: false,
-          origObject,
-          origInputText: origObject.properties.label
+          originObject,
+          originInputText: originObject.properties.label
         }
       } else {
         return store
       }
 
     case 'RESET_ORIGIN_INPUT':
-      return initialOrig
+      return initialOrigin
 
     default:
       return store
@@ -97,15 +99,15 @@ const showingCoordinates = (inputText: string): boolean => {
   return numberCount > Math.round(inputText.length / 2)
 }
 
-export const setOrigInputText = (event: ChangeEvent<HTMLInputElement>) => {
+export const setOriginInputText = (event: ChangeEvent<HTMLInputElement>) => {
   return async (dispatch: any) => {
-    const origInputText = event.target ? event.target.value : ''
-    dispatch({ type: 'UPDATE_ORIG_INPUT_VALUE', origInputText })
-    if (origInputText.length > 2 && !showingCoordinates(origInputText)) {
-      const origOptions = await geocoding.geocodeAddress(origInputText)
-      dispatch({ type: 'SET_ORIGIN_OPTIONS', origOptions })
+    const originInputText = event.target ? event.target.value : ''
+    dispatch({ type: 'UPDATE_ORIGIN_INPUT_VALUE', originInputText })
+    if (originInputText.length > 2 && !showingCoordinates(originInputText)) {
+      const originOptions = await geocoding.geocodeAddress(originInputText)
+      dispatch({ type: 'SET_ORIGIN_OPTIONS', originOptions })
     } else {
-      dispatch({ type: 'SET_ORIGIN_OPTIONS', origOptions: [] })
+      dispatch({ type: 'SET_ORIGIN_OPTIONS', originOptions: [] })
     }
   }
 }
@@ -168,4 +170,4 @@ const getOriginFromUserLocation = (coordinates: [number, number]): OdPlace => {
   }
 }
 
-export default origDestInputReducer
+export default originReducer

@@ -8,6 +8,7 @@ import pathsReducer from './reducers/pathsReducer'
 import pathListReducer from './reducers/pathListReducer'
 import origDestReducer from './reducers/origDestReducer'
 import originReducer from './reducers/originReducer'
+import destinationReducer from './reducers/destinationReducer'
 import mapPopupReducer from './reducers/mapPopupReducer'
 import visitorReducer from './reducers/visitorReducer'
 import menuReducer from './reducers/menuReducer'
@@ -20,6 +21,7 @@ const reducer = combineReducers({
   pathList: pathListReducer,
   origDest: origDestReducer,
   origin: originReducer,
+  destination: destinationReducer,
   mapPopup: mapPopupReducer,
   visitor: visitorReducer,
   menu: menuReducer,

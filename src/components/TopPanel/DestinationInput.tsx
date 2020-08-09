@@ -1,23 +1,20 @@
 import React, { Component, RefObject } from 'react'
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 import { connect, ConnectedProps } from 'react-redux'
 import { IoIosClose } from 'react-icons/io'
-import UseCurrLocButton from './UseCurrLocButton'
 import {
-  setOriginInputText,
-  setGeocodedOrigin,
-  hideOriginOptions,
-  toggleOriginOptionsVisible,
-  resetOriginInput,
-  useUserLocationOrigin
-} from '../../reducers/originReducer'
-import LoadAnimation from './../LoadAnimation/LoadAnimation'
+  setDestinationInputText,
+  setGeocodedDestination,
+  hideDestinationOptions,
+  toggleDestinationOptionsVisible,
+  resetDestinationInput,
+} from '../../reducers/destinationReducer'
 
-const OrigSelectorDiv = styled.div`
+const DestSelectorDiv = styled.div`
   margin: 5px 5px 5px 5px;
   position: relative;
   width: 90%;
-  z-index: 3;
+  z-index: 2;
 `
 const Input = styled.input<{ onChange: Function }>`
   padding: 10px 10px 9px 10px;
@@ -27,11 +24,6 @@ const Input = styled.input<{ onChange: Function }>`
   border: 1px solid black;
   font-size: 17px;
   border-radius: 3px;
-`
-const WaitForUserLocContainer = styled.span`
-  position: absolute;
-  top: 8px;
-  left: 20px;
 `
 const ResetLocButton = styled.span`
   cursor: pointer;
@@ -49,7 +41,7 @@ const CloseIcon = styled(IoIosClose)`
   text-align: center;
   font-size: 41px;
 `
-const OrigOptions = styled.ul`
+const DestinationOptions = styled.ul`
   z-index: -1;
   border-radius: 0 0 4px 4px;
   line-height: 1.5;
@@ -64,7 +56,7 @@ const OrigOptions = styled.ul`
   background-color: #ffffff;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.1), 0 6px 20px 0 rgba(0,0,0,0.06);
 `
-const OrigOption = styled.li<{ noShadow?: any }>`
+const DestinationOption = styled.li`
   padding: 3px 8px;
   margin: 9px;
   border-radius: 3px;
@@ -76,12 +68,9 @@ const OrigOption = styled.li<{ noShadow?: any }>`
       box-shadow: 0 2px 3px 0 rgba(0,0,0,0.15), 0 2px 3px 0 rgba(0,0,0,0.1);
     }
   }
-  ${props => props.noShadow && css`
-    box-shadow: none;
-  `}
 `
 
-class OriginInput extends Component<PropsFromRedux> {
+class DestinationInput extends Component<PropsFromRedux> {
   wrapperRef: RefObject<HTMLDivElement>
   constructor(props: PropsFromRedux) {
     super(props);
@@ -104,52 +93,46 @@ class OriginInput extends Component<PropsFromRedux> {
 
   handleClickOutside(event: any) {
     if (this.wrapperRef && this.wrapperRef.current && !this.wrapperRef.current.contains(event.target)) {
-      this.props.hideOriginOptions()
+      this.props.hideDestinationOptions()
     }
   }
 
   render() {
-    const { waitingUserLocOrigin, originInputText, originOptionsVisible, originOptions } = this.props.origin
-    const { useUserLocationOrigin, setOriginInputText, setGeocodedOrigin, resetOriginInput, toggleOriginOptionsVisible } = this.props
+    const { destInputText, destOptionsVisible, destOptions } = this.props.destination
+    const { setDestinationInputText, setGeocodedDestination, resetDestinationInput, toggleDestinationOptionsVisible } = this.props
 
-    return <OrigSelectorDiv ref={this.wrapperRef}>
+    return <DestSelectorDiv ref={this.wrapperRef}>
       <Input
-        placeholder='From'
+        placeholder='To'
         type='text'
-        value={originInputText}
-        onClick={toggleOriginOptionsVisible}
-        onChange={setOriginInputText} />
-      {waitingUserLocOrigin && <WaitForUserLocContainer ><LoadAnimation size={25} /></WaitForUserLocContainer>}
-      <ResetLocButton onClick={resetOriginInput}><CloseIcon /></ResetLocButton>
-      {originOptionsVisible && <OrigOptions>
-        <OrigOption noShadow onClick={(e) => useUserLocationOrigin(e, this.props.userLocation)}>
-          <UseCurrLocButton handleClick={(e) => useUserLocationOrigin(e, this.props.userLocation)} />
-        </OrigOption>
-        {originOptions.map(option =>
-          <OrigOption
+        value={destInputText}
+        onClick={toggleDestinationOptionsVisible}
+        onChange={setDestinationInputText} />
+      <ResetLocButton onClick={resetDestinationInput}><CloseIcon /></ResetLocButton>
+      {destOptionsVisible && <DestinationOptions>
+        {destOptions.map(option =>
+          <DestinationOption
             key={option.properties.gid}
-            onClick={() => setGeocodedOrigin(option)}>{option.properties.label}</OrigOption>
+            onClick={() => setGeocodedDestination(option)}>{option.properties.label}</DestinationOption>
         )}
-      </OrigOptions>
+      </DestinationOptions>
       }
-    </OrigSelectorDiv >
+    </DestSelectorDiv >
   }
 }
 
 const mapStateToProps = (state: ReduxState) => ({
-  userLocation: state.userLocation,
-  origin: state.origin,
+  destination: state.destination
 })
 
 const mapDispatchToProps = {
-  useUserLocationOrigin,
-  setOriginInputText,
-  setGeocodedOrigin,
-  hideOriginOptions,
-  toggleOriginOptionsVisible,
-  resetOriginInput
+  setDestinationInputText,
+  setGeocodedDestination,
+  hideDestinationOptions,
+  toggleDestinationOptionsVisible,
+  resetDestinationInput,
 }
 
 const connector = connect(mapStateToProps, mapDispatchToProps)
 type PropsFromRedux = ConnectedProps<typeof connector>
-export default connector(OriginInput)
+export default connector(DestinationInput)

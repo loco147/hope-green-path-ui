@@ -220,14 +220,16 @@ interface OdPlace {
 }
 
 interface OriginReducer {
-  origInputText: string,
-  origOptions: GeocodingResult[],
-  origOptionsVisible: boolean,
+  error: string | null,
+  originInputText: string,
+  originOptions: GeocodingResult[],
+  originOptionsVisible: boolean,
   waitingUserLocOrigin: boolean,
-  origObject: OdPlace | null,
+  originObject: OdPlace | null,
 }
 
 interface DestinationReducer {
+  error: string | null,
   destInputText: string,
   destOptions: GeocodingResult[],
   destOptionsVisible: boolean,
@@ -257,6 +259,7 @@ interface ReduxState {
   pathList: PathListReducer,
   origDest: OrigDestReducer,
   origin: OriginReducer,
+  destination: DestinationReducer,
   mapPopup: MapPopupReducer,
   visitor: VisitorReducer,
   menu: MenuReducer

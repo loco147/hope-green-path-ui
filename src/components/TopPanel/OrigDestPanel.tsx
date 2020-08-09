@@ -2,12 +2,14 @@ import React from 'react'
 import styled, { css } from 'styled-components'
 import { connect, ConnectedProps } from 'react-redux'
 import OriginInput from './OriginInput'
+import DestinationInput from './DestinationInput'
 
 const OdContainer = styled.div<{ hide?: boolean }>`
   pointer-events: auto;
   padding: 5px 0 0 0;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   ${props => props.hide === true && css`
     display: none;
   `}
@@ -19,6 +21,7 @@ const OrigDestPanel = (props: PropsFromRedux) => {
   return (
     <OdContainer hide={waitingPaths || showingPaths}>
       <OriginInput />
+      <DestinationInput />
     </OdContainer>
   )
 }
