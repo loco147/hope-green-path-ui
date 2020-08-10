@@ -2,7 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import { connect, ConnectedProps } from 'react-redux'
 import store from '../../store'
-import { setOrigin, setDest } from '../../reducers/origDestReducer'
+import { setOriginFromMap } from '../../reducers/originReducer'
+import { setDest } from '../../reducers/origDestReducer'
 import { Button } from '../Button'
 
 const StyledPopupDiv = styled.div`
@@ -18,7 +19,7 @@ class SelectLocationsPopup extends React.Component<PropsFromRedux> {
     return (
       <StyledPopupDiv>
         {/* @ts-ignore */}
-        <Button smallest border green disabled={false} onClick={() => store.dispatch(setOrigin(lngLat, origDestFC))}>Route from here</Button>
+        <Button smallest border green disabled={false} onClick={() => store.dispatch(setOriginFromMap(lngLat))}>Route from here</Button>
         {/* @ts-ignore */}
         <Button smallest border green disabled={false} onClick={() => store.dispatch(setDest(lngLat, origDestFC))}>Route here</Button>
       </StyledPopupDiv >

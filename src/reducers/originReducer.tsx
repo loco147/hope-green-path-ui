@@ -5,9 +5,9 @@ import { startTrackingUserLocation } from './userLocationReducer'
 import * as geocoding from './../services/geocoding'
 
 export enum LocationType {
-  ADDRESS = 1,
-  USER_LOCATION = 2,
-  MAP_LOCATION = 3
+  ADDRESS = 'address',
+  USER_LOCATION = 'user',
+  MAP_LOCATION = 'map'
 }
 
 export enum OdType {
@@ -64,7 +64,7 @@ const originReducer = (store: OriginReducer = initialOrigin, action: OdInputActi
       }
 
     case 'SET_ORIGIN_TO_USER_LOCATION': {
-      const originObject = getOriginFromUserLocation(action.coords)
+      const originObject = getOriginObject(action.coords, LocationType.USER_LOCATION)
       return {
         ...store,
         waitingUserLocOrigin: false,
@@ -75,7 +75,7 @@ const originReducer = (store: OriginReducer = initialOrigin, action: OdInputActi
 
     case 'UPDATE_USER_LOCATION':
       if (store.waitingUserLocOrigin) {
-        const originObject = getOriginFromUserLocation(action.coords)
+        const originObject = getOriginObject(action.coords, LocationType.USER_LOCATION)
         return {
           ...store,
           waitingUserLocOrigin: false,
@@ -85,6 +85,15 @@ const originReducer = (store: OriginReducer = initialOrigin, action: OdInputActi
       } else {
         return store
       }
+
+    case 'SET_ORIGIN_FROM_MAP': {
+      const originObject = getOriginObject(action.coords, LocationType.MAP_LOCATION)
+      return {
+        ...store,
+        originObject,
+        originInputText: originObject.properties.label
+      }
+    }
 
     case 'RESET_ORIGIN_INPUT':
       return initialOrigin
@@ -138,12 +147,20 @@ export const useUserLocationOrigin = (e: any, userLocation: UserLocationReducer)
     if (lngLat) {
       dispatch({
         type: 'SET_ORIGIN_TO_USER_LOCATION',
-        coords: [lngLat.lat, lngLat.lng]
+        coords: [lngLat.lng, lngLat.lat]
       })
     } else {
       dispatch({ type: 'WAIT_FOR_USER_LOC_ORIGIN' })
       dispatch(startTrackingUserLocation())
     }
+  }
+}
+
+export const setOriginFromMap = (lngLat: LngLat) => {
+  return async (dispatch: any) => {
+    dispatch({ type: 'RESET_PATHS' })
+    dispatch({ type: 'SET_ORIGIN_FROM_MAP', coords: [lngLat.lng, lngLat.lat] })
+    closePopup()
   }
 }
 
@@ -155,7 +172,7 @@ const roundCoords = (coord: number) => {
   return Math.round(coord * 10000) / 10000
 }
 
-const getOriginFromUserLocation = (coordinates: [number, number]): OdPlace => {
+const getOriginObject = (coordinates: [number, number], locType: LocationType): OdPlace => {
   const label = String(roundCoords(coordinates[0])) + ' ' + String(roundCoords(coordinates[1]))
   return {
     geometry: {
@@ -164,7 +181,7 @@ const getOriginFromUserLocation = (coordinates: [number, number]): OdPlace => {
     },
     properties: {
       label,
-      locationType: LocationType.USER_LOCATION,
+      locationType: locType,
       odType: OdType.ORIGIN
     }
   }
