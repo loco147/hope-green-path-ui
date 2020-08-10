@@ -11,8 +11,8 @@ export enum LocationType {
 }
 
 export enum OdType {
-  ORIGIN = 1,
-  DESTINATION = 2
+  ORIGIN = 'orig',
+  DESTINATION = 'dest'
 }
 
 const initialOrigin: OriginReducer = {
