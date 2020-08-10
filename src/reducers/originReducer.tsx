@@ -2,6 +2,8 @@ import { Action } from 'redux'
 import { ChangeEvent } from 'react'
 import { closePopup } from './mapPopupReducer'
 import { startTrackingUserLocation } from './userLocationReducer'
+import { turf } from './../utils/index'
+import { extentFeat } from './../constants'
 import * as geocoding from './../services/geocoding'
 
 export enum LocationType {
@@ -28,7 +30,9 @@ interface OdInputAction extends Action {
   originInputText: string,
   originOptions: GeocodingResult[],
   place: GeocodingResult,
-  coords: [number, number]
+  originObject: OdPlace,
+  coords: [number, number],
+  error: string | null
 }
 
 const originReducer = (store: OriginReducer = initialOrigin, action: OdInputAction): OriginReducer => {
@@ -87,11 +91,11 @@ const originReducer = (store: OriginReducer = initialOrigin, action: OdInputActi
       }
 
     case 'SET_ORIGIN_FROM_MAP': {
-      const originObject = getOriginFromCoords(action.coords, LocationType.MAP_LOCATION)
       return {
         ...store,
-        originObject,
-        originInputText: originObject.properties.label
+        originObject: action.originObject,
+        originInputText: action.originObject.properties.label,
+        error: action.error
       }
     }
 
@@ -158,14 +162,24 @@ export const useUserLocationOrigin = (e: any, userLocation: UserLocationReducer)
 
 export const setOriginFromMap = (lngLat: LngLat) => {
   return async (dispatch: any) => {
+    const originObject = getOriginFromCoords([lngLat.lng, lngLat.lat], LocationType.MAP_LOCATION)
+    const error = originWithinSupportedArea(originObject)
     dispatch({ type: 'RESET_PATHS' })
-    dispatch({ type: 'SET_ORIGIN_FROM_MAP', coords: [lngLat.lng, lngLat.lat] })
+    dispatch({ type: 'SET_ORIGIN_FROM_MAP', originObject, error })
     closePopup()
   }
 }
 
 const getOriginFromGeocodingResult = (place: GeocodingResult): OdPlace => {
-  return { ...place, properties: { ...place.properties, locationType: LocationType.ADDRESS, odType: OdType.ORIGIN } }
+  return {
+    ...place,
+    type: 'Feature',
+    properties: {
+      ...place.properties,
+      locationType: LocationType.ADDRESS,
+      odType: OdType.ORIGIN
+    }
+  }
 }
 
 const roundCoords = (coord: number) => {
@@ -183,8 +197,17 @@ const getOriginFromCoords = (coordinates: [number, number], locType: LocationTyp
       label,
       locationType: locType,
       odType: OdType.ORIGIN
-    }
+    },
+    type: 'Feature'
   }
+}
+
+const originWithinSupportedArea = (origin: OdPlace): string | null => {
+  // @ts-ignore
+  if (!turf.within(origin, extentFeat)) {
+    return 'Origin is outside the supported area'
+  }
+  return null
 }
 
 export default originReducer

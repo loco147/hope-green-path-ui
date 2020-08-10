@@ -2,6 +2,8 @@ import { Action } from 'redux'
 import { ChangeEvent } from 'react'
 import { LocationType, OdType } from './originReducer'
 import { closePopup } from './mapPopupReducer'
+import { extentFeat } from './../constants'
+import { turf } from './../utils/index'
 import * as geocoding from './../services/geocoding'
 
 const initialDest: DestinationReducer = {
@@ -16,7 +18,8 @@ interface DestinationAction extends Action {
   destInputText: string,
   destOptions: GeocodingResult[],
   place: GeocodingResult,
-  coords: [number, number]
+  destObject: OdPlace,
+  error: string | null
 }
 
 const destinationReducer = (store: DestinationReducer = initialDest, action: DestinationAction): DestinationReducer => {
@@ -51,11 +54,11 @@ const destinationReducer = (store: DestinationReducer = initialDest, action: Des
       }
 
     case 'SET_DESTINATION_FROM_MAP': {
-      const destObject = getDestinationFromCoords(action.coords, LocationType.MAP_LOCATION)
       return {
         ...store,
-        destObject,
-        destInputText: destObject.properties.label
+        destObject: action.destObject,
+        destInputText: action.destObject.properties.label,
+        error: action.error
       }
     }
 
@@ -99,15 +102,19 @@ export const toggleDestinationOptionsVisible = () => {
 
 export const setDestinationFromMap = (lngLat: LngLat) => {
   return async (dispatch: any) => {
+    const destObject = getDestinationFromCoords([lngLat.lng, lngLat.lat], LocationType.MAP_LOCATION)
+    const error = destWithinSupportedArea(destObject)
     dispatch({ type: 'RESET_PATHS' })
-    dispatch({ type: 'SET_DESTINATION_FROM_MAP', coords: [lngLat.lng, lngLat.lat] })
+    dispatch({ type: 'SET_DESTINATION_FROM_MAP', destObject, error })
     closePopup()
   }
 }
 
 const getDestinationFromGeocodingResult = (place: GeocodingResult): OdPlace => {
   return {
-    ...place, properties: {
+    ...place,
+    type: 'Feature',
+    properties: {
       ...place.properties,
       locationType: LocationType.ADDRESS,
       odType: OdType.DESTINATION
@@ -130,8 +137,17 @@ const getDestinationFromCoords = (coordinates: [number, number], locType: Locati
       label,
       locationType: locType,
       odType: OdType.DESTINATION
-    }
+    },
+    type: 'Feature'
   }
+}
+
+const destWithinSupportedArea = (destination: OdPlace): string | null => {
+  // @ts-ignore
+  if (!turf.within(destination, extentFeat)) {
+    return 'Destination is outside the supported area'
+  }
+  return null
 }
 
 export default destinationReducer

@@ -1,3 +1,8 @@
+import hmaPoly from './HMA.json'
+
+// @ts-ignore
+export const extentFeat: PolygonFeature = hmaPoly.features[0]
+
 export const BASEMAPS = {
   Streets: {
     url: 'mapbox://styles/joose/cjvbyzwuk31oe1fohk6s9ev4b',

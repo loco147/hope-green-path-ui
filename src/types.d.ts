@@ -216,7 +216,8 @@ interface OdPlace {
     label: string,
     locationType: import('./reducers/originReducer').LocationType,
     odType: import('./reducers/originReducer').OdType
-  }
+  },
+  type: 'Feature'
 }
 
 interface OriginReducer {
