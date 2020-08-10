@@ -1,6 +1,7 @@
 import { Action } from 'redux'
 import { ChangeEvent } from 'react'
 import { LocationType, OdType } from './originReducer'
+import { closePopup } from './mapPopupReducer'
 import * as geocoding from './../services/geocoding'
 
 const initialDest: DestinationReducer = {
@@ -49,6 +50,15 @@ const destinationReducer = (store: DestinationReducer = initialDest, action: Des
         destOptionsVisible: false
       }
 
+    case 'SET_DESTINATION_FROM_MAP': {
+      const destObject = getDestinationFromCoords(action.coords, LocationType.MAP_LOCATION)
+      return {
+        ...store,
+        destObject,
+        destInputText: destObject.properties.label
+      }
+    }
+
     case 'RESET_DESTINATION_INPUT':
       return initialDest
 
@@ -87,8 +97,41 @@ export const toggleDestinationOptionsVisible = () => {
   return { type: 'TOGGLE_DESTINATION_OPTIONS' }
 }
 
+export const setDestinationFromMap = (lngLat: LngLat) => {
+  return async (dispatch: any) => {
+    dispatch({ type: 'RESET_PATHS' })
+    dispatch({ type: 'SET_DESTINATION_FROM_MAP', coords: [lngLat.lng, lngLat.lat] })
+    closePopup()
+  }
+}
+
 const getDestinationFromGeocodingResult = (place: GeocodingResult): OdPlace => {
-  return { ...place, properties: { ...place.properties, locationType: LocationType.ADDRESS, odType: OdType.DESTINATION } }
+  return {
+    ...place, properties: {
+      ...place.properties,
+      locationType: LocationType.ADDRESS,
+      odType: OdType.DESTINATION
+    }
+  }
+}
+
+const roundCoords = (coord: number) => {
+  return Math.round(coord * 10000) / 10000
+}
+
+const getDestinationFromCoords = (coordinates: [number, number], locType: LocationType): OdPlace => {
+  const label = String(roundCoords(coordinates[0])) + ' ' + String(roundCoords(coordinates[1]))
+  return {
+    geometry: {
+      type: 'Point',
+      coordinates
+    },
+    properties: {
+      label,
+      locationType: locType,
+      odType: OdType.DESTINATION
+    }
+  }
 }
 
 export default destinationReducer

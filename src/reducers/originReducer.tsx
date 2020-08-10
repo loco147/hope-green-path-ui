@@ -64,7 +64,7 @@ const originReducer = (store: OriginReducer = initialOrigin, action: OdInputActi
       }
 
     case 'SET_ORIGIN_TO_USER_LOCATION': {
-      const originObject = getOriginObject(action.coords, LocationType.USER_LOCATION)
+      const originObject = getOriginFromCoords(action.coords, LocationType.USER_LOCATION)
       return {
         ...store,
         waitingUserLocOrigin: false,
@@ -75,7 +75,7 @@ const originReducer = (store: OriginReducer = initialOrigin, action: OdInputActi
 
     case 'UPDATE_USER_LOCATION':
       if (store.waitingUserLocOrigin) {
-        const originObject = getOriginObject(action.coords, LocationType.USER_LOCATION)
+        const originObject = getOriginFromCoords(action.coords, LocationType.USER_LOCATION)
         return {
           ...store,
           waitingUserLocOrigin: false,
@@ -87,7 +87,7 @@ const originReducer = (store: OriginReducer = initialOrigin, action: OdInputActi
       }
 
     case 'SET_ORIGIN_FROM_MAP': {
-      const originObject = getOriginObject(action.coords, LocationType.MAP_LOCATION)
+      const originObject = getOriginFromCoords(action.coords, LocationType.MAP_LOCATION)
       return {
         ...store,
         originObject,
@@ -172,7 +172,7 @@ const roundCoords = (coord: number) => {
   return Math.round(coord * 10000) / 10000
 }
 
-const getOriginObject = (coordinates: [number, number], locType: LocationType): OdPlace => {
+const getOriginFromCoords = (coordinates: [number, number], locType: LocationType): OdPlace => {
   const label = String(roundCoords(coordinates[0])) + ' ' + String(roundCoords(coordinates[1]))
   return {
     geometry: {
