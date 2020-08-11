@@ -30,8 +30,10 @@ const destinationReducer = (store: DestinationReducer = initialDest, action: Des
     case 'UPDATE_DESTINATION_INPUT_VALUE':
       return {
         ...store,
-        destInputText: action.destInputText
-      }
+        destInputText: action.destInputText,
+        destObject: null,
+        error: null
+      } // no need to set destination options visible yet (let's wait for geocoding results)
 
     case 'SET_DESTINATION_OPTIONS':
       return {

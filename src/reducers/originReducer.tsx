@@ -44,6 +44,8 @@ const originReducer = (store: OriginReducer = initialOrigin, action: OdInputActi
       return {
         ...store,
         originInputText: action.originInputText,
+        originObject: null,
+        error: null,
         originOptionsVisible: true
       }
 
