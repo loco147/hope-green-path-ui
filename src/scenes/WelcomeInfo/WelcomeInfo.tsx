@@ -172,7 +172,7 @@ const WelcomeInfo = (props: PropsFromRedux) => {
             </P>
           </InfoWrapper>
           <ButtonDiv id='hide-welcome-button'>
-            <Button small green onClick={() => props.hideInfo(props.showingPaths)}>OK</Button>
+            <Button small green onClick={props.hideInfo}>OK</Button>
           </ButtonDiv>
         </WhiteBox>
       </FlexDiv>
@@ -183,7 +183,6 @@ const WelcomeInfo = (props: PropsFromRedux) => {
 const mapStateToProps = (state: ReduxState) => ({
   menu: state.menu,
   visitedBefore: state.visitor.visitedBefore,
-  showingPaths: state.paths.showingPaths,
 })
 
 const connector = connect(mapStateToProps, { showInfo, hideInfo })

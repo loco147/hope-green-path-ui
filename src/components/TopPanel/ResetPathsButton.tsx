@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { connect, ConnectedProps } from 'react-redux'
 import { resetPaths } from '../../reducers/pathsReducer'
 import { IoIosArrowBack } from 'react-icons/io'
+import { turf } from './../../utils/index'
 
 const ButtonContainer = styled.div`
   padding: 2px 3px 2px 0px;
@@ -28,7 +29,8 @@ const ArrowBack = styled(IoIosArrowBack)`
   font-size: 31px;
 `
 
-const ResetPathsButton = ({ resetPaths, odFc }: PropsFromRedux) => {
+const ResetPathsButton = ({ resetPaths, originObject, destObject }: PropsFromRedux) => {
+  const odFc = turf.asFeatureCollection([originObject!, destObject!])
   return (
     <ButtonContainer id='reset-paths-container' onClick={() => resetPaths(odFc)}>
       <ArrowBack />
@@ -37,8 +39,8 @@ const ResetPathsButton = ({ resetPaths, odFc }: PropsFromRedux) => {
 }
 
 const mapStateToProps = (state: ReduxState) => ({
-  userLocation: state.userLocation,
-  odFc: state.origDest.origDestFC
+  originObject: state.origin.originObject,
+  destObject: state.destination.destObject
 })
 
 const connector = connect(mapStateToProps, { resetPaths })

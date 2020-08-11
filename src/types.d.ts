@@ -24,6 +24,10 @@ interface PointFeatureCollection extends FeatureCollection {
   features: PointFeature[]
 }
 
+interface OdFeatureCollection extends FeatureCollection {
+  features: OdPlace[]
+}
+
 interface PolygonFeature extends Feature {
   geometry: import('@turf/helpers').Polygon
 }
@@ -184,14 +188,6 @@ interface PathListReducer {
   routingId: number,
 }
 
-interface OrigDestReducer {
-  origDestFC: PointFeatureCollection,
-  useUserLocOrigin: boolean,
-  waitUserLocOrigin: boolean,
-  showingPaths: boolean,
-  error: string | null
-}
-
 interface GeocodingProps {
   gid: string,
   layer: string,
@@ -258,7 +254,6 @@ interface ReduxState {
   notification: NotificationReducer,
   paths: PathsReducer,
   pathList: PathListReducer,
-  origDest: OrigDestReducer,
   origin: OriginReducer,
   destination: DestinationReducer,
   mapPopup: MapPopupReducer,

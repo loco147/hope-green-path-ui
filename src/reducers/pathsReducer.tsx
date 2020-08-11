@@ -407,7 +407,7 @@ export const unsetSelectedPath = () => {
   return { type: 'UNSET_SELECTED_PATH' }
 }
 
-export const resetPaths = (odFc: FeatureCollection) => {
+export const resetPaths = (odFc: OdFeatureCollection) => {
   return async (dispatch: any) => {
     dispatch({ type: 'RESET_PATHS' })
     dispatch(zoomToFC(odFc))

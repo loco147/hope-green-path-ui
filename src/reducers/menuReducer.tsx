@@ -1,6 +1,5 @@
 import { menu } from './../constants'
 import { setVisitedStatusVisited, getVisitedStatus } from './visitorReducer'
-import { showSetDestinationTooltip } from './origDestReducer'
 import { testGreenPathServiceConnection } from './pathsReducer'
 import { Action } from 'redux'
 
@@ -33,7 +32,7 @@ const menuReducer = (store: MenuReducer = initialMenuState, action: Action): Men
 
 export const showInfo = () => ({ type: 'SHOW_INFO' })
 
-export const hideInfo = (showingPaths: boolean) => {
+export const hideInfo = () => {
   return (dispatch: any) => {
     const visited = getVisitedStatus()
     // if first visit, set visited cookie to yes and check connection to qp service
@@ -41,7 +40,6 @@ export const hideInfo = (showingPaths: boolean) => {
       dispatch(setVisitedStatusVisited())
       dispatch(testGreenPathServiceConnection())
     }
-    if (!showingPaths) dispatch(showSetDestinationTooltip())
     dispatch({ type: 'HIDE_INFO' })
   }
 }

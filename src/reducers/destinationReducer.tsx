@@ -2,14 +2,14 @@ import { Action } from 'redux'
 import { ChangeEvent } from 'react'
 import { LocationType, OdType } from './originReducer'
 import { closePopup } from './mapPopupReducer'
-import { extentFeat } from './../constants'
+import { extentFeat, egDest } from './../constants'
 import { turf } from './../utils/index'
 import * as geocoding from './../services/geocoding'
 
 const initialDest: DestinationReducer = {
   error: null,
-  destInputText: '',
-  destObject: null,
+  destInputText: process.env.NODE_ENV !== 'production' ? egDest.properties.label : '',
+  destObject: process.env.NODE_ENV !== 'production' ? egDest as OdPlace : null,
   destOptions: [],
   destOptionsVisible: false,
 }
@@ -63,7 +63,7 @@ const destinationReducer = (store: DestinationReducer = initialDest, action: Des
     }
 
     case 'RESET_DESTINATION_INPUT':
-      return initialDest
+      return { ...initialDest, destObject: null, destInputText: '' }
 
     default:
       return store

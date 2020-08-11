@@ -3,7 +3,7 @@ import { ChangeEvent } from 'react'
 import { closePopup } from './mapPopupReducer'
 import { startTrackingUserLocation } from './userLocationReducer'
 import { turf } from './../utils/index'
-import { extentFeat } from './../constants'
+import { extentFeat, egOrigin } from './../constants'
 import * as geocoding from './../services/geocoding'
 
 export enum LocationType {
@@ -19,11 +19,11 @@ export enum OdType {
 
 const initialOrigin: OriginReducer = {
   error: null,
-  originInputText: '',
-  originObject: null,
+  originInputText: process.env.NODE_ENV !== 'production' ? egOrigin.properties.label : '',
+  originObject: process.env.NODE_ENV !== 'production' ? egOrigin as OdPlace : null,
   originOptions: [],
   originOptionsVisible: false,
-  waitingUserLocOrigin: false,
+  waitingUserLocOrigin: false
 }
 
 interface OdInputAction extends Action {
@@ -43,12 +43,15 @@ const originReducer = (store: OriginReducer = initialOrigin, action: OdInputActi
       return {
         ...store,
         originInputText: action.originInputText,
-        originOptionsVisible: true,
-        waitingUserLocOrigin: false
+        originOptionsVisible: true
       }
 
     case 'SET_ORIGIN_OPTIONS':
-      return { ...store, originOptions: action.originOptions }
+      return {
+        ...store,
+        originOptions: action.originOptions,
+        waitingUserLocOrigin: false
+      }
 
     case 'HIDE_ORIGIN_OPTIONS':
       return { ...store, originOptionsVisible: false }
@@ -59,48 +62,59 @@ const originReducer = (store: OriginReducer = initialOrigin, action: OdInputActi
     case 'WAIT_FOR_USER_LOC_ORIGIN':
       return { ...store, originInputText: ' ', waitingUserLocOrigin: true }
 
-    case 'SET_GEOCODED_ORIGIN':
+    case 'SET_GEOCODED_ORIGIN': {
+      const originObject = getOriginFromGeocodingResult(action.place)
+      const error = originWithinSupportedArea(originObject)
       return {
         ...store,
-        originObject: getOriginFromGeocodingResult(action.place),
+        originObject: originObject,
         originInputText: action.place.properties.name,
-        originOptionsVisible: false
-      }
-
-    case 'SET_ORIGIN_TO_USER_LOCATION': {
-      const originObject = getOriginFromCoords(action.coords, LocationType.USER_LOCATION)
-      return {
-        ...store,
+        originOptionsVisible: false,
         waitingUserLocOrigin: false,
-        originObject,
-        originInputText: originObject.properties.label
+        error
       }
     }
 
-    case 'UPDATE_USER_LOCATION':
+    case 'SET_ORIGIN_TO_USER_LOCATION': {
+      const originObject = getOriginFromCoords(action.coords, LocationType.USER_LOCATION)
+      const error = originWithinSupportedArea(originObject)
+      return {
+        ...store,
+        originObject,
+        originInputText: originObject.properties.label,
+        waitingUserLocOrigin: false,
+        error
+      }
+    }
+
+    case 'UPDATE_USER_LOCATION': {
       if (store.waitingUserLocOrigin) {
         const originObject = getOriginFromCoords(action.coords, LocationType.USER_LOCATION)
+        const error = originWithinSupportedArea(originObject)
         return {
           ...store,
-          waitingUserLocOrigin: false,
           originObject,
-          originInputText: originObject.properties.label
+          originInputText: originObject.properties.label,
+          waitingUserLocOrigin: false,
+          error
         }
       } else {
         return store
       }
+    }
 
     case 'SET_ORIGIN_FROM_MAP': {
       return {
         ...store,
         originObject: action.originObject,
         originInputText: action.originObject.properties.label,
+        waitingUserLocOrigin: false,
         error: action.error
       }
     }
 
     case 'RESET_ORIGIN_INPUT':
-      return initialOrigin
+      return { ...initialOrigin, originObject: null, originInputText: '' }
 
     default:
       return store
