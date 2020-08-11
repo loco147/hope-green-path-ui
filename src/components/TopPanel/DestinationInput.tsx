@@ -99,7 +99,13 @@ class DestinationInput extends Component<PropsFromRedux> {
 
   render() {
     const { destInputText, destOptionsVisible, destOptions } = this.props.destination
-    const { setDestinationInputText, setGeocodedDestination, resetDestinationInput, toggleDestinationOptionsVisible } = this.props
+    const {
+      originObject,
+      setDestinationInputText,
+      setGeocodedDestination,
+      resetDestinationInput,
+      toggleDestinationOptionsVisible
+    } = this.props
 
     return <DestSelectorDiv ref={this.wrapperRef}>
       <Input
@@ -113,7 +119,7 @@ class DestinationInput extends Component<PropsFromRedux> {
         {destOptions.map(option =>
           <DestinationOption
             key={option.properties.gid}
-            onClick={() => setGeocodedDestination(option)}>{option.properties.label}</DestinationOption>
+            onClick={() => setGeocodedDestination(option, originObject)}>{option.properties.label}</DestinationOption>
         )}
       </DestinationOptions>
       }
@@ -122,7 +128,8 @@ class DestinationInput extends Component<PropsFromRedux> {
 }
 
 const mapStateToProps = (state: ReduxState) => ({
-  destination: state.destination
+  destination: state.destination,
+  originObject: state.origin.originObject
 })
 
 const mapDispatchToProps = {

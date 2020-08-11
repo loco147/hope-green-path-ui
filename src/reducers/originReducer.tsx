@@ -1,6 +1,7 @@
 import { Action } from 'redux'
 import { ChangeEvent } from 'react'
 import { closePopup } from './mapPopupReducer'
+import { zoomToFC } from './mapReducer'
 import { startTrackingUserLocation } from './userLocationReducer'
 import { turf } from './../utils/index'
 import { extentFeat, egOrigin } from './../constants'
@@ -133,10 +134,14 @@ export const setOriginInputText = (event: ChangeEvent<HTMLInputElement>) => {
   }
 }
 
-export const setGeocodedOrigin = (place: GeocodingResult) => {
-  const originObject = getOriginFromGeocodingResult(place)
-  const error = originWithinSupportedArea(originObject)
-  return { type: 'SET_GEOCODED_ORIGIN', originObject, name: place.properties.name, error }
+export const setGeocodedOrigin = (place: GeocodingResult, destObject: OdPlace | null) => {
+  return async (dispatch: any) => {
+    const originObject = getOriginFromGeocodingResult(place)
+    const error = originWithinSupportedArea(originObject)
+    dispatch({ type: 'SET_GEOCODED_ORIGIN', originObject, name: place.properties.name, error })
+    const odFc = turf.asFeatureCollection(destObject ? [originObject, destObject] : [originObject])
+    dispatch(zoomToFC(odFc))
+  }
 }
 
 export const hideOriginOptions = () => {
@@ -151,7 +156,7 @@ export const toggleOriginOptionsVisible = () => {
   return { type: 'TOGGLE_ORIGIN_OPTIONS' }
 }
 
-export const useUserLocationOrigin = (e: any, userLocation: UserLocationReducer) => {
+export const useUserLocationOrigin = (e: any, userLocation: UserLocationReducer, destObject: OdPlace | null) => {
   e.stopPropagation()
   return async (dispatch: any) => {
     dispatch({ type: 'RESET_ORIGIN_INPUT' })
@@ -166,6 +171,8 @@ export const useUserLocationOrigin = (e: any, userLocation: UserLocationReducer)
         originObject,
         error
       })
+      const odFc = turf.asFeatureCollection(destObject ? [originObject, destObject] : [originObject])
+      dispatch(zoomToFC(odFc))
     } else {
       dispatch({ type: 'WAIT_FOR_USER_LOC_ORIGIN' })
       dispatch(startTrackingUserLocation())

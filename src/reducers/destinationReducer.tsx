@@ -2,6 +2,7 @@ import { Action } from 'redux'
 import { ChangeEvent } from 'react'
 import { LocationType, OdType } from './originReducer'
 import { closePopup } from './mapPopupReducer'
+import { zoomToFC } from './mapReducer'
 import { extentFeat, egDest } from './../constants'
 import { turf } from './../utils/index'
 import * as geocoding from './../services/geocoding'
@@ -85,10 +86,14 @@ export const setDestinationInputText = (event: ChangeEvent<HTMLInputElement>) =>
   }
 }
 
-export const setGeocodedDestination = (place: GeocodingResult) => {
-  const destObject = getDestinationFromGeocodingResult(place)
-  const error = destWithinSupportedArea(destObject)
-  return { type: 'SET_GEOCODED_DESTINATION', destObject, error, name: place.properties.name }
+export const setGeocodedDestination = (place: GeocodingResult, originObject: OdPlace | null) => {
+  return async (dispatch: any) => {
+    const destObject = getDestinationFromGeocodingResult(place)
+    const error = destWithinSupportedArea(destObject)
+    dispatch({ type: 'SET_GEOCODED_DESTINATION', destObject, error, name: place.properties.name })
+    const odFc = turf.asFeatureCollection(originObject ? [originObject, destObject] : [destObject])
+    dispatch(zoomToFC(odFc))
+  }
 }
 
 export const hideDestinationOptions = () => {

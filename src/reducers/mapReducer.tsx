@@ -38,11 +38,6 @@ const mapReducer = (store: MapReducer = initialMapState, action: MapAction): Map
       return { ...store, zoomToBbox: turf.getBbox(turf.getBuffer(action.userLocFC, 250)) }
     }
 
-    case 'SET_ORIGIN_TO_USER_LOCATION': {
-      const userLocFC = turf.asFeatureCollection([action.originObject])
-      return { ...store, zoomToBbox: turf.getBbox(turf.getBuffer(userLocFC, 400)) }
-    }
-
     case 'UPDATE_CAMERA':
       return { ...store, center: action.center, zoom: action.zoom }
 

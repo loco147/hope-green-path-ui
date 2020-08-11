@@ -110,7 +110,14 @@ class OriginInput extends Component<PropsFromRedux> {
 
   render() {
     const { waitingUserLocOrigin, originInputText, originOptionsVisible, originOptions } = this.props.origin
-    const { useUserLocationOrigin, setOriginInputText, setGeocodedOrigin, resetOriginInput, toggleOriginOptionsVisible } = this.props
+    const {
+      destObject,
+      useUserLocationOrigin,
+      setOriginInputText,
+      setGeocodedOrigin,
+      resetOriginInput,
+      toggleOriginOptionsVisible
+    } = this.props
 
     return <OrigSelectorDiv ref={this.wrapperRef}>
       <Input
@@ -122,13 +129,13 @@ class OriginInput extends Component<PropsFromRedux> {
       {waitingUserLocOrigin && <WaitForUserLocContainer ><LoadAnimation size={25} /></WaitForUserLocContainer>}
       <ResetLocButton onClick={resetOriginInput}><CloseIcon /></ResetLocButton>
       {originOptionsVisible && <OrigOptions>
-        <OrigOption noShadow onClick={(e) => useUserLocationOrigin(e, this.props.userLocation)}>
-          <UseCurrLocButton handleClick={(e) => useUserLocationOrigin(e, this.props.userLocation)} />
+        <OrigOption noShadow onClick={(e) => useUserLocationOrigin(e, this.props.userLocation, destObject)}>
+          <UseCurrLocButton handleClick={(e) => useUserLocationOrigin(e, this.props.userLocation, destObject)} />
         </OrigOption>
         {originOptions.map(option =>
           <OrigOption
             key={option.properties.gid}
-            onClick={() => setGeocodedOrigin(option)}>{option.properties.label}</OrigOption>
+            onClick={() => setGeocodedOrigin(option, destObject)}>{option.properties.label}</OrigOption>
         )}
       </OrigOptions>
       }
@@ -139,6 +146,7 @@ class OriginInput extends Component<PropsFromRedux> {
 const mapStateToProps = (state: ReduxState) => ({
   userLocation: state.userLocation,
   origin: state.origin,
+  destObject: state.destination.destObject
 })
 
 const mapDispatchToProps = {
