@@ -45,15 +45,15 @@ const originReducer = (store: OriginReducer = initialOrigin, action: OdInputActi
         ...store,
         originInputText: action.originInputText,
         originObject: null,
-        error: null,
-        originOptionsVisible: true
+        originOptionsVisible: true,
+        waitingUserLocOrigin: false,
+        error: null
       }
 
     case 'SET_ORIGIN_OPTIONS':
       return {
         ...store,
-        originOptions: action.originOptions,
-        waitingUserLocOrigin: false
+        originOptions: action.originOptions
       }
 
     case 'HIDE_ORIGIN_OPTIONS':

@@ -62,6 +62,7 @@ const destinationReducer = (store: DestinationReducer = initialDest, action: Des
         ...store,
         destObject: action.destObject,
         destInputText: action.destObject.properties.label,
+        destOptionsVisible: false,
         error: action.error
       }
     }
