@@ -10,7 +10,7 @@ const initialMapState: MapReducer = {
 }
 
 interface MapAction extends Action {
-  origCoords: [number, number],
+  originCoords: [number, number],
   destCoords: [number, number],
   fc: FeatureCollection,
   userLocFC: PointFeatureCollection,
@@ -30,7 +30,7 @@ const mapReducer = (store: MapReducer = initialMapState, action: MapAction): Map
       return { ...store, zoomToBbox: turf.getBbox(turf.getBuffer(action.fc, 300)) }
 
     case 'ROUTING_STARTED': {
-      const FC = turf.asFeatureCollection([turf.asPoint(action.origCoords), turf.asPoint(action.destCoords)])
+      const FC = turf.asFeatureCollection([turf.asPoint(action.originCoords), turf.asPoint(action.destCoords)])
       return { ...store, zoomToBbox: turf.getBbox(FC) }
     }
 

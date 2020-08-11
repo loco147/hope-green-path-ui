@@ -128,7 +128,7 @@ export const setOriginInputText = (event: ChangeEvent<HTMLInputElement>) => {
     const originInputText = event.target ? event.target.value : ''
     dispatch({ type: 'UPDATE_ORIGIN_INPUT_VALUE', originInputText })
     if (originInputText.length > 2 && !showingCoordinates(originInputText)) {
-      const originOptions = await geocoding.geocodeAddress(originInputText)
+      const originOptions = await geocoding.geocodeAddress(originInputText, 6)
       dispatch({ type: 'SET_ORIGIN_OPTIONS', originOptions })
     } else {
       dispatch({ type: 'SET_ORIGIN_OPTIONS', originOptions: [] })
@@ -225,7 +225,6 @@ const getOriginFromCoords = (coordinates: [number, number], locType: LocationTyp
 }
 
 const originWithinSupportedArea = (origin: OdPlace): string | null => {
-  // @ts-ignore
   if (!turf.within(origin, extentFeat)) {
     return 'Origin is outside the supported area'
   }

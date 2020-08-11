@@ -50,23 +50,22 @@ const FindPathsButtons = (props: PropsFromRedux) => {
   const { originObject } = origin
   const { destObject } = destination
 
-  if (!originObject || !destObject || showingPaths || waitingPaths || origin.error || destination.error) {
+  const odUnset = (!originObject && origin.originInputText.length < 2) || (!destObject && destination.destInputText.length < 2)
+
+  if (odUnset || showingPaths || waitingPaths || origin.error || destination.error) {
     return null
   }
-
-  const originCoords = originObject.geometry.coordinates
-  const destCoords = destObject.geometry.coordinates
 
   return (
     <OuterFlex>
       {cleanPathsAvailable
         ? <Button
-          onClick={() => getSetCleanPaths(originCoords, destCoords, selectedTravelMode, routingId)}> Find fresh air paths
+          onClick={() => getSetCleanPaths(origin, destination, selectedTravelMode, routingId)}> Find fresh air paths
           <Tooltip>by real-time air quality</Tooltip>
         </Button>
         : null
       }
-      <Button onClick={() => getSetQuietPaths(originCoords, destCoords, selectedTravelMode, routingId)}> Find quiet paths
+      <Button onClick={() => getSetQuietPaths(origin, destination, selectedTravelMode, routingId)}> Find quiet paths
         <Tooltip>by typical traffic noise</Tooltip>
       </Button>
     </OuterFlex>

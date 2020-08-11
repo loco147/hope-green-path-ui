@@ -74,12 +74,17 @@ const destinationReducer = (store: DestinationReducer = initialDest, action: Des
   }
 }
 
+const showingCoordinates = (inputText: string): boolean => {
+  const numberCount = inputText.replace(/[^0-9]/g, '').length
+  return numberCount > Math.round(inputText.length / 2)
+}
+
 export const setDestinationInputText = (event: ChangeEvent<HTMLInputElement>) => {
   return async (dispatch: any) => {
     const destInputText = event.target ? event.target.value : ''
     dispatch({ type: 'UPDATE_DESTINATION_INPUT_VALUE', destInputText })
-    if (destInputText.length > 2) {
-      const destOptions = await geocoding.geocodeAddress(destInputText)
+    if (destInputText.length > 2 && !showingCoordinates(destInputText)) {
+      const destOptions = await geocoding.geocodeAddress(destInputText, 6)
       dispatch({ type: 'SET_DESTINATION_OPTIONS', destOptions })
     } else {
       dispatch({ type: 'HIDE_DESTINATION_OPTIONS' })
@@ -153,7 +158,6 @@ const getDestinationFromCoords = (coordinates: [number, number], locType: Locati
 }
 
 const destWithinSupportedArea = (destination: OdPlace): string | null => {
-  // @ts-ignore
   if (!turf.within(destination, extentFeat)) {
     return 'Destination is outside the supported area'
   }

@@ -203,7 +203,8 @@ interface GeocodingProps {
 
 interface GeocodingResult {
   geometry: { type: 'Point', coordinates: [number, number] },
-  properties: GeocodingProps
+  properties: GeocodingProps,
+  type: 'Feature'
 }
 
 interface OdPlace {

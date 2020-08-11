@@ -1,10 +1,13 @@
 import { turf } from '../utils/index'
 import * as paths from './../services/paths'
 import { zoomToFC } from './mapReducer'
+import { setGeocodedOrigin } from './originReducer'
+import { setGeocodedDestination } from './destinationReducer'
 import { showNotification } from './notificationReducer'
-import { ExposureMode, PathType, TravelMode, StatsType } from './../constants'
+import { ExposureMode, PathType, TravelMode, StatsType, extentFeat } from './../constants'
 import { utils } from './../utils/index'
 import { Action } from 'redux'
+import * as geocoding from './../services/geocoding'
 
 const initialPaths: PathsReducer = {
   cleanPathsAvailable: false,
@@ -289,20 +292,77 @@ export const setTravelMode = (selectedTravelMode: TravelMode) => {
   }
 }
 
-export const getSetQuietPaths = (origCoords: [number, number], destCoords: [number, number], selectedTravelMode: TravelMode, prevRoutingId: number) => {
+const getRoutingOd = async (origin: OriginReducer, dest: DestinationReducer): Promise<RoutingOd> => {
+  const routingOd: RoutingOd = {
+    error: null,
+    originCoords: null,
+    destCoords: null,
+    newlyGeocodedOrigin: null,
+    newlyGeocodedDest: null
+  }
+  if (origin.originObject) {
+    routingOd.originCoords = origin.originObject.geometry.coordinates
+  } else {
+    console.log('geocoding origin input prior to routing...', origin.originInputText)
+    const originPlace = await geocoding.geocodeAddress(origin.originInputText, 1)
+    if (originPlace.length === 0) {
+      routingOd.error = 'Origin was not found'
+      return routingOd
+    } else if (!turf.within(originPlace[0], extentFeat)) {
+      routingOd.error = 'Origin is outside the supported area'
+      return routingOd
+    } else {
+      routingOd.newlyGeocodedOrigin = originPlace[0]
+      routingOd.originCoords = originPlace[0].geometry.coordinates
+    }
+  }
+  if (dest.destObject) {
+    routingOd.destCoords = dest.destObject.geometry.coordinates
+  } else {
+    console.log('geocoding destination input prior to routing...', dest.destInputText)
+    const destPlace = await geocoding.geocodeAddress(dest.destInputText, 1)
+    if (destPlace.length === 0) {
+      routingOd.error = 'Destination was not found'
+      return routingOd
+    } else if (!turf.within(destPlace[0], extentFeat)) {
+      routingOd.error = 'Destination is outside the supported area'
+      return routingOd
+    } else {
+      routingOd.newlyGeocodedDest = destPlace[0]
+      routingOd.destCoords = destPlace[0].geometry.coordinates
+    }
+  }
+  return routingOd
+}
+
+export const getSetQuietPaths = (origin: OriginReducer, dest: DestinationReducer, selectedTravelMode: TravelMode, prevRoutingId: number) => {
   return async (dispatch: any) => {
-    if (!confirmLongDistance(origCoords, destCoords)) {
+    const {
+      error,
+      originCoords,
+      destCoords,
+      newlyGeocodedOrigin,
+      newlyGeocodedDest
+    } = await getRoutingOd(origin, dest)
+    if (error) {
+      dispatch({ type: 'ERROR_IN_ROUTING' })
+      dispatch(showNotification(error, 'error', 8))
+      return
+    }
+    if (newlyGeocodedOrigin) dispatch(setGeocodedOrigin(newlyGeocodedOrigin, null))
+    if (newlyGeocodedDest) dispatch(setGeocodedDestination(newlyGeocodedDest, null))
+    if (!confirmLongDistance(originCoords!, destCoords!)) {
       return
     }
     const routingId = prevRoutingId + 1
     dispatch({ type: 'CLOSE_PATHS' })
-    dispatch({ type: 'ROUTING_STARTED', origCoords, destCoords, routingId, selectedTravelMode })
+    dispatch({ type: 'ROUTING_STARTED', originCoords, destCoords, routingId, selectedTravelMode })
     try {
-      const pathData = await paths.getQuietPaths(selectedTravelMode, origCoords, destCoords)
-      dispatch(setQuietPaths(origCoords, destCoords, routingId, pathData, selectedTravelMode))
+      const pathData = await paths.getQuietPaths(selectedTravelMode, originCoords!, destCoords!)
+      dispatch(setQuietPaths(originCoords!, destCoords!, routingId, pathData, selectedTravelMode))
     } catch (error) {
       console.log('caught error:', error)
-      dispatch({ type: 'ERROR_IN_ROUTING', selectedTravelMode })
+      dispatch({ type: 'ERROR_IN_ROUTING' })
       if (typeof error === 'string') {
         dispatch(showNotification(error, 'error', 8))
       } else {
@@ -338,20 +398,34 @@ export const setQuietPaths = (origCoords: [number, number], destCoords: [number,
   }
 }
 
-export const getSetCleanPaths = (origCoords: [number, number], destCoords: [number, number], selectedTravelMode: TravelMode, prevRoutingId: number) => {
+export const getSetCleanPaths = (origin: OriginReducer, dest: DestinationReducer, selectedTravelMode: TravelMode, prevRoutingId: number) => {
   return async (dispatch: any) => {
-    if (!confirmLongDistance(origCoords, destCoords)) {
+    const {
+      error,
+      originCoords,
+      destCoords,
+      newlyGeocodedOrigin,
+      newlyGeocodedDest
+    } = await getRoutingOd(origin, dest)
+    if (error) {
+      dispatch({ type: 'ERROR_IN_ROUTING' })
+      dispatch(showNotification(error, 'error', 8))
+      return
+    }
+    if (newlyGeocodedOrigin) dispatch(setGeocodedOrigin(newlyGeocodedOrigin, null))
+    if (newlyGeocodedDest) dispatch(setGeocodedDestination(newlyGeocodedDest, null))
+    if (!confirmLongDistance(originCoords!, destCoords!)) {
       return
     }
     const routingId = prevRoutingId + 1
     dispatch({ type: 'CLOSE_PATHS' })
-    dispatch({ type: 'ROUTING_STARTED', origCoords, destCoords, routingId, selectedTravelMode })
+    dispatch({ type: 'ROUTING_STARTED', originCoords, destCoords, routingId, selectedTravelMode })
     try {
-      const pathData = await paths.getCleanPaths(selectedTravelMode, origCoords, destCoords)
-      dispatch(setCleanPaths(origCoords, destCoords, routingId, pathData, selectedTravelMode))
+      const pathData = await paths.getCleanPaths(selectedTravelMode, originCoords!, destCoords!)
+      dispatch(setCleanPaths(originCoords!, destCoords!, routingId, pathData, selectedTravelMode))
     } catch (error) {
       console.log('caught error:', error)
-      dispatch({ type: 'ERROR_IN_ROUTING', selectedTravelMode })
+      dispatch({ type: 'ERROR_IN_ROUTING' })
       if (typeof error === 'string') {
         dispatch(showNotification(error, 'error', 8))
       } else {
@@ -417,6 +491,14 @@ export const resetPaths = (odFc: OdFeatureCollection) => {
 
 const clickedPathAgain = (storeSelPathFC: PathFeatureCollection, clickedPathId: string) => {
   return storeSelPathFC.features[0] && clickedPathId === storeSelPathFC.features[0].properties.id
+}
+
+interface RoutingOd {
+  error: string | null,
+  originCoords: [number, number] | null,
+  destCoords: [number, number] | null,
+  newlyGeocodedOrigin: GeocodingResult | null,
+  newlyGeocodedDest: GeocodingResult | null,
 }
 
 export default pathsReducer
