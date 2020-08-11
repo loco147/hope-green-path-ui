@@ -167,8 +167,6 @@ interface PathsReducer {
   showingPathsOfTravelMode: TravelMode | null,
   showingPathsOfExposureMode: ExposureMode | null,
   showingStatsType: StatsType | null,
-  quietPathData: PathDataCache | null,
-  cleanPathData: PathDataCache | null,
   selPathFC: PathFeatureCollection,
   shortPathFC: PathFeatureCollection,
   quietPathFC: PathFeatureCollection,
