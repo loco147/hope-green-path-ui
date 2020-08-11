@@ -29,8 +29,8 @@ const initialOrigin: OriginReducer = {
 interface OdInputAction extends Action {
   originInputText: string,
   originOptions: GeocodingResult[],
-  place: GeocodingResult,
   originObject: OdPlace,
+  name: string,
   coords: [number, number],
   error: string | null
 }
@@ -62,30 +62,24 @@ const originReducer = (store: OriginReducer = initialOrigin, action: OdInputActi
     case 'WAIT_FOR_USER_LOC_ORIGIN':
       return { ...store, originInputText: ' ', waitingUserLocOrigin: true }
 
-    case 'SET_GEOCODED_ORIGIN': {
-      const originObject = getOriginFromGeocodingResult(action.place)
-      const error = originWithinSupportedArea(originObject)
+    case 'SET_GEOCODED_ORIGIN':
       return {
         ...store,
-        originObject: originObject,
-        originInputText: action.place.properties.name,
+        originObject: action.originObject,
+        originInputText: action.name,
         originOptionsVisible: false,
         waitingUserLocOrigin: false,
-        error
+        error: action.error
       }
-    }
 
-    case 'SET_ORIGIN_TO_USER_LOCATION': {
-      const originObject = getOriginFromCoords(action.coords, LocationType.USER_LOCATION)
-      const error = originWithinSupportedArea(originObject)
+    case 'SET_ORIGIN_TO_USER_LOCATION':
       return {
         ...store,
-        originObject,
-        originInputText: originObject.properties.label,
+        originObject: action.originObject,
+        originInputText: action.originObject.properties.label,
         waitingUserLocOrigin: false,
-        error
+        error: action.error
       }
-    }
 
     case 'UPDATE_USER_LOCATION': {
       if (store.waitingUserLocOrigin) {
@@ -140,7 +134,9 @@ export const setOriginInputText = (event: ChangeEvent<HTMLInputElement>) => {
 }
 
 export const setGeocodedOrigin = (place: GeocodingResult) => {
-  return { type: 'SET_GEOCODED_ORIGIN', place }
+  const originObject = getOriginFromGeocodingResult(place)
+  const error = originWithinSupportedArea(originObject)
+  return { type: 'SET_GEOCODED_ORIGIN', originObject, name: place.properties.name, error }
 }
 
 export const hideOriginOptions = () => {
@@ -163,9 +159,12 @@ export const useUserLocationOrigin = (e: any, userLocation: UserLocationReducer)
     closePopup()
     const lngLat = userLocation.lngLat
     if (lngLat) {
+      const originObject = getOriginFromCoords([lngLat.lng, lngLat.lat], LocationType.USER_LOCATION)
+      const error = originWithinSupportedArea(originObject)
       dispatch({
         type: 'SET_ORIGIN_TO_USER_LOCATION',
-        coords: [lngLat.lng, lngLat.lat]
+        originObject,
+        error
       })
     } else {
       dispatch({ type: 'WAIT_FOR_USER_LOC_ORIGIN' })

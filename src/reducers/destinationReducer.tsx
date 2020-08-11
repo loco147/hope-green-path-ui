@@ -17,8 +17,8 @@ const initialDest: DestinationReducer = {
 interface DestinationAction extends Action {
   destInputText: string,
   destOptions: GeocodingResult[],
-  place: GeocodingResult,
   destObject: OdPlace,
+  name: string,
   error: string | null
 }
 
@@ -48,9 +48,10 @@ const destinationReducer = (store: DestinationReducer = initialDest, action: Des
     case 'SET_GEOCODED_DESTINATION':
       return {
         ...store,
-        destObject: getDestinationFromGeocodingResult(action.place),
-        destInputText: action.place.properties.name,
-        destOptionsVisible: false
+        destObject: action.destObject,
+        destInputText: action.name,
+        destOptionsVisible: false,
+        error: action.error
       }
 
     case 'SET_DESTINATION_FROM_MAP': {
@@ -85,7 +86,9 @@ export const setDestinationInputText = (event: ChangeEvent<HTMLInputElement>) =>
 }
 
 export const setGeocodedDestination = (place: GeocodingResult) => {
-  return { type: 'SET_GEOCODED_DESTINATION', place }
+  const destObject = getDestinationFromGeocodingResult(place)
+  const error = destWithinSupportedArea(destObject)
+  return { type: 'SET_GEOCODED_DESTINATION', destObject, error, name: place.properties.name }
 }
 
 export const hideDestinationOptions = () => {
