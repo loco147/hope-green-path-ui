@@ -13,6 +13,10 @@ const OdContainer = styled.div<{ hide?: boolean }>`
   ${props => props.hide === true && css`
     display: none;
   `}
+  @media (min-width: 780px) {
+    flex-direction: row;
+    justify-content: space-evenly;
+  }
 `
 
 const OrigDestPanel = (props: PropsFromRedux) => {

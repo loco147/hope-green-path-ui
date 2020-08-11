@@ -17,6 +17,7 @@ const OrigSelectorDiv = styled.div`
   margin: 5px 5px 5px 5px;
   position: relative;
   width: 90%;
+  max-width: 350px;
   z-index: 3;
 `
 const Input = styled.input<{ onChange: Function }>`
