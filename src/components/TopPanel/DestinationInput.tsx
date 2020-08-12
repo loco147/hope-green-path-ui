@@ -15,7 +15,7 @@ const DestSelectorDiv = styled.div`
   position: relative;
   width: 90%;
   max-width: 350px;
-  z-index: 2;
+  z-index: 3;
 `
 const Input = styled.input<{ onChange: Function }>`
   padding: 10px 10px 9px 10px;
@@ -56,6 +56,8 @@ const DestinationOptions = styled.ul`
   width: calc(100% - 1px);
   background-color: #ffffff;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.1), 0 6px 20px 0 rgba(0,0,0,0.06);
+  max-height: calc(100vh - 108px);
+  overflow: auto;
 `
 const DestinationOption = styled.li`
   padding: 3px 8px;
