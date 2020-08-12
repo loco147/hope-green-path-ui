@@ -101,10 +101,12 @@ export const zoomToUserLocation = (userLocation: UserLocationReducer) => {
         userLocFC,
       })
     }
-    if (navigator.geolocation) navigator.geolocation.getCurrentPosition(handleNaviUserLocationZoom)
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(handleNaviUserLocationZoom)
+    }
     const currentUserLngLat = turf.getLngLatFromFC(userLocation.userLocFC)
     if (currentUserLngLat) {
-      dispatch({ type: 'ZOOM_TO_USER_LOCATION', userLngLat: currentUserLngLat, userLocFC: userLocation.userLocFC })
+      dispatch({ type: 'ZOOM_TO_USER_LOCATION', lngLat: currentUserLngLat, userLocFC: userLocation.userLocFC })
     }
     if (userLocation.watchId === 0) dispatch(startTrackingUserLocation())
   }
