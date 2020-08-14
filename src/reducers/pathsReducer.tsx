@@ -1,8 +1,8 @@
 import { turf } from '../utils/index'
 import * as paths from './../services/paths'
 import { zoomToFC } from './mapReducer'
-import { setGeocodedOrigin } from './originReducer'
-import { setGeocodedDestination } from './destinationReducer'
+import { setOriginDuringRouting, getOriginFromGeocodingResult, LocationType } from './originReducer'
+import { setDestinationDuringRouting, getDestinationFromGeocodingResult } from './destinationReducer'
 import { showNotification } from './notificationReducer'
 import { ExposureMode, PathType, TravelMode, StatsType, extentFeat } from './../constants'
 import { utils } from './../utils/index'
@@ -284,7 +284,7 @@ const getRoutingOd = async (origin: OriginReducer, dest: DestinationReducer): Pr
       routingOd.error = 'Origin is outside the supported area'
       return routingOd
     } else {
-      routingOd.newlyGeocodedOrigin = originPlace[0]
+      routingOd.newlyGeocodedOrigin = getOriginFromGeocodingResult(originPlace[0])
       routingOd.originCoords = originPlace[0].geometry.coordinates
     }
   }
@@ -300,7 +300,7 @@ const getRoutingOd = async (origin: OriginReducer, dest: DestinationReducer): Pr
       routingOd.error = 'Destination is outside the supported area'
       return routingOd
     } else {
-      routingOd.newlyGeocodedDest = destPlace[0]
+      routingOd.newlyGeocodedDest = getDestinationFromGeocodingResult(destPlace[0])
       routingOd.destCoords = destPlace[0].geometry.coordinates
     }
   }
@@ -321,8 +321,18 @@ export const getSetQuietPaths = (origin: OriginReducer, dest: DestinationReducer
       dispatch(showNotification(error, 'error', 8))
       return
     }
-    if (newlyGeocodedOrigin) dispatch(setGeocodedOrigin(newlyGeocodedOrigin, null))
-    if (newlyGeocodedDest) dispatch(setGeocodedDestination(newlyGeocodedDest, null))
+    if (newlyGeocodedOrigin) {
+      dispatch(setOriginDuringRouting(newlyGeocodedOrigin))
+      dispatch({ type: 'SET_USED_OD', odObject: (newlyGeocodedOrigin) })
+    } else if (origin.originObject?.properties.locationType === LocationType.ADDRESS) {
+      dispatch({ type: 'SET_USED_OD', odObject: origin.originObject })
+    }
+    if (newlyGeocodedDest) {
+      dispatch(setDestinationDuringRouting(newlyGeocodedDest))
+      dispatch({ type: 'SET_USED_OD', odObject: newlyGeocodedDest })
+    } else if (dest.destObject?.properties.locationType === LocationType.ADDRESS) {
+      dispatch({ type: 'SET_USED_OD', odObject: dest.destObject })
+    }
     if (!confirmLongDistance(originCoords!, destCoords!)) {
       return
     }
@@ -383,8 +393,18 @@ export const getSetCleanPaths = (origin: OriginReducer, dest: DestinationReducer
       dispatch(showNotification(error, 'error', 8))
       return
     }
-    if (newlyGeocodedOrigin) dispatch(setGeocodedOrigin(newlyGeocodedOrigin, null))
-    if (newlyGeocodedDest) dispatch(setGeocodedDestination(newlyGeocodedDest, null))
+    if (newlyGeocodedOrigin) {
+      dispatch(setOriginDuringRouting(newlyGeocodedOrigin))
+      dispatch({ type: 'SET_USED_OD', odObject: (newlyGeocodedOrigin) })
+    } else if (origin.originObject?.properties.locationType === LocationType.ADDRESS) {
+      dispatch({ type: 'SET_USED_OD', odObject: origin.originObject })
+    }
+    if (newlyGeocodedDest) {
+      dispatch(setDestinationDuringRouting(newlyGeocodedDest))
+      dispatch({ type: 'SET_USED_OD', odObject: newlyGeocodedDest })
+    } else if (dest.destObject?.properties.locationType === LocationType.ADDRESS) {
+      dispatch({ type: 'SET_USED_OD', odObject: dest.destObject })
+    }
     if (!confirmLongDistance(originCoords!, destCoords!)) {
       return
     }
@@ -466,8 +486,8 @@ interface RoutingOd {
   error: string | null,
   originCoords: [number, number] | null,
   destCoords: [number, number] | null,
-  newlyGeocodedOrigin: GeocodingResult | null,
-  newlyGeocodedDest: GeocodingResult | null,
+  newlyGeocodedOrigin: OdPlace | null,
+  newlyGeocodedDest: OdPlace | null,
 }
 
 export default pathsReducer

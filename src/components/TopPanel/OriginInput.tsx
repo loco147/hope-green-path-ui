@@ -6,6 +6,7 @@ import UseCurrLocButton from './UseCurrLocButton'
 import {
   setOriginInputText,
   setGeocodedOrigin,
+  setUsedOrigin,
   hideOriginOptions,
   toggleOriginOptionsVisible,
   resetOriginInput,
@@ -68,15 +69,15 @@ const OrigOptions = styled.ul`
   overflow: auto;
 `
 const OrigOption = styled.li<{ noShadow?: any }>`
-  padding: 3px 8px;
+  padding: 4px 8px;
   margin: 9px;
   border-radius: 3px;
-  box-shadow: 0 1px 2px 0 rgba(0,0,0,0.1), 0 1px 3px 0 rgba(0,0,0,0.06);
+  box-shadow: 0 1px 2px 2px rgba(0,0,0,0.06), 0 1px 3px 0 rgba(0,0,0,0.12);
   transition-duration: 0.15s;
   -webkit-transition-duration: 0.15s; /* Safari */
   @media (min-width: 600px) {
     &:hover {
-      box-shadow: 0 2px 3px 0 rgba(0,0,0,0.15), 0 2px 3px 0 rgba(0,0,0,0.1);
+      box-shadow: 0 1px 2px 2px rgba(0,0,0,0.1), 0 1px 3px 0 rgba(0,0,0,0.16);
     }
   }
   ${props => props.noShadow && css`
@@ -118,6 +119,7 @@ class OriginInput extends Component<PropsFromRedux> {
       useUserLocationOrigin,
       setOriginInputText,
       setGeocodedOrigin,
+      setUsedOrigin,
       resetOriginInput,
       toggleOriginOptionsVisible
     } = this.props
@@ -135,10 +137,20 @@ class OriginInput extends Component<PropsFromRedux> {
         <OrigOption noShadow onClick={(e) => useUserLocationOrigin(e, this.props.userLocation, destObject)}>
           <UseCurrLocButton handleClick={(e) => useUserLocationOrigin(e, this.props.userLocation, destObject)} />
         </OrigOption>
+        {originInputText.length < 3 && this.props.usedOds.map(odPlace =>
+          <OrigOption
+            key={odPlace.properties.label}
+            style={{ color: '#ff38ff' }}
+            onClick={() => setUsedOrigin(odPlace, destObject)}>
+            {odPlace.properties.label}
+          </OrigOption>
+        )}
         {originOptions.map(option =>
           <OrigOption
             key={option.properties.gid}
-            onClick={() => setGeocodedOrigin(option, destObject)}>{option.properties.label}</OrigOption>
+            onClick={() => setGeocodedOrigin(option, destObject)}>
+            {option.properties.label}
+          </OrigOption>
         )}
       </OrigOptions>
       }
@@ -149,13 +161,15 @@ class OriginInput extends Component<PropsFromRedux> {
 const mapStateToProps = (state: ReduxState) => ({
   userLocation: state.userLocation,
   origin: state.origin,
-  destObject: state.destination.destObject
+  destObject: state.destination.destObject,
+  usedOds: state.visitor.usedOds
 })
 
 const mapDispatchToProps = {
   useUserLocationOrigin,
   setOriginInputText,
   setGeocodedOrigin,
+  setUsedOrigin,
   hideOriginOptions,
   toggleOriginOptionsVisible,
   resetOriginInput

@@ -3,14 +3,27 @@ import { showInfo } from './menuReducer'
 import { Action } from 'redux'
 
 const initialVisitorState: VisitorReducer = {
-  visitedBefore: false
+  visitedBefore: false,
+  usedOds: []
 }
 
-const visitorReducer = (store: VisitorReducer = initialVisitorState, action: Action): VisitorReducer => {
+interface VisitorAction extends Action {
+  odObject: OdPlace
+}
+
+const visitorReducer = (store: VisitorReducer = initialVisitorState, action: VisitorAction): VisitorReducer => {
 
   switch (action.type) {
 
     case 'VISITED_BEFORE': return { ...store, visitedBefore: true }
+
+    case 'SET_USED_OD': {
+      const filteredOds = store.usedOds.filter((od) =>
+        od.properties.label !== action.odObject.properties.label
+      )
+      filteredOds.unshift(action.odObject)
+      return { ...store, usedOds: filteredOds.slice(0, 10) }
+    }
 
     default:
       return store

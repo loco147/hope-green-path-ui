@@ -5,6 +5,7 @@ import { IoIosClose } from 'react-icons/io'
 import {
   setDestinationInputText,
   setGeocodedDestination,
+  setUsedDestination,
   hideDestinationOptions,
   toggleDestinationOptionsVisible,
   resetDestinationInput,
@@ -60,15 +61,15 @@ const DestinationOptions = styled.ul`
   overflow: auto;
 `
 const DestinationOption = styled.li`
-  padding: 3px 8px;
+  padding: 4px 8px;
   margin: 9px;
   border-radius: 3px;
-  box-shadow: 0 1px 2px 0 rgba(0,0,0,0.1), 0 1px 3px 0 rgba(0,0,0,0.06);
+  box-shadow: 0 1px 2px 2px rgba(0,0,0,0.06), 0 1px 3px 0 rgba(0,0,0,0.12);
   transition-duration: 0.15s;
   -webkit-transition-duration: 0.15s; /* Safari */
   @media (min-width: 600px) {
     &:hover {
-      box-shadow: 0 2px 3px 0 rgba(0,0,0,0.15), 0 2px 3px 0 rgba(0,0,0,0.1);
+      box-shadow: 0 1px 2px 2px rgba(0,0,0,0.1), 0 1px 3px 0 rgba(0,0,0,0.16);
     }
   }
 `
@@ -106,6 +107,7 @@ class DestinationInput extends Component<PropsFromRedux> {
       originObject,
       setDestinationInputText,
       setGeocodedDestination,
+      setUsedDestination,
       resetDestinationInput,
       toggleDestinationOptionsVisible
     } = this.props
@@ -119,10 +121,20 @@ class DestinationInput extends Component<PropsFromRedux> {
         onChange={setDestinationInputText} />
       <ResetLocButton onClick={resetDestinationInput}><CloseIcon /></ResetLocButton>
       {destOptionsVisible && <DestinationOptions>
+        {destInputText.length < 3 && this.props.usedOds.map(odPlace =>
+          <DestinationOption
+            key={odPlace.properties.label}
+            style={{ color: '#ff38ff' }}
+            onClick={() => setUsedDestination(odPlace, originObject)}>
+            {odPlace.properties.label}
+          </DestinationOption>
+        )}
         {destOptions.map(option =>
           <DestinationOption
             key={option.properties.gid}
-            onClick={() => setGeocodedDestination(option, originObject)}>{option.properties.label}</DestinationOption>
+            onClick={() => setGeocodedDestination(option, originObject)}>
+            {option.properties.label}
+          </DestinationOption>
         )}
       </DestinationOptions>
       }
@@ -132,12 +144,14 @@ class DestinationInput extends Component<PropsFromRedux> {
 
 const mapStateToProps = (state: ReduxState) => ({
   destination: state.destination,
-  originObject: state.origin.originObject
+  originObject: state.origin.originObject,
+  usedOds: state.visitor.usedOds
 })
 
 const mapDispatchToProps = {
   setDestinationInputText,
   setGeocodedDestination,
+  setUsedDestination,
   hideDestinationOptions,
   toggleDestinationOptionsVisible,
   resetDestinationInput,

@@ -209,6 +209,7 @@ interface OdPlace {
   geometry: { type: 'Point', coordinates: [number, number] },
   properties: {
     label: string,
+    name: string,
     locationType: import('./reducers/originReducer').LocationType,
     odType: import('./reducers/originReducer').OdType
   },
@@ -238,7 +239,8 @@ interface MapPopupReducer {
 }
 
 interface VisitorReducer {
-  visitedBefore: boolean
+  visitedBefore: boolean,
+  usedOds: OdPlace[]
 }
 
 interface MenuReducer {

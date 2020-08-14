@@ -104,6 +104,21 @@ export const setGeocodedDestination = (place: GeocodingResult, originObject: OdP
   }
 }
 
+export const setUsedDestination = (destObject: OdPlace, originObject: OdPlace | null) => {
+  return async (dispatch: any) => {
+    const error = destWithinSupportedArea(destObject)
+    dispatch({ type: 'SET_GEOCODED_DESTINATION', destObject, error, name: destObject.properties.name })
+    const odFc = turf.asFeatureCollection(originObject ? [originObject, destObject] : [destObject])
+    dispatch(zoomToFC(odFc))
+  }
+}
+
+export const setDestinationDuringRouting = (destObject: OdPlace) => {
+  return async (dispatch: any) => {
+    dispatch({ type: 'SET_GEOCODED_DESTINATION', destObject, name: destObject.properties.name, error: null })
+  }
+}
+
 export const hideDestinationOptions = () => {
   return { type: 'HIDE_DESTINATION_OPTIONS' }
 }
@@ -126,7 +141,7 @@ export const setDestinationFromMap = (lngLat: LngLat) => {
   }
 }
 
-const getDestinationFromGeocodingResult = (place: GeocodingResult): OdPlace => {
+export const getDestinationFromGeocodingResult = (place: GeocodingResult): OdPlace => {
   return {
     ...place,
     type: 'Feature',
@@ -151,6 +166,7 @@ const getDestinationFromCoords = (coordinates: [number, number], locType: Locati
     },
     properties: {
       label,
+      name: label,
       locationType: locType,
       odType: OdType.DESTINATION
     },

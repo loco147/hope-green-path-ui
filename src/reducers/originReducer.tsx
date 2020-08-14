@@ -146,6 +146,21 @@ export const setGeocodedOrigin = (place: GeocodingResult, destObject: OdPlace | 
   }
 }
 
+export const setUsedOrigin = (originObject: OdPlace, destObject: OdPlace | null) => {
+  return async (dispatch: any) => {
+    const error = originWithinSupportedArea(originObject)
+    dispatch({ type: 'SET_GEOCODED_ORIGIN', originObject, name: originObject.properties.name, error })
+    const odFc = turf.asFeatureCollection(destObject ? [originObject, destObject] : [originObject])
+    dispatch(zoomToFC(odFc))
+  }
+}
+
+export const setOriginDuringRouting = (originObject: OdPlace) => {
+  return async (dispatch: any) => {
+    dispatch({ type: 'SET_GEOCODED_ORIGIN', originObject, name: originObject.properties.name, error: null })
+  }
+}
+
 export const hideOriginOptions = () => {
   return { type: 'HIDE_ORIGIN_OPTIONS' }
 }
@@ -192,7 +207,7 @@ export const setOriginFromMap = (lngLat: LngLat) => {
   }
 }
 
-const getOriginFromGeocodingResult = (place: GeocodingResult): OdPlace => {
+export const getOriginFromGeocodingResult = (place: GeocodingResult): OdPlace => {
   return {
     ...place,
     type: 'Feature',
@@ -217,6 +232,7 @@ const getOriginFromCoords = (coordinates: [number, number], locType: LocationTyp
     },
     properties: {
       label,
+      name: label,
       locationType: locType,
       odType: OdType.ORIGIN
     },
