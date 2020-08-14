@@ -106,6 +106,7 @@ export const setGeocodedDestination = (place: GeocodingResult, originObject: OdP
 
 export const setUsedDestination = (destObject: OdPlace, originObject: OdPlace | null) => {
   return async (dispatch: any) => {
+    destObject.properties.odType = OdType.DESTINATION
     const error = destWithinSupportedArea(destObject)
     dispatch({ type: 'SET_GEOCODED_DESTINATION', destObject, error, name: destObject.properties.name })
     const odFc = turf.asFeatureCollection(originObject ? [originObject, destObject] : [destObject])
