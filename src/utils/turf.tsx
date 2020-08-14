@@ -15,6 +15,7 @@ type FeatureCollectionReturnTypes = {
   (features: PathFeature[]): PathFeatureCollection
   (features: EdgeFeature[]): EdgeFeatureCollection
   (features: PointFeature[]): PointFeatureCollection
+  (features: OdPlace[]): OdFeatureCollection
 }
 
 export const asFeatureCollection: FeatureCollectionReturnTypes = (features: any) => {

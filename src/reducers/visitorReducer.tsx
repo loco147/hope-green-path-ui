@@ -1,6 +1,5 @@
 import Cookies from 'cookies-js'
 import { showInfo } from './menuReducer'
-import { showSetDestinationTooltip } from './origDestReducer'
 import { Action } from 'redux'
 
 const initialVisitorState: VisitorReducer = {
@@ -40,7 +39,6 @@ export const showWelcomeIfFirstVisit = () => {
   return async (dispatch: any) => {
     const visited = getVisitedStatus()
     if (visited) {
-      dispatch(showSetDestinationTooltip())
       dispatch({ type: 'VISITED_BEFORE' })
     } else {
       dispatch(showInfo())

@@ -43,30 +43,16 @@ const Tooltip = styled.div`
   color: rgba(255,255,255,0.9);
 `
 
-const getOriginCoordsFromFC = (FC: PointFeatureCollection): [number, number] | null => {
-  const origin = FC.features.filter(feat => feat.properties.type === 'orig')
-  if (origin.length === 0) return null
-  const coords = origin[0].geometry.coordinates
-  // @ts-ignore
-  return coords.map(coord => Math.round(coord * 100000) / 100000)
-}
-
-const getDestCoordsFromFC = (FC: PointFeatureCollection): [number, number] | null => {
-  const dest = FC.features.filter(feat => feat.properties.type === 'dest')
-  if (dest.length === 0) return null
-  const coords = dest[0].geometry.coordinates
-  // @ts-ignore
-  return coords.map(coord => Math.round(coord * 100000) / 100000)
-}
-
 const FindPathsButtons = (props: PropsFromRedux) => {
-  const { cleanPathsAvailable, origDestFC, origDestError, selectedTravelMode, routingId,
+  const { cleanPathsAvailable, origin, destination, selectedTravelMode, routingId,
     waitingPaths, showingPaths, getSetCleanPaths, getSetQuietPaths } = props
-  const originCoords = getOriginCoordsFromFC(origDestFC)
-  const destCoords = getDestCoordsFromFC(origDestFC)
-  const originOrTargetMissing = originCoords === null || destCoords === null
 
-  if (originOrTargetMissing || showingPaths || waitingPaths || origDestError) {
+  const { originObject } = origin
+  const { destObject } = destination
+
+  const odUnset = (!originObject && origin.originInputText.length < 2) || (!destObject && destination.destInputText.length < 2)
+
+  if (odUnset || showingPaths || waitingPaths || origin.error || destination.error) {
     return null
   }
 
@@ -74,12 +60,12 @@ const FindPathsButtons = (props: PropsFromRedux) => {
     <OuterFlex>
       {cleanPathsAvailable
         ? <Button
-          onClick={() => getSetCleanPaths(originCoords!, destCoords!, selectedTravelMode, routingId)}> Find fresh air paths
+          onClick={() => getSetCleanPaths(origin, destination, selectedTravelMode, routingId)}> Find fresh air paths
           <Tooltip>by real-time air quality</Tooltip>
         </Button>
         : null
       }
-      <Button onClick={() => getSetQuietPaths(originCoords!, destCoords!, selectedTravelMode, routingId)}> Find quiet paths
+      <Button onClick={() => getSetQuietPaths(origin, destination, selectedTravelMode, routingId)}> Find quiet paths
         <Tooltip>by typical traffic noise</Tooltip>
       </Button>
     </OuterFlex>
@@ -87,8 +73,8 @@ const FindPathsButtons = (props: PropsFromRedux) => {
 }
 
 const mapStateToProps = (state: ReduxState) => ({
-  origDestFC: state.origDest.origDestFC,
-  origDestError: state.origDest.error,
+  origin: state.origin,
+  destination: state.destination,
   selectedTravelMode: state.paths.selectedTravelMode,
   waitingPaths: state.paths.waitingPaths,
   showingPaths: state.paths.showingPaths,

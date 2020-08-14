@@ -3,7 +3,7 @@ import { connect, ConnectedProps } from 'react-redux'
 import { GeoJSONSource, MapMouseEvent } from 'mapbox-gl'
 import { setMapReferenceForPopups, setSelectLocationsPopup } from './../../reducers/mapPopupReducer'
 import { clickTol } from './../../constants'
-import { utils } from './../../utils/index'
+import { utils, turf } from './../../utils/index'
 
 class OrigDest extends React.Component<PropsFromRedux> {
   layerId = 'OrigDest'
@@ -11,7 +11,7 @@ class OrigDest extends React.Component<PropsFromRedux> {
   circleStyle = {
     'circle-color': [
       'match',
-      ['get', 'type'],
+      ['get', 'odType'],
       'orig', '#00fffa',
       'dest', '#00ff4c',
             /* other */ '#51ff7c'
@@ -24,9 +24,14 @@ class OrigDest extends React.Component<PropsFromRedux> {
   componentDidMount() {
     // @ts-ignore - this is given to all children of Map
     const { map } = this.props
-    const { origDestFC, setSelectLocationsPopup } = this.props
+
+    const { setSelectLocationsPopup } = this.props
 
     map.once('load', () => {
+      const { originPoint, destinationPoint } = this.props
+      // @ts-ignore
+      const odFeatures: OdPlace[] = [originPoint, destinationPoint].filter(od => od)
+      const origDestFC = turf.asFeatureCollection(odFeatures)
       // Add layer
       map.addSource(this.layerId, { type: 'geojson', data: origDestFC })
       this.source = map.getSource(this.layerId)
@@ -48,7 +53,10 @@ class OrigDest extends React.Component<PropsFromRedux> {
   }
 
   componentDidUpdate = () => {
-    const { origDestFC } = this.props
+    const { originPoint, destinationPoint } = this.props
+    // @ts-ignore
+    const odFeatures: OdPlace[] = [originPoint, destinationPoint].filter(od => od)
+    const origDestFC = turf.asFeatureCollection(odFeatures)
 
     if (this.source !== undefined) {
       this.source.setData(origDestFC)
@@ -68,7 +76,8 @@ class OrigDest extends React.Component<PropsFromRedux> {
 }
 
 const mapStateToProps = (state: ReduxState) => ({
-  origDestFC: state.origDest.origDestFC,
+  originPoint: state.origin.originObject,
+  destinationPoint: state.destination.destObject,
 })
 
 const connector = connect(mapStateToProps, { setSelectLocationsPopup })

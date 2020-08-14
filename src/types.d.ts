@@ -24,6 +24,10 @@ interface PointFeatureCollection extends FeatureCollection {
   features: PointFeature[]
 }
 
+interface OdFeatureCollection extends FeatureCollection {
+  features: OdPlace[]
+}
+
 interface PolygonFeature extends Feature {
   geometry: import('@turf/helpers').Polygon
 }
@@ -163,8 +167,6 @@ interface PathsReducer {
   showingPathsOfTravelMode: TravelMode | null,
   showingPathsOfExposureMode: ExposureMode | null,
   showingStatsType: StatsType | null,
-  quietPathData: PathDataCache | null,
-  cleanPathData: PathDataCache | null,
   selPathFC: PathFeatureCollection,
   shortPathFC: PathFeatureCollection,
   quietPathFC: PathFeatureCollection,
@@ -184,12 +186,50 @@ interface PathListReducer {
   routingId: number,
 }
 
-interface OrigDestReducer {
-  origDestFC: PointFeatureCollection,
-  useUserLocOrigin: boolean,
-  waitUserLocOrigin: boolean,
-  showingPaths: boolean,
-  error: string | null
+interface GeocodingProps {
+  gid: string,
+  layer: string,
+  source: string,
+  name: string,
+  label: string,
+  neighbourhood: string,
+  confidence: number,
+  distance: number,
+  locality: string,
+  lngLat: LngLat
+}
+
+interface GeocodingResult {
+  geometry: { type: 'Point', coordinates: [number, number] },
+  properties: GeocodingProps,
+  type: 'Feature'
+}
+
+interface OdPlace {
+  geometry: { type: 'Point', coordinates: [number, number] },
+  properties: {
+    label: string,
+    locationType: import('./reducers/originReducer').LocationType,
+    odType: import('./reducers/originReducer').OdType
+  },
+  type: 'Feature'
+}
+
+interface OriginReducer {
+  error: string | null,
+  originInputText: string,
+  originOptions: GeocodingResult[],
+  originOptionsVisible: boolean,
+  waitingUserLocOrigin: boolean,
+  originObject: OdPlace | null,
+}
+
+interface DestinationReducer {
+  error: string | null,
+  destInputText: string,
+  destOptions: GeocodingResult[],
+  destOptionsVisible: boolean,
+  destObject: OdPlace | null
 }
 
 interface MapPopupReducer {
@@ -213,7 +253,8 @@ interface ReduxState {
   notification: NotificationReducer,
   paths: PathsReducer,
   pathList: PathListReducer,
-  origDest: OrigDestReducer,
+  origin: OriginReducer,
+  destination: DestinationReducer,
   mapPopup: MapPopupReducer,
   visitor: VisitorReducer,
   menu: MenuReducer

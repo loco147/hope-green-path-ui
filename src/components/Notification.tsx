@@ -32,8 +32,10 @@ const StyledNotificationDiv = styled.div<{ look: string | null }>`
 `
 
 const Notification = (props: PropsFromRedux) => {
-  if (!props.notification.text && !props.origDestError) return null
-  const look = props.origDestError ? 'error' : props.notification.look
+  const { origError, destError } = props
+  const origOrDestError = origError || destError
+  if (!props.notification.text && !origOrDestError) return null
+  const look = origOrDestError ? 'error' : props.notification.look
 
   return (
     <OuterFlex>
@@ -41,9 +43,12 @@ const Notification = (props: PropsFromRedux) => {
         <div>
           {props.notification.text}
         </div>
-        <div>
-          {props.origDestError}
-        </div>
+        {origError && <div>
+          {origError}
+        </div>}
+        {destError && <div>
+          {destError}
+        </div>}
       </StyledNotificationDiv>
     </OuterFlex>
   )
@@ -51,7 +56,8 @@ const Notification = (props: PropsFromRedux) => {
 
 const mapStateToProps = (state: ReduxState) => ({
   notification: state.notification,
-  origDestError: state.origDest.error,
+  origError: state.origin.error,
+  destError: state.destination.error
 })
 
 const connector = connect(mapStateToProps, {})

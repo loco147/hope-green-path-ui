@@ -57,20 +57,6 @@ const userLocationReducer = (store: UserLocationReducer = initialUserLocation, a
   }
 }
 
-export const mockUserLocation = () => {
-  return async (dispatch: any) => {
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    const lng = 24.93312835
-    const lat = 60.16910312
-    const userLocFC = turf.asFeatureCollection([turf.asPoint([lng, lat])])
-    dispatch({
-      type: 'UPDATE_USER_LOCATION',
-      coords: [lng, lat],
-      userLocFC,
-    })
-  }
-}
-
 export const startTrackingUserLocation = () => {
   return (dispatch: any) => {
     dispatch({ type: 'START_TRACKING_USER_LOCATION' })
@@ -115,10 +101,12 @@ export const zoomToUserLocation = (userLocation: UserLocationReducer) => {
         userLocFC,
       })
     }
-    if (navigator.geolocation) navigator.geolocation.getCurrentPosition(handleNaviUserLocationZoom)
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(handleNaviUserLocationZoom)
+    }
     const currentUserLngLat = turf.getLngLatFromFC(userLocation.userLocFC)
     if (currentUserLngLat) {
-      dispatch({ type: 'ZOOM_TO_USER_LOCATION', userLngLat: currentUserLngLat, userLocFC: userLocation.userLocFC })
+      dispatch({ type: 'ZOOM_TO_USER_LOCATION', lngLat: currentUserLngLat, userLocFC: userLocation.userLocFC })
     }
     if (userLocation.watchId === 0) dispatch(startTrackingUserLocation())
   }

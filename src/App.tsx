@@ -28,7 +28,7 @@ const TopPanelContainer = styled(AbsoluteContainer)`
   top: 0px;
   left: 0px;
   right: 0px;
-  z-index: 2;
+  z-index: 4;
 `
 const BottomPanel = styled(AbsoluteContainer)`
   bottom: 0px;
@@ -60,15 +60,15 @@ class App extends Component<PropsFromRedux> {
           <UserLocation />
         </Map>
         <WelcomeInfo />
-        <TopPanelContainer>
-          <TopPanel />
-        </TopPanelContainer>
         <BottomPanel>
           <Notification />
           <FindPathsButtons />
           <PathPanel />
           <BottomControlPanel />
         </BottomPanel>
+        <TopPanelContainer>
+          <TopPanel />
+        </TopPanelContainer>
       </div>
     )
   }

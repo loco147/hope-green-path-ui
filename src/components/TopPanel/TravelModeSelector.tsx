@@ -61,13 +61,11 @@ const getSetTravelModeFunction = (props: PropsFromRedux, travelModeOfTheButton: 
   if (!props.showingPaths) {
     return props.setTravelMode(travelModeOfTheButton)
   } else {
-    let odCoords: OdCoords
+    const { origin, destination } = props
     if (props.showingPathsOfExposureMode === ExposureMode.QUIET) {
-      odCoords = props.quietPathData!.od
-      return props.getSetQuietPaths(odCoords[0], odCoords[1], travelModeOfTheButton, props.routingId)
+      return props.getSetQuietPaths(origin, destination, travelModeOfTheButton, props.routingId)
     } else {
-      odCoords = props.cleanPathData!.od
-      return props.getSetCleanPaths(odCoords[0], odCoords[1], travelModeOfTheButton, props.routingId)
+      return props.getSetCleanPaths(origin, destination, travelModeOfTheButton, props.routingId)
     }
   }
 }
@@ -95,8 +93,8 @@ const mapStateToProps = (state: ReduxState) => ({
   showingPaths: state.paths.showingPaths,
   selectedTravelMode: state.paths.selectedTravelMode,
   showingPathsOfExposureMode: state.paths.showingPathsOfExposureMode,
-  quietPathData: state.paths.quietPathData,
-  cleanPathData: state.paths.cleanPathData,
+  origin: state.origin,
+  destination: state.destination,
   routingId: state.paths.routingId,
 })
 

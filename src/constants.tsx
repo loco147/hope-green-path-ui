@@ -1,3 +1,7 @@
+import hmaPoly from './HMA.json'
+
+export const extentFeat = hmaPoly.features[0] as PolygonFeature
+
 export const BASEMAPS = {
   Streets: {
     url: 'mapbox://styles/joose/cjvbyzwuk31oe1fohk6s9ev4b',
@@ -70,31 +74,34 @@ export const initialMapCenter = { lng: 24.9664, lat: 60.2110 }
 
 export const initialMapCenterProd = { lng: 24.937886, lat: 60.180808 }
 
-export const initialOrigDestFeatures: PointFeature[] = [
-  {
-    type: 'Feature',
-    properties: {
-      type: 'orig'
-    },
-    geometry: {
-      type: 'Point',
-      coordinates: [
-        24.969963133335114,
-        60.21743118046364
-      ]
-    }
+export const egOrigin = {
+  type: 'Feature',
+  properties: {
+    label: '24.969963 60.21743',
+    locationType: 'map',
+    odType: 'orig'
   },
-  {
-    type: 'Feature',
-    properties: {
-      type: 'dest'
-    },
-    geometry: {
-      type: 'Point',
-      coordinates: [
-        24.96282577514648,
-        60.20522256018594
-      ]
-    }
+  geometry: {
+    type: 'Point',
+    coordinates: [
+      24.969963133335114,
+      60.21743118046364
+    ]
   }
-]
+}
+
+export const egDest = {
+  type: 'Feature',
+  properties: {
+    label: '24.9628257 60.2052225',
+    locationType: 'map',
+    odType: 'dest'
+  },
+  geometry: {
+    type: 'Point',
+    coordinates: [
+      24.96282577514648,
+      60.20522256018594
+    ]
+  }
+}
