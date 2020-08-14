@@ -66,7 +66,7 @@ export const menu = {
 
 export const walkSpeed = 1.33
 
-export const bikeSpeed = 5.0
+export const bikeSpeed = 4.15
 
 export const clickTol = 12
 
