@@ -41,8 +41,8 @@ class App extends Component<PropsFromRedux> {
 
   componentDidMount() {
     this.props.showWelcomeIfFirstVisit()
-    this.props.testGreenPathServiceConnection()
     this.props.testCleanPathServiceStatus()
+    this.props.testGreenPathServiceConnection()
   }
 
   render() {

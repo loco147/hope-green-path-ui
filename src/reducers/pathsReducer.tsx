@@ -220,13 +220,13 @@ export const testGreenPathServiceConnection = () => {
         dispatch({ type: 'QP_CONNECTION_OK', tookTime })
       } else {
         dispatch({ type: 'QP_CONNECTION_SLOW', tookTime })
-        dispatch(showNotification('Quiet path service is under heavy use at the moment', 'info', 6))
+        dispatch(showNotification('Green path service is running slow at the moment. If the problem persists, please try again later.', 'info', 8))
       }
     } catch (error) {
       const tookTime = Math.round(performance.now() - startTime)
       console.log('error in connecting to qp service, took', tookTime, 'ms\n', error)
       dispatch({ type: 'QP_CONNECTION_ERROR', tookTime })
-      dispatch(showNotification('Could not connect to quiet path service, please try again later', 'error', 15))
+      dispatch(showNotification('Could not connect to green path service, please try again later', 'error', 15))
     }
   }
 }
@@ -236,10 +236,9 @@ export const testCleanPathServiceStatus = () => {
     try {
       const aqiStatus = await paths.getCleanPathServiceStatus()
       console.log('received clean path service status:', aqiStatus)
-      console.log('real-time aqi available?', aqiStatus.b_updated)
       dispatch({ type: 'SET_AQI_STATUS', b_available: aqiStatus.b_updated })
       if (aqiStatus.b_updated === false) {
-        dispatch(showNotification('Unfortunately, no real-time air quality data is available at the moment', 'error', 10))
+        dispatch(showNotification('Unfortunately, no real-time air quality data is available at the moment', 'info', 10))
       }
     } catch (error) {
       dispatch({ type: 'SET_AQI_STATUS', b_available: false })
