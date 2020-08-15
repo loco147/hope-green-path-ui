@@ -69,8 +69,8 @@ const OrigOptions = styled.ul`
   overflow: auto;
 `
 const OrigOption = styled.li<{ noShadow?: any }>`
-  padding: 4px 8px;
-  margin: 9px;
+  padding: 7px 8px;
+  margin: 8px;
   border-radius: 3px;
   box-shadow: 0 1px 2px 2px rgba(0,0,0,0.06), 0 1px 3px 0 rgba(0,0,0,0.12);
   transition-duration: 0.15s;

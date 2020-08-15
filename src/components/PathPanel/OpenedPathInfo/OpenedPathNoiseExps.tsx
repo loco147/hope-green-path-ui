@@ -10,7 +10,7 @@ const StyledOpenedPathNoiseExps = styled.div`
   justify-content: space-evenly;
   pointer-events: auto;
   border-radius: 5px;
-  margin: 4px 0px 4px 0px
+  margin: 4px 0px 4px 0px;
   background-color: white;
   border: 2px solid transparent;
   padding: 3px 0px 5px 4px;

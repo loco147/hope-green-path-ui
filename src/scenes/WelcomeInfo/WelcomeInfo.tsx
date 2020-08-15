@@ -13,7 +13,7 @@ const InfoContainer = styled.div`
   right: 0px;
   bottom: 0px;
   left: 0px;
-  z-index: 8;
+  z-index: 10;
   display: flex;
   justify-content: center;
   flex-direction: column;
