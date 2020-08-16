@@ -10,7 +10,7 @@ import originReducer from './reducers/originReducer'
 import destinationReducer from './reducers/destinationReducer'
 import mapPopupReducer from './reducers/mapPopupReducer'
 import visitorReducer from './reducers/visitorReducer'
-import menuReducer from './reducers/menuReducer'
+import uiReducer from './reducers/uiReducer'
 
 const reducer = combineReducers({
   map: mapReducer,
@@ -22,7 +22,7 @@ const reducer = combineReducers({
   destination: destinationReducer,
   mapPopup: mapPopupReducer,
   visitor: visitorReducer,
-  menu: menuReducer,
+  ui: uiReducer,
 })
 
 const store = createStore(

@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components'
 import { connect, ConnectedProps } from 'react-redux'
 import { menu } from './../../constants'
 import { setLengthLimit } from './../../reducers/pathsReducer'
-import { showPathList } from './../../reducers/menuReducer'
+import { showPathList } from './../../reducers/uiReducer'
 import MaxLengthFilterSelector from './MaxLengthFilterSelector'
 import PathInfoPanel from './PathInfoPanel'
 import LoadAnimation from './../LoadAnimation/LoadAnimation'
@@ -69,8 +69,8 @@ const PathPanel = (props: PropsFromRedux) => {
 const mapStateToProps = (state: ReduxState) => ({
   paths: state.paths,
   scrollToPath: state.pathList.scrollToPath,
-  pathPanelVisible: state.menu.pathPanel,
-  pathPanelContent: state.menu.pathPanelContent,
+  pathPanelVisible: state.ui.pathPanel,
+  pathPanelContent: state.ui.pathPanelContent,
 })
 
 const mapDispatchToProps = {

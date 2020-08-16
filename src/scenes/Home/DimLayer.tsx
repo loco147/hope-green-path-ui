@@ -25,11 +25,11 @@ const DimDiv = styled.div<{ visible?: boolean }>`
 const DimLayer = (props: PropsFromRedux) => {
 
   return (
-    <DimDiv visible={props.menu.info} />
+    <DimDiv visible={props.ui.info} />
   )
 }
 
-const mapStateToProps = (state: ReduxState) => ({ menu: state.menu })
+const mapStateToProps = (state: ReduxState) => ({ ui: state.ui })
 
 const connector = connect(mapStateToProps, {})
 type PropsFromRedux = ConnectedProps<typeof connector>

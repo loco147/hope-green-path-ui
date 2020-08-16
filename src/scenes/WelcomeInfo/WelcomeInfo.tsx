@@ -2,7 +2,7 @@ import React from 'react'
 import { connect, ConnectedProps } from 'react-redux'
 import styled from 'styled-components'
 import { Button } from '../../components/Button'
-import { showInfo, hideInfo } from './../../reducers/menuReducer'
+import { showInfo, hideInfo } from './../../reducers/uiReducer'
 import HopeLogo from '../Images/Hope_black_url.png'
 import ERDF from '../Images/ERDF.png'
 import HYLogo from '../Images/Helsingin_yliopisto.png'
@@ -109,7 +109,7 @@ const AcceptCookieText = () => {
 }
 
 const WelcomeInfo = (props: PropsFromRedux) => {
-  if (!props.menu.info) return null
+  if (!props.ui.info) return null
 
   return (
     <InfoContainer>
@@ -181,7 +181,7 @@ const WelcomeInfo = (props: PropsFromRedux) => {
 }
 
 const mapStateToProps = (state: ReduxState) => ({
-  menu: state.menu,
+  ui: state.ui,
   visitedBefore: state.visitor.visitedBefore,
 })
 

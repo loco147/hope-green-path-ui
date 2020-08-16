@@ -3,13 +3,13 @@ import { setVisitedStatusVisited, getVisitedStatus } from './visitorReducer'
 import { testGreenPathServiceConnection } from './pathsReducer'
 import { Action } from 'redux'
 
-const initialMenuState: MenuReducer = {
+const initialMenuState: UiReducer = {
   info: false,
   pathPanel: false,
   pathPanelContent: null,
 }
 
-const menuReducer = (store: MenuReducer = initialMenuState, action: Action): MenuReducer => {
+const uiReducer = (store: UiReducer = initialMenuState, action: Action): UiReducer => {
 
   switch (action.type) {
 
@@ -50,4 +50,4 @@ export const showPathList = () => ({ type: 'SHOW_PATH_LIST' })
 
 export const togglePathPanel = () => ({ type: 'TOGGLE_PATH_PANEL' })
 
-export default menuReducer
+export default uiReducer

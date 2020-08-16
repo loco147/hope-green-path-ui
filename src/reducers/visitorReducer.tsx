@@ -1,5 +1,5 @@
 import Cookies from 'cookies-js'
-import { showInfo } from './menuReducer'
+import { showInfo } from './uiReducer'
 import { Action } from 'redux'
 
 const initialVisitorState: VisitorReducer = {

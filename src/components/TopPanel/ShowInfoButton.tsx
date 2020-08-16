@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { connect, ConnectedProps } from 'react-redux'
-import { showInfo } from './../../reducers/menuReducer'
+import { showInfo } from './../../reducers/uiReducer'
 
 const StyledButton = styled.div`
   margin: 17px 5px 0px 0px;
@@ -28,13 +28,13 @@ const StyledButton = styled.div`
 const ShowInfoButton = (props: PropsFromRedux) => {
   return (
     <div>
-      {!props.menu.info ? <StyledButton onClick={props.showInfo} /> : null}
+      {!props.ui.info ? <StyledButton onClick={props.showInfo} /> : null}
     </div>
   )
 }
 
 const mapStateToProps = (state: ReduxState) => ({
-  menu: state.menu
+  ui: state.ui
 })
 
 const connector = connect(mapStateToProps, { showInfo })

@@ -21,7 +21,7 @@ const PathInfoPanel = (props: PropsFromRedux) => {
 
 const mapStateToProps = (state: ReduxState) => ({
   openedPath: state.paths.openedPath,
-  pathPanelContent: state.menu.pathPanelContent,
+  pathPanelContent: state.ui.pathPanelContent,
 })
 
 const connector = connect(mapStateToProps, {})
