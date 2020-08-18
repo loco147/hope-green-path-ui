@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import TravelModeSelector from './TravelModeSelector'
 import ResetPathsButton from './ResetPathsButton'
 import LocateButton from './LocateButton'
+import ToggleLanguageButton from './ToggleLanguageButton'
 
 const OuterContainer = styled.div`
   display: flex;
@@ -14,13 +15,21 @@ const ResetContainer = styled.div`
   align-items: center;
 `
 
-const RightContainer = styled.div`
+const SettingsContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-evenly;
   border-radius: 15px;
   padding: 4px 5px;
-  width: 100%;
+  width: 80%;
+`
+const LanguageContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  border-radius: 15px;
+  padding: 4px 11px 4px 10px;
+  width: 20%;
 `
 
 const RoutingSettingsRow = (props: PropsFromRedux) => {
@@ -30,10 +39,13 @@ const RoutingSettingsRow = (props: PropsFromRedux) => {
       <ResetContainer>
         {showingPaths || waitingPaths ? <ResetPathsButton /> : null}
       </ResetContainer>
-      <RightContainer>
+      <SettingsContainer>
         <TravelModeSelector />
         <LocateButton />
-      </RightContainer>
+      </SettingsContainer>
+      <LanguageContainer>
+        <ToggleLanguageButton />
+      </LanguageContainer>
     </OuterContainer>
   )
 }
@@ -42,7 +54,6 @@ const mapStateToProps = (state: ReduxState) => ({
   showingPaths: state.paths.showingPaths,
   waitingPaths: state.paths.waitingPaths,
 })
-
 
 const connector = connect(mapStateToProps, {})
 type PropsFromRedux = ConnectedProps<typeof connector>

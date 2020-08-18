@@ -3,7 +3,13 @@ import { setVisitedStatusVisited, getVisitedStatus } from './visitorReducer'
 import { testGreenPathServiceConnection } from './pathsReducer'
 import { Action } from 'redux'
 
+export enum Lang {
+  EN = 'en',
+  FI = 'fi'
+}
+
 const initialMenuState: UiReducer = {
+  lang: Lang.EN,
   info: false,
   pathPanel: false,
   pathPanelContent: null,
@@ -12,6 +18,8 @@ const initialMenuState: UiReducer = {
 const uiReducer = (store: UiReducer = initialMenuState, action: Action): UiReducer => {
 
   switch (action.type) {
+
+    case 'TOGGLE_LANG': return { ...store, lang: store.lang === Lang.EN ? Lang.FI : Lang.EN }
 
     case 'SHOW_INFO': return { ...store, info: true }
 
@@ -29,6 +37,8 @@ const uiReducer = (store: UiReducer = initialMenuState, action: Action): UiReduc
       return store
   }
 }
+
+export const toggleLanguage = () => ({ type: 'TOGGLE_LANG' })
 
 export const showInfo = () => ({ type: 'SHOW_INFO' })
 
