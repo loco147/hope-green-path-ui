@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { connect, ConnectedProps } from 'react-redux'
 import { getSetCleanPaths, getSetQuietPaths } from '../reducers/pathsReducer'
+import T from './../utils/translator/Translator'
 
 const OuterFlex = styled.div`
   display: flex;
@@ -15,9 +16,9 @@ const OuterFlex = styled.div`
 `
 const Button = styled.div`
   cursor: pointer;
-  padding: 6px 13px;
+  padding: 6px 18px;
   color: white;
-  border-radius: 8px;
+  border-radius: 70px;
   margin: 5px 6px;
   font-weight: 400;
   font-size: 28px;
@@ -30,12 +31,15 @@ const Button = styled.div`
   pointer-events: auto;
   transition-duration: 0.2s;
   -webkit-transition-duration: 0.2s; /* Safari */
-  border: 1px solid white;
+  border: 2px solid rgba(255,255,255,0.7);
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.22), 0 6px 20px 0 rgba(0,0,0,0.14);
   background-color: #17af40f0;
   color: white;
   &:hover { 
     background-color: #128a32e8;
+  }
+  @media (max-width: 620px) {
+    font-size: 26px;
   }
 `
 const Tooltip = styled.div`
@@ -58,17 +62,17 @@ const FindPathsButtons = (props: PropsFromRedux) => {
 
   return (
     <OuterFlex>
+      <Button onClick={() => getSetQuietPaths(origin, destination, selectedTravelMode, routingId)}> <T>find_quiet_paths_btn</T>
+        <Tooltip><T>find_quiet_paths_btn.tooltip</T></Tooltip>
+      </Button>
       {cleanPathsAvailable
         ? <Button
-          onClick={() => getSetCleanPaths(origin, destination, selectedTravelMode, routingId)}> Find fresh air paths
-          <Tooltip>by real-time air quality</Tooltip>
+          onClick={() => getSetCleanPaths(origin, destination, selectedTravelMode, routingId)}> <T>find_fresh_air_paths_btn</T>
+          <Tooltip><T>find_fresh_air_paths_btn.tooltip</T></Tooltip>
         </Button>
         : null
       }
-      <Button onClick={() => getSetQuietPaths(origin, destination, selectedTravelMode, routingId)}> Find quiet paths
-        <Tooltip>by typical traffic noise</Tooltip>
-      </Button>
-    </OuterFlex>
+    </OuterFlex >
   )
 }
 

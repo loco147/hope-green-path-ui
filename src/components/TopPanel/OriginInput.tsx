@@ -1,6 +1,7 @@
 import React, { Component, RefObject } from 'react'
 import styled, { css } from 'styled-components'
 import { connect, ConnectedProps } from 'react-redux'
+import { text } from '../../utils/translator/dictionary'
 import { IoIosClose } from 'react-icons/io'
 import UseCurrLocButton from './UseCurrLocButton'
 import {
@@ -115,6 +116,7 @@ class OriginInput extends Component<PropsFromRedux> {
   render() {
     const { waitingUserLocOrigin, originInputText, originOptionsVisible, originOptions } = this.props.origin
     const {
+      lang,
       destObject,
       useUserLocationOrigin,
       setOriginInputText,
@@ -126,7 +128,7 @@ class OriginInput extends Component<PropsFromRedux> {
 
     return <OrigSelectorDiv ref={this.wrapperRef}>
       <Input
-        placeholder='From'
+        placeholder={text(lang, 'od_inputs.from_label')}
         type='text'
         value={originInputText}
         onClick={toggleOriginOptionsVisible}
@@ -162,7 +164,8 @@ const mapStateToProps = (state: ReduxState) => ({
   userLocation: state.userLocation,
   origin: state.origin,
   destObject: state.destination.destObject,
-  usedOds: state.visitor.usedOds
+  usedOds: state.visitor.usedOds,
+  lang: state.ui.lang
 })
 
 const mapDispatchToProps = {

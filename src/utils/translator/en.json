@@ -1,6 +1,8 @@
 {
   "find_quiet_paths_btn": "Find quiet paths",
+  "find_quiet_paths_btn.tooltip": "by typical traffic noise",
   "find_fresh_air_paths_btn": "Find fresh air paths",
+  "find_fresh_air_paths_btn.tooltip": "by real-time air quality",
   "od_inputs.from_label": "From",
   "od_inputs.to_label": "To"
 }

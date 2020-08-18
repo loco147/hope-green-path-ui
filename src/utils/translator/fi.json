@@ -1,6 +1,8 @@
 {
   "find_quiet_paths_btn": "Etsi hiljaiset reitit",
-  "find_fresh_air_paths_btn": "Etsi puhtaan ilman reitit",
+  "find_quiet_paths_btn.tooltip": "tyypillisillä melutasoilla",
+  "find_fresh_air_paths_btn": "Etsi hyvän ilman reitit",
+  "find_fresh_air_paths_btn.tooltip": "reaaliaikaisella ilmanlaadulla",
   "od_inputs.from_label": "Lähtöpaikka",
   "od_inputs.to_label": "Määränpää"
 }
