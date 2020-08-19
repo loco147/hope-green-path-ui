@@ -4,5 +4,22 @@
   "find_fresh_air_paths_btn": "Etsi hyvän ilman reitit",
   "find_fresh_air_paths_btn.tooltip": "reaaliaikaisella ilmanlaadulla",
   "od_inputs.from_label": "Lähtöpaikka",
-  "od_inputs.to_label": "Määränpää"
+  "od_inputs.to_label": "Määränpää",
+  "noise_level_label.very_quiet": "hiljainen",
+  "noise_level_label.quiet": "melko hiljainen",
+  "noise_level_label.moderate_noise": "osin meluisa",
+  "noise_level_label.high_noise": "meluisa",
+  "noise_level_label.very_high_noise": "hyvin meluisa",
+  "noise_level_label.extreme_noise": "erittäin meluisa",
+  "noise_level_diff_label.noise": "melua",
+  "air_quality_label.good": "hyvä ilmanlaatu",
+  "air_quality_label.satisfactory": "tyydyttävä ilmanlaatu",
+  "air_quality_label.fair": "välttävä ilmanlaatu",
+  "air_quality_label.poor": "huono ilmanlaatu",
+  "air_quality_label.very_poor": "erittäin huono ilma",
+  "air_quality_label.missing_data": "ilmanlaatu ei tiedossa",
+  "toggle_paths_exposure.label.show": "näytä",
+  "toggle_paths_exposure.label.quiet": "hiljaiset",
+  "toggle_paths_exposure.label.fresh_air": "hyvä ilman",
+  "toggle_paths_exposure.label.paths": "reitit"
 }

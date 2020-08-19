@@ -16,7 +16,7 @@ const OuterFlex = styled.div`
 `
 const Button = styled.div`
   cursor: pointer;
-  padding: 6px 18px;
+  padding: 7px 18px;
   color: white;
   border-radius: 70px;
   margin: 5px 6px;

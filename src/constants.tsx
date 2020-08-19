@@ -44,11 +44,11 @@ export const dBColors = {
 }
 
 export const aqiLabels = {
-  1: 'good',
-  2: 'satisfactory',
-  3: 'fair',
-  4: 'poor',
-  5: 'very poor'
+  1: 'air_quality_label.good',
+  2: 'air_quality_label.satisfactory',
+  3: 'air_quality_label.fair',
+  4: 'air_quality_label.poor',
+  5: 'air_quality_label.very_poor'
 }
 
 export const aqiColors = {

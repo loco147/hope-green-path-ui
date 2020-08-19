@@ -4,5 +4,22 @@
   "find_fresh_air_paths_btn": "Find fresh air paths",
   "find_fresh_air_paths_btn.tooltip": "by real-time air quality",
   "od_inputs.from_label": "From",
-  "od_inputs.to_label": "To"
+  "od_inputs.to_label": "To",
+  "noise_level_label.very_quiet": "very quiet",
+  "noise_level_label.quiet": "quiet",
+  "noise_level_label.moderate_noise": "moderate noise",
+  "noise_level_label.high_noise": "high noise",
+  "noise_level_label.very_high_noise": "very high noise",
+  "noise_level_label.extreme_noise": "extreme noise",
+  "noise_level_diff_label.noise": "noise",
+  "air_quality_label.good": "good air quality",
+  "air_quality_label.satisfactory": "satisfactory air quality",
+  "air_quality_label.fair": "fair air quality",
+  "air_quality_label.poor": "poor air quality",
+  "air_quality_label.very_poor": "very poor air quality",
+  "air_quality_label.missing_data": "unknown air quality",
+  "toggle_paths_exposure.label.show": "show",
+  "toggle_paths_exposure.label.quiet": "quiet",
+  "toggle_paths_exposure.label.fresh_air": "fresh air",
+  "toggle_paths_exposure.label.paths": "paths"
 }
