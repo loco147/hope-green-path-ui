@@ -18,8 +18,13 @@
   "air_quality_label.poor": "poor air quality",
   "air_quality_label.very_poor": "very poor air quality",
   "air_quality_label.missing_data": "unknown air quality",
-  "toggle_paths_exposure.label.show": "show",
+  "toggle_paths_exposure.label.show": "Show",
   "toggle_paths_exposure.label.quiet": "quiet",
   "toggle_paths_exposure.label.fresh_air": "fresh air",
-  "toggle_paths_exposure.label.paths": "paths"
+  "toggle_paths_exposure.label.paths": "paths",
+  "filter_paths_by_distance.tooltip": "Filter paths by distance",
+  "opened_shortest_quiet_path.tooltip": "Exposure to different traffic noise levels on the shortest (selected) path:",
+  "opened_quiet_path.tooltip": "Exposure to different traffic noise levels on the selected and the shortest path:",
+  "opened_shortest_clean_path.tooltip": "Exposure to different air quality classes on the shortest (selected) path:",
+  "opened_clean_path.tooltip": "Exposure to different air quality classes on the selected and the shortest path:"
 }

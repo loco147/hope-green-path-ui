@@ -1,6 +1,7 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
 import { CloseButton } from '../Icons'
+import T from './../../utils/translator/Translator'
 
 const OuterDiv = styled.div`
   display: flex;
@@ -19,6 +20,7 @@ const CloseButtonBox = styled.div`
 const TooltipStyle = styled.div`
   font-weight: 500;
   text-align: center;
+  max-width: 250px;
   margin: 2px 0px 7px 0px;
 `
 const StyledMaxLengthOption = styled.div<{ selected?: boolean }>`
@@ -68,7 +70,7 @@ const MaxLengthFilterSelector = ({ lengthLimit, lengthLimits, setLengthLimit, sh
   return (
     <OuterDiv>
       <FlexRow>
-        <TooltipStyle>Filter paths by distance</TooltipStyle>
+        <TooltipStyle><T>filter_paths_by_distance.tooltip</T></TooltipStyle>
         <CloseButtonBox id='close-filter-panel'><CloseButton size={50} onClick={showPathList} /> </CloseButtonBox>
       </FlexRow>
       {lengthLimits.map(ll => (
