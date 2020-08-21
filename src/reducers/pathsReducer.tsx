@@ -56,7 +56,7 @@ const pathsReducer = (store: PathsReducer = initialPaths, action: PathsAction): 
     case 'SET_AQI_STATUS':
       return {
         ...store,
-        cleanPathsAvailable: action.b_available
+        cleanPathsAvailable: true
       }
 
     case 'SET_TRAVEL_MODE':
