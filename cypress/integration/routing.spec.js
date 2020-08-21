@@ -43,14 +43,14 @@ describe('Query and show quiet paths', () => {
 describe('Toggle paths to fresh air and biking', () => {
 
   it('show find fresh air paths button', () => {
-    cy.contains('Find')
+    cy.contains('Show')
     cy.contains('paths')
   })
 
   it('find biking routes', () => {
     cy.get('#toggle-to-bike-button').click()
     cy.contains('4/4')
-    cy.contains('7 min')
+    cy.contains('8 min')
   })
 
   it('toggle walking routes', () => {
@@ -62,7 +62,7 @@ describe('Toggle paths to fresh air and biking', () => {
   it('toggle biking routes', () => {
     cy.get('#toggle-to-bike-button').click()
     cy.contains('4/4')
-    cy.contains('7 min')
+    cy.contains('8 min')
   })
 
   it('toggle back to walking routes', () => {
