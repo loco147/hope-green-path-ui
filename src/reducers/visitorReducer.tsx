@@ -32,7 +32,7 @@ const visitorReducer = (store: VisitorReducer = initialVisitorState, action: Vis
 
 export const setVisitedStatusVisited = () => {
   return async (dispatch: any) => {
-    Cookies.set('visited', 'yes', { expires: 365 })
+    Cookies.set('visited', 'yes', { expires: 5184000 })
     localStorage.setItem('visited', 'yes')
     console.log("set visited before cookie to 'yes'")
     dispatch({ type: 'VISITED_BEFORE' })

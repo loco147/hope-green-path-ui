@@ -38,14 +38,14 @@ const ToggleLanguageButtons = (props: PropsFromRedux & { size: number }) => {
         size={props.size}
         disabled={props.lang === Lang.FI}
         selected={props.lang === Lang.FI}
-        onClick={props.toggleLanguage}>
+        onClick={() => props.toggleLanguage(props.lang)}>
         FI
         </StyledButton>
       <StyledButton
         size={props.size}
         disabled={props.lang === Lang.EN}
         selected={props.lang === Lang.EN}
-        onClick={props.toggleLanguage}>
+        onClick={() => props.toggleLanguage(props.lang)}>
         EN
       </StyledButton>
     </ButtonPair>
