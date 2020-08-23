@@ -2,7 +2,7 @@ import React from 'react'
 import { connect, ConnectedProps } from 'react-redux'
 import styled from 'styled-components'
 import { Button } from '../../components/Button'
-import { showInfo, hideInfo, Lang } from './../../reducers/uiReducer'
+import { showInfo, hideInfo } from './../../reducers/uiReducer'
 import HopeLogo from '../Images/Hope_black_url.png'
 import ERDF from '../Images/ERDF.png'
 import HYLogo from '../Images/Helsingin_yliopisto.png'
@@ -71,9 +71,6 @@ const ButtonDiv = styled.div`
   display: flex;
   justify-content: center;
   padding: 9px 0 5px 0px;
-`
-const Green = styled.span`
-  color: #00d000;
 `
 const Link = styled.a`
   color: black;
