@@ -9,24 +9,25 @@ interface PropsType {
 
 class Translate extends PureComponent<PropsType & PropsFromRedux> {
 
-  translateWord(lang: Lang, key: string): string {
+  translateWord(lang: Lang, rawKey: string): string {
+    const key = rawKey.toLowerCase().trim()
     try {
       const dict = dictionary(lang)
       if (key in dict) {
         return dict[key]
       } else {
-        return key
+        return rawKey
       }
     } catch (err) {
       console.error('Error while translating::translateWord', err)
-      return key
+      return rawKey
     }
   }
 
   render() {
     const { lang, children } = this.props
     if (typeof children === 'string') {
-      return this.translateWord(lang, children.toLowerCase().trim())
+      return this.translateWord(lang, children)
     } else {
       console.error('Translator child should be string')
       return ''

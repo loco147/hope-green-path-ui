@@ -31,12 +31,13 @@ const Button = styled.div`
   pointer-events: auto;
   transition-duration: 0.2s;
   -webkit-transition-duration: 0.2s; /* Safari */
-  border: 2px solid rgba(255,255,255,0.7);
+  border: 2px solid rgba(255,255,255,0.75);
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.22), 0 6px 20px 0 rgba(0,0,0,0.14);
   background-color: #17af40f0;
   color: white;
   &:hover { 
     background-color: #128a32e8;
+    border: 2px solid rgba(255,255,255,0.95);
   }
   @media (max-width: 620px) {
     font-size: 26px;

@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect, ConnectedProps } from 'react-redux'
 import styled, { css } from 'styled-components'
+import T from './../utils/translator/Translator'
 
 const OuterFlex = styled.div`
   display: flex;
@@ -40,15 +41,10 @@ const Notification = (props: PropsFromRedux) => {
   return (
     <OuterFlex>
       <StyledNotificationDiv look={look}>
-        <div>
-          {props.notification.text}
-        </div>
-        {origError && <div>
-          {origError}
-        </div>}
-        {destError && <div>
-          {destError}
-        </div>}
+        {props.notification.text &&
+          <div> <T>{props.notification.text}</T></div>}
+        {origError && <div><T>{origError}</T></div>}
+        {destError && <div><T>{destError}</T></div>}
       </StyledNotificationDiv>
     </OuterFlex>
   )

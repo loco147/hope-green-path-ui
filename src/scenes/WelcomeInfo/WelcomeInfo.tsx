@@ -24,7 +24,7 @@ const InfoContainer = styled.div`
 `
 const FlexDiv = styled.div`
   align-self: center;
-  width: 460px;
+  width: 550px;
   max-width: 85%;
   display: flex;
   flex-direction: row-reverse;
