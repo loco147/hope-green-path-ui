@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { Button } from '../../components/Button'
 import { showInfo, hideInfo } from './../../reducers/uiReducer'
 import HopeLogo from '../Images/Hope_black_url.png'
@@ -66,6 +66,19 @@ const P = styled.div`
   letter-spacing: 0.5px;
   color: rgb(40, 40, 40);
 `
+const SponsorsDiv = styled.div<{ interacted: boolean }>`
+  position: sticky;
+  bottom: 0;
+  background: white;
+  width: 100%;
+  padding-top: 12px;
+  transition-duration: 0.2s;
+  -webkit-transition-duration: 0.2s; /* Safari */
+  ${props => props.interacted && css`
+    position: initial;
+  `}
+`
+
 const ButtonDiv = styled.div`
   width: 100%;
   display: flex;
@@ -77,7 +90,7 @@ const Link = styled.a`
 `
 const LogoFlex = styled.div`
   display: flex;
-  margin: 27px 0px 4px 0px;
+  margin: 10px 0px 4px 0px;
   align-items: center;
   justify-content: start;
 `
@@ -108,13 +121,14 @@ const AcceptCookieText = () => {
 }
 
 const WelcomeInfo = (props: PropsFromRedux) => {
+  const [interacted, setInteracted] = useState(false);
   if (!props.ui.info) return null
 
   return (
     <InfoContainer>
       <FlexDiv>
         <WhiteBox>
-          <InfoWrapper>
+          <InfoWrapper onClick={() => setInteracted(true)} onScroll={() => setInteracted(true)}>
             <ToggleLanguageButtons size={16} />
             <Title><T>info_modal.welcome.title</T> (demo)!</Title>
             {!props.visitedBefore && <AcceptCookieText />}
@@ -154,7 +168,7 @@ const WelcomeInfo = (props: PropsFromRedux) => {
               <br />
               <Link href='https://github.com/DigitalGeographyLab/hope-green-path-server' target='_blank' rel='noopener noreferrer'>DigitalGeographyLab/hope-green-path-server</Link>{' '}
             </P>
-            <P>
+            <SponsorsDiv interacted={interacted}>
               <LogoFlex>
                 <LogoWrapper><img src={ERDF} width="65" height='60' alt='EULogo' /></LogoWrapper>
                 <StyledLogoLink href='https://ilmanlaatu.eu/' target='_blank' rel='noopener noreferrer'>
@@ -167,7 +181,7 @@ const WelcomeInfo = (props: PropsFromRedux) => {
               <SmallText>
                 <T>info_modal.funded_by</T>
               </SmallText>
-            </P>
+            </SponsorsDiv>
           </InfoWrapper>
           <ButtonDiv id='hide-welcome-button'>
             <Button small green onClick={props.hideInfo}>OK</Button>
