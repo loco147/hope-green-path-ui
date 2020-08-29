@@ -1,17 +1,30 @@
+import Cookies from 'cookies-js'
 import { menu } from './../constants'
 import { setVisitedStatusVisited, getVisitedStatus } from './visitorReducer'
 import { testGreenPathServiceConnection } from './pathsReducer'
 import { Action } from 'redux'
 
-const initialMenuState: MenuReducer = {
+export enum Lang {
+  FI = 'fi',
+  EN = 'en'
+}
+
+const initialMenuState: UiReducer = {
+  lang: Lang.EN,
   info: false,
   pathPanel: false,
   pathPanelContent: null,
 }
 
-const menuReducer = (store: MenuReducer = initialMenuState, action: Action): MenuReducer => {
+interface UiAction extends Action {
+  lang: Lang
+}
+
+const uiReducer = (store: UiReducer = initialMenuState, action: UiAction): UiReducer => {
 
   switch (action.type) {
+
+    case 'TOGGLE_LANG': return { ...store, lang: action.lang }
 
     case 'SHOW_INFO': return { ...store, info: true }
 
@@ -27,6 +40,26 @@ const menuReducer = (store: MenuReducer = initialMenuState, action: Action): Men
 
     default:
       return store
+  }
+}
+
+export const toggleLanguage = (lang: Lang) => {
+  return (dispatch: any) => {
+    const toggleToLang = lang === Lang.FI ? Lang.EN : Lang.FI
+    Cookies.set('gp-lang', toggleToLang)
+    localStorage.setItem('gp-lang', toggleToLang)
+    dispatch({ type: 'TOGGLE_LANG', lang: toggleToLang })
+  }
+}
+
+export const loadSelectedLanguage = () => {
+  return (dispatch: any) => {
+    const langC = Cookies.get('gp-lang')
+    const langLs = localStorage.getItem('gp-lang')
+    const lang = langC ? langC as Lang : langLs as Lang
+    if (lang && Object.values(Lang).includes(lang)) {
+      dispatch({ type: 'TOGGLE_LANG', lang })
+    }
   }
 }
 
@@ -50,4 +83,4 @@ export const showPathList = () => ({ type: 'SHOW_PATH_LIST' })
 
 export const togglePathPanel = () => ({ type: 'TOGGLE_PATH_PANEL' })
 
-export default menuReducer
+export default uiReducer

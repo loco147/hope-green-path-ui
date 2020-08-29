@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { connect, ConnectedProps } from 'react-redux'
 import { menu, ExposureMode } from './../../constants'
 import TogglePathsButton from './TogglePathsButton'
-import { togglePathPanel, showPathList, showMaxLengthFilterSelector } from './../../reducers/menuReducer'
+import { togglePathPanel, showPathList, showMaxLengthFilterSelector } from './../../reducers/uiReducer'
 import { ListButton, ArrowUpButton, ArrowDownButton } from './../Icons'
 import FilterButton from './FilterButton'
 
@@ -68,8 +68,8 @@ const BottomControlPanel = (props: propsFromRedux) => {
 const mapStateToProps = (state: ReduxState) => ({
   showingPaths: state.paths.showingPaths,
   showingPathsOfExposureMode: state.paths.showingPathsOfExposureMode,
-  pathPanelVisible: state.menu.pathPanel,
-  pathPanelContent: state.menu.pathPanelContent,
+  pathPanelVisible: state.ui.pathPanel,
+  pathPanelContent: state.ui.pathPanelContent,
   quietPathCount: state.paths.quietPathFC.features.length,
   cleanPathCount: state.paths.cleanPathFC.features.length,
   lengthLimit: state.paths.lengthLimit,

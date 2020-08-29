@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components'
 import { connect, ConnectedProps } from 'react-redux'
 import { getSetQuietPaths, getSetCleanPaths, setQuietPaths, setCleanPaths } from '../../reducers/pathsReducer'
 import { ExposureMode } from '../../constants'
+import T from './../../utils/translator/Translator'
 
 const Button = styled.div<{ disabled: boolean }>`
   cursor: pointer;
@@ -43,14 +44,10 @@ const StyledPathTypeLabel = styled.span<LabelProps>`
   color: green;
   ${props => props.toggleToPathType === ExposureMode.QUIET && css`
     color: #6ff7ff;
-    &:before {
-      content: 'quiet';
-    }`}
+    `}
   ${props => props.toggleToPathType === ExposureMode.CLEAN && css`
     color: #74ff74;
-    &:before {
-      content: 'fresh air';
-    }`}
+    `}
   ${props => props.disabled === true && css`
     color: white;
   `}
@@ -73,10 +70,17 @@ const TogglePathsButton = (props: PropsFromRedux) => {
   const { cleanPathsAvailable, showingPathsOfExposureMode } = props
   const toggleToPathType = showingPathsOfExposureMode === ExposureMode.CLEAN ? ExposureMode.QUIET : ExposureMode.CLEAN
   const disabled = !cleanPathsAvailable && showingPathsOfExposureMode === ExposureMode.QUIET
+  const toggleLabel = toggleToPathType === ExposureMode.QUIET
+    ? 'toggle_paths_exposure.label.quiet'
+    : 'toggle_paths_exposure.label.fresh_air'
   return (
     <Button disabled={disabled}
       onClick={() => getPathToggleFunc(toggleToPathType, props)}>
-      Show <StyledPathTypeLabel disabled={disabled} toggleToPathType={toggleToPathType} /> paths
+      <T>toggle_paths_exposure.label.show</T>
+      <StyledPathTypeLabel disabled={disabled} toggleToPathType={toggleToPathType}>
+        {' '}<T>{toggleLabel}</T>{' '}
+      </StyledPathTypeLabel>
+      <T>toggle_paths_exposure.label.paths</T>
     </Button>
   )
 }

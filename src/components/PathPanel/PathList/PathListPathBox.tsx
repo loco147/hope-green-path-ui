@@ -4,6 +4,7 @@ import { utils } from '../../../utils/index'
 import { PathNoisesBar } from './../PathNoisesBar'
 import { PathAqiBar } from './../PathAqiBar'
 import { ExposureMode, TravelMode, StatsType, walkSpeed, bikeSpeed, aqiLabels } from '../../../constants'
+import T from './../../../utils/translator/Translator'
 
 type Props = {
   selected: boolean,
@@ -65,13 +66,14 @@ interface PathBoxProperties {
   showingStatsType?: StatsType
 }
 
-const getNoiseIndexLabel = (ni: number): string | undefined => {
-  if (ni < 0.15) return 'very quiet'
-  if (ni < 0.3) return 'quiet'
-  if (ni < 0.5) return 'moderate noise'
-  if (ni < 0.65) return 'high noise'
-  if (ni < 0.75) return 'very high noise'
-  if (ni >= 0.75) return 'extreme noise'
+const getNoiseIndexLabel = (ni: number): string => {
+  if (ni < 0.15) return 'noise_level_label.very_quiet'
+  if (ni < 0.3) return 'noise_level_label.quiet'
+  if (ni < 0.5) return 'noise_level_label.moderate_noise'
+  if (ni < 0.65) return 'noise_level_label.high_noise'
+  if (ni < 0.75) return 'noise_level_label.very_high_noise'
+  if (ni >= 0.75) return 'noise_level_label.extreme_noise'
+  return ''
 }
 
 const getAqiLabel = (aqi: number): string => {
@@ -152,9 +154,9 @@ const ShortestPathAqBox = ({ path, selected, travelMode, handleClick }: PathBoxP
         </div>
         {!path.properties.missing_aqi &&
           <div>
-            {getAqiLabel(path.properties.aqi_m)} air quality
+            <T>{getAqiLabel(path.properties.aqi_m)}</T>
           </div>}
-        {path.properties.missing_aqi && <div>No AQ data available</div>}
+        {path.properties.missing_aqi && <div><T>air_quality_label.missing_data</T></div>}
       </PathPropsRow>
     </StyledPathListPathBox>
   )
@@ -172,7 +174,7 @@ const ShortestPathNoiseBox = ({ path, selected, travelMode, handleClick }: PathB
           {getFormattedDistanceString(path.properties.length, false)}
         </div>
         <div>
-          {getNoiseIndexLabel(path.properties.nei_norm)}
+          <T>{getNoiseIndexLabel(path.properties.nei_norm)}</T>
         </div>
       </PathPropsRow>
     </StyledPathListPathBox>
@@ -195,7 +197,7 @@ const CleanPathBox = ({ path, selected, travelMode, handleClick }: PathBoxProper
         </QuietPathLengthProps>
         {!path.properties.missing_aqi &&
           <div>
-            {getAqiLabel(path.properties.aqi_m)} air quality
+            <T>{getAqiLabel(path.properties.aqi_m)}</T>
           </div>}
       </PathPropsRow>
     </StyledPathListPathBox>
@@ -217,7 +219,7 @@ const QuietPathBox = ({ path, selected, travelMode, handleClick }: PathBoxProper
           {getFormattedDistanceString(path.properties.length, false)}
         </QuietPathLengthProps>
         <div>
-          {getFormattedExpDiffRatio(path.properties.nei_diff_rat) + ' % noise'}
+          {getFormattedExpDiffRatio(path.properties.nei_diff_rat) + ' % '}<T>noise_level_diff_label.noise</T>
         </div>
       </PathPropsRow>
     </StyledPathListPathBox>

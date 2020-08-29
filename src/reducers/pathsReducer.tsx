@@ -220,13 +220,13 @@ export const testGreenPathServiceConnection = () => {
         dispatch({ type: 'QP_CONNECTION_OK', tookTime })
       } else {
         dispatch({ type: 'QP_CONNECTION_SLOW', tookTime })
-        dispatch(showNotification('Green path service is running slow at the moment. If the problem persists, please try again later.', 'info', 8))
+        dispatch(showNotification('notif.error.gp_service_is_slow', 'info', 8))
       }
     } catch (error) {
       const tookTime = Math.round(performance.now() - startTime)
       console.log('error in connecting to qp service, took', tookTime, 'ms\n', error)
       dispatch({ type: 'QP_CONNECTION_ERROR', tookTime })
-      dispatch(showNotification('Could not connect to green path service, please try again later', 'error', 15))
+      dispatch(showNotification('notif.error.no_connection_to_gp_service', 'error', 15))
     }
   }
 }
@@ -238,7 +238,7 @@ export const testCleanPathServiceStatus = () => {
       console.log('received clean path service status:', aqiStatus)
       dispatch({ type: 'SET_AQI_STATUS', b_available: aqiStatus.b_updated })
       if (aqiStatus.b_updated === false) {
-        dispatch(showNotification('Unfortunately, no real-time air quality data is available at the moment', 'info', 10))
+        dispatch(showNotification('notif.error.no_real_time_aqi_available', 'info', 10))
       }
     } catch (error) {
       dispatch({ type: 'SET_AQI_STATUS', b_available: false })
@@ -277,10 +277,10 @@ const getRoutingOd = async (origin: OriginReducer, dest: DestinationReducer): Pr
     console.log('geocoding origin input prior to routing...', origin.originInputText)
     const originPlace = await geocoding.geocodeAddress(origin.originInputText, 1)
     if (originPlace.length === 0) {
-      routingOd.error = 'Origin was not found'
+      routingOd.error = 'notif.error.origin_not_found'
       return routingOd
     } else if (!turf.within(originPlace[0], extentFeat)) {
-      routingOd.error = 'Origin is outside the supported area'
+      routingOd.error = 'notif.error.origin_outside_extent'
       return routingOd
     } else {
       routingOd.newlyGeocodedOrigin = getOriginFromGeocodingResult(originPlace[0])
@@ -293,10 +293,10 @@ const getRoutingOd = async (origin: OriginReducer, dest: DestinationReducer): Pr
     console.log('geocoding destination input prior to routing...', dest.destInputText)
     const destPlace = await geocoding.geocodeAddress(dest.destInputText, 1)
     if (destPlace.length === 0) {
-      routingOd.error = 'Destination was not found'
+      routingOd.error = 'notif.error.destination_not_found'
       return routingOd
     } else if (!turf.within(destPlace[0], extentFeat)) {
-      routingOd.error = 'Destination is outside the supported area'
+      routingOd.error = 'notif.error.destination_outside_extent'
       return routingOd
     } else {
       routingOd.newlyGeocodedDest = getDestinationFromGeocodingResult(destPlace[0])
@@ -347,7 +347,7 @@ export const getSetQuietPaths = (origin: OriginReducer, dest: DestinationReducer
       if (typeof error === 'string') {
         dispatch(showNotification(error, 'error', 8))
       } else {
-        dispatch(showNotification('Error in routing', 'error', 8))
+        dispatch(showNotification('notif.error.general_routing_error', 'error', 8))
       }
       return
     }
@@ -373,7 +373,7 @@ export const setQuietPaths = (routingId: number, pathData: PathDataResponse, sel
       dispatch({ type: 'SET_SELECTED_PATH', selPathId: 'short', routingId })
     }
     if (quietPaths.length === 0) {
-      dispatch(showNotification('No alternative quiet paths found', 'info', 5))
+      dispatch(showNotification('notif.error.no_alternative_quiet_paths_found', 'info', 5))
     }
   }
 }
@@ -419,7 +419,7 @@ export const getSetCleanPaths = (origin: OriginReducer, dest: DestinationReducer
       if (typeof error === 'string') {
         dispatch(showNotification(error, 'error', 8))
       } else {
-        dispatch(showNotification('Error in routing', 'error', 8))
+        dispatch(showNotification('notif.error.general_routing_error', 'error', 8))
       }
       return
     }
@@ -445,7 +445,7 @@ export const setCleanPaths = (routingId: number, pathData: PathDataResponse, sel
       dispatch({ type: 'SET_SELECTED_PATH', selPathId: 'short', routingId })
     }
     if (cleanPaths.length === 0) {
-      dispatch(showNotification('No alternative fresh air paths found due to little variation in the real-time air quality data', 'info', 10))
+      dispatch(showNotification('notif.error.no_alternative_clean_paths_found', 'info', 10))
     }
   }
 }

@@ -1,23 +1,138 @@
 describe('Page load', () => {
 
-  it('open the page', () => {
+  it('opens the page', () => {
     cy.visit('http://localhost:3000/')
+    cy.get('#set-lang-en-button').click({ force: true })
     cy.contains('Welcome')
   })
 
-  it('close welcome info', () => {
+  it('closes welcome info', () => {
     cy.get('#hide-welcome-button').contains('OK').click()
   })
 })
 
-describe('Set origin & destination', () => {
+describe('Toggle language', () => {
 
-  it('set origin', () => {
-    cy.wait(200)
+  it('changes language from info panel (-> FI -> EN)', () => {
+    cy.get('#show-info-button').click()
+    cy.get('#set-lang-fi-button').contains('FI').click()
+    cy.contains('Tervetuloa')
+    cy.get('#toggle-lang-button').contains('EN')
+    cy.get('#set-lang-en-button').within(() => {
+      cy.contains('EN').click()
+    })
+    cy.get('#toggle-lang-button').contains('FI')
+    cy.get('#hide-welcome-button').contains('OK').click()
+  })
+
+  it('changes language from top panel (-> FI -> EN)', () => {
+    cy.get('#toggle-lang-button').within(() => {
+      cy.contains('FI').click()
+    })
+    cy.contains('Etsi hiljaiset reitit')
+    cy.get('#toggle-lang-button').within(() => {
+      cy.contains('EN').click()
+      cy.contains('FI')
+    })
+    cy.contains('Find quiet paths')
+  })
+
+  it('sets language selection to cookie (gp-lang)', () => {
+    cy.get('#toggle-lang-button').within(() => {
+      cy.contains('FI').click()
+    })
+    cy.getCookie('gp-lang')
+      .should('exist')
+      .should('have.property', 'value', 'fi')
+    cy.get('#toggle-lang-button').click()
+    cy.getCookie('gp-lang')
+      .should('exist')
+      .should('have.property', 'value', 'en')
+  })
+})
+
+describe('Set origin & destination with address inputs', () => {
+
+  it('shows "use current location" option in origin input dropdown', () => {
+    cy.get('#reset-origin-button').click()
+    cy.get('#origin-input-container').within(() => {
+      cy.get('#origin-input').click()
+      cy.contains('Use current location')
+    })
+  })
+
+  it('sets origin by typing address', () => {
+    cy.get('#origin-input-container').within(() => {
+      cy.get('#origin-input').type('Juhana Herttuan tie 3')
+      cy.get('ul').within(() => {
+        cy.contains('Juhana-herttuan tie 3').click()
+      })
+      cy.get('#origin-input').should('have.value', 'Juhana-herttuan tie 3')
+    })
+  })
+
+  it('sets destination by typing address', () => {
+    cy.get('#reset-destination-button').click()
+    cy.get('#destination-input-container').within(() => {
+      cy.get('#destination-input').click()
+      cy.get('#destination-input').type('Physicum')
+      cy.get('ul').within(() => {
+        cy.contains('Physicum').click()
+      })
+      cy.get('#destination-input').should('have.value', 'Physicum')
+    })
+  })
+
+  it('finds routes with geocoded OD', () => {
+    cy.contains('Find quiet paths').click()
+    cy.get('#reset-paths-container').click()
+  })
+
+  it('suggests and selects previously selected O/D to origin', () => {
+    cy.get('#origin-input-container').within(() => {
+      cy.get('#origin-input').should('have.value', 'Juhana-herttuan tie 3')
+      cy.get('#origin-input').clear()
+      cy.get('ul').within(() => {
+        cy.contains('Physicum').click()
+      })
+      cy.get('#origin-input').should('have.value', 'Physicum')
+    })
+  })
+
+  it('suggests and selects previously selected O/D to destination', () => {
+    cy.get('#destination-input-container').within(() => {
+      cy.get('#destination-input').should('have.value', 'Physicum')
+      cy.get('#destination-input').clear()
+      cy.get('ul').within(() => {
+        cy.contains('Juhana-herttuan tie 3').click()
+      })
+      cy.get('#destination-input').should('have.value', 'Juhana-herttuan tie 3')
+    })
+  })
+
+  it('finds routes with previously selected O/D', () => {
+    cy.contains('Find quiet paths').click()
+    cy.get('#reset-paths-container').click()
+    cy.get('#od-container').within(() => {
+      cy.get('#destination-input').should('have.value', 'Juhana-herttuan tie 3')
+      cy.get('#origin-input').should('have.value', 'Physicum')
+    })
+  })
+})
+
+describe('Set origin & destination from the map', () => {
+
+  it('sets origin from the map', () => {
+    cy.visit('http://localhost:3000/')
+    cy.get('#hide-welcome-button').contains('OK').click()
+    cy.wait(1000)
     cy.get('.mapboxgl-canvas')
       .wait(300)
       .click(465, 520)
     cy.contains('Route from here').click()
+  })
+
+  it('sets destination from the map', () => {
     cy.get('.mapboxgl-canvas')
       .click(565, 160)
     cy.contains('Route here').click()
@@ -26,68 +141,69 @@ describe('Set origin & destination', () => {
 
 describe('Query and show quiet paths', () => {
 
-  it('find quiet paths (walk)', () => {
+  it('finds quiet paths (walk)', () => {
     cy.contains('Find quiet paths').click()
     cy.contains('high noise')
     cy.contains('2.5 km')
     cy.contains('26 min')
   })
 
-  it('show dB legend', () => {
+  it('shows dB legend', () => {
     cy.contains('dB')
     cy.contains('40')
     cy.contains('50')
   })
 })
 
-describe('Toggle paths to fresh air and biking', () => {
+describe('Toggle travel mode', () => {
 
-  it('show find fresh air paths button', () => {
-    cy.contains('Show')
-    cy.contains('paths')
-  })
-
-  it('find biking routes', () => {
+  it('finds biking routes', () => {
     cy.get('#toggle-to-bike-button').click()
     cy.contains('4/4')
     cy.contains('8 min')
   })
 
-  it('toggle walking routes', () => {
+  it('toggles to walking routes', () => {
     cy.get('#toggle-to-walk-button').click()
     cy.contains('4/4')
     cy.contains('26 min')
   })
 
-  it('toggle biking routes', () => {
+  it('toggles to biking routes', () => {
     cy.get('#toggle-to-bike-button').click()
     cy.contains('4/4')
     cy.contains('8 min')
   })
 
-  it('toggle back to walking routes', () => {
+  it('toggles back to walking routes', () => {
     cy.get('#toggle-to-walk-button').click()
     cy.wait(200)
   })
+
+  it('shows find fresh air paths button', () => {
+    cy.contains('Show')
+    cy.contains('fresh air')
+    cy.contains('paths')
+  })
 })
 
-describe('Filter paths by length', () => {
+describe('Filter paths', () => {
 
-  it('filter paths', () => {
+  it('filters paths by length', () => {
     cy.get('#filter-by-length-button').click()
     cy.contains('2.2 km').click()
     cy.get('#close-filter-panel').children().click()
     cy.contains('2/4')
   })
 
-  it('disable filter paths', () => {
+  it('disables filter paths', () => {
     cy.get('#filter-by-length-button').click()
     cy.contains('2.5 km').click()
     cy.get('#close-filter-panel').children().click()
     cy.contains('4/4')
   })
 
-  it('toggle back to biking routes resets filtering', () => {
+  it('toggling back to biking routes resets filtering', () => {
     cy.get('#toggle-to-bike-button').click()
     cy.contains('4/4')
     cy.get('#toggle-to-walk-button').click()
@@ -97,36 +213,36 @@ describe('Filter paths by length', () => {
 
 describe('Reset paths', () => {
 
-  it('reset paths with reset paths button', () => {
-    cy.get('#reset-paths-container').children().click()
-    cy.contains('Find quiet paths').click()
+  it('resets paths from reset paths button', () => {
+    cy.get('#reset-paths-container').click()
   })
 
-  it('reset paths by selecting new destination from map', () => {
+  it('resets paths by selecting new destination from map', () => {
+    cy.contains('Find quiet paths').click()
     cy.get('.mapboxgl-canvas')
-      .wait(300)
+      .wait(500)
       .click(565, 160)
     cy.contains('Route here').click()
-    cy.contains('Find quiet paths').click()
   })
 
-  it('reset paths by selecting new origin from map', () => {
+  it('resets paths by selecting new origin from map', () => {
+    cy.contains('Find quiet paths').click()
     cy.get('.mapboxgl-canvas')
-      .wait(100)
+      .wait(500)
       .click(520, 550)
     cy.contains('Route from here').click()
     cy.contains('Find quiet paths')
   })
 })
 
-describe('Find more paths', () => {
+describe('Routing (more test cases)', () => {
 
-  it('open the page (again)', () => {
+  it('opens the page (again)', () => {
     cy.visit('http://localhost:3000/')
     cy.get('#hide-welcome-button').contains('OK').click()
   })
 
-  it('find quiet paths (walk)', () => {
+  it('finds quiet paths (walk)', () => {
     cy.get('.mapboxgl-canvas')
       .wait(300)
       .click(465, 160)
@@ -138,13 +254,13 @@ describe('Find more paths', () => {
     cy.contains('Find quiet paths').click()
   })
 
-  it('show shortest path stats (walk)', () => {
+  it('shows shortest path stats (walk)', () => {
     cy.contains('30 min')
     cy.contains('2.4 km')
     cy.contains('moderate noise')
   })
 
-  it('show quiet path stats (walk)', () => {
+  it('shows quiet path stats (walk)', () => {
     cy.contains('34 min')
     cy.contains('2.8 km')
     cy.contains('-38 % noise')
@@ -152,9 +268,9 @@ describe('Find more paths', () => {
 })
 
 
-describe('Open path exposure stats', () => {
+describe('Path exposure info', () => {
 
-  it('show opened path stats', () => {
+  it('shows opened path stats', () => {
     cy.contains('-38 % noise').parent().parent().parent().within(() => cy.get('.open-path-button').click())
     cy.contains('Exposure to different traffic noise levels')
     cy.contains('40dB')
@@ -163,7 +279,7 @@ describe('Open path exposure stats', () => {
     cy.contains('4 min')
   })
 
-  it('close opened paths stats', () => {
+  it('closes opened paths stats', () => {
     cy.get('.close-path-button').click()
     cy.contains('moderate noise')
   })

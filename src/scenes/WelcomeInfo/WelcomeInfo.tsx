@@ -1,11 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { Button } from '../../components/Button'
-import { showInfo, hideInfo } from './../../reducers/menuReducer'
+import { showInfo, hideInfo } from './../../reducers/uiReducer'
 import HopeLogo from '../Images/Hope_black_url.png'
 import ERDF from '../Images/ERDF.png'
 import HYLogo from '../Images/Helsingin_yliopisto.png'
+import ToggleLanguageButtons from './ToggleLanguageButtons'
+import T from '../../utils/translator/Translator'
 
 const InfoContainer = styled.div`
   position: absolute;
@@ -22,7 +24,7 @@ const InfoContainer = styled.div`
 `
 const FlexDiv = styled.div`
   align-self: center;
-  width: 460px;
+  width: 550px;
   max-width: 85%;
   display: flex;
   flex-direction: row-reverse;
@@ -50,7 +52,7 @@ const InfoWrapper = styled.div`
 const Title = styled.div`
   font-weight: 300;
   font-size: 21px;
-  padding: 7px 0 11px 0;
+  padding: 9px 0 11px 0;
 `
 const SubHeading = styled.div`
   margin: 7px 0px 0px 0px;
@@ -64,21 +66,31 @@ const P = styled.div`
   letter-spacing: 0.5px;
   color: rgb(40, 40, 40);
 `
+const SponsorsDiv = styled.div<{ interacted: boolean }>`
+  position: sticky;
+  bottom: 0;
+  background: white;
+  width: 100%;
+  padding-top: 12px;
+  transition-duration: 0.2s;
+  -webkit-transition-duration: 0.2s; /* Safari */
+  ${props => props.interacted && css`
+    position: initial;
+  `}
+`
+
 const ButtonDiv = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
   padding: 9px 0 5px 0px;
 `
-const Green = styled.span`
-  color: #00d000;
-`
 const Link = styled.a`
   color: black;
 `
 const LogoFlex = styled.div`
   display: flex;
-  margin: 27px 0px 4px 0px;
+  margin: 10px 0px 4px 0px;
   align-items: center;
   justify-content: start;
 `
@@ -98,65 +110,65 @@ const AcceptCookieText = () => {
   return (
     <div>
       <P>
-        You've found the green paths route planner app, great! <span role="img" aria-label='surfer'>&#127940;</span>
+        <T>info_modal.first_welcome.content</T>
+        <span role="img" aria-label='surfer'>&#127940;</span>
       </P>
       <P>
-        This site uses a cookie to show this welcome message only on the first visit.
-        By clicking OK below, you accept this use of cookies.
+        <T>info_modal.cookie.info</T>
       </P>
     </div>
   )
 }
 
 const WelcomeInfo = (props: PropsFromRedux) => {
-  if (!props.menu.info) return null
+  const [interacted, setInteracted] = useState(false);
+  if (!props.ui.info) return null
 
   return (
     <InfoContainer>
       <FlexDiv>
         <WhiteBox>
-          <InfoWrapper>
-            <Title>Welcome to green paths <Green>beta</Green>!</Title>
+          <InfoWrapper onClick={() => setInteracted(true)} onScroll={() => setInteracted(true)}>
+            <ToggleLanguageButtons size={16} />
+            <Title><T>info_modal.welcome.title</T> (demo)!</Title>
             {!props.visitedBefore && <AcceptCookieText />}
             <P>
-              The app and its real-time air quality data source are still under active development and hence not guaranteed to work at all times.            </P>
-            <SubHeading>Why?</SubHeading>
-            <P>
-              While fresh air, quietness and greenery bring health benefits, then air pollution and excess noise may cause physical and mental health problems such as respiratory infections, cardiovascular disease or stress.
-              Fortunately, a more peaceful, less polluted and greener (= healthier) route may be just slightly longer than the shortest one.
+              <T>info_modal.dev_status_info</T>
             </P>
-            <SubHeading>How?</SubHeading>
+            <SubHeading><T>info_modal.why.title</T></SubHeading>
             <P>
-              This tool guides you to take pleasant walks to your destinations in Helsinki.
-              You may compare routes from the shortest to the least polluted or quietest and find your own optimal way.
-              The more you value peaceful and pleasant urban environment, the longer routes you may be ready to take.
+              <T>info_modal.why.content</T>
             </P>
-            <SubHeading>What?</SubHeading>
+            <SubHeading><T>info_modal.how.title</T></SubHeading>
             <P>
-              Hourly air quality index (AQI) is derived from the <Link href='https://en.ilmatieteenlaitos.fi/environmental-information-fusion-service' target='_blank' rel='noopener noreferrer'>
-                FMI-ENFUSER high-resolution modelling system</Link>.
+              <T>info_modal.how.content</T>
+            </P>
+            <SubHeading><T>info_modal.what.title</T></SubHeading>
+            <P>
+              <T>info_modal.what.content.enfuser.description</T> <Link href='https://en.ilmatieteenlaitos.fi/environmental-information-fusion-service' target='_blank' rel='noopener noreferrer'>
+                <T>info_modal.what.content.enfuser.link_label</T></Link>.
             </P>
             <P>
               <Link href='https://hri.fi/data/en_GB/dataset/helsingin-kaupungin-meluselvitys-2017' target='_blank' rel='noopener noreferrer'>
-                Traffic noise data</Link>{' '} is based on an assessment conducted by the city of Helsinki (CC BY 4.0). It is a modelled GIS data representing typical daytime traffic noise levels.
+                <T>info_modal.what.content.noise_data.link_label</T></Link>{' '} <T>info_modal.what.content.noise_data.description</T>
             </P>
             <P>
-              Street network data is downloaded from <Link href='https://www.openstreetmap.org/copyright' target='_blank' rel='noopener noreferrer'>
-                OpenStreetMap</Link>{' '}(CC-BY-SA).
+              <T>info_modal.what.content.osm.description</T> <Link href='https://www.openstreetmap.org/copyright' target='_blank' rel='noopener noreferrer'>
+                OpenStreetMap</Link> <T>info_modal.what.content.osm.suffix</T>(CC-BY-SA).
             </P>
-            <SubHeading>Who?</SubHeading>
+            <SubHeading><T>info_modal.who.title</T></SubHeading>
             <P>
-              Green path routing tool is developed by the <Link href='https://www.helsinki.fi/en/researchgroups/digital-geography-lab' target='_blank' rel='noopener noreferrer'>
-                Digital Geography Lab</Link>, University of Helsinki, within the <Link href='https://ilmanlaatu.eu/briefly-in-english/' target='_blank' rel='noopener noreferrer'>
-                Urban Innovative Action: HOPE</Link>{' '} – Healthy Outdoor Premises for Everyone.
-              </P>
-            <SubHeading> Code </SubHeading>
+              <T>info_modal.who.content.developed_by</T> <Link href='https://www.helsinki.fi/en/researchgroups/digital-geography-lab' target='_blank' rel='noopener noreferrer'>
+                Digital Geography Lab</Link><T>info_modal.who.content.developed_by.suffix</T> <T>info_modal.who.content.within_the</T> <Link href='https://ilmanlaatu.eu/briefly-in-english/' target='_blank' rel='noopener noreferrer'>
+                Urban Innovative Action: HOPE</Link>{' '} – <T>info_modal.who.content.hope_description</T>
+            </P>
+            <SubHeading> <T>info_modal.code.title</T> </SubHeading>
             <P>
               <Link href='https://github.com/DigitalGeographyLab/hope-green-path-ui' target='_blank' rel='noopener noreferrer'>DigitalGeographyLab/hope-green-path-ui</Link>{' '}
               <br />
               <Link href='https://github.com/DigitalGeographyLab/hope-green-path-server' target='_blank' rel='noopener noreferrer'>DigitalGeographyLab/hope-green-path-server</Link>{' '}
             </P>
-            <P>
+            <SponsorsDiv interacted={interacted}>
               <LogoFlex>
                 <LogoWrapper><img src={ERDF} width="65" height='60' alt='EULogo' /></LogoWrapper>
                 <StyledLogoLink href='https://ilmanlaatu.eu/' target='_blank' rel='noopener noreferrer'>
@@ -167,9 +179,9 @@ const WelcomeInfo = (props: PropsFromRedux) => {
                 </StyledLogoLink>
               </LogoFlex>
               <SmallText>
-                HOPE project is co-financed by the European Regional Development Fund through the Urban Innovative Actions Initiative.
+                <T>info_modal.funded_by</T>
               </SmallText>
-            </P>
+            </SponsorsDiv>
           </InfoWrapper>
           <ButtonDiv id='hide-welcome-button'>
             <Button small green onClick={props.hideInfo}>OK</Button>
@@ -181,7 +193,7 @@ const WelcomeInfo = (props: PropsFromRedux) => {
 }
 
 const mapStateToProps = (state: ReduxState) => ({
-  menu: state.menu,
+  ui: state.ui,
   visitedBefore: state.visitor.visitedBefore,
 })
 

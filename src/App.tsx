@@ -17,6 +17,7 @@ import OrigDestPoints from './components/Map/OrigDestPoints'
 import WelcomeInfo from './scenes/WelcomeInfo/WelcomeInfo'
 import DimLayer from './scenes/Home/DimLayer'
 import HopeLink from './scenes/Home/HopeLink'
+import { loadSelectedLanguage } from './reducers/uiReducer'
 import { testGreenPathServiceConnection, testCleanPathServiceStatus } from './reducers/pathsReducer'
 import { showWelcomeIfFirstVisit } from './reducers/visitorReducer'
 
@@ -40,6 +41,7 @@ const BottomPanel = styled(AbsoluteContainer)`
 class App extends Component<PropsFromRedux> {
 
   componentDidMount() {
+    this.props.loadSelectedLanguage()
     this.props.showWelcomeIfFirstVisit()
     this.props.testCleanPathServiceStatus()
     this.props.testGreenPathServiceConnection()
@@ -75,6 +77,7 @@ class App extends Component<PropsFromRedux> {
 }
 
 const mapDispatchToProps = {
+  loadSelectedLanguage,
   showWelcomeIfFirstVisit,
   testGreenPathServiceConnection,
   testCleanPathServiceStatus,

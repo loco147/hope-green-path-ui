@@ -177,7 +177,7 @@ const getDestinationFromCoords = (coordinates: [number, number], locType: Locati
 
 const destWithinSupportedArea = (destination: OdPlace): string | null => {
   if (!turf.within(destination, extentFeat)) {
-    return 'Destination is outside the supported area'
+    return 'notif.error.destination_outside_extent'
   }
   return null
 }

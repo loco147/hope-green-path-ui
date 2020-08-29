@@ -1,6 +1,7 @@
 import React, { Component, RefObject } from 'react'
 import styled, { css } from 'styled-components'
 import { connect, ConnectedProps } from 'react-redux'
+import { text } from '../../utils/translator/dictionary'
 import { IoIosClose } from 'react-icons/io'
 import UseCurrLocButton from './UseCurrLocButton'
 import {
@@ -115,6 +116,7 @@ class OriginInput extends Component<PropsFromRedux> {
   render() {
     const { waitingUserLocOrigin, originInputText, originOptionsVisible, originOptions } = this.props.origin
     const {
+      lang,
       destObject,
       useUserLocationOrigin,
       setOriginInputText,
@@ -124,15 +126,16 @@ class OriginInput extends Component<PropsFromRedux> {
       toggleOriginOptionsVisible
     } = this.props
 
-    return <OrigSelectorDiv ref={this.wrapperRef}>
+    return <OrigSelectorDiv id='origin-input-container' ref={this.wrapperRef}>
       <Input
-        placeholder='From'
+        id='origin-input'
+        placeholder={text(lang, 'od_inputs.from_label')}
         type='text'
         value={originInputText}
         onClick={toggleOriginOptionsVisible}
         onChange={setOriginInputText} />
       {waitingUserLocOrigin && <WaitForUserLocContainer ><LoadAnimation size={25} /></WaitForUserLocContainer>}
-      <ResetLocButton onClick={resetOriginInput}><CloseIcon /></ResetLocButton>
+      <ResetLocButton id='reset-origin-button' onClick={resetOriginInput}><CloseIcon /></ResetLocButton>
       {originOptionsVisible && <OrigOptions>
         <OrigOption noShadow onClick={(e) => useUserLocationOrigin(e, this.props.userLocation, destObject)}>
           <UseCurrLocButton handleClick={(e) => useUserLocationOrigin(e, this.props.userLocation, destObject)} />
@@ -162,7 +165,8 @@ const mapStateToProps = (state: ReduxState) => ({
   userLocation: state.userLocation,
   origin: state.origin,
   destObject: state.destination.destObject,
-  usedOds: state.visitor.usedOds
+  usedOds: state.visitor.usedOds,
+  lang: state.ui.lang
 })
 
 const mapDispatchToProps = {

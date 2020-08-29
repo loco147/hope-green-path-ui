@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { utils } from '../../../utils/index'
 import { aqiLabels, aqiColors } from './../../../constants'
+import T from './../../../utils/translator/Translator'
 
 const StyledOpenedPathExposures = styled.div`
   display: flex;
@@ -51,7 +52,7 @@ const StyledAqiExposureRow = styled.div`
 const AqiClLabelBox = ({ aqiCl }: { aqiCl: AqiClass }) => {
   return (
     <StyledAqiLabelBox aqiCl={aqiCl}>
-      {aqiLabels[aqiCl]}
+      <T>{aqiLabels[aqiCl]}</T>
     </StyledAqiLabelBox>
   )
 }
@@ -85,7 +86,7 @@ export const OpenedPathAqExps = ({ path, travelMode }: { path: PathFeature, trav
             {aqiCls.map(aqiCL => <AqExposureRow
               key={aqiCL}
               aqiCl={aqiCL}
-              aqiClExp={aqiClExps[aqiCL]} 
+              aqiClExp={aqiClExps[aqiCL]}
               travelMode={travelMode} />)}
           </FlexCols>
         </PathPropsRow>

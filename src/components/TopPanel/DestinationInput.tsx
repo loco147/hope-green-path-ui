@@ -1,5 +1,6 @@
 import React, { Component, RefObject } from 'react'
 import styled from 'styled-components'
+import { text } from '../../utils/translator/dictionary'
 import { connect, ConnectedProps } from 'react-redux'
 import { IoIosClose } from 'react-icons/io'
 import {
@@ -104,6 +105,7 @@ class DestinationInput extends Component<PropsFromRedux> {
   render() {
     const { destInputText, destOptionsVisible, destOptions } = this.props.destination
     const {
+      lang,
       originObject,
       setDestinationInputText,
       setGeocodedDestination,
@@ -112,14 +114,15 @@ class DestinationInput extends Component<PropsFromRedux> {
       toggleDestinationOptionsVisible
     } = this.props
 
-    return <DestSelectorDiv ref={this.wrapperRef}>
+    return <DestSelectorDiv id='destination-input-container' ref={this.wrapperRef}>
       <Input
-        placeholder='To'
+        id='destination-input'
+        placeholder={text(lang, 'od_inputs.to_label')}
         type='text'
         value={destInputText}
         onClick={toggleDestinationOptionsVisible}
         onChange={setDestinationInputText} />
-      <ResetLocButton onClick={resetDestinationInput}><CloseIcon /></ResetLocButton>
+      <ResetLocButton id='reset-destination-button' onClick={resetDestinationInput}><CloseIcon /></ResetLocButton>
       {destOptionsVisible && <DestinationOptions>
         {destInputText.length < 3 && this.props.usedOds.map(odPlace =>
           <DestinationOption
@@ -145,7 +148,8 @@ class DestinationInput extends Component<PropsFromRedux> {
 const mapStateToProps = (state: ReduxState) => ({
   destination: state.destination,
   originObject: state.origin.originObject,
-  usedOds: state.visitor.usedOds
+  usedOds: state.visitor.usedOds,
+  lang: state.ui.lang
 })
 
 const mapDispatchToProps = {

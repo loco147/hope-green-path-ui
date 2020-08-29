@@ -243,7 +243,7 @@ const getOriginFromCoords = (coordinates: [number, number], locType: LocationTyp
 
 const originWithinSupportedArea = (origin: OdPlace): string | null => {
   if (!turf.within(origin, extentFeat)) {
-    return 'Origin is outside the supported area'
+    return 'notif.error.origin_outside_extent'
   }
   return null
 }

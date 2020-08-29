@@ -243,7 +243,8 @@ interface VisitorReducer {
   usedOds: OdPlace[]
 }
 
-interface MenuReducer {
+interface UiReducer {
+  lang: import('./reducers/uiReducer').Lang
   info: boolean,
   pathPanel: boolean,
   pathPanelContent: string | null,
@@ -259,5 +260,5 @@ interface ReduxState {
   destination: DestinationReducer,
   mapPopup: MapPopupReducer,
   visitor: VisitorReducer,
-  menu: MenuReducer
+  ui: UiReducer
 }

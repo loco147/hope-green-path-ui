@@ -46,7 +46,7 @@ export const LocateButton = ({ zoomToUserLocation, userLocation }: PropsFromRedu
 }
 
 const mapStateToProps = (state: ReduxState) => ({
-  menu: state.menu,
+  menu: state.ui,
   userLocation: state.userLocation
 })
 
