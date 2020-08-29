@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
 import styled, { css } from 'styled-components'
 import { Button } from '../../components/Button'
@@ -66,16 +66,16 @@ const P = styled.div`
   letter-spacing: 0.5px;
   color: rgb(40, 40, 40);
 `
-const SponsorsDiv = styled.div<{ interacted: boolean }>`
-  position: sticky;
+const SponsorsDiv = styled.div<{ showLogos: boolean }>`
+  position: initial;
   bottom: 0;
   background: white;
   width: 100%;
   padding-top: 12px;
   transition-duration: 0.2s;
   -webkit-transition-duration: 0.2s; /* Safari */
-  ${props => props.interacted && css`
-    position: initial;
+  ${props => props.showLogos && css`
+    position: sticky;
   `}
 `
 
@@ -121,14 +121,17 @@ const AcceptCookieText = () => {
 }
 
 const WelcomeInfo = (props: PropsFromRedux) => {
-  const [interacted, setInteracted] = useState(false);
+  const [showLogos, setShowLogos] = useState(true)
+
+  useEffect(() => setShowLogos(true), [props.ui.info])
+
   if (!props.ui.info) return null
 
   return (
     <InfoContainer>
       <FlexDiv>
         <WhiteBox>
-          <InfoWrapper onClick={() => setInteracted(true)} onScroll={() => setInteracted(true)}>
+          <InfoWrapper onClick={() => setShowLogos(false)} onScroll={() => setShowLogos(false)}>
             <ToggleLanguageButtons size={16} />
             <Title><T>info_modal.welcome.title</T> (demo)!</Title>
             {!props.visitedBefore && <AcceptCookieText />}
@@ -168,7 +171,7 @@ const WelcomeInfo = (props: PropsFromRedux) => {
               <br />
               <Link href='https://github.com/DigitalGeographyLab/hope-green-path-server' target='_blank' rel='noopener noreferrer'>DigitalGeographyLab/hope-green-path-server</Link>{' '}
             </P>
-            <SponsorsDiv interacted={interacted}>
+            <SponsorsDiv showLogos={showLogos}>
               <LogoFlex>
                 <LogoWrapper><img src={ERDF} width="65" height='60' alt='EULogo' /></LogoWrapper>
                 <StyledLogoLink href='https://ilmanlaatu.eu/' target='_blank' rel='noopener noreferrer'>

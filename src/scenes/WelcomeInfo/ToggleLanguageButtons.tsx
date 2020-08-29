@@ -17,7 +17,7 @@ const StyledButton = styled.button < { selected: boolean, size: number }> `
   font-weight: 400;
   font-size: ${props => props.size ? props.size : '16'}px;
   background-color: white;
-  margin: 2px 3px 2px 2px;
+  margin: 2px 3px 2px 3px;
   border: 1px solid white;
   transition-duration: 0.2s;
   -webkit-transition-duration: 0.2s; /* Safari */

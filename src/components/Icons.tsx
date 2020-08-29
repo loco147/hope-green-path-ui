@@ -1,7 +1,6 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
 import { FiFilter } from 'react-icons/fi'
-import { IoIosArrowUp } from 'react-icons/io'
 import { IoIosArrowDown } from 'react-icons/io'
 import { IoIosClose } from 'react-icons/io'
 import { IoMdMenu } from 'react-icons/io'
@@ -15,11 +14,7 @@ export const Filter = styled(FiFilter)`
   ${iconStyle}
   font-size: 32px;
 `
-const ArrowUp = styled(IoIosArrowUp)`
-  ${iconStyle}
-  font-size: 43px;
-`
-const ArrowDown = styled(IoIosArrowDown)`
+export const ArrowDown = styled(IoIosArrowDown)`
   ${iconStyle}
   font-size: 43px;
 `
@@ -62,10 +57,6 @@ type IconProps = {
 }
 
 export const FilterButton = ({ onClick }: IconProps) => <IconButton padding='5px' onClick={onClick}> <Filter /> </IconButton>
-
-export const ArrowUpButton = ({ onClick }: IconProps) => <IconButton hoverJump onClick={onClick}> <ArrowUp /></IconButton>
-
-export const ArrowDownButton = ({ onClick }: IconProps) => <IconButton hoverJump onClick={onClick}> <ArrowDown /></IconButton>
 
 export const CloseButton = ({ onClick, size }: IconProps) => <IconButton onClick={onClick}> <Close size={size} /></IconButton>
 
