@@ -126,15 +126,16 @@ class OriginInput extends Component<PropsFromRedux> {
       toggleOriginOptionsVisible
     } = this.props
 
-    return <OrigSelectorDiv ref={this.wrapperRef}>
+    return <OrigSelectorDiv id='origin-input-container' ref={this.wrapperRef}>
       <Input
+        id='origin-input'
         placeholder={text(lang, 'od_inputs.from_label')}
         type='text'
         value={originInputText}
         onClick={toggleOriginOptionsVisible}
         onChange={setOriginInputText} />
       {waitingUserLocOrigin && <WaitForUserLocContainer ><LoadAnimation size={25} /></WaitForUserLocContainer>}
-      <ResetLocButton onClick={resetOriginInput}><CloseIcon /></ResetLocButton>
+      <ResetLocButton id='reset-origin-button' onClick={resetOriginInput}><CloseIcon /></ResetLocButton>
       {originOptionsVisible && <OrigOptions>
         <OrigOption noShadow onClick={(e) => useUserLocationOrigin(e, this.props.userLocation, destObject)}>
           <UseCurrLocButton handleClick={(e) => useUserLocationOrigin(e, this.props.userLocation, destObject)} />

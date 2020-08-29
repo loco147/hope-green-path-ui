@@ -28,7 +28,7 @@ const StyledButton = styled.div`
 const ShowInfoButton = (props: PropsFromRedux) => {
   return (
     <div>
-      {!props.ui.info ? <StyledButton onClick={props.showInfo} /> : null}
+      {!props.ui.info ? <StyledButton id='show-info-button' onClick={props.showInfo} /> : null}
     </div>
   )
 }
