@@ -28,15 +28,17 @@ const Input = styled.input<{ onChange: Function }>`
   font-size: 17px;
   border-radius: 3px;
 `
-const ResetLocButton = styled.span`
+const ResetLocButton = styled.div`
   cursor: pointer;
   position: absolute;
   pointer-events: auto;
-  display: table;
+  display: flex;
+  align-items: center;
   color: black;
   border-radius: 7px;
   top: 0px;
   right: 0px;
+  height: 100%;
 `
 const CloseIcon = styled(IoIosClose)`
   vertical-align: middle;
