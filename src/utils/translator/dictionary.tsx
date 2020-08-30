@@ -20,11 +20,21 @@ if (process.env.NODE_ENV !== 'production') {
   })
 }
 
-export const text = (lang: Lang, key: string) => {
+export const text = (lang: Lang, key: string): string => {
   if (key in langs[lang]) {
     return langs[lang][key]
   }
   return key
+}
+
+export const getErrorNotifKey = (errorKey: string): string => {
+  const errorNotifKey = 'notif.error.routing.' + errorKey
+  if (errorNotifKey in langs[Lang.EN]) {
+    return errorNotifKey
+  } else if (process.env.NODE_ENV !== 'production') {
+    console.error('Received unknown error key:', errorNotifKey)
+  }
+  return 'notif.error.routing.general_routing_error'
 }
 
 export default (lang: Lang) => {

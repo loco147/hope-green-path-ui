@@ -37,9 +37,9 @@ export const getQuietPaths = async (travelMode: TravelMode, originCoords: number
   } else {
     console.log('Querying quiet paths from server:', queryUrl)
     const response = await axios.get(queryUrl)
-    if (response.data.error) {
+    if (response.data.error_key) {
       analytics.logEvent('routing_error_quiet_paths')
-      throw response.data.error
+      throw response.data.error_key
     }
     analytics.logEvent('routed_quiet_paths')
     cache.setToCacheWithExpiry(queryUrl, response.data, 3600)
@@ -57,9 +57,9 @@ export const getCleanPaths = async (travelMode: TravelMode, originCoords: number
   } else {
     console.log('Querying clean paths from server:', queryUrl)
     const response = await axios.get(queryUrl)
-    if (response.data.error) {
+    if (response.data.error_key) {
       analytics.logEvent('routing_error_clean_paths')
-      throw response.data.error
+      throw response.data.error_key
     }
     analytics.logEvent('routed_clean_paths')
     cache.setToCacheWithExpiry(queryUrl, response.data, 900)

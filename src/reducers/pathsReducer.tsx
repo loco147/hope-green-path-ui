@@ -8,6 +8,7 @@ import { ExposureMode, PathType, TravelMode, StatsType, extentFeat } from './../
 import { utils } from './../utils/index'
 import { Action } from 'redux'
 import * as geocoding from './../services/geocoding'
+import { getErrorNotifKey } from '../utils/translator/dictionary'
 
 const initialPaths: PathsReducer = {
   cleanPathsAvailable: false,
@@ -345,9 +346,9 @@ export const getSetQuietPaths = (origin: OriginReducer, dest: DestinationReducer
       console.log('caught error:', error)
       dispatch({ type: 'ERROR_IN_ROUTING' })
       if (typeof error === 'string') {
-        dispatch(showNotification(error, 'error', 8))
+        dispatch(showNotification(getErrorNotifKey(error), 'error', 8))
       } else {
-        dispatch(showNotification('notif.error.general_routing_error', 'error', 8))
+        dispatch(showNotification('notif.error.routing.general_routing_error', 'error', 8))
       }
       return
     }
@@ -417,9 +418,9 @@ export const getSetCleanPaths = (origin: OriginReducer, dest: DestinationReducer
       console.log('caught error:', error)
       dispatch({ type: 'ERROR_IN_ROUTING' })
       if (typeof error === 'string') {
-        dispatch(showNotification(error, 'error', 8))
+        dispatch(showNotification(getErrorNotifKey(error), 'error', 8))
       } else {
-        dispatch(showNotification('notif.error.general_routing_error', 'error', 8))
+        dispatch(showNotification('notif.error.routing.general_routing_error', 'error', 8))
       }
       return
     }
