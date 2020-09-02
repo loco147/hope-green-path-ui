@@ -21,9 +21,10 @@ Live demo: [green-paths.web.app](https://green-paths.web.app/)
 * [Traffic noise zones in Helsinki 2017](https://hri.fi/data/en_GB/dataset/helsingin-kaupungin-meluselvitys-2017)
 * [OpenStreetMap](https://www.openstreetmap.org/about/)
 
-## Built With
+## Built with
 * React, Redux & Thunk
 * Mapbox GL JS & Turf.js
+* TypeScript
 
 ## Contributing
 * See also [CONTRIBUTING.md](CONTRIBUTING.md)
@@ -42,6 +43,11 @@ $ npm start
 ```
 Create file `.env` and add your Mapbox access token to it as `REACT_APP_MB_ACCESS=`<br>
 Open browser to http://localhost:3000/
+
+## Integration tests
+```
+$ npm run cypress
+```
 
 ## License
 [MIT](LICENSE)
