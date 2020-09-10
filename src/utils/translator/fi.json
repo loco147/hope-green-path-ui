@@ -21,6 +21,7 @@
   "find_fresh_air_paths_btn.tooltip": "reaaliaikaisella ilmanlaadulla",
   "od_inputs.from_label": "Lähtöpaikka",
   "od_inputs.to_label": "Määränpää",
+  "od_inputs.use_current_location": "Käytä nykyistä sijaintia",
   "noise_level_label.very_quiet": "hiljainen",
   "noise_level_label.quiet": "melko hiljainen",
   "noise_level_label.moderate_noise": "osin meluisa",

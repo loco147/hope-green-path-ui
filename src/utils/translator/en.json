@@ -21,6 +21,7 @@
   "find_fresh_air_paths_btn.tooltip": "by real-time air quality",
   "od_inputs.from_label": "From",
   "od_inputs.to_label": "To",
+  "od_inputs.use_current_location": "Use current location",
   "noise_level_label.very_quiet": "very quiet",
   "noise_level_label.quiet": "quiet",
   "noise_level_label.moderate_noise": "moderate noise",

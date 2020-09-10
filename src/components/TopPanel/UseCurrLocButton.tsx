@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import T from './../../utils/translator/Translator'
 
 const Button = styled.div`
   cursor: pointer;
@@ -31,6 +32,12 @@ type Props = {
   handleClick: React.MouseEventHandler<HTMLElement>
 }
 
-const UseCurrLocButton = ({ handleClick }: Props) => <Button onClick={handleClick}>Use current location</Button>
+const UseCurrLocButton = ({ handleClick }: Props) => {
+  return (
+    <Button onClick={handleClick}>
+      <T>od_inputs.use_current_location</T>
+    </Button>
+  )
+}
 
 export default UseCurrLocButton
