@@ -4,7 +4,7 @@ import HopeLogo from '../Images/Hope_black_url.png'
 
 const Container = styled.div`
   position: absolute;
-  bottom: 15px;
+  bottom: 3px;
   left: 0px;
   right: 0px;
   z-index: 2;
@@ -31,7 +31,7 @@ const HopeLink = () => {
   return (
     <Container>
       <StyledHopeLink href='https://ilmanlaatu.eu/' target='_blank' rel='noopener noreferrer'>
-        <img src={HopeLogo} width="97" height="25" alt="HopeLogo" />
+        <img src={HopeLogo} width="78" height="20" alt="HopeLogo" />
       </StyledHopeLink>
     </Container>
   )

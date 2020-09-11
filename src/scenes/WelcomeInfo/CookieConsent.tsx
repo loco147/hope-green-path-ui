@@ -4,6 +4,9 @@ import styled from 'styled-components'
 import { disableAnalyticsCookies } from './../../reducers/visitorReducer'
 import T from '../../utils/translator/Translator'
 
+const SmallText = styled.div`
+  font-size: 12px;
+`
 const DisableGaWrapper = styled.div`
   display: grid;
   justify-items: center;
@@ -27,12 +30,12 @@ const DisableGaButton = styled.div`
 
 const CookieConsent = (props: PropsFromRedux) => {
   return (
-    <div>
+    <SmallText>
       <T>info_modal.cookie.info</T>
       <DisableGaWrapper>
         <DisableGaButton onClick={props.disableAnalyticsCookies}><T>info_modal.cookie.disable_button_label</T></DisableGaButton>
       </DisableGaWrapper>
-    </div>)
+    </SmallText>)
 }
 
 const connector = connect(null, { disableAnalyticsCookies })

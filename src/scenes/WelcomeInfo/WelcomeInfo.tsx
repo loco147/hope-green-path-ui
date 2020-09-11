@@ -99,6 +99,8 @@ const LogoFlex = styled.div`
   display: flex;
   margin: 0px 0px 6px 0px;
   align-items: center;
+  max-width: 100%;
+  flex-wrap: wrap;
   justify-content: space-evenly;
   border-top: 1px solid black;
   padding-top: 15px;
@@ -131,7 +133,9 @@ const WelcomeInfo = (props: PropsFromRedux) => {
             <Title><T>info_modal.welcome.title</T> (demo)!</Title>
             {!props.visitedBefore && !props.gaDisabled && <P><CookieConsent /></P>}
             <P>
-              <T>info_modal.dev_status_info</T>
+              <SmallText>
+                <T>info_modal.dev_status_info</T>
+              </SmallText>
             </P>
             <SubHeading><T>info_modal.user_feedback.title</T></SubHeading>
             <P>
@@ -171,8 +175,8 @@ const WelcomeInfo = (props: PropsFromRedux) => {
               <br />
               <Link href='https://github.com/DigitalGeographyLab/hope-green-path-server' target='_blank' rel='noopener noreferrer'>DigitalGeographyLab/hope-green-path-server</Link>{' '}
             </P>
-            {props.visitedBefore && !props.gaDisabled && <P><br /><CookieConsent /></P>}
-            <SponsorsDiv showLogos={showLogos}>
+            {props.visitedBefore && !props.gaDisabled && <P style={{ marginTop: "5px" }}><CookieConsent /></P>}
+            <SponsorsDiv showLogos={showLogos && !props.visitedBefore}>
               <LogoFlex>
                 {props.ui.lang === Lang.FI &&
                   <StyledLogoLink href='https://www.helsinki.fi/en/researchgroups/digital-geography-lab' target='_blank' rel='noopener noreferrer'>
