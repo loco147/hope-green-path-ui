@@ -64,6 +64,10 @@
   "info_modal.who.content.developed_by.suffix": " tutkimusryhmässä, ",
   "info_modal.who.content.within_the": "osana",
   "info_modal.who.content.hope_description": "Healthy Outdoor Premises for Everyone -projektia. ",
+  "info_modal.user_feedback.title": "Palaute",
+  "info_modal.user_feedback.content_1": "",
+  "info_modal.user_feedback.link_label": "Linkki palautelomakkeeseen",
+  "info_modal.user_feedback.link_address": "https://forms.gle/3q2FpTVAfA13bxkM9",
   "info_modal.code.title": "Koodi",
   "info_modal.funded_by": "HOPE projekti saa osan rahoituksestaan Euroopan aluekehitysrahastolta Urban Innovative Actions Initiative (UIA) -projektin kautta."
 }

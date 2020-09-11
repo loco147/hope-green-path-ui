@@ -8,6 +8,7 @@ import ERDF from '../Images/ERDF.png'
 import HYLogo from '../Images/Helsingin_yliopisto.png'
 import ToggleLanguageButtons from './ToggleLanguageButtons'
 import T from '../../utils/translator/Translator'
+import { text } from '../../utils/translator/dictionary'
 
 const InfoContainer = styled.div`
   position: absolute;
@@ -137,6 +138,11 @@ const WelcomeInfo = (props: PropsFromRedux) => {
             {!props.visitedBefore && <AcceptCookieText />}
             <P>
               <T>info_modal.dev_status_info</T>
+            </P>
+            <SubHeading><T>info_modal.user_feedback.title</T></SubHeading>
+            <P>
+              <T>info_modal.user_feedback.content_1</T><Link href={text(props.ui.lang, 'info_modal.user_feedback.link_address')}
+                target='_blank' rel='noopener noreferrer'><T>info_modal.user_feedback.link_label</T></Link>
             </P>
             <SubHeading><T>info_modal.why.title</T></SubHeading>
             <P>

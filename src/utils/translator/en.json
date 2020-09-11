@@ -64,6 +64,10 @@
   "info_modal.who.content.developed_by.suffix": ", University of Helsinki, ",
   "info_modal.who.content.within_the": "within the",
   "info_modal.who.content.hope_description": "Healthy Outdoor Premises for Everyone. ",
+  "info_modal.user_feedback.title": "User feedback",
+  "info_modal.user_feedback.content_1": "Please give us your feedback on the tool: ",
+  "info_modal.user_feedback.link_label": "LINK",
+  "info_modal.user_feedback.link_address": "https://forms.gle/sKDWpgcksEx5Qpbh7",
   "info_modal.code.title": "Code",
   "info_modal.funded_by": "HOPE project is co-financed by the European Regional Development Fund through the Urban Innovative Actions Initiative."
 }
