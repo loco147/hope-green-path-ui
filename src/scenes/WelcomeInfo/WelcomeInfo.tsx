@@ -114,20 +114,6 @@ const StyledLogoLink = styled.a`
   cursor: pointer;
 `
 
-const AcceptCookieText = () => {
-  return (
-    <div>
-      <P>
-        <T>info_modal.first_welcome.content</T>
-        <span role="img" aria-label='surfer'>&#127940;</span>
-      </P>
-      <P>
-        <T>info_modal.cookie.info</T>
-      </P>
-    </div>
-  )
-}
-
 const WelcomeInfo = (props: PropsFromRedux) => {
   const [showLogos, setShowLogos] = useState(true)
 
@@ -142,7 +128,7 @@ const WelcomeInfo = (props: PropsFromRedux) => {
           <InfoWrapper onClick={() => setShowLogos(false)} onScroll={() => setShowLogos(false)}>
             <ToggleLanguageButtons size={16} />
             <Title><T>info_modal.welcome.title</T> (demo)!</Title>
-            {!props.visitedBefore && <AcceptCookieText />}
+            {!props.visitedBefore && <P><T>info_modal.cookie.info</T></P>}
             <P>
               <T>info_modal.dev_status_info</T>
             </P>
