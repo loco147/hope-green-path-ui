@@ -6,6 +6,7 @@ import { showInfo, hideInfo } from './../../reducers/uiReducer'
 import HopeLogo from '../Images/Hope_black_url.png'
 import ERDF from '../Images/ERDF.png'
 import HYLogo from '../Images/Helsingin_yliopisto.png'
+import UIALogo from '../Images/logo_uia_2.png'
 import ToggleLanguageButtons from './ToggleLanguageButtons'
 import T from '../../utils/translator/Translator'
 import { text } from '../../utils/translator/dictionary'
@@ -23,13 +24,16 @@ const InfoContainer = styled.div`
   flex-wrap: wrap;
   pointer-events: none;
 `
-const FlexDiv = styled.div`
+const FlexDiv = styled.div<{ visitedBefore: boolean }>`
   align-self: center;
-  width: 550px;
+  width: 670px;
   max-width: 85%;
   display: flex;
   flex-direction: row-reverse;
   flex-wrap: wrap;
+  ${props => props.visitedBefore === true && css`
+    width: 650px;
+  `}
 `
 const WhiteBox = styled.div`
   display: flex;
@@ -70,7 +74,7 @@ const P = styled.div`
 const SponsorsDiv = styled.div<{ showLogos: boolean }>`
   position: initial;
   bottom: 0;
-  background: white;
+  background: rgba(255, 255, 255, 0.97);
   width: 100%;
   padding-top: 12px;
   transition-duration: 0.2s;
@@ -91,9 +95,11 @@ const Link = styled.a`
 `
 const LogoFlex = styled.div`
   display: flex;
-  margin: 10px 0px 4px 0px;
+  margin: 0px 0px 6px 0px;
   align-items: center;
-  justify-content: start;
+  justify-content: space-evenly;
+  border-top: 1px solid black;
+  padding-top: 15px;
 `
 const LogoWrapper = styled.div`
   margin: 0 5px 0 5px;
@@ -130,7 +136,7 @@ const WelcomeInfo = (props: PropsFromRedux) => {
 
   return (
     <InfoContainer>
-      <FlexDiv>
+      <FlexDiv visitedBefore={props.visitedBefore}>
         <WhiteBox>
           <InfoWrapper onClick={() => setShowLogos(false)} onScroll={() => setShowLogos(false)}>
             <ToggleLanguageButtons size={16} />
@@ -179,13 +185,16 @@ const WelcomeInfo = (props: PropsFromRedux) => {
             </P>
             <SponsorsDiv showLogos={showLogos}>
               <LogoFlex>
-                <LogoWrapper><img src={ERDF} width="65" height='60' alt='EULogo' /></LogoWrapper>
-                <StyledLogoLink href='https://ilmanlaatu.eu/' target='_blank' rel='noopener noreferrer'>
-                  <img src={HopeLogo} width="116" height="30" alt='HopeLogo' />
-                </StyledLogoLink>
                 <StyledLogoLink href='https://www.helsinki.fi/en/researchgroups/digital-geography-lab' target='_blank' rel='noopener noreferrer'>
                   <img src={HYLogo} width='54' height='58' alt='HYLogo' />
                 </StyledLogoLink>
+                <StyledLogoLink href='https://ilmanlaatu.eu/' target='_blank' rel='noopener noreferrer'>
+                  <img src={HopeLogo} width="116" height="30" alt='HopeLogo' />
+                </StyledLogoLink>
+                <StyledLogoLink href='https://www.uia-initiative.eu/en/uia-cities/helsinki' target='_blank' rel='noopener noreferrer'>
+                  <img src={UIALogo} width='120' height='60' alt='HYLogo' />
+                </StyledLogoLink>
+                <LogoWrapper><img src={ERDF} width="65" height='60' alt='EULogo' /></LogoWrapper>
               </LogoFlex>
               <SmallText>
                 <T>info_modal.funded_by</T>
