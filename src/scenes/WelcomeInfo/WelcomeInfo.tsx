@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
 import styled, { css } from 'styled-components'
 import { Button } from '../../components/Button'
-import { showInfo, hideInfo } from './../../reducers/uiReducer'
+import { showInfo, hideInfo, Lang } from './../../reducers/uiReducer'
+import HYLogoFi from '../Images/HY_fi.png'
+import HYLogoEn from '../Images/HY_en.png'
 import HopeLogo from '../Images/Hope_black_url.png'
-import ERDF from '../Images/ERDF.png'
-import HYLogo from '../Images/Helsingin_yliopisto.png'
 import UIALogo from '../Images/logo_uia_2.png'
+import EU from '../Images/EU.png'
 import ToggleLanguageButtons from './ToggleLanguageButtons'
 import T from '../../utils/translator/Translator'
 import { text } from '../../utils/translator/dictionary'
@@ -185,16 +186,23 @@ const WelcomeInfo = (props: PropsFromRedux) => {
             </P>
             <SponsorsDiv showLogos={showLogos}>
               <LogoFlex>
-                <StyledLogoLink href='https://www.helsinki.fi/en/researchgroups/digital-geography-lab' target='_blank' rel='noopener noreferrer'>
-                  <img src={HYLogo} width='54' height='58' alt='HYLogo' />
-                </StyledLogoLink>
+                {props.ui.lang === Lang.FI &&
+                  <StyledLogoLink href='https://www.helsinki.fi/en/researchgroups/digital-geography-lab' target='_blank' rel='noopener noreferrer'>
+                    <img src={HYLogoFi} width="61" height="57" alt='HYLogoFi' />
+                  </StyledLogoLink>
+                }
+                {props.ui.lang === Lang.EN &&
+                  <StyledLogoLink href='https://www.helsinki.fi/en/researchgroups/digital-geography-lab' target='_blank' rel='noopener noreferrer'>
+                    <img src={HYLogoEn} width="69" height="57" alt='HYLogoEn' />
+                  </StyledLogoLink>
+                }
                 <StyledLogoLink href='https://ilmanlaatu.eu/' target='_blank' rel='noopener noreferrer'>
                   <img src={HopeLogo} width="116" height="30" alt='HopeLogo' />
                 </StyledLogoLink>
                 <StyledLogoLink href='https://www.uia-initiative.eu/en/uia-cities/helsinki' target='_blank' rel='noopener noreferrer'>
-                  <img src={UIALogo} width='120' height='60' alt='HYLogo' />
+                  <img src={UIALogo} width='106' height='53' alt='UIALogo' />
                 </StyledLogoLink>
-                <LogoWrapper><img src={ERDF} width="65" height='60' alt='EULogo' /></LogoWrapper>
+                <LogoWrapper><img src={EU} width="90" height='60' alt='EULogo' /></LogoWrapper>
               </LogoFlex>
               <SmallText>
                 <T>info_modal.funded_by</T>
