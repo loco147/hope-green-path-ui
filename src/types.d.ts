@@ -240,7 +240,8 @@ interface MapPopupReducer {
 
 interface VisitorReducer {
   visitedBefore: boolean,
-  usedOds: OdPlace[]
+  usedOds: OdPlace[],
+  gaDisabled: boolean
 }
 
 interface UiReducer {

@@ -15,11 +15,11 @@ interface Props {
 
 export const Button = styled.div.attrs((props: Props) => ({
   style: ({ display: props.visible ? '' : 'none', })
-}))<Props>`
+})) <Props>`
   cursor: pointer;
-  padding: 6px 13px;
+  padding: 6px 14px;
   color: white;
-  border-radius: 8px;
+  border-radius: 30px;
   margin: 5px 6px;
   font-weight: 400;
   font-size: 28px;

@@ -4,7 +4,8 @@ import { Action } from 'redux'
 
 const initialVisitorState: VisitorReducer = {
   visitedBefore: false,
-  usedOds: []
+  usedOds: [],
+  gaDisabled: false,
 }
 
 interface VisitorAction extends Action {
@@ -16,6 +17,8 @@ const visitorReducer = (store: VisitorReducer = initialVisitorState, action: Vis
   switch (action.type) {
 
     case 'VISITED_BEFORE': return { ...store, visitedBefore: true }
+
+    case 'GA-DISABLED': return { ...store, gaDisabled: true }
 
     case 'SET_USED_OD': {
       const filteredOds = store.usedOds.filter((od) =>
@@ -55,6 +58,29 @@ export const showWelcomeIfFirstVisit = () => {
       dispatch({ type: 'VISITED_BEFORE' })
     } else {
       dispatch(showInfo())
+    }
+  }
+}
+
+export const disableAnalyticsCookies = () => {
+  //@ts-ignore
+  window['ga-disable-G-JJJM7NNCXK'] = true
+  Cookies.set('gp-ga-disabled', 'yes')
+  localStorage.setItem('gp-ga-disabled', 'yes')
+  return async (dispatch: any) => {
+    dispatch({ type: 'GA-DISABLED' })
+  }
+}
+
+export const maybeDisableAnalyticsCookies = () => {
+  return async (dispatch: any) => {
+    const gaDisabledCookie = Cookies.get('gp-ga-disabled')
+    const gaDisabledLs = localStorage.getItem('gp-ga-disabled')
+    console.log('analytics disabled: ', gaDisabledCookie, gaDisabledLs);
+    if (gaDisabledCookie === 'yes' || gaDisabledLs === 'yes') {
+      //@ts-ignore
+      window['ga-disable-G-JJJM7NNCXK'] = true
+      dispatch({ type: 'GA-DISABLED' })
     }
   }
 }

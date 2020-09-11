@@ -3,6 +3,7 @@ import { connect, ConnectedProps } from 'react-redux'
 import styled, { css } from 'styled-components'
 import { Button } from '../../components/Button'
 import { showInfo, hideInfo, Lang } from './../../reducers/uiReducer'
+import CookieConsent from './CookieConsent'
 import HYLogoFi from '../Images/HY_fi.png'
 import HYLogoEn from '../Images/HY_en.png'
 import HopeLogo from '../Images/Hope_black_url.png'
@@ -25,15 +26,15 @@ const InfoContainer = styled.div`
   flex-wrap: wrap;
   pointer-events: none;
 `
-const FlexDiv = styled.div<{ visitedBefore: boolean }>`
+const FlexDiv = styled.div<{ gaDisabled: boolean }>`
   align-self: center;
-  width: 670px;
+  width: 750px;
   max-width: 85%;
   display: flex;
   flex-direction: row-reverse;
   flex-wrap: wrap;
-  ${props => props.visitedBefore === true && css`
-    width: 650px;
+  ${props => props.gaDisabled === true && css`
+    width: 670px;
   `}
 `
 const WhiteBox = styled.div`
@@ -123,12 +124,12 @@ const WelcomeInfo = (props: PropsFromRedux) => {
 
   return (
     <InfoContainer>
-      <FlexDiv visitedBefore={props.visitedBefore}>
+      <FlexDiv gaDisabled={props.gaDisabled}>
         <WhiteBox>
           <InfoWrapper onClick={() => setShowLogos(false)} onScroll={() => setShowLogos(false)}>
             <ToggleLanguageButtons size={16} />
             <Title><T>info_modal.welcome.title</T> (demo)!</Title>
-            {!props.visitedBefore && <P><T>info_modal.cookie.info</T></P>}
+            {!props.visitedBefore && !props.gaDisabled && <P><CookieConsent /></P>}
             <P>
               <T>info_modal.dev_status_info</T>
             </P>
@@ -170,6 +171,7 @@ const WelcomeInfo = (props: PropsFromRedux) => {
               <br />
               <Link href='https://github.com/DigitalGeographyLab/hope-green-path-server' target='_blank' rel='noopener noreferrer'>DigitalGeographyLab/hope-green-path-server</Link>{' '}
             </P>
+            {props.visitedBefore && !props.gaDisabled && <P><br /><CookieConsent /></P>}
             <SponsorsDiv showLogos={showLogos}>
               <LogoFlex>
                 {props.ui.lang === Lang.FI &&
@@ -207,6 +209,7 @@ const WelcomeInfo = (props: PropsFromRedux) => {
 const mapStateToProps = (state: ReduxState) => ({
   ui: state.ui,
   visitedBefore: state.visitor.visitedBefore,
+  gaDisabled: state.visitor.gaDisabled,
 })
 
 const connector = connect(mapStateToProps, { showInfo, hideInfo })
