@@ -47,14 +47,14 @@ const WhiteBox = styled.div`
   font-weight: 300;
   color: black;
   font-size: 14px;
-  overflow: auto;
   height: min-content;
   pointer-events: auto;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.22), 0 6px 20px 0 rgba(0,0,0,0.14);
 `
 const InfoWrapper = styled.div`
   max-height: 68vh;
-  overflow: auto;
+  overflow: -moz-scrollbars-vertical; 
+  overflow-y: scroll;
 `
 const Title = styled.div`
   font-weight: 300;
@@ -85,7 +85,6 @@ const SponsorsDiv = styled.div<{ showLogos: boolean }>`
     position: sticky;
   `}
 `
-
 const ButtonDiv = styled.div`
   width: 100%;
   display: flex;
@@ -175,7 +174,7 @@ const WelcomeInfo = (props: PropsFromRedux) => {
               <br />
               <Link href='https://github.com/DigitalGeographyLab/hope-green-path-server' target='_blank' rel='noopener noreferrer'>DigitalGeographyLab/hope-green-path-server</Link>{' '}
             </P>
-Sh            {props.visitedBefore && !props.gaDisabled && <P style={{ marginTop: '5px' }}><CookieConsent /></P>}
+            {props.visitedBefore && !props.gaDisabled && <P style={{ marginTop: '5px' }}><CookieConsent /></P>}
             <SponsorsDiv showLogos={showLogos && !props.visitedBefore}>
               <LogoFlex>
                 {props.ui.lang === Lang.FI &&
