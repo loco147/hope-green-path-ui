@@ -6,7 +6,7 @@ import DestinationInput from './DestinationInput'
 
 const OdContainer = styled.div<{ hide?: boolean }>`
   pointer-events: auto;
-  padding: 5px 0 0 0;
+  padding: 2px 0 0 0;
   display: flex;
   flex-direction: column;
   align-items: center;

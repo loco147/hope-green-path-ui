@@ -175,7 +175,7 @@ const WelcomeInfo = (props: PropsFromRedux) => {
               <br />
               <Link href='https://github.com/DigitalGeographyLab/hope-green-path-server' target='_blank' rel='noopener noreferrer'>DigitalGeographyLab/hope-green-path-server</Link>{' '}
             </P>
-            {props.visitedBefore && !props.gaDisabled && <P style={{ marginTop: "5px" }}><CookieConsent /></P>}
+Sh            {props.visitedBefore && !props.gaDisabled && <P style={{ marginTop: '5px' }}><CookieConsent /></P>}
             <SponsorsDiv showLogos={showLogos && !props.visitedBefore}>
               <LogoFlex>
                 {props.ui.lang === Lang.FI &&
