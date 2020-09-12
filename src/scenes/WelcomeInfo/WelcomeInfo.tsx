@@ -41,7 +41,7 @@ const WhiteBox = styled.div`
   display: flex;
   flex-direction: column;
   letter-spacing: 0.6px;
-  padding: 18px 27px 5px 27px;
+  padding: 18px 24px 5px 27px;
   background-color: rgba(255, 255, 255, 1);
   border-radius: 8px;
   font-weight: 300;
@@ -55,6 +55,15 @@ const InfoWrapper = styled.div`
   max-height: 68vh;
   overflow: -moz-scrollbars-vertical; 
   overflow-y: scroll;
+  ::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 7px;
+  }
+  ::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, .3);
+    -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+  }
 `
 const Title = styled.div`
   font-weight: 300;
