@@ -17,12 +17,18 @@ const LogoRow = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  font-weight: 500;
+  font-size: 13px;
   padding: 6px 4px 0px 9px;
+  @media (min-width: 600px) {
+    justify-content: flex-start;
+    font-size: 14px;
+    font-weight: 450;
+    padding: 6px 4px 1px 9px;
+  }
 `
 const GreenPathsLabel = styled.div`
-  font-size: 13px;
   margin-left: 3px;
-  font-weight: 500;
   letter-spacing: -0.6px;
 `
 
