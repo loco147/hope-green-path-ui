@@ -73,7 +73,7 @@ const P = styled.div`
   letter-spacing: 0.5px;
   color: rgb(40, 40, 40);
 `
-const SponsorsDiv = styled.div<{ showLogos: boolean }>`
+const SponsorsDiv = styled.div<{ raiseLogos: boolean }>`
   position: initial;
   bottom: 0;
   background: rgba(255, 255, 255, 0.97);
@@ -81,7 +81,7 @@ const SponsorsDiv = styled.div<{ showLogos: boolean }>`
   padding-top: 12px;
   transition-duration: 0.2s;
   -webkit-transition-duration: 0.2s; /* Safari */
-  ${props => props.showLogos && css`
+  ${props => props.raiseLogos && css`
     position: sticky;
   `}
 `
@@ -117,9 +117,9 @@ const StyledLogoLink = styled.a`
 `
 
 const WelcomeInfo = (props: PropsFromRedux) => {
-  const [showLogos, setShowLogos] = useState(true)
+  const [raiseLogos, setRaiseLogos] = useState(true)
 
-  useEffect(() => setShowLogos(true), [props.ui.info])
+  useEffect(() => setRaiseLogos(true), [props.ui.info])
 
   if (!props.ui.info) return null
 
@@ -127,7 +127,7 @@ const WelcomeInfo = (props: PropsFromRedux) => {
     <InfoContainer>
       <FlexDiv gaDisabled={props.gaDisabled}>
         <WhiteBox>
-          <InfoWrapper onClick={() => setShowLogos(false)} onScroll={() => setShowLogos(false)}>
+          <InfoWrapper onClick={() => setRaiseLogos(false)} onScroll={() => setRaiseLogos(false)}>
             <ToggleLanguageButtons size={16} />
             <Title><T>info_modal.welcome.title</T> (demo)!</Title>
             {!props.visitedBefore && !props.gaDisabled && <P><CookieConsent /></P>}
@@ -174,8 +174,11 @@ const WelcomeInfo = (props: PropsFromRedux) => {
               <br />
               <Link href='https://github.com/DigitalGeographyLab/hope-green-path-server' target='_blank' rel='noopener noreferrer'>DigitalGeographyLab/hope-green-path-server</Link>{' '}
             </P>
-            {props.visitedBefore && !props.gaDisabled && <P style={{ marginTop: '5px' }}><CookieConsent /></P>}
-            <SponsorsDiv showLogos={showLogos && !props.visitedBefore}>
+            {props.visitedBefore && !props.gaDisabled && <P style={{ marginTop: '6px' }}><CookieConsent /></P>}
+            <SmallText style={{ marginTop: '8px' }}>
+              <T>info_modal.funded_by</T>
+            </SmallText>
+            <SponsorsDiv raiseLogos={raiseLogos}>
               <LogoFlex>
                 {props.ui.lang === Lang.FI &&
                   <StyledLogoLink href='https://www.helsinki.fi/en/researchgroups/digital-geography-lab' target='_blank' rel='noopener noreferrer'>
@@ -195,9 +198,6 @@ const WelcomeInfo = (props: PropsFromRedux) => {
                 </StyledLogoLink>
                 <LogoWrapper><img src={EU} width="90" height='60' alt='EULogo' /></LogoWrapper>
               </LogoFlex>
-              <SmallText>
-                <T>info_modal.funded_by</T>
-              </SmallText>
             </SponsorsDiv>
           </InfoWrapper>
           <ButtonDiv id='hide-welcome-button'>
