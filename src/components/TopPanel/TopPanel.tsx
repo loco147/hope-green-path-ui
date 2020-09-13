@@ -24,9 +24,19 @@ const LogoRow = styled.div`
     justify-content: flex-start;
     font-size: 14px;
     font-weight: 450;
-    padding: 6px 4px 1px 9px;
+    padding-bottom: 2px;
+  }
+  @media (min-width: 1100px) {    
+    margin-bottom: -20px;
   }
 `
+const LogoImg = styled.img`
+  @media (min-width: 600px) {
+    width: 20px;
+    height: auto;
+  }
+`
+
 const GreenPathsLabel = styled.div`
   margin-left: 3px;
   letter-spacing: -0.6px;
@@ -37,7 +47,7 @@ const TopPanel = () => {
     <div>
       <Container>
         <LogoRow>
-          <img src={Favicon} width="14" height="14" alt='Green Paths app logo' />
+          <LogoImg src={Favicon} width="15" height="15" alt='Green Paths app logo' />
           <GreenPathsLabel>Green<span style={{ marginLeft: '2px' }}>Paths</span></GreenPathsLabel>
         </LogoRow>
         <OrigDestPanel />
