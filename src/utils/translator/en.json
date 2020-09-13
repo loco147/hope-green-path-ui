@@ -45,7 +45,7 @@
   "opened_shortest_clean_path.tooltip": "Exposure to different air quality classes on the shortest (selected) path:",
   "opened_clean_path.tooltip": "Exposure to different air quality classes on the selected and the shortest path:",
   "info_modal.welcome.title": "Welcome to Green Paths",
-  "info_modal.cookie.info": "This site uses cookies to log visitor counts, and some information of your browser (e.g. IP address) is shared with Google. By clicking OK below, you accept this use of cookies. Alternatively, you can disable analytics & cookies:",
+  "info_modal.cookie.info": "This site uses cookies to log anonymous visitor counts via Google Analytics, and thus some information of your browser (e.g. IP address) is shared with Google. By clicking OK below, you accept this use of cookies. Alternatively, you can disable analytics & cookies:",
   "info_modal.cookie.disable_button_label": "Disable analytics cookies",
   "info_modal.dev_status_info": "The app and its real-time air quality data source are still under active development and hence not guaranteed to work at all times.",
   "info_modal.why.title": "Problem",
