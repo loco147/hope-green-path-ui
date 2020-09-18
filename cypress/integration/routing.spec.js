@@ -11,6 +11,7 @@ describe('Page load', () => {
   })
 })
 
+
 describe('Toggle language', () => {
 
   it('changes language from info panel (-> FI -> EN)', () => {
@@ -50,6 +51,7 @@ describe('Toggle language', () => {
       .should('have.property', 'value', 'en')
   })
 })
+
 
 describe('Set origin & destination with address inputs', () => {
 
@@ -120,6 +122,7 @@ describe('Set origin & destination with address inputs', () => {
   })
 })
 
+
 describe('Set origin & destination from the map', () => {
 
   it('sets origin from the map', () => {
@@ -155,6 +158,7 @@ describe('Query and show quiet paths', () => {
   })
 })
 
+
 describe('Toggle travel mode', () => {
 
   it('finds biking routes', () => {
@@ -187,6 +191,7 @@ describe('Toggle travel mode', () => {
   })
 })
 
+
 describe('Filter paths', () => {
 
   it('filters paths by length', () => {
@@ -210,6 +215,7 @@ describe('Filter paths', () => {
     cy.contains('4/4')
   })
 })
+
 
 describe('Reset paths', () => {
 
@@ -235,6 +241,7 @@ describe('Reset paths', () => {
   })
 })
 
+
 describe('Routing (more test cases)', () => {
 
   it('opens the page (again)', () => {
@@ -245,7 +252,7 @@ describe('Routing (more test cases)', () => {
   it('finds quiet paths (walk)', () => {
     cy.get('.mapboxgl-canvas')
       .wait(300)
-      .click(465, 160)
+      .click(465, 210)
     cy.contains('Route from here').click()
     cy.get('.mapboxgl-canvas')
       .wait(100)
@@ -255,15 +262,15 @@ describe('Routing (more test cases)', () => {
   })
 
   it('shows shortest path stats (walk)', () => {
-    cy.contains('30 min')
-    cy.contains('2.4 km')
+    cy.contains('29 min')
+    cy.contains('2.3 km')
     cy.contains('moderate noise')
   })
 
   it('shows quiet path stats (walk)', () => {
-    cy.contains('34 min')
-    cy.contains('2.8 km')
-    cy.contains('-38 % noise')
+    cy.contains('33 min')
+    cy.contains('2.6 km')
+    cy.contains('-21 % noise')
   })
 })
 
@@ -271,12 +278,12 @@ describe('Routing (more test cases)', () => {
 describe('Path exposure info', () => {
 
   it('shows opened path stats', () => {
-    cy.contains('-38 % noise').parent().parent().parent().within(() => cy.get('.open-path-button').click())
+    cy.contains('-30 % noise').parent().parent().parent().within(() => cy.get('.open-path-button').click())
     cy.contains('Exposure to different traffic noise levels')
     cy.contains('40dB')
     cy.contains('50dB')
-    cy.contains('6 min')
-    cy.contains('4 min')
+    cy.contains('18 min')
+    cy.contains('10 min')
   })
 
   it('closes opened paths stats', () => {
