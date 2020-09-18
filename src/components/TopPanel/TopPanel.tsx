@@ -1,9 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
+import Favicon from './favicon-32x32.png'
 import RoutingSettingsRow from './RoutingSettingsRow'
 import ShowInfoButton from './ShowInfoButton'
 import OrigDestPanel from './OrigDestPanel'
-import Favicon from './favicon-32x32.png'
+import ToggleLayerSelector from './ToggleLayerSelector'
 
 const Container = styled.div`
   background-color: rgba(255,255,255,0.98);
@@ -11,7 +12,8 @@ const Container = styled.div`
 `
 const LowerTransparentPanel = styled.div`
   display: flex;
-  justify-content: flex-end;
+  flex-direction: column;
+  align-items: flex-end;
 `
 const LogoRow = styled.div`
   display: flex;
@@ -55,6 +57,7 @@ const TopPanel = () => {
       </Container>
       <LowerTransparentPanel>
         <ShowInfoButton />
+        <ToggleLayerSelector />
       </LowerTransparentPanel>
     </div>
   )
