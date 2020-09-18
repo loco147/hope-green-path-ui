@@ -58,6 +58,9 @@ const StyledIconContainer = styled.div<{ bike?: any, selected: boolean }>`
 `
 
 const getSetTravelModeFunction = (props: PropsFromRedux, travelModeOfTheButton: TravelMode) => {
+  if (props.waitingPaths) {
+    return null
+  }
   if (!props.showingPaths) {
     return props.setTravelMode(travelModeOfTheButton)
   } else {
@@ -91,6 +94,7 @@ const TravelModeSelector = (props: PropsFromRedux) => {
 
 const mapStateToProps = (state: ReduxState) => ({
   showingPaths: state.paths.showingPaths,
+  waitingPaths: state.paths.waitingPaths,
   selectedTravelMode: state.paths.selectedTravelMode,
   showingPathsOfExposureMode: state.paths.showingPathsOfExposureMode,
   origin: state.origin,
