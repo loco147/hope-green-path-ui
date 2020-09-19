@@ -58,7 +58,7 @@ class PathSelected extends React.Component<PropsFromRedux> {
     // @ts-ignore - map is given to all children of Map
     const { map } = this.props
 
-    if (this.props.basemapLoadId !== prevProps.basemapLoadId) {
+    if (this.props.basemapChangeId !== prevProps.basemapChangeId) {
       this.loadLayerToMap(map)
       this.updateLayerData(map)
     } else {
@@ -75,7 +75,7 @@ class PathSelected extends React.Component<PropsFromRedux> {
 const mapStateToProps = (state: ReduxState) => ({
   selPathFC: state.paths.selPathFC,
   lengthLimit: state.paths.lengthLimit,
-  basemapLoadId: state.map.basemapLoadId
+  basemapChangeId: state.map.basemapChangeId
 })
 
 const connector = connect(mapStateToProps, { setLayerLoaded })

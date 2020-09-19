@@ -54,7 +54,7 @@ class UserLocation extends React.Component<PropsFromRedux> {
     // @ts-ignore - map is given to all children of Map
     const { map } = this.props
 
-    if (this.props.basemapLoadId !== prevProps.basemapLoadId) {
+    if (this.props.basemapChangeId !== prevProps.basemapChangeId) {
       this.loadLayerToMap(map)
     } else {
       this.updateLayerData(map)
@@ -68,7 +68,7 @@ class UserLocation extends React.Component<PropsFromRedux> {
 
 const mapStateToProps = (state: ReduxState) => ({
   userLocFC: state.userLocation.userLocFC,
-  basemapLoadId: state.map.basemapLoadId,
+  basemapChangeId: state.map.basemapChangeId,
 })
 
 const connector = connect(mapStateToProps, { setLayerLoaded })

@@ -1,7 +1,7 @@
 import { Component } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
 import { LayerId } from '../../constants'
-import { setBaseMapLoaded, unloadLayers } from './../../reducers/mapReducer'
+import { setBaseMapChanged, unloadLayers } from './../../reducers/mapReducer'
 
 class MapControl extends Component<PropsFromRedux & { map?: MbMap }> {
 
@@ -30,7 +30,7 @@ class MapControl extends Component<PropsFromRedux & { map?: MbMap }> {
       map!.setStyle(this.props.mapState.basemap)
       map!.once('styledataloading', () => {
         map!.once('styledata', () => {
-          this.props.setBaseMapLoaded()
+          this.props.setBaseMapChanged()
         })
       })
     }
@@ -55,6 +55,6 @@ const mapStateToProps = (state: ReduxState) => ({
   loadedLayers: state.map.loadedLayers
 })
 
-const connector = connect(mapStateToProps, { setBaseMapLoaded, unloadLayers })
+const connector = connect(mapStateToProps, { setBaseMapChanged, unloadLayers })
 type PropsFromRedux = ConnectedProps<typeof connector>
 export default connector(MapControl)

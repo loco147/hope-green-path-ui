@@ -138,7 +138,7 @@ interface MapReducer {
   initialized: boolean,
   zoomToBbox: [number, number, number, number],
   basemap: import('./constants').Basemap,
-  basemapLoadId: number,
+  basemapChangeId: number,
   loadedLayers: import('./constants').LayerId[]
   center: LngLat | {},
   zoom: number

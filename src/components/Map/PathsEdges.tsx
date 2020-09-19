@@ -94,7 +94,7 @@ class PathsEdges extends React.Component<PropsFromRedux> {
     // @ts-ignore - map is given to all children of Map
     const { map } = this.props
 
-    if (this.props.basemapLoadId !== prevProps.basemapLoadId) {
+    if (this.props.basemapChangeId !== prevProps.basemapChangeId) {
       this.loadLayerToMap(map)
       this.updateLayerData(map)
     } else {
@@ -112,7 +112,7 @@ const mapStateToProps = (state: ReduxState) => ({
   quietEdgeFC: state.paths.quietEdgeFC,
   cleanEdgeFC: state.paths.cleanEdgeFC,
   lengthLimit: state.paths.lengthLimit,
-  basemapLoadId: state.map.basemapLoadId,
+  basemapChangeId: state.map.basemapChangeId,
 })
 
 const connector = connect(mapStateToProps, { setSelectedPath, setLayerLoaded })

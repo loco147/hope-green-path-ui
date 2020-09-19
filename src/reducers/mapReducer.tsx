@@ -7,7 +7,7 @@ const initialMapState: MapReducer = {
   initialized: false,
   zoomToBbox: [0, 0, 0, 0],
   basemap: Basemap.STREETS,
-  basemapLoadId: 1,
+  basemapChangeId: 1,
   loadedLayers: [],
   center: {},
   zoom: 0,
@@ -48,8 +48,8 @@ const mapReducer = (store: MapReducer = initialMapState, action: MapAction): Map
       return { ...store, basemap: action.basemap }
     }
 
-    case 'BASEMAP_LOADED': {
-      return { ...store, basemapLoadId: store.basemapLoadId + 1 }
+    case 'BASEMAP_CHANGED': {
+      return { ...store, basemapChangeId: store.basemapChangeId + 1 }
     }
 
     case 'LAYER_LOADED': {
@@ -87,8 +87,8 @@ export const setBaseMap = (basemap: Basemap) => {
   return { type: 'SET_BASEMAP', basemap }
 }
 
-export const setBaseMapLoaded = () => {
-  return { type: 'BASEMAP_LOADED' }
+export const setBaseMapChanged = () => {
+  return { type: 'BASEMAP_CHANGED' }
 }
 
 export const setLayerLoaded = (layerId: LayerId) => {
