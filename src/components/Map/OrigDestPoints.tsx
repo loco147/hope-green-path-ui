@@ -80,12 +80,8 @@ class OrigDest extends React.Component<PropsFromRedux> {
 
     this.updateLayerData(map)
 
-    if (this.props.basemap !== prevProps.basemap) {
-      map.once('styledataloading', () => {
-        map.once('styledata', () => {
-          this.loadLayerToMap(map)
-        })
-      })
+    if (this.props.basemapLoadId !== prevProps.basemapLoadId) {
+      this.loadLayerToMap(map)
     }
 
   }
@@ -98,7 +94,7 @@ class OrigDest extends React.Component<PropsFromRedux> {
 const mapStateToProps = (state: ReduxState) => ({
   originPoint: state.origin.originObject,
   destinationPoint: state.destination.destObject,
-  basemap: state.map.basemap
+  basemapLoadId: state.map.basemapLoadId
 })
 
 const connector = connect(mapStateToProps, { setSelectLocationsPopup })

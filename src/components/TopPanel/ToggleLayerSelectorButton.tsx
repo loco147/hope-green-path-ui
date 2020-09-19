@@ -27,7 +27,7 @@ const StyledButton = styled.div<{ onClick: Function }>`
   justify-items: center;
   @media (min-width: 600px) {
     &:hover {
-      margin-right: 7px;
+      margin-right: 2px;
     }
   }
 `

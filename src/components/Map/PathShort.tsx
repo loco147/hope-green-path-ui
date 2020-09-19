@@ -76,13 +76,9 @@ class PathShort extends React.Component<PropsFromRedux> {
     // @ts-ignore - map is given to all children of Map
     const { map } = this.props
 
-    if (this.props.basemap !== prevProps.basemap) {
-      map.once('styledataloading', () => {
-        map.once('styledata', () => {
-          this.loadLayerToMap(map)
-          this.updateLayerData(map)
-        })
-      })
+    if (this.props.basemapLoadId !== prevProps.basemapLoadId) {
+      this.loadLayerToMap(map)
+      this.updateLayerData(map)
     } else {
       this.updateLayerData(map)
     }
@@ -96,7 +92,7 @@ class PathShort extends React.Component<PropsFromRedux> {
 const mapStateToProps = (state: ReduxState) => ({
   shortPathFC: state.paths.shortPathFC,
   lengthLimit: state.paths.lengthLimit,
-  basemap: state.map.basemap,
+  basemapLoadId: state.map.basemapLoadId,
 })
 
 const connector = connect(mapStateToProps, { setSelectedPath, scrollToPath })

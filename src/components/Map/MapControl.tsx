@@ -1,5 +1,6 @@
 import { Component } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
+import { setBaseMapLoaded } from './../../reducers/mapReducer'
 
 class MapControl extends Component<PropsFromRedux & { map?: MbMap }> {
 
@@ -24,8 +25,12 @@ class MapControl extends Component<PropsFromRedux & { map?: MbMap }> {
     if (zoomToBbox !== prevProps.mapState.zoomToBbox) map!.fitBounds(zoomToBbox, this.getFitBoundsOptions(showingPaths))
 
     if (this.props.mapState.basemap !== prevProps.mapState.basemap) {
-      console.log('Need to update basemap to', this.props.mapState.basemap);
       map!.setStyle(this.props.mapState.basemap)
+      map!.once('styledataloading', () => {
+        map!.once('styledata', () => {
+          this.props.setBaseMapLoaded()
+        })
+      })
     }
   }
   render() { return null }
@@ -37,6 +42,6 @@ const mapStateToProps = (state: ReduxState) => ({
   showingPaths: state.paths.waitingPaths || state.paths.showingPaths
 })
 
-const connector = connect(mapStateToProps, {})
+const connector = connect(mapStateToProps, { setBaseMapLoaded })
 type PropsFromRedux = ConnectedProps<typeof connector>
 export default connector(MapControl)

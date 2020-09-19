@@ -12,35 +12,49 @@ class UserLocation extends React.Component<PropsFromRedux> {
     'circle-stroke-width': 2.5
   }
 
-  componentDidMount() {
-    // @ts-ignore - map is given to all children of Map
-    const { map } = this.props
-
-    map.once('load', () => {
-      // Add layer
-      map.addSource(this.layerId, { type: 'geojson', data: this.props.userLocFC })
-      this.source = map.getSource(this.layerId)
-      map.addLayer({
-        id: this.layerId,
-        source: this.layerId,
-        type: 'circle',
-        paint: this.circleStyle,
-      })
+  loadLayerToMap(map: any) {
+    // Add layer
+    map.addSource(this.layerId, { type: 'geojson', data: this.props.userLocFC })
+    this.source = map.getSource(this.layerId)
+    map.addLayer({
+      id: this.layerId,
+      source: this.layerId,
+      type: 'circle',
+      paint: this.circleStyle,
     })
   }
 
-  componentDidUpdate = () => {
+  updateLayerData(map: any) {
     const { userLocFC } = this.props
 
     if (this.source !== undefined) {
       this.source.setData(userLocFC)
     } else {
-      // @ts-ignore - map is given to all children of Map
-      this.props.map.once('sourcedata', () => {
+      map.once('sourcedata', () => {
         if (this.source) {
           this.source.setData(userLocFC)
         }
       })
+    }
+  }
+
+  componentDidMount() {
+    // @ts-ignore - map is given to all children of Map
+    const { map } = this.props
+
+    map.once('load', () => {
+      this.loadLayerToMap(map)
+    })
+  }
+
+  componentDidUpdate = (prevProps: PropsFromRedux) => {
+    // @ts-ignore - map is given to all children of Map
+    const { map } = this.props
+
+    if (this.props.basemapLoadId !== prevProps.basemapLoadId) {
+      this.loadLayerToMap(map)
+    } else {
+      this.updateLayerData(map)
     }
   }
 
@@ -51,6 +65,7 @@ class UserLocation extends React.Component<PropsFromRedux> {
 
 const mapStateToProps = (state: ReduxState) => ({
   userLocFC: state.userLocation.userLocFC,
+  basemapLoadId: state.map.basemapLoadId,
 })
 
 const connector = connect(mapStateToProps, {})

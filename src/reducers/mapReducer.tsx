@@ -7,6 +7,7 @@ const initialMapState: MapReducer = {
   initialized: false,
   zoomToBbox: [0, 0, 0, 0],
   basemap: Basemap.STREETS,
+  basemapLoadId: 1,
   center: {},
   zoom: 0,
 }
@@ -45,6 +46,10 @@ const mapReducer = (store: MapReducer = initialMapState, action: MapAction): Map
       return { ...store, basemap: action.basemap }
     }
 
+    case 'BASEMAP_LOADED': {
+      return { ...store, basemapLoadId: store.basemapLoadId + 1 }
+    }
+
     case 'UPDATE_CAMERA':
       return { ...store, center: action.center, zoom: action.zoom }
 
@@ -67,6 +72,10 @@ export const updateCamera = (center: LngLat, zoom: number) => {
 
 export const setBaseMap = (basemap: Basemap) => {
   return { type: 'SET_BASEMAP', basemap }
+}
+
+export const setBaseMapLoaded = () => {
+  return { type: 'BASEMAP_LOADED' }
 }
 
 export default mapReducer
