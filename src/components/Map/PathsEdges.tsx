@@ -40,26 +40,20 @@ class PathsEdges extends React.Component<PropsFromRedux> {
     'line-cap': 'round',
   }
 
-  componentDidMount() {
-    // @ts-ignore - map is given to all children of Map
-    const { map } = this.props
-    map.once('load', () => {
-      // Add layer
-      map.addSource(this.layerId, { type: 'geojson', data: this.props.quietEdgeFC })
-      this.source = map.getSource(this.layerId)
-      map.addLayer({
-        id: this.layerId,
-        source: this.layerId,
-        type: 'line',
-        paint: this.paint,
-        layout: this.layout,
-      })
+  loadLayerToMap(map: any) {
+    // Add layer
+    map.addSource(this.layerId, { type: 'geojson', data: this.props.quietEdgeFC })
+    this.source = map.getSource(this.layerId)
+    map.addLayer({
+      id: this.layerId,
+      source: this.layerId,
+      type: 'line',
+      paint: this.paint,
+      layout: this.layout,
     })
   }
 
-  componentDidUpdate = () => {
-    // @ts-ignore - map is given to all children of Map
-    const { map } = this.props
+  updateLayerData(map: any) {
     const { showingPathsOfExposureMode, quietEdgeFC, cleanEdgeFC, lengthLimit } = this.props
     let greenEdgeFC: any
     let lineColor
@@ -86,6 +80,30 @@ class PathsEdges extends React.Component<PropsFromRedux> {
     }
   }
 
+  componentDidMount() {
+    // @ts-ignore - map is given to all children of Map
+    const { map } = this.props
+    map.once('load', () => {
+      this.loadLayerToMap(map)
+    })
+  }
+
+  componentDidUpdate = (prevProps: PropsFromRedux) => {
+    // @ts-ignore - map is given to all children of Map
+    const { map } = this.props
+
+    if (this.props.basemap !== prevProps.basemap) {
+      map.once('styledataloading', () => {
+        map.once('styledata', () => {
+          this.loadLayerToMap(map)
+          this.updateLayerData(map)
+        })
+      })
+    } else {
+      this.updateLayerData(map)
+    }
+  }
+
   render() {
     return null
   }
@@ -96,6 +114,7 @@ const mapStateToProps = (state: ReduxState) => ({
   quietEdgeFC: state.paths.quietEdgeFC,
   cleanEdgeFC: state.paths.cleanEdgeFC,
   lengthLimit: state.paths.lengthLimit,
+  basemap: state.map.basemap,
 })
 
 const connector = connect(mapStateToProps, { setSelectedPath })

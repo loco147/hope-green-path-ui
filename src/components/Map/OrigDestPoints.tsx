@@ -21,26 +21,48 @@ class OrigDest extends React.Component<PropsFromRedux> {
     'circle-stroke-width': 2
   }
 
+  loadLayerToMap(map: any) {
+    const { originPoint, destinationPoint } = this.props
+    // @ts-ignore
+    const odFeatures: OdPlace[] = [originPoint, destinationPoint].filter(od => od)
+    const origDestFC = turf.asFeatureCollection(odFeatures)
+    // Add layer
+    map.addSource(this.layerId, { type: 'geojson', data: origDestFC })
+    this.source = map.getSource(this.layerId)
+    map.addLayer({
+      id: this.layerId,
+      source: this.layerId,
+      type: 'circle',
+      paint: this.circleStyle,
+    })
+  }
+
+  updateLayerData(map: any) {
+    const { originPoint, destinationPoint } = this.props
+    // @ts-ignore
+    const odFeatures: OdPlace[] = [originPoint, destinationPoint].filter(od => od)
+    const origDestFC = turf.asFeatureCollection(odFeatures)
+
+    if (this.source !== undefined) {
+      this.source.setData(origDestFC)
+    } else {
+      map.once('sourcedata', () => {
+        if (this.source) {
+          this.source.setData(origDestFC)
+        }
+      })
+    }
+  }
+
   componentDidMount() {
     // @ts-ignore - this is given to all children of Map
     const { map } = this.props
 
+    this.loadLayerToMap(map)
+
     const { setSelectLocationsPopup } = this.props
 
     map.once('load', () => {
-      const { originPoint, destinationPoint } = this.props
-      // @ts-ignore
-      const odFeatures: OdPlace[] = [originPoint, destinationPoint].filter(od => od)
-      const origDestFC = turf.asFeatureCollection(odFeatures)
-      // Add layer
-      map.addSource(this.layerId, { type: 'geojson', data: origDestFC })
-      this.source = map.getSource(this.layerId)
-      map.addLayer({
-        id: this.layerId,
-        source: this.layerId,
-        type: 'circle',
-        paint: this.circleStyle,
-      })
       setMapReferenceForPopups(map)
       map.on('click', (e: MapMouseEvent) => {
         // show popup only if path was not clicked
@@ -52,22 +74,20 @@ class OrigDest extends React.Component<PropsFromRedux> {
     })
   }
 
-  componentDidUpdate = () => {
-    const { originPoint, destinationPoint } = this.props
-    // @ts-ignore
-    const odFeatures: OdPlace[] = [originPoint, destinationPoint].filter(od => od)
-    const origDestFC = turf.asFeatureCollection(odFeatures)
+  componentDidUpdate = (prevProps: PropsFromRedux) => {
+    // @ts-ignore - map is given to all children of Map
+    const { map } = this.props
 
-    if (this.source !== undefined) {
-      this.source.setData(origDestFC)
-    } else {
-      // @ts-ignore - map is given to all children of Map
-      this.props.map.once('sourcedata', () => {
-        if (this.source) {
-          this.source.setData(origDestFC)
-        }
+    this.updateLayerData(map)
+
+    if (this.props.basemap !== prevProps.basemap) {
+      map.once('styledataloading', () => {
+        map.once('styledata', () => {
+          this.loadLayerToMap(map)
+        })
       })
     }
+
   }
 
   render() {
@@ -78,6 +98,7 @@ class OrigDest extends React.Component<PropsFromRedux> {
 const mapStateToProps = (state: ReduxState) => ({
   originPoint: state.origin.originObject,
   destinationPoint: state.destination.destObject,
+  basemap: state.map.basemap
 })
 
 const connector = connect(mapStateToProps, { setSelectLocationsPopup })

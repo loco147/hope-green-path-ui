@@ -19,37 +19,21 @@ class PathShort extends React.Component<PropsFromRedux> {
     'line-cap': 'round',
   }
 
-  componentDidMount() {
-    // @ts-ignore - map is given to all children of Map
-    const { map } = this.props
-    const { shortPathFC, setSelectedPath, scrollToPath } = this.props
-    map.once('load', () => {
-      // Add layer
-      map.addSource(this.layerId, { type: 'geojson', data: shortPathFC })
-      this.source = map.getSource(this.layerId)
-      map.addLayer({
-        id: this.layerId,
-        source: this.layerId,
-        type: 'line',
-        paint: this.paint,
-        layout: this.layout,
-      })
-      map.on('mouseenter', this.layerId, () => { map.getCanvas().style.cursor = 'pointer' })
-      map.on('mouseleave', this.layerId, () => { map.getCanvas().style.cursor = '' })
-      map.on('click', (e: MapMouseEvent) => {
-        const features = utils.getLayersFeaturesAroundClickE([this.layerId], e, clickTol, map)
-        if (features.length > 0) {
-          const clickedFeat = features[0]
-          setSelectedPath(clickedFeat.properties!.id)
-          scrollToPath(clickedFeat.properties!.id)
-        }
-      })
+  loadLayerToMap(map: any) {
+    // Add layer
+    const { shortPathFC } = this.props
+    map.addSource(this.layerId, { type: 'geojson', data: shortPathFC })
+    this.source = map.getSource(this.layerId)
+    map.addLayer({
+      id: this.layerId,
+      source: this.layerId,
+      type: 'line',
+      paint: this.paint,
+      layout: this.layout,
     })
   }
 
-  componentDidUpdate = () => {
-    // @ts-ignore - map is given to all children of Map
-    const { map } = this.props
+  updateLayerData(map: any) {
     const { shortPathFC, lengthLimit } = this.props
     map.moveLayer('pathsGreen', this.layerId)
 
@@ -68,6 +52,42 @@ class PathShort extends React.Component<PropsFromRedux> {
     }
   }
 
+  componentDidMount() {
+    // @ts-ignore - map is given to all children of Map
+    const { map } = this.props
+    this.loadLayerToMap(map)
+
+    const { setSelectedPath, scrollToPath } = this.props
+    map.once('load', () => {
+      map.on('mouseenter', this.layerId, () => { map.getCanvas().style.cursor = 'pointer' })
+      map.on('mouseleave', this.layerId, () => { map.getCanvas().style.cursor = '' })
+      map.on('click', (e: MapMouseEvent) => {
+        const features = utils.getLayersFeaturesAroundClickE([this.layerId], e, clickTol, map)
+        if (features.length > 0) {
+          const clickedFeat = features[0]
+          setSelectedPath(clickedFeat.properties!.id)
+          scrollToPath(clickedFeat.properties!.id)
+        }
+      })
+    })
+  }
+
+  componentDidUpdate = (prevProps: PropsFromRedux) => {
+    // @ts-ignore - map is given to all children of Map
+    const { map } = this.props
+
+    if (this.props.basemap !== prevProps.basemap) {
+      map.once('styledataloading', () => {
+        map.once('styledata', () => {
+          this.loadLayerToMap(map)
+          this.updateLayerData(map)
+        })
+      })
+    } else {
+      this.updateLayerData(map)
+    }
+  }
+
   render() {
     return null
   }
@@ -75,7 +95,8 @@ class PathShort extends React.Component<PropsFromRedux> {
 
 const mapStateToProps = (state: ReduxState) => ({
   shortPathFC: state.paths.shortPathFC,
-  lengthLimit: state.paths.lengthLimit
+  lengthLimit: state.paths.lengthLimit,
+  basemap: state.map.basemap,
 })
 
 const connector = connect(mapStateToProps, { setSelectedPath, scrollToPath })
