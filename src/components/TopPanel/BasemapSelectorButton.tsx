@@ -32,7 +32,7 @@ const StyledButton = styled.div<{ onClick: Function }>`
   }
 `
 
-const ToggleLayerSelectorButton = (props: PropsFromRedux & { handleClick: MouseEventHandler }) => {
+const BasemapSelectorButton = (props: PropsFromRedux & { handleClick: MouseEventHandler }) => {
   return (
     <StyledButton id='show-basemap-selector-button' onClick={props.handleClick}>
       <StyledLayersIcon />
@@ -46,4 +46,4 @@ const mapStateToProps = (state: ReduxState) => ({
 
 const connector = connect(mapStateToProps, { showInfo })
 type PropsFromRedux = ConnectedProps<typeof connector>
-export default connector(ToggleLayerSelectorButton)
+export default connector(BasemapSelectorButton)

@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components'
 import { connect, ConnectedProps } from 'react-redux'
 import { showInfo } from './../../reducers/uiReducer'
 import { setBaseMap } from './../../reducers/mapReducer'
-import ToggleLayerSelectorButton from './ToggleLayerSelectorButton'
+import BasemapSelectorButton from './BasemapSelectorButton'
 import { CloseButton } from './../Icons'
 import { Basemap } from '../../constants'
 
@@ -50,32 +50,32 @@ const AlignCloseButton = styled.div`
   margin: -4px 0px;
 `
 
-const ToggleLayerSelector = (props: PropsFromRedux) => {
-  const [showOptions, setShowOptions] = useState(true)
+const BasemapSelector = (props: PropsFromRedux) => {
+  const [showOptions, setShowOptions] = useState(false)
 
   return (
     <Wrapper>
-      {!showOptions && <ToggleLayerSelectorButton handleClick={() => setShowOptions(true)} />}
+      {!showOptions && <BasemapSelectorButton handleClick={() => setShowOptions(true)} />}
       {showOptions &&
         <OptionContainer>
+          <AlignCloseButton>
+            <CloseButton size={40} onClick={() => setShowOptions(false)} />
+          </AlignCloseButton>
           <BaseMapOption
             selected={props.basemap === Basemap.STREETS}
             onClick={() => props.setBaseMap(Basemap.STREETS)}>
             Streets
           </BaseMapOption>
           <BaseMapOption
-            selected={props.basemap === Basemap.SATELLITE}
-            onClick={() => props.setBaseMap(Basemap.SATELLITE)}>
-            Satellite
-          </BaseMapOption>
-          <BaseMapOption
             selected={props.basemap === Basemap.NOISE}
             onClick={() => props.setBaseMap(Basemap.NOISE)}>
             Traffic noise
           </BaseMapOption>
-          <AlignCloseButton>
-            <CloseButton size={40} onClick={() => setShowOptions(false)} />
-          </AlignCloseButton>
+          <BaseMapOption
+            selected={props.basemap === Basemap.SATELLITE}
+            onClick={() => props.setBaseMap(Basemap.SATELLITE)}>
+            Satellite
+          </BaseMapOption>
         </OptionContainer>}
     </Wrapper>
   )
@@ -88,4 +88,4 @@ const mapStateToProps = (state: ReduxState) => ({
 
 const connector = connect(mapStateToProps, { showInfo, setBaseMap })
 type PropsFromRedux = ConnectedProps<typeof connector>
-export default connector(ToggleLayerSelector)
+export default connector(BasemapSelector)

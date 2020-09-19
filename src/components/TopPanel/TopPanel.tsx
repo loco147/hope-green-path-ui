@@ -4,7 +4,7 @@ import Favicon from './favicon-32x32.png'
 import RoutingSettingsRow from './RoutingSettingsRow'
 import ShowInfoButton from './ShowInfoButton'
 import OrigDestPanel from './OrigDestPanel'
-import ToggleLayerSelector from './ToggleLayerSelector'
+import BasemapSelector from './BasemapSelector'
 
 const Container = styled.div`
   background-color: rgba(255,255,255,0.98);
@@ -57,7 +57,7 @@ const TopPanel = () => {
       </Container>
       <LowerTransparentPanel>
         <ShowInfoButton />
-        <ToggleLayerSelector />
+        <BasemapSelector />
       </LowerTransparentPanel>
     </div>
   )
