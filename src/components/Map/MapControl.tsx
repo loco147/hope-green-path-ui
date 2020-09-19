@@ -7,11 +7,11 @@ class MapControl extends Component<PropsFromRedux & { map?: MbMap }> {
   getFitBoundsOptions = (showingPaths: boolean) => {
     if (window.innerWidth < 544) {
       if (showingPaths) {
-        return { padding: { top: 90, bottom: 310, left: 40, right: 40 } }
+        return { padding: { top: 110, bottom: 280, left: 40, right: 40 } }
       } else {
-        return { padding: { top: 140, bottom: 140, left: 40, right: 40 } }
+        return { padding: { top: 190, bottom: 170, left: 40, right: 40 } }
       }
-    } else return { padding: { top: 120, bottom: 90, left: 430, right: 50 } }
+    } else return { padding: { top: 120, bottom: 90, left: 390, right: 70 } }
   }
 
   componentDidUpdate = (prevProps: PropsFromRedux) => {
