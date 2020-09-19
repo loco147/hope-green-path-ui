@@ -3,11 +3,12 @@ import { connect, ConnectedProps } from 'react-redux'
 import { GeoJSONSource, MapMouseEvent } from 'mapbox-gl'
 import { setSelectedPath } from './../../reducers/pathsReducer'
 import { scrollToPath } from './../../reducers/pathListReducer'
-import { clickTol } from './../../constants'
+import { setLayerLoaded } from './../../reducers/mapReducer'
+import { clickTol, LayerId } from './../../constants'
 import { utils } from './../../utils/index'
 
 class PathShort extends React.Component<PropsFromRedux> {
-  layerId = 'shortestPath'
+  layerId = LayerId.SHORT_PATH
   source: GeoJSONSource | undefined
   paint = {
     'line-width': 4.3,
@@ -31,11 +32,11 @@ class PathShort extends React.Component<PropsFromRedux> {
       paint: this.paint,
       layout: this.layout,
     })
+    this.props.setLayerLoaded(this.layerId)
   }
 
   updateLayerData(map: any) {
     const { shortPathFC, lengthLimit } = this.props
-    map.moveLayer('pathsGreen', this.layerId)
 
     if (this.source !== undefined) {
       // @ts-ignore - it's valid geojson
@@ -95,6 +96,6 @@ const mapStateToProps = (state: ReduxState) => ({
   basemapLoadId: state.map.basemapLoadId,
 })
 
-const connector = connect(mapStateToProps, { setSelectedPath, scrollToPath })
+const connector = connect(mapStateToProps, { setSelectedPath, scrollToPath, setLayerLoaded })
 type PropsFromRedux = ConnectedProps<typeof connector>
 export default connector(PathShort)

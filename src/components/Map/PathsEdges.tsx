@@ -2,7 +2,8 @@ import React from 'react'
 import { connect, ConnectedProps } from 'react-redux'
 import { GeoJSONSource } from 'mapbox-gl'
 import { setSelectedPath } from '../../reducers/pathsReducer'
-import { dBColors, aqiColors, ExposureMode } from '../../constants'
+import { setLayerLoaded } from './../../reducers/mapReducer'
+import { dBColors, aqiColors, ExposureMode, LayerId } from '../../constants'
 
 const dbLineColors = [
   'match',
@@ -28,7 +29,7 @@ const aqiLineColors = [
 ]
 
 class PathsEdges extends React.Component<PropsFromRedux> {
-  layerId = 'PathsEdges'
+  layerId = LayerId.PATHS_EDGES
   source: GeoJSONSource | undefined
   paint = {
     'line-width': 2.2,
@@ -51,6 +52,7 @@ class PathsEdges extends React.Component<PropsFromRedux> {
       paint: this.paint,
       layout: this.layout,
     })
+    this.props.setLayerLoaded(this.layerId)
   }
 
   updateLayerData(map: any) {
@@ -113,6 +115,6 @@ const mapStateToProps = (state: ReduxState) => ({
   basemapLoadId: state.map.basemapLoadId,
 })
 
-const connector = connect(mapStateToProps, { setSelectedPath })
+const connector = connect(mapStateToProps, { setSelectedPath, setLayerLoaded })
 type PropsFromRedux = ConnectedProps<typeof connector>
 export default connector(PathsEdges)

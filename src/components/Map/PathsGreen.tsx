@@ -3,11 +3,12 @@ import { connect, ConnectedProps } from 'react-redux'
 import { GeoJSONSource, MapMouseEvent } from 'mapbox-gl'
 import { setSelectedPath } from '../../reducers/pathsReducer'
 import { scrollToPath } from '../../reducers/pathListReducer'
-import { clickTol, ExposureMode } from '../../constants'
+import { setLayerLoaded } from './../../reducers/mapReducer'
+import { clickTol, ExposureMode, LayerId } from '../../constants'
 import { utils } from '../../utils/index'
 
 class PathsGreen extends React.Component<PropsFromRedux> {
-  layerId = 'pathsGreen'
+  layerId = LayerId.GREEN_PATHS
   source: GeoJSONSource | undefined
   paint = {
     'line-width': 4.3,
@@ -29,6 +30,7 @@ class PathsGreen extends React.Component<PropsFromRedux> {
       paint: this.paint,
       layout: this.layout,
     })
+    this.props.setLayerLoaded(this.layerId)
   }
 
   updateLayerData(map: any) {
@@ -102,6 +104,6 @@ const mapStateToProps = (state: ReduxState) => ({
   basemapLoadId: state.map.basemapLoadId,
 })
 
-const connector = connect(mapStateToProps, { setSelectedPath, scrollToPath })
+const connector = connect(mapStateToProps, { setSelectedPath, scrollToPath, setLayerLoaded })
 type PropsFromRedux = ConnectedProps<typeof connector>
 export default connector(PathsGreen)

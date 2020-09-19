@@ -2,11 +2,12 @@ import React from 'react'
 import { connect, ConnectedProps } from 'react-redux'
 import { GeoJSONSource, MapMouseEvent } from 'mapbox-gl'
 import { setMapReferenceForPopups, setSelectLocationsPopup } from './../../reducers/mapPopupReducer'
-import { clickTol } from './../../constants'
+import { setLayerLoaded } from './../../reducers/mapReducer'
+import { clickTol, LayerId } from './../../constants'
 import { utils, turf } from './../../utils/index'
 
 class OrigDest extends React.Component<PropsFromRedux> {
-  layerId = 'OrigDest'
+  layerId = LayerId.ORIG_DEST
   source: GeoJSONSource | undefined = undefined
   circleStyle = {
     'circle-color': [
@@ -22,7 +23,7 @@ class OrigDest extends React.Component<PropsFromRedux> {
   }
 
   loadLayerToMap(map: any) {
-    const { originPoint, destinationPoint } = this.props
+    const { originPoint, destinationPoint, setLayerLoaded } = this.props
     // @ts-ignore
     const odFeatures: OdPlace[] = [originPoint, destinationPoint].filter(od => od)
     const origDestFC = turf.asFeatureCollection(odFeatures)
@@ -35,6 +36,7 @@ class OrigDest extends React.Component<PropsFromRedux> {
       type: 'circle',
       paint: this.circleStyle,
     })
+    setLayerLoaded(this.layerId)
   }
 
   updateLayerData(map: any) {
@@ -66,7 +68,7 @@ class OrigDest extends React.Component<PropsFromRedux> {
       setMapReferenceForPopups(map)
       map.on('click', (e: MapMouseEvent) => {
         // show popup only if path was not clicked
-        const features = utils.getLayersFeaturesAroundClickE(['pathsGreen', 'shortestPath'], e, clickTol, map)
+        const features = utils.getLayersFeaturesAroundClickE([LayerId.GREEN_PATHS, LayerId.SHORT_PATH], e, clickTol, map)
         if (features.length === 0) {
           setSelectLocationsPopup(e.lngLat)
         }
@@ -97,6 +99,6 @@ const mapStateToProps = (state: ReduxState) => ({
   basemapLoadId: state.map.basemapLoadId
 })
 
-const connector = connect(mapStateToProps, { setSelectLocationsPopup })
+const connector = connect(mapStateToProps, { setSelectLocationsPopup, setLayerLoaded })
 type PropsFromRedux = ConnectedProps<typeof connector>
 export default connector(OrigDest)

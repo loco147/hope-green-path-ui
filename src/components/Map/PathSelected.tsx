@@ -1,9 +1,11 @@
 import React from 'react'
 import { connect, ConnectedProps } from 'react-redux'
 import { GeoJSONSource } from 'mapbox-gl'
+import { setLayerLoaded } from './../../reducers/mapReducer'
+import { LayerId } from '../../constants'
 
 class PathSelected extends React.Component<PropsFromRedux> {
-  layerId = 'selectedPath'
+  layerId = LayerId.SELECTED_PATH
   source: GeoJSONSource | undefined
   layout = {
     'icon-image': 'circle-15',
@@ -23,6 +25,7 @@ class PathSelected extends React.Component<PropsFromRedux> {
       type: 'symbol',
       layout: this.layout,
     })
+    this.props.setLayerLoaded(this.layerId)
   }
 
   updateLayerData(map: any) {
@@ -75,6 +78,6 @@ const mapStateToProps = (state: ReduxState) => ({
   basemapLoadId: state.map.basemapLoadId
 })
 
-const connector = connect(mapStateToProps, {})
+const connector = connect(mapStateToProps, { setLayerLoaded })
 type PropsFromRedux = ConnectedProps<typeof connector>
 export default connector(PathSelected)

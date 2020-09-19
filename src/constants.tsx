@@ -8,6 +8,16 @@ export enum Basemap {
   SATELLITE = 'mapbox://styles/joose/ckf9du1ua28cj19mk96oidub3'
 }
 
+export enum LayerId {
+  USER_LOC = 'userLoc',
+  ORIG_DEST = 'origDest',
+  SHORT_PATH = 'pathShort',
+  GREEN_PATHS = 'pathsGreen',
+  SELECTED_PATH = 'pathSelected',
+  PATHS_EDGES = 'pathsEdges',
+  BASEMAP = 'baseMapLayer'
+}
+
 export enum TravelMode {
   WALK = 'walk',
   BIKE = 'bike'

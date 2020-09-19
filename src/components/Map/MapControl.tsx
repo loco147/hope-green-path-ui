@@ -1,6 +1,7 @@
 import { Component } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
-import { setBaseMapLoaded } from './../../reducers/mapReducer'
+import { LayerId } from '../../constants'
+import { setBaseMapLoaded, unloadLayers } from './../../reducers/mapReducer'
 
 class MapControl extends Component<PropsFromRedux & { map?: MbMap }> {
 
@@ -15,7 +16,7 @@ class MapControl extends Component<PropsFromRedux & { map?: MbMap }> {
   }
 
   componentDidUpdate = (prevProps: PropsFromRedux) => {
-    const { map, showingPaths } = this.props
+    const { map, showingPaths, unloadLayers, loadedLayers } = this.props
     const { zoomToBbox } = this.props.mapState
 
     const { userLocHistory } = this.props.userLocation
@@ -25,6 +26,7 @@ class MapControl extends Component<PropsFromRedux & { map?: MbMap }> {
     if (zoomToBbox !== prevProps.mapState.zoomToBbox) map!.fitBounds(zoomToBbox, this.getFitBoundsOptions(showingPaths))
 
     if (this.props.mapState.basemap !== prevProps.mapState.basemap) {
+      unloadLayers()
       map!.setStyle(this.props.mapState.basemap)
       map!.once('styledataloading', () => {
         map!.once('styledata', () => {
@@ -32,6 +34,16 @@ class MapControl extends Component<PropsFromRedux & { map?: MbMap }> {
         })
       })
     }
+
+    if (loadedLayers.length === 7 && prevProps.loadedLayers.length < 7) {
+      map!.moveLayer(LayerId.USER_LOC)
+      map!.moveLayer(LayerId.ORIG_DEST, LayerId.USER_LOC)
+      map!.moveLayer(LayerId.PATHS_EDGES, LayerId.ORIG_DEST)
+      map!.moveLayer(LayerId.GREEN_PATHS, LayerId.PATHS_EDGES)
+      map!.moveLayer(LayerId.SHORT_PATH, LayerId.GREEN_PATHS)
+      map!.moveLayer(LayerId.SELECTED_PATH, LayerId.SHORT_PATH)
+    }
+
   }
   render() { return null }
 }
@@ -39,9 +51,10 @@ class MapControl extends Component<PropsFromRedux & { map?: MbMap }> {
 const mapStateToProps = (state: ReduxState) => ({
   userLocation: state.userLocation,
   mapState: state.map,
-  showingPaths: state.paths.waitingPaths || state.paths.showingPaths
+  showingPaths: state.paths.waitingPaths || state.paths.showingPaths,
+  loadedLayers: state.map.loadedLayers
 })
 
-const connector = connect(mapStateToProps, { setBaseMapLoaded })
+const connector = connect(mapStateToProps, { setBaseMapLoaded, unloadLayers })
 type PropsFromRedux = ConnectedProps<typeof connector>
 export default connector(MapControl)
