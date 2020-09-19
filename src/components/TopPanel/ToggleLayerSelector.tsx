@@ -2,8 +2,10 @@ import React, { useState } from 'react'
 import styled, { css } from 'styled-components'
 import { connect, ConnectedProps } from 'react-redux'
 import { showInfo } from './../../reducers/uiReducer'
+import { setBaseMap } from './../../reducers/mapReducer'
 import ToggleLayerSelectorButton from './ToggleLayerSelectorButton'
 import { CloseButton } from './../Icons'
+import { Basemap } from '../../constants'
 
 const Wrapper = styled.div`
   margin: 15px 5px 0px 0px;
@@ -56,8 +58,21 @@ const ToggleLayerSelector = (props: PropsFromRedux) => {
       {!showOptions && <ToggleLayerSelectorButton handleClick={() => setShowOptions(true)} />}
       {showOptions &&
         <OptionContainer>
-          <BaseMapOption selected={true}>Streets</BaseMapOption>
-          <BaseMapOption selected={false}>Traffic noise</BaseMapOption>
+          <BaseMapOption
+            selected={props.basemap === Basemap.STREETS}
+            onClick={() => props.setBaseMap(Basemap.STREETS)}>
+            Streets
+          </BaseMapOption>
+          <BaseMapOption
+            selected={props.basemap === Basemap.SATELLITE}
+            onClick={() => props.setBaseMap(Basemap.SATELLITE)}>
+            Satellite
+          </BaseMapOption>
+          <BaseMapOption
+            selected={props.basemap === Basemap.NOISE}
+            onClick={() => props.setBaseMap(Basemap.NOISE)}>
+            Traffic noise
+          </BaseMapOption>
           <AlignCloseButton>
             <CloseButton size={40} onClick={() => setShowOptions(false)} />
           </AlignCloseButton>
@@ -67,9 +82,10 @@ const ToggleLayerSelector = (props: PropsFromRedux) => {
 }
 
 const mapStateToProps = (state: ReduxState) => ({
-  ui: state.ui
+  ui: state.ui,
+  basemap: state.map.basemap
 })
 
-const connector = connect(mapStateToProps, { showInfo })
+const connector = connect(mapStateToProps, { showInfo, setBaseMap })
 type PropsFromRedux = ConnectedProps<typeof connector>
 export default connector(ToggleLayerSelector)

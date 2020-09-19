@@ -4,7 +4,7 @@ import { connect, ConnectedProps } from 'react-redux'
 import { initializeMap, updateCamera } from './../../reducers/mapReducer'
 import { debugNearestEdgeAttrs } from '../../services/paths'
 import { unsetSelectedPath } from './../../reducers/pathsReducer'
-import { initialMapCenter, initialMapCenterProd, BASEMAPS } from './../../constants'
+import { initialMapCenter, initialMapCenterProd, Basemap } from './../../constants'
 import { utils } from './../../utils/index'
 import { clickTol } from './../../constants'
 
@@ -39,7 +39,7 @@ class Map extends Component<PropsType & PropsFromRedux, State> {
 
     this.map = new MapboxGL.Map({
       container: this.mapContainer,
-      style: BASEMAPS.Streets.url,
+      style: Basemap.STREETS,
       center: mapCenter,
       zoom: zoom,
       boxZoom: false,

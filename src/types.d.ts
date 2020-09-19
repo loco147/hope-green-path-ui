@@ -137,6 +137,7 @@ interface PathDataResponse {
 interface MapReducer {
   initialized: boolean,
   zoomToBbox: [number, number, number, number],
+  basemap: import('./constants').Basemap
   center: LngLat | {},
   zoom: number
 }

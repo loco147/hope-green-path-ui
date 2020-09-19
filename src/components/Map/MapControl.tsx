@@ -23,6 +23,10 @@ class MapControl extends Component<PropsFromRedux & { map?: MbMap }> {
     }
     if (zoomToBbox !== prevProps.mapState.zoomToBbox) map!.fitBounds(zoomToBbox, this.getFitBoundsOptions(showingPaths))
 
+    if (this.props.mapState.basemap !== prevProps.mapState.basemap) {
+      console.log('Need to update basemap to', this.props.mapState.basemap);
+      map!.setStyle(this.props.mapState.basemap)
+    }
   }
   render() { return null }
 }
