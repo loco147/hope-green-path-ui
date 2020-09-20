@@ -2,13 +2,20 @@ import hmaPoly from './HMA.json'
 
 export const extentFeat = hmaPoly.features[0] as PolygonFeature
 
-export const BASEMAPS = {
-  Streets: {
-    url: 'mapbox://styles/joose/cjvbyzwuk31oe1fohk6s9ev4b',
-  },
-  Light: {
-    url: 'mapbox://styles/joose/cjup4uo4i0omw1fr2z1j5onm3'
-  }
+export enum Basemap {
+  STREETS = 'mapbox://styles/joose/cjvbyzwuk31oe1fohk6s9ev4b',
+  NOISE = 'mapbox://styles/joose/ckenvi8t83bbc19qqq3io2zvu',
+  SATELLITE = 'mapbox://styles/joose/ckf9du1ua28cj19mk96oidub3'
+}
+
+export enum LayerId {
+  USER_LOC = 'userLoc',
+  ORIG_DEST = 'origDest',
+  SHORT_PATH = 'pathShort',
+  GREEN_PATHS = 'pathsGreen',
+  SELECTED_PATH = 'pathSelected',
+  PATHS_EDGES = 'pathsEdges',
+  BASEMAP = 'baseMapLayer'
 }
 
 export enum TravelMode {

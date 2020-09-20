@@ -2,7 +2,8 @@ import React from 'react'
 import { connect, ConnectedProps } from 'react-redux'
 import { GeoJSONSource } from 'mapbox-gl'
 import { setSelectedPath } from '../../reducers/pathsReducer'
-import { dBColors, aqiColors, ExposureMode } from '../../constants'
+import { setLayerLoaded } from './../../reducers/mapReducer'
+import { dBColors, aqiColors, ExposureMode, LayerId } from '../../constants'
 
 const dbLineColors = [
   'match',
@@ -28,7 +29,7 @@ const aqiLineColors = [
 ]
 
 class PathsEdges extends React.Component<PropsFromRedux> {
-  layerId = 'PathsEdges'
+  layerId = LayerId.PATHS_EDGES
   source: GeoJSONSource | undefined
   paint = {
     'line-width': 2.2,
@@ -40,26 +41,21 @@ class PathsEdges extends React.Component<PropsFromRedux> {
     'line-cap': 'round',
   }
 
-  componentDidMount() {
-    // @ts-ignore - map is given to all children of Map
-    const { map } = this.props
-    map.once('load', () => {
-      // Add layer
-      map.addSource(this.layerId, { type: 'geojson', data: this.props.quietEdgeFC })
-      this.source = map.getSource(this.layerId)
-      map.addLayer({
-        id: this.layerId,
-        source: this.layerId,
-        type: 'line',
-        paint: this.paint,
-        layout: this.layout,
-      })
+  loadLayerToMap(map: any) {
+    // Add layer
+    map.addSource(this.layerId, { type: 'geojson', data: this.props.quietEdgeFC })
+    this.source = map.getSource(this.layerId)
+    map.addLayer({
+      id: this.layerId,
+      source: this.layerId,
+      type: 'line',
+      paint: this.paint,
+      layout: this.layout,
     })
+    this.props.setLayerLoaded(this.layerId)
   }
 
-  componentDidUpdate = () => {
-    // @ts-ignore - map is given to all children of Map
-    const { map } = this.props
+  updateLayerData(map: any) {
     const { showingPathsOfExposureMode, quietEdgeFC, cleanEdgeFC, lengthLimit } = this.props
     let greenEdgeFC: any
     let lineColor
@@ -86,6 +82,26 @@ class PathsEdges extends React.Component<PropsFromRedux> {
     }
   }
 
+  componentDidMount() {
+    // @ts-ignore - map is given to all children of Map
+    const { map } = this.props
+    map.once('load', () => {
+      this.loadLayerToMap(map)
+    })
+  }
+
+  componentDidUpdate = (prevProps: PropsFromRedux) => {
+    // @ts-ignore - map is given to all children of Map
+    const { map } = this.props
+
+    if (this.props.basemapChangeId !== prevProps.basemapChangeId) {
+      this.loadLayerToMap(map)
+      this.updateLayerData(map)
+    } else {
+      this.updateLayerData(map)
+    }
+  }
+
   render() {
     return null
   }
@@ -96,8 +112,9 @@ const mapStateToProps = (state: ReduxState) => ({
   quietEdgeFC: state.paths.quietEdgeFC,
   cleanEdgeFC: state.paths.cleanEdgeFC,
   lengthLimit: state.paths.lengthLimit,
+  basemapChangeId: state.map.basemapChangeId,
 })
 
-const connector = connect(mapStateToProps, { setSelectedPath })
+const connector = connect(mapStateToProps, { setSelectedPath, setLayerLoaded })
 type PropsFromRedux = ConnectedProps<typeof connector>
 export default connector(PathsEdges)

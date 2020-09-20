@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import MapboxGL from 'mapbox-gl'
 import { connect, ConnectedProps } from 'react-redux'
-import { initializeMap, updateCamera } from './../../reducers/mapReducer'
+import { initializeMap, updateCamera, setLayerLoaded } from './../../reducers/mapReducer'
 import { debugNearestEdgeAttrs } from '../../services/paths'
 import { unsetSelectedPath } from './../../reducers/pathsReducer'
-import { initialMapCenter, initialMapCenterProd, BASEMAPS } from './../../constants'
+import { initialMapCenter, initialMapCenterProd, Basemap, LayerId } from './../../constants'
 import { utils } from './../../utils/index'
 import { clickTol } from './../../constants'
 
@@ -39,7 +39,7 @@ class Map extends Component<PropsType & PropsFromRedux, State> {
 
     this.map = new MapboxGL.Map({
       container: this.mapContainer,
-      style: BASEMAPS.Streets.url,
+      style: Basemap.STREETS,
       center: mapCenter,
       zoom: zoom,
       boxZoom: false,
@@ -48,6 +48,7 @@ class Map extends Component<PropsType & PropsFromRedux, State> {
 
     this.map.on('style.load', () => {
       console.log('map style loaded')
+      this.props.setLayerLoaded(LayerId.BASEMAP)
     })
 
     this.map.on('render', () => {
@@ -72,7 +73,7 @@ class Map extends Component<PropsType & PropsFromRedux, State> {
       if (process.env.NODE_ENV !== 'production') {
         debugNearestEdgeAttrs(e.lngLat)
       }
-      const features = utils.getLayersFeaturesAroundClickE(['pathsGreen', 'shortestPath'], e, clickTol, this.map!)
+      const features = utils.getLayersFeaturesAroundClickE([LayerId.GREEN_PATHS, LayerId.SHORT_PATH], e, clickTol, this.map!)
       if (features.length === 0) {
         this.props.unsetSelectedPath()
       }
@@ -145,6 +146,7 @@ const mapDispatchToProps = {
   initializeMap,
   updateCamera,
   unsetSelectedPath,
+  setLayerLoaded,
 }
 
 const connector = connect(mapStateToProps, mapDispatchToProps)

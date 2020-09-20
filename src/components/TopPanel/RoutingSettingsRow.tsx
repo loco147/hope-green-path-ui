@@ -13,6 +13,9 @@ const OuterContainer = styled.div`
 const ResetContainer = styled.div`
   display: flex;
   align-items: center;
+  @media (min-width: 1099px) {
+    margin-left: 119px;
+  }
 `
 
 const SettingsContainer = styled.div`
