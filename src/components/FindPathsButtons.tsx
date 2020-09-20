@@ -24,19 +24,19 @@ const Button = styled.div`
   font-size: 28px;
   text-align: center;
   width: max-content;
-  letter-spacing: 1px;
+  letter-spacing: 0.4;
   max-width: 90%;
   overflow: auto;
   height: auto;
   pointer-events: auto;
   transition-duration: 0.2s;
   -webkit-transition-duration: 0.2s; /* Safari */
-  border: 2px solid rgba(255,255,255,0.75);
+  border: 2px solid rgba(255,255,255,0.8);
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.22), 0 6px 20px 0 rgba(0,0,0,0.14);
-  background-color: #17af40f0;
+  background-color: #10a538ed;
   color: white;
   &:hover { 
-    background-color: #128a32e8;
+  background-color: #0fb93d;
     border: 2px solid rgba(255,255,255,0.95);
   }
   @media (max-width: 620px) {
