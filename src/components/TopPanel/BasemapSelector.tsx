@@ -6,6 +6,7 @@ import { setBaseMap } from './../../reducers/mapReducer'
 import BasemapSelectorButton from './BasemapSelectorButton'
 import { CloseButton } from './../Icons'
 import { Basemap } from '../../constants'
+import T from '../../utils/translator/Translator'
 
 const Wrapper = styled.div`
   margin: 15px 5px 0px 0px;
@@ -64,17 +65,17 @@ const BasemapSelector = (props: PropsFromRedux) => {
           <BaseMapOption
             selected={props.basemap === Basemap.STREETS}
             onClick={() => props.setBaseMap(Basemap.STREETS)}>
-            Streets
+            <T>basemap_selector.option.label.streets</T>
           </BaseMapOption>
           <BaseMapOption
             selected={props.basemap === Basemap.NOISE}
             onClick={() => props.setBaseMap(Basemap.NOISE)}>
-            Traffic noise
+            <T>basemap_selector.option.label.traffic_noise</T>
           </BaseMapOption>
           <BaseMapOption
             selected={props.basemap === Basemap.SATELLITE}
             onClick={() => props.setBaseMap(Basemap.SATELLITE)}>
-            Satellite
+            <T>basemap_selector.option.label.satellite</T>
           </BaseMapOption>
         </OptionContainer>}
     </Wrapper>
